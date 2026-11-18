@@ -1,0 +1,21 @@
+{
+  "seeds": {
+    "hero": 20260101,
+    "sparse": 20260102,
+    "determinism": 20260103,
+    "property": 20260104
+  },
+  "map_sizes": {
+    "hero_points": 70,
+    "hero_columns": 10,
+    "hero_rows": 7,
+    "sparse_points": 70,
+    "max_tile_points": 10
+  },
+  "run_counts": {
+    "determinism_runs": 2,
+    "hypothesis_examples": 100,
+    "slow_hypothesis_examples": 20,
+    "hero_runs": 1
+  }
+}

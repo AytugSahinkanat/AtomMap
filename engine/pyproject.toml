@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atommap"
+version = "0.1.0"
+description = "AtomMap engine: qReduMIS on map points, with the Braket local AHS simulator"
+requires-python = ">=3.12"
+dependencies = [
+    # numpy, scipy and networkx match the versions built into Pyodide 0.27.7
+    "numpy==2.0.2",
+    "scipy==1.14.1",
+    "networkx==3.4.2",
+    "amazon-braket-sdk==1.127.8",
+    "amazon-braket-default-simulator==1.43.1",
+    "amazon-braket-schemas==1.33.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest==9.2.0",
+    "hypothesis==6.170.15",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "slow: tests that call the real Braket simulator (at most 20 hypothesis examples)",
+]
