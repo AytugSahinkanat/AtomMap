@@ -69,94 +69,94 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
     - **Property 13: The simplicial rule is safe**
     - **Validates: Requirements 4.1, 4.2, 12.2**
 
-- [ ] 4. Spatial Tiles
-  - [ ] 4.1 Write `tiles.py`
+- [x] 4. Spatial Tiles
+  - [x] 4.1 Write `tiles.py`
     - Split the remaining Points into Tiles of at most 10 by recursive bisection on the longer axis, built once after the first reduction of a Round, and let Tiles only shrink afterwards
     - _Requirements: 4.5, 6.1_
 
-  - [ ]* 4.2 Write unit tests for Tiles
+  - [x]* 4.2 Write unit tests for Tiles
     - Test the size limit, one Tile per Point, the longer-axis split and shrinking after removals
     - _Requirements: 4.5_
 
-- [ ] 5. Atom layout
-  - [ ] 5.1 Write the scaled layout in `layout.py`
+- [x] 5. Atom layout
+  - [x] 5.1 Write the scaled layout in `layout.py`
     - Scale coordinates so that r equals the blockade radius, push apart pairs closer than 4.15 µm, round to 0.1 µm, then check the 4.0 µm spacing, the 100 µm box and the exact edge match
     - Use no atoms and frequency 1.0 for a single Point
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.7, 6.8_
 
-  - [ ] 5.2 Add the optimiser fallback and the split to `layout.py`
+  - [x] 5.2 Add the optimiser fallback and the split to `layout.py`
     - Try a scipy optimiser Layout with the same checks, then split the Tile in two and repeat on each part
     - Log a `split` entry, count it, never skip a Tile and never use a placeholder value
     - _Requirements: 6.5, 6.6, 6.9, 6.10, 6.11_
 
-  - [ ]* 5.3 Write property test for accepted Layouts
+  - [x]* 5.3 Write property test for accepted Layouts
     - **Property 6: Accepted Layouts are valid**
     - **Validates: Requirements 6.1, 6.2, 6.3, 6.8, 12.5**
 
-  - [ ]* 5.4 Write property test for Tiles and splits
+  - [x]* 5.4 Write property test for Tiles and splits
     - **Property 7: Tiles and splits partition the Points**
     - **Validates: Requirements 4.5, 6.9**
 
-- [ ] 6. Braket program, seeded run and frequencies
-  - [ ] 6.1 Write `simulator.py` with the program and the seeded run
+- [x] 6. Braket program, seeded run and frequencies
+  - [x] 6.1 Write `simulator.py` with the program and the seeded run
     - Fix C6 = 5.42e-24 and omega = 15.8e6 with no overrides, add `blockade_radius_m()`, build the 4 µs pulse (amplitude and detuning as in the design, phase 0), 400 time steps and 100 shots
     - Seed numpy from the Seed and a stable hash of the Tile's sorted ids right before each call, and run the Braket local AHS simulator behind the `Simulator` protocol
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6_
 
-  - [ ] 6.2 Add shot repair and frequencies to `simulator.py`
+  - [x] 6.2 Add shot repair and frequencies to `simulator.py`
     - Read post sequence 0 as picked, repair each shot in a seeded random order, and compute the share of repaired shots that contain each Point
     - _Requirements: 5.7_
 
-  - [ ] 6.3 Write the fake Simulator for tests
+  - [x] 6.3 Write the fake Simulator for tests
     - Add `tests/fake_sim.py`: a seeded function returning random shots, with an option to raise for chosen Tiles
     - _Requirements: 12.2, 12.3, 12.4_
 
-  - [ ]* 6.4 Write property test for repaired shots
+  - [x]* 6.4 Write property test for repaired shots
     - **Property 8: Repaired shots are independent sets**
     - **Validates: Requirements 5.7**
 
-  - [ ]* 6.5 Write unit tests for the pulse and constants
+  - [x]* 6.5 Write unit tests for the pulse and constants
     - Test 400 steps, 100 shots, pulse timings, constants and the blockade radius value
     - _Requirements: 5.1, 5.2, 5.3, 5.5_
 
-- [ ] 7. Frequency cache
-  - [ ] 7.1 Add the Tile frequency cache to `simulator.py`
+- [x] 7. Frequency cache
+  - [x] 7.1 Add the Tile frequency cache to `simulator.py`
     - Key by the frozenset of the Tile's Point ids, reuse until one of those Points is removed, and count cache hits
     - _Requirements: 5.4, 5.8_
 
-  - [ ]* 7.2 Write unit tests for the cache
+  - [x]* 7.2 Write unit tests for the cache
     - Test that the same Tile twice makes one Simulator call, that removing a Point invalidates its Tile, and that results are identical with and without the cache
     - _Requirements: 5.4, 5.8_
 
-- [ ] 8. The loop, three frequency providers and Atoms_Alone
-  - [ ] 8.1 Write `anneal.py`
+- [x] 8. The loop, three frequency providers and Atoms_Alone
+  - [x] 8.1 Write `anneal.py`
     - Per Tile, 100 samples of 40 sweeps with the temperature and energy from the design, Metropolis flips in seeded random order, repaired like atom shots
     - _Requirements: 7.4, 8.4_
 
-  - [ ] 8.2 Write `loop.py` for one Round
+  - [x] 8.2 Write `loop.py` for one Round
     - Repeat until no Point remains: apply rules, get frequencies from the provider (atoms, annealing or none), rank by frequency with ties broken by Point id, pick one at random (seeded) from the top 40% (any Point for none), remove its neighbours and log it
     - On a Simulator exception, discard partial output, log `skip` with the Round, Point ids and message, count it, use annealing frequencies with source `annealing`, and rethrow any other error
     - _Requirements: 4.1, 4.3, 4.4, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 8.4_
 
-  - [ ] 8.3 Write Atoms_Alone in `atoms_alone.py`
+  - [x] 8.3 Write Atoms_Alone in `atoms_alone.py`
     - Make Tiles with the layout rule, keep the biggest repaired shot per Tile, merge, drop Points that conflict with a kept Point, report the gaps, and set the label "atoms alone (in pieces of 10 or less in simulation)"
     - _Requirements: 8.2, 8.3_
 
-- [ ] 9. Rounds, Competitors and Stats
-  - [ ] 9.1 Write `stats.py`
+- [x] 9. Rounds, Competitors and Stats
+  - [x] 9.1 Write `stats.py`
     - Compute from the Decision_Log and run counters only: picks per Round and per source, Quantum_Share, `atoms_not_needed`, splits, skipped Tiles, mismatches (always 0), Braket calls, cache hits, layout fallbacks, timings, and gaps for Atoms_Alone
     - _Requirements: 10.1, 10.2, 10.3, 10.7, 10.8, 10.9_
 
-  - [ ] 9.2 Write the Round driver and the Competitors in `rounds.py` and `competitors.py`
+  - [x] 9.2 Write the Round driver and the Competitors in `rounds.py` and `competitors.py`
     - Run 3 Rounds (channels 1, 6, 11) for Channel_Plan or 1 for Place on the Points not yet picked, list `five_ghz_only`, and handle empty Rounds
     - Run the four Competitors on copies of the same input with separate logs and Stats, and return an error entry for a failing Competitor while keeping the others
     - _Requirements: 3.1, 3.2, 3.3, 3.5, 3.6, 3.8, 3.9, 8.1, 8.5, 8.6, 8.7, 8.8, 9.1_
 
-  - [ ]* 9.3 Write property test for Stats
+  - [x]* 9.3 Write property test for Stats
     - **Property 4: Stats agree with the Decision_Log**
     - **Validates: Requirements 6.11, 7.3, 10.1, 10.2, 10.3, 10.7, 10.9**
 
-  - [ ]* 9.4 Write property test for Atoms_Alone
+  - [x]* 9.4 Write property test for Atoms_Alone
     - **Property 12: Atoms_Alone is independent and reports its gaps exactly**
     - **Validates: Requirements 8.2, 8.3**
 

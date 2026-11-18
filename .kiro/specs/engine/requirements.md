@@ -129,7 +129,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 
 1. THE Engine SHALL place at most 10 atoms in one Simulator call.
 2. THE Engine SHALL place atoms at least 4.0 µm apart, measured as the Euclidean distance between every pair of atoms after rounding each coordinate to the nearest 0.1 µm.
-3. WHEN the Engine evaluates a candidate Layout for a Tile, THE Engine SHALL accept the Layout only if the set of atom pairs whose distance is less than or equal to the blockade radius equals the set of edges of the Tile's Conflict_Graph, with no missing edges and no extra edges.
+3. WHEN the Engine evaluates a candidate Layout for a Tile, THE Engine SHALL accept the Layout only if the set of atom pairs whose distance is below the blockade radius equals the set of edges of the Tile's Conflict_Graph, with no missing edges and no extra edges.
 4. WHEN the Engine lays out a Tile, THE Engine SHALL scale the real coordinates so that r becomes the blockade radius, push apart pairs closer than 4.15 µm, and check the edge match from criterion 3.
 5. IF the scaled Layout does not match exactly, THEN THE Engine SHALL try an optimiser Layout and SHALL accept it only if it matches exactly.
 6. IF neither Layout matches exactly, THEN THE Engine SHALL split the Tile into two Tiles and repeat criteria 4 to 6 on each part.

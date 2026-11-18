@@ -75,9 +75,13 @@ class Stats:
     layout_fallbacks: int = 0
     timings: dict[str, float] = field(default_factory=dict)
     gaps: Optional[list[str]] = None  # only for Atoms_Alone
+    quantum_picks: int = 0  # picks made in atom-informed steps
+    total_picks: int = 0
 
     def to_dict(self) -> dict:
         d = {
+            "quantum_picks": self.quantum_picks,
+            "total_picks": self.total_picks,
             "picks_per_round": list(self.picks_per_round),
             "picks_per_source": dict(self.picks_per_source),
             "quantum_share": self.quantum_share,

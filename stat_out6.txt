@@ -1,0 +1,15 @@
+﻿..                                                                       [100%]
+============================ Hypothesis Statistics ============================
+tests/test_prop_tiles_split.py::test_tiles_and_splits_partition_points:
+
+  - during generate phase (4.27 seconds):
+    - Typical runtimes: ~ 2-104 ms, of which ~ 0-4 ms in data generation
+    - 100 passing, 0 failing, and 2 invalid test cases
+    - Events:
+      * 56.86%, splits>0=True
+      * 41.18%, splits>0=False
+
+  - Stopped because settings.max_examples=100
+
+
+2 passed in 5.29s

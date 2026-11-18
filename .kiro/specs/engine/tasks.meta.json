@@ -11,6 +11,18 @@
     "3.3 Write property test for the simplicial rule": {
       "status": "passed",
       "lastRunTimestamp": 1794963255046
+    },
+    "5.4 Write property test for Tiles and splits": {
+      "status": "passed",
+      "lastRunTimestamp": 1795002457870
+    },
+    "5.3 Write property test for accepted Layouts": {
+      "status": "passed",
+      "lastRunTimestamp": 1795001638373
+    },
+    "6.4 Write property test for repaired shots": {
+      "status": "passed",
+      "lastRunTimestamp": 1795008316734
     }
   },
   "executionHistory": {
@@ -144,6 +156,288 @@
         "executionId": "9161ccea-c61d-4d37-8940-876eb8cd7f75",
         "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
         "timestamp": 1794963263682
+      }
+    ],
+    "4.1 Write `tiles.py`": [
+      {
+        "executionId": "2ce3124b-5773-4fc0-b459-1760abdba2af",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795000970043
+      },
+      {
+        "executionId": "2ce3124b-5773-4fc0-b459-1760abdba2af",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001033880
+      }
+    ],
+    "4. Spatial Tiles": [
+      {
+        "executionId": "2ce3124b-5773-4fc0-b459-1760abdba2af",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001033960
+      }
+    ],
+    "4.2 Write unit tests for Tiles": [
+      {
+        "executionId": "2ce3124b-5773-4fc0-b459-1760abdba2af",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001038775
+      },
+      {
+        "executionId": "2ce3124b-5773-4fc0-b459-1760abdba2af",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001097621
+      }
+    ],
+    "5.1 Write the scaled layout in `layout.py`": [
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001315302
+      },
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001397522
+      }
+    ],
+    "5.2 Add the optimiser fallback and the split to `layout.py`": [
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001400980
+      },
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001562598
+      }
+    ],
+    "5. Atom layout": [
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001562748
+      }
+    ],
+    "5.3 Write property test for accepted Layouts": [
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001566994
+      },
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001657623
+      }
+    ],
+    "5.4 Write property test for Tiles and splits": [
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795001567467
+      },
+      {
+        "executionId": "b2695047-4332-4c4f-a9f4-8891bb5bfda6",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795002486757
+      }
+    ],
+    "6.1 Write `simulator.py` with the program and the seeded run": [
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795004376174
+      },
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795004477604
+      }
+    ],
+    "6.2 Add shot repair and frequencies to `simulator.py`": [
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795004482002
+      },
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008191996
+      }
+    ],
+    "6.3 Write the fake Simulator for tests": [
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795004482512
+      },
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008192378
+      }
+    ],
+    "6. Braket program, seeded run and frequencies": [
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008192428
+      }
+    ],
+    "6.4 Write property test for repaired shots": [
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008198775
+      },
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008458509
+      }
+    ],
+    "6.5 Write unit tests for the pulse and constants": [
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008198878
+      },
+      {
+        "executionId": "b3af274e-0e86-4313-8e45-baa743e5e6df",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008458643
+      }
+    ],
+    "7.1 Add the Tile frequency cache to `simulator.py`": [
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008529764
+      },
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008744911
+      }
+    ],
+    "8.1 Write `anneal.py`": [
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008530223
+      },
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008796343
+      }
+    ],
+    "7. Frequency cache": [
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008745007
+      }
+    ],
+    "7.2 Write unit tests for the cache": [
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008745115
+      },
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008796021
+      }
+    ],
+    "8.2 Write `loop.py` for one Round": [
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008801707
+      },
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795009359828
+      }
+    ],
+    "8.3 Write Atoms_Alone in `atoms_alone.py`": [
+      {
+        "executionId": "24544878-c8ee-435a-b91c-5df69f472cf1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795008801857
+      },
+      {
+        "executionId": "7c5ff8b4-3ec5-4710-97b2-89294ba2debb",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795009707097
+      }
+    ],
+    "8. The loop, three frequency providers and Atoms_Alone": [
+      {
+        "executionId": "7c5ff8b4-3ec5-4710-97b2-89294ba2debb",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795009707189
+      }
+    ],
+    "9.1 Write `stats.py`": [
+      {
+        "executionId": "7c5ff8b4-3ec5-4710-97b2-89294ba2debb",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795009714184
+      },
+      {
+        "executionId": "01ee2049-59ec-46fb-b0a9-79fae7375627",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010243539
+      }
+    ],
+    "9.2 Write the Round driver and the Competitors in `rounds.py` and `competitors.py`": [
+      {
+        "executionId": "01ee2049-59ec-46fb-b0a9-79fae7375627",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010249574
+      },
+      {
+        "executionId": "62684421-0a86-4e6e-a390-ec7c584672c1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010596902
+      }
+    ],
+    "9. Rounds, Competitors and Stats": [
+      {
+        "executionId": "62684421-0a86-4e6e-a390-ec7c584672c1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010596969
+      }
+    ],
+    "9.3 Write property test for Stats": [
+      {
+        "executionId": "62684421-0a86-4e6e-a390-ec7c584672c1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010597919
+      },
+      {
+        "executionId": "62684421-0a86-4e6e-a390-ec7c584672c1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010673383
+      }
+    ],
+    "9.4 Write property test for Atoms_Alone": [
+      {
+        "executionId": "62684421-0a86-4e6e-a390-ec7c584672c1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010598339
+      },
+      {
+        "executionId": "62684421-0a86-4e6e-a390-ec7c584672c1",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795010673448
       }
     ]
   }
