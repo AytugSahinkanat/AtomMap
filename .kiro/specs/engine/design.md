@@ -104,7 +104,7 @@ def layout_tile(points, edges, r, seed=0, log=None, round=1) -> TileLayouts:  # 
 - **Annealing (Req. 7.4, 8.4).** Used for Annealing_Rules and for the skipped-Tile fallback. Per Tile it draws 100 samples of 40 sweeps each. In sweep t (0 to 39) the temperature is T = 2.0 * (1 - t/40) + 0.05. The energy is -(number of picked Points) + 2 x (number of conflicting pairs among picked Points). Each sweep visits the Tile's Points in a seeded random order and flips each with the Metropolis rule. Each final sample is repaired exactly like an atom shot (`repair_shot`), and the frequency of a Point is the share of repaired samples that contain it.
 - **Skipped Tiles (Req. 7).** A Simulator exception marks the Tile skipped: partial output is discarded, a `skip` entry is logged (Round, Point ids, exception text) and the skipped count goes up by 1. Annealing frequencies are used for that Tile in that step. A pick made from those frequencies has the source `annealing` in the Decision_Log and does not count toward Quantum_Share. Any other exception stops the run and becomes an `error` message with type and message and no partial result.
 - **Competitors (Req. 8).** The four Competitors run on copies of the same input. Atoms_Alone skips rules: it splits Points into Tiles of at most 10 with the layout rule, keeps the biggest repaired shot per Tile, merges them, drops any Point that conflicts with an already kept Point, runs single-Point pieces on the Simulator as one atom so every pick comes from a Simulator run, and reports gaps (Points that could be added with no conflict). Its label is "atoms alone (in pieces of 10 or less in simulation)". A failing Competitor returns an error entry and the others still return.
-- **Log and Stats (Req. 9, 10).** Stats are computed from the Decision_Log and counters of the run only. Quantum_Share is picks with source `atoms` divided by all picks. Only picks whose frequency came from a real Simulator run have source `atoms`, so they are exactly the atom-informed picks. The flag `atoms_not_needed` is true when that count is 0. The Stats always carry the splits, skipped Tiles and mismatches counts (mismatches is always 0). Every result has the Result_Label "simulation" and the paper citation in its metadata. No field claims a speed advantage.
+- **Log and Stats (Req. 9, 10).** Stats are computed from the Decision_Log and counters of the run only. Quantum_Share is picks with source `atoms` divided by all picks. Only picks whose frequency came from a real Simulator run have source `atoms`, so they are exactly the atom-informed picks. The flag `atoms_not_needed` is true when that count is 0 and no Tile was sent to the Simulator in the run (skipped Tiles were sent, so they leave the flag unset). The Stats always carry the splits, skipped Tiles and mismatches counts (mismatches is always 0). Every result has the Result_Label "simulation" and the paper citation in its metadata. No field claims a speed advantage.
 - **Progress (Req. 9.9).** `emit` is called with `{competitor, round, step, tile}` before each Simulator call and after each pick.
 
 ## Data Models
@@ -154,7 +154,7 @@ Result   = {meta: {citation, label: "simulation"},
 
 ### Property 4: Stats agree with the Decision_Log
 
-*For any* valid request and any Competitor, the Stats picks per Round and per source, Quantum_Share, `atoms_not_needed`, splits and skipped Tiles equal the values recomputed from the Decision_Log, and mismatches is 0.
+*For any* valid request and any Competitor, the Stats picks per Round and per source, Quantum_Share, splits and skipped Tiles equal the values recomputed from the Decision_Log, `atoms_not_needed` is true exactly when the Quantum_Share is 0 and no Tile was sent to the Simulator, and mismatches is 0.
 
 **Validates: Requirements 6.11, 7.3, 10.1, 10.2, 10.3, 10.7, 10.9**
 
@@ -240,7 +240,7 @@ Property-based testing applies because the Engine is pure graph logic with a lar
 - Competitor failure leaves the others intact, and logs and Stats are separate (8.6, 8.7, 8.8).
 - Labels, citation metadata and the absence of speed claims (4.6, 10.4 to 10.6). Progress events (9.9).
 - Fake numba and Lean_Mode stubs (1.9, 1.10). Package file hashes equal in both environments (1.3).
-- Fixtures: Hero map runs a full Channel_Plan run, and the sparse control gives Quantum_Share 0 with the flag set (12.8, 12.9).
+- Fixtures: Hero map runs a full Channel_Plan run, and the sparse control Hybrid Quantum_Share is below half of the Hero map Hybrid Quantum_Share, with both numbers reported (12.8, 12.9).
 
 **Integration and smoke (browser):** init time, download and memory limits, warm Hero run under 20 seconds, no PyPI requests, wheel failure messages (1.2, 1.5 to 1.8, 1.11 to 1.15).
 

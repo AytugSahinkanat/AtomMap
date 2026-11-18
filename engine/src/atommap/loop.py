@@ -52,10 +52,15 @@ class SimulatorFailure(Exception):
 class _GuardedSimulator:
     """Turns any exception from the real Simulator into SimulatorFailure."""
 
-    def __init__(self, inner: Simulator) -> None:
+    def __init__(
+        self, inner: Simulator, on_call: Optional[Callable[[], None]] = None
+    ) -> None:
         self._inner = inner
+        self._on_call = on_call  # progress hook, runs right before each real call
 
     def run_tile(self, positions_um, seed):
+        if self._on_call is not None:
+            self._on_call()  # outside the try: errors from the hook propagate
         try:
             return self._inner.run_tile(positions_um, seed)
         except Exception as exc:  # noqa: BLE001 - only the simulator call is guarded
@@ -113,11 +118,18 @@ def run_round(
     provider: Provider,
     simulator: Optional[Simulator] = None,
     cache: Optional[FrequencyCache] = None,
+    emit: Optional[Callable[[dict], None]] = None,
 ) -> RoundResult:
     """Run one Round on `available` (not modified) and return the RoundResult.
 
     Entries are appended to `log`. Pass one `cache` per run to share
     frequencies across Rounds; counters in the result are deltas of this Round.
+
+    `emit` gets progress events without a competitor field (the caller adds it):
+    `{"kind": "simulate", "round", "step", "tile": [ids]}` right before each real
+    Simulator call and `{"kind": "pick", "round", "step", "tile": None,
+    "picked": [id], "source"}` after each pick (source "rule" for rule picks;
+    their step is the last finished step, 0 before the first).
     """
     atoms = provider == "atoms"
     if atoms and simulator is None:
@@ -127,7 +139,17 @@ def run_round(
     if cache is None:
         cache = FrequencyCache()
     anneal_cache = FrequencyCache()  # annealing values, not reported
-    guarded = _GuardedSimulator(simulator) if simulator is not None else None
+    current_part: list[tuple[str, ...]] = []  # ids of the part being simulated
+
+    def before_call() -> None:
+        if emit is not None:
+            emit({"kind": "simulate", "round": round, "step": step,
+                  "tile": list(current_part[0]) if current_part else []})
+
+    guarded = (
+        _GuardedSimulator(simulator, before_call if emit is not None else None)
+        if simulator is not None else None
+    )
 
     adj = graph.adjacency()
     by_id = {p.id: p for p in points}
@@ -174,6 +196,7 @@ def run_round(
         try:
             for part in lay.parts:
                 m0 = cache.misses
+                current_part[:] = [tuple(part.ids)]
                 out.update(
                     cache.part_frequencies(guarded, part, tile_edges(part.ids), seed)
                 )
@@ -195,6 +218,10 @@ def run_round(
         timings["rules"] += time.perf_counter() - t0
         result.rule_picks.extend(rule_picks)
         result.picks.extend(rule_picks)
+        if emit is not None:
+            for pid in rule_picks:
+                emit({"kind": "pick", "round": round, "step": step, "tile": None,
+                      "picked": [pid], "source": "rule"})
         gone = before - avail
         if gone:
             cache.invalidate(gone)
@@ -248,6 +275,9 @@ def run_round(
         avail -= nbrs
         result.picks.append(pick)
         log.add(round, source, "pick", [pick])
+        if emit is not None:
+            emit({"kind": "pick", "round": round, "step": step, "tile": None,
+                  "picked": [pick], "source": source})
         if nbrs:
             log.add(round, source, "remove", sorted(nbrs))
         cache.invalidate({pick} | nbrs)

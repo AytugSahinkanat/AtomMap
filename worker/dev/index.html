@@ -7,6 +7,7 @@
 <body>
   <h1>AtomMap worker dev page</h1>
   <p>Open the browser console too (F12). Query: <code>?lean=0</code> turns Lean_Mode off.</p>
+  <button id="run" disabled>Run</button> <span id="runtime"></span>
   <pre id="out">starting...</pre>
   <script>
     var out = document.getElementById("out");
@@ -23,16 +24,43 @@
     w.onmessage = function (ev) {
       var m = ev.data;
       var p = m.payload;
-      if (m.type === "progress") {
+      if (m.type === "progress" && p.type === "run") {
+        runEvents++;
+        if (runEvents % 10 === 1) console.log("[dev-page] run event #" + runEvents, p);
+      } else if (m.type === "progress") {
         line("progress  " + p.stage + " " + p.percent + "%" + (p.detail ? "  " + p.detail : ""));
       } else if (m.type === "ready") {
         line("READY in " + (p.elapsedMs / 1000).toFixed(1) + " s (worker time), lean=" + p.lean);
+        btn.disabled = false;
+      } else if (m.type === "result") {
+        finish();
+        var c = p.competitors, s = [];
+        for (var k in c) s.push(k + "=" + (c[k].rounds ? c[k].rounds.map(function (r) { return r.picks.length; }).join("/") : "error"));
+        line("RESULT picks per round: " + s.join("  "));
+        console.log("[dev-page] result", p);
       } else if (m.type === "error") {
+        if (runStart) finish();
         line("ERROR  stage=" + p.stage + " type=" + p.type + " dependency=" + p.dependency + "\n" + p.message);
         console.error("[dev-page] error payload", p);
       } else {
         line("message  " + JSON.stringify(m));
       }
+    };
+    // Run button: 6x6 square lattice, spacing 0.8 r (as grid_request in engine/tests/test_loop.py).
+    var btn = document.getElementById("run"), runEvents = 0, runStart = 0;
+    function finish() {
+      var s = ((performance.now() - runStart) / 1000).toFixed(1);
+      line("run finished: " + runEvents + " run progress events, " + s + " s total");
+      document.getElementById("runtime").textContent = "last run: " + s + " s";
+      runStart = 0; btn.disabled = false;
+    }
+    btn.onclick = function () {
+      var r = Math.pow(5.42e-24 / 15.8e6, 1 / 6), pts = [];
+      for (var i = 0; i < 6; i++) for (var j = 0; j < 6; j++)
+        pts.push({ id: "p" + (i * 6 + j), x: i * 0.8 * r, y: j * 0.8 * r });
+      runEvents = 0; runStart = performance.now(); btn.disabled = true;
+      line("start sent (36 points)");
+      w.postMessage({ type: "start", payload: { points: pts, mode: "channel_plan", graph: { r: r }, seed: 3 } });
     };
     w.onerror = function (ev) {
       line("WORKER SCRIPT ERROR: " + ev.message + " (" + ev.filename + ":" + ev.lineno + ")");

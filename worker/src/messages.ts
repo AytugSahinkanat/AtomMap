@@ -9,7 +9,8 @@
 type LoadStage = "pyodide" | "engine" | "packages" | "boot" | "warmup";
 
 interface StartPayload {
-  // Filled in by task 10. The worker forwards it to Python unchanged.
+  // The run request. The worker JSON.stringify's it once and never looks inside.
+  // Units: x, y and graph.r are in metres.
   points: { id: string; x: number; y: number }[];
   mode: string;
   graph: { r: number; edges?: [string, string][] };
@@ -22,11 +23,17 @@ interface ProgressLoadPayload {
   detail?: string; // extra text for diagnosis, e.g. "verify", "wheel amazon-braket-sdk"
 }
 
+// Run progress: the engine's event dict, forwarded unchanged. It has type "run";
+// loading progress has "stage" instead.
 interface ProgressRunPayload {
+  type: "run";
+  kind: "simulate" | "pick";
   competitor: string;
   round: number;
   step: number;
-  tile: number;
+  tile: string[] | null; // simulate: ids sent to the simulator; pick: null
+  picked?: string[]; // pick only
+  source?: string; // pick only: "atoms" | "annealing" | "coin flip" | "rule"
 }
 
 interface ReadyPayload {
@@ -39,12 +46,14 @@ interface ErrorPayload {
   message: string;
   dependency?: string; // set when the failure names a dependency
   stage?: LoadStage;
+  [extra: string]: unknown; // engine errors carry kind, items, ...
 }
 
+// A failed run posts the engine error object unchanged (it may carry kind, items, ...).
 type ToWorkerMessage = { type: "start"; payload: StartPayload };
 
 type FromWorkerMessage =
   | { type: "progress"; payload: ProgressLoadPayload | ProgressRunPayload }
   | { type: "ready"; payload: ReadyPayload }
-  | { type: "result"; payload: string } // JSON string from atommap.api.run
+  | { type: "result"; payload: any } // the "result" object of atommap.api.run, as parsed
   | { type: "error"; payload: ErrorPayload };

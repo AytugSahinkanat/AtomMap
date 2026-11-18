@@ -625,6 +625,80 @@
         "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
         "timestamp": 1795036837370
       }
+    ],
+    "10.1 Write `api.py` with `run(request_json, emit)`": [
+      {
+        "executionId": "9b52dc76-c343-4d02-933a-825c4326780b",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795037959089
+      },
+      {
+        "executionId": "9b52dc76-c343-4d02-933a-825c4326780b",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038046324
+      }
+    ],
+    "10.2 Emit run progress events": [
+      {
+        "executionId": "9b52dc76-c343-4d02-933a-825c4326780b",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038046692
+      },
+      {
+        "executionId": "9b52dc76-c343-4d02-933a-825c4326780b",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038153931
+      }
+    ],
+    "10.3 Add the message API to `worker/src/worker.ts`": [
+      {
+        "executionId": "9b52dc76-c343-4d02-933a-825c4326780b",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038154310
+      },
+      {
+        "executionId": "9b52dc76-c343-4d02-933a-825c4326780b",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038272656
+      }
+    ],
+    "10. Worker message API and progress events": [
+      {
+        "executionId": "9b52dc76-c343-4d02-933a-825c4326780b",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038272760
+      }
+    ],
+    "12.1 Write the hero and sparse tests": [
+      {
+        "executionId": "6864adbc-02ed-4127-9e5f-11c4f5936d10",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038663384
+      },
+      {
+        "executionId": "05ae6549-b194-4ef7-ad2c-0decb44a0686",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795039173148
+      }
+    ],
+    "12.2 Add a small browser smoke page in `web/smoke.html`": [
+      {
+        "executionId": "6864adbc-02ed-4127-9e5f-11c4f5936d10",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038669372
+      },
+      {
+        "executionId": "6864adbc-02ed-4127-9e5f-11c4f5936d10",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038835009
+      }
+    ],
+    "12. Hero performance test and browser smoke page": [
+      {
+        "executionId": "6864adbc-02ed-4127-9e5f-11c4f5936d10",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795038835108
+      }
     ]
   }
 }

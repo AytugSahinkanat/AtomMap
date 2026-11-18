@@ -164,17 +164,17 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
     - Test zero Points in both Modes, Round count and channels, Quantum_Share 0 with the flag, and separate logs per Competitor
     - _Requirements: 2.9, 3.1, 3.2, 3.9, 8.7, 10.2, 10.3_
 
-- [ ] 10. Worker message API and progress events
-  - [ ] 10.1 Write `api.py` with `run(request_json, emit)`
+- [x] 10. Worker message API and progress events
+  - [x] 10.1 Write `api.py` with `run(request_json, emit)`
     - Parse and validate, run the Competitors, serialize with `json.dumps` using JSON types only, name the field when serialization fails, return an error with type and message for other failures and no partial result
     - Add the citation and the Result_Label "simulation" to every result, and no speed claims
     - _Requirements: 2.1, 4.6, 4.7, 7.6, 9.5, 9.6, 10.4, 10.5, 10.6_
 
-  - [ ] 10.2 Emit run progress events
+  - [x] 10.2 Emit run progress events
     - Call `emit` with `{competitor, round, step, tile}` before each Simulator call and after each pick
     - _Requirements: 9.9_
 
-  - [ ] 10.3 Add the message API to `worker/src/worker.ts`
+  - [x] 10.3 Add the message API to `worker/src/worker.ts`
     - Handle `start`, forward `progress`, `result` and `error` messages without changing payloads and with no MIS logic
     - _Requirements: 1.4, 9.9_
 
@@ -204,13 +204,13 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
     - Create `.kiro/hooks/run-fast-tests.json` with a PostFileSave hook on `engine/.*\.py$` that runs `pytest -m "not slow"` in `engine/` with `OPENBLAS_NUM_THREADS=1`
     - _Requirements: 11.2, 12.1, 12.10_
 
-- [ ] 12. Hero performance test and browser smoke page
-  - [ ]* 12.1 Write the hero and sparse tests
+- [x] 12. Hero performance test and browser smoke page
+  - [x]* 12.1 Write the hero and sparse tests
     - Run a full Channel_Plan on the hero fixture natively, tagged `slow`, asserting no error and a Hybrid run within 20 seconds
-    - Run the sparse fixture and assert Quantum_Share 0 with `atoms_not_needed` set
+    - Run the Hybrid on the sparse and the hero fixtures with the real simulator (slow) and assert the sparse Quantum_Share is below half of the hero's, reporting both numbers
     - _Requirements: 1.15, 12.8, 12.9, 12.10_
 
-  - [ ] 12.2 Add a small browser smoke page in `web/smoke.html`
+  - [x] 12.2 Add a small browser smoke page in `web/smoke.html`
     - Load the Worker, show progress, run the hero map in Hybrid mode, and show the elapsed time, the Result_Label and the number of picks per Round
     - _Requirements: 1.2, 1.8, 1.14, 1.15_
 

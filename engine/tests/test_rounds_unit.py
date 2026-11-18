@@ -54,6 +54,40 @@ def test_hybrid_solved_by_rules_has_zero_quantum_share_with_flag(mode):
     assert s.atoms_not_needed is True
 
 
+class AlwaysFailingSimulator:
+    def __init__(self):
+        self.calls = 0
+
+    def run_tile(self, positions_um, seed):
+        self.calls += 1
+        raise RuntimeError("simulator down")
+
+
+def test_all_tiles_fail_flag_is_false():
+    sim = AlwaysFailingSimulator()
+    res = run_competitors(grid_request(6), sim, names=(HYBRID,))
+    s = res.competitors[HYBRID].stats
+    assert sim.calls > 0
+    assert s.quantum_picks == 0
+    assert s.skipped_tiles > 0
+    assert s.atoms_not_needed is False
+
+
+def test_no_simulator_call_flag_is_true():
+    sim = FakeSimulator()
+    res = run_competitors(path_request(), sim, names=(HYBRID,))
+    s = res.competitors[HYBRID].stats
+    assert sim.calls == 0
+    assert s.atoms_not_needed is True
+
+
+def test_hybrid_with_quantum_picks_flag_is_false():
+    res = run_competitors(grid_request(6), FakeSimulator(), names=(HYBRID,))
+    s = res.competitors[HYBRID].stats
+    assert s.quantum_picks > 0
+    assert s.atoms_not_needed is False
+
+
 @pytest.mark.parametrize("req", [path_request(), grid_request(6)])
 def test_annealing_and_coin_flip_never_count_quantum(req):
     res = run_competitors(req, FakeSimulator())

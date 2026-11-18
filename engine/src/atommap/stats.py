@@ -43,6 +43,14 @@ def _share(quantum: int, total: int) -> float:
     return quantum / total if total else 0.0
 
 
+def _atoms_not_needed(quantum_picks: int, braket_calls: int, skipped_tiles: int) -> bool:
+    """True only if no atom picks AND no Tile was sent to the Simulator.
+
+    A skipped Tile was sent (its call was attempted), so it makes this False.
+    """
+    return quantum_picks == 0 and braket_calls == 0 and skipped_tiles == 0
+
+
 def compute_stats(
     entries: Iterable[Entry],
     round_results: Sequence[RoundResult],
@@ -58,6 +66,7 @@ def compute_stats(
     )
     total = sum(per_round)
     quantum = sum(rr.atom_picks for rr in round_results)
+    calls = sum(rr.simulator_calls for rr in round_results)
     timings: dict[str, float] = {}
     for rr in round_results:
         for k, v in rr.timings.items():
@@ -66,11 +75,11 @@ def compute_stats(
         picks_per_round=per_round,
         picks_per_source=per_source,
         quantum_share=_share(quantum, total),
-        atoms_not_needed=quantum == 0,
+        atoms_not_needed=_atoms_not_needed(quantum, calls, skips),
         splits=splits,
         skipped_tiles=skips,
         mismatches=0,
-        braket_calls=sum(rr.simulator_calls for rr in round_results),
+        braket_calls=calls,
         cache_hits=sum(rr.cache_hits for rr in round_results),
         layout_fallbacks=sum(rr.layout_fallbacks for rr in round_results),
         timings=timings,
@@ -87,17 +96,18 @@ def compute_atoms_alone_stats(
     """Stats of Atoms_Alone: every pick comes from atoms; gaps are listed."""
     per_round, per_source, splits, skips = _counts(entries, rounds, ())
     total = sum(per_round)
+    calls = sum(res.simulator_calls for res in results)
     gaps = [g for res in results for g in res.gaps]
     sim = sum(sum(res.timings_s) for res in results)
     return Stats(
         picks_per_round=per_round,
         picks_per_source=per_source,
         quantum_share=_share(total, total),
-        atoms_not_needed=total == 0,
+        atoms_not_needed=_atoms_not_needed(total, calls, skips),
         splits=splits,
         skipped_tiles=skips,
         mismatches=0,
-        braket_calls=sum(res.simulator_calls for res in results),
+        braket_calls=calls,
         cache_hits=0,
         layout_fallbacks=sum(res.fallbacks for res in results),
         timings={"simulator": sim},

@@ -35,6 +35,7 @@ interface PyodideApi {
   runPython(code: string): any;
   runPythonAsync(code: string): Promise<any>;
   registerJsModule(name: string, module: object): void;
+  globals: { set(name: string, value: any): void };
 }
 
 const T0 = performance.now();
@@ -262,17 +263,79 @@ len(BraketSimulator().run_tile([(0.0, 0.0), (6.0, 0.0)], 1))
 async function main(): Promise<void> {
   log("start", `lean=${LEAN} root=${ROOT}`);
   const py = await loadRuntime();
+  pyRef = py;
   await installEngineFiles(py);
   await bootPackages(py);
   warmup(py);
   const elapsedMs = Math.round(performance.now() - T0);
   log("ready", `${elapsedMs} ms`);
+  ready = true;
   post({ type: "ready", payload: { elapsedMs, lean: LEAN } });
 }
 
+// --- run (task 10.3) --------------------------------------------------------
+// The worker only passes messages. The request goes to atommap.api.run as one
+// JSON string; engine run events go back as "progress" messages unchanged.
+
+let pyRef: PyodideApi | null = null;
+let ready = false;
+let running = false;
+
+// Tiny Python glue: events become JSON text so the worker needs no PyProxy handling.
+const RUN_GLUE = `
+import json
+import atommap_run_host as rh
+from atommap.api import run as _run
+
+_run(_atommap_request, lambda ev: rh.emit(json.dumps(ev)))
+`;
+
+function runLog(text: string): void {
+  console.log(`[atommap-worker][run] ${text}`);
+}
+
+function postError(type: string, message: string): void {
+  post({ type: "error", payload: { type, message } });
+}
+
+async function handleStart(request: unknown): Promise<void> {
+  if (!ready || !pyRef) return postError("NotReady", "engine is still loading");
+  if (running) return postError("Busy", "a run is already in progress");
+  running = true;
+  const t = performance.now();
+  try {
+    const py = pyRef;
+    py.registerJsModule("atommap_run_host", {
+      emit: (eventJson: string) => post({ type: "progress", payload: JSON.parse(eventJson) }),
+    });
+    py.globals.set("_atommap_request", JSON.stringify(request));
+    const text: string = await py.runPythonAsync(RUN_GLUE);
+    let out: any;
+    try {
+      out = JSON.parse(text);
+    } catch (e) {
+      return postError("BadEngineOutput", `engine output is not JSON (${e})`);
+    }
+    runLog(`finished ok=${out?.ok} in ${Math.round(performance.now() - t)} ms`);
+    if (out?.ok === true) post({ type: "result", payload: out.result });
+    else if (out?.ok === false) post({ type: "error", payload: out.error });
+    else postError("BadEngineOutput", "engine output has no boolean ok");
+  } catch (e) {
+    console.error("[atommap-worker][run] FAILED", e);
+    postError("PythonError", String((e as any)?.message ?? e));
+  } finally {
+    running = false;
+  }
+}
+
 self.onmessage = (ev: MessageEvent) => {
-  // Task 10 adds "start" handling. Until then, nothing is computed here.
-  console.warn("[atommap-worker] message ignored (not handled yet):", ev.data);
+  const msg = ev.data as ToWorkerMessage;
+  if (msg && msg.type === "start") {
+    runLog("start received");
+    void handleStart(msg.payload);
+  } else {
+    console.warn("[atommap-worker] unknown message ignored:", ev.data);
+  }
 };
 
 main().catch(fail);

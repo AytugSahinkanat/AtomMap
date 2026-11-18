@@ -40,18 +40,45 @@ CITATION = "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh
 _PROVIDERS = {HYBRID: "atoms", ANNEALING_RULES: "annealing", COIN_FLIP_RULES: "none"}
 
 
+class _EmitError(Exception):
+    """Wraps an exception raised by the progress callback so it is not turned
+    into a Competitor error entry; `run_competitors` re-raises the original."""
+
+    def __init__(self, original: BaseException) -> None:
+        super().__init__(str(original))
+        self.original = original
+
+
+def _bind(name: str, on_event: Optional[Callable[[dict], None]]):
+    """Add `"type": "run"` and the competitor name to every event."""
+    if on_event is None:
+        return None
+
+    def emit(event: dict) -> None:
+        full = {"type": "run", "competitor": name, **event}
+        try:
+            on_event(full)
+        except Exception as exc:  # noqa: BLE001 - passed on unchanged, see _EmitError
+            raise _EmitError(exc) from exc
+
+    return emit
+
+
 def run_competitor(
     name: str,
     request: Request,
     simulator: Optional[Simulator],
     provider: Optional[object] = None,
+    on_event: Optional[Callable[[dict], None]] = None,
 ) -> CompetitorResult:
     """Run one Competitor over all Rounds of the request's Mode.
 
     `provider` overrides the frequency provider of a loop Competitor (tests).
+    `on_event` receives progress events (see `api.run`); it never changes results.
     """
     if name not in COMPETITORS:
         raise ValueError(f"Unknown competitor {name!r}")
+    emit = _bind(name, on_event)
     points = tuple(request.points)
     graph: ConflictGraph = build_graph(request)
     ids = [p.id for p in points]
@@ -68,7 +95,7 @@ def run_competitor(
                 return [], AtomsAloneResult(picked=(), gaps=())
             res = run_atoms_alone(
                 points, sorted(graph.edges), request.r, avail, order,
-                simulator, request.seed, log, channel,
+                simulator, request.seed, log, channel, emit,
             )
             return list(res.picked), res
 
@@ -83,7 +110,7 @@ def run_competitor(
                 return [], RoundResult(round=channel)
             res = run_round(
                 graph, points, request.r, avail, log, channel,
-                request.seed, prov, simulator, cache,
+                request.seed, prov, simulator, cache, emit,
             )
             return list(res.picks), res
 
@@ -105,13 +132,21 @@ def run_competitors(
     simulator: Optional[Simulator],
     names: tuple[str, ...] = COMPETITORS,
     providers: Optional[dict[str, object]] = None,
+    on_event: Optional[Callable[[dict], None]] = None,
 ) -> Result:
-    """Run the Competitors on the same request; a failing one gets an error entry."""
+    """Run the Competitors on the same request; a failing one gets an error entry.
+
+    An exception raised by `on_event` is not a Competitor failure: it propagates.
+    """
     providers = providers or {}
     out: dict = {}
     for name in names:
         try:
-            out[name] = run_competitor(name, request, simulator, providers.get(name))
+            out[name] = run_competitor(
+                name, request, simulator, providers.get(name), on_event
+            )
+        except _EmitError as exc:
+            raise exc.original from None
         except Exception as exc:  # noqa: BLE001 - one Competitor must not sink the others
             out[name] = {"error": f"{type(exc).__name__}: {exc}"}
     return Result(meta={"citation": CITATION, "label": RESULT_LABEL}, competitors=out)

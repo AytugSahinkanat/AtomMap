@@ -65,6 +65,31 @@ def test_no_atom_picks_means_atoms_not_needed():
     assert s.to_dict()["atoms_not_needed"] is True
 
 
+def test_skipped_tiles_were_sent_so_atoms_were_needed():
+    # quantum 0, one skipped Tile, no counted calls: the skipped Tile was sent.
+    log = DecisionLog("place", IDS)
+    log.add(1, "atoms", "skip", ["p0", "p1"], message="boom")
+    log.add(1, "annealing", "pick", ["p0"])
+    rr = RoundResult(round=1, picks=["p0"], skipped_tiles=1)
+    s = compute_stats(log.entries(), [rr])
+    assert s.quantum_picks == 0 and s.skipped_tiles == 1
+    assert s.atoms_not_needed is False
+
+
+def test_failed_simulator_call_counts_as_sent():
+    log = DecisionLog("place", IDS)
+    log.add(1, "rule", "pick", ["p0"], rule="simplicial")
+    rr = RoundResult(round=1, picks=["p0"], rule_picks=["p0"], simulator_calls=1)
+    s = compute_stats(log.entries(), [rr])
+    assert s.quantum_picks == 0 and s.braket_calls == 1
+    assert s.atoms_not_needed is False
+
+
+def test_hybrid_with_quantum_picks_is_not_atoms_not_needed():
+    log, rrs = hybrid_fixture()
+    assert compute_stats(log.entries(), rrs, rounds=[1, 6, 11]).atoms_not_needed is False
+
+
 def test_empty_run_has_zero_share():
     s = compute_stats([], [], rounds=[1])
     assert s.quantum_share == 0.0 and s.atoms_not_needed and s.picks_per_round == [0]
@@ -92,3 +117,12 @@ def test_atoms_alone_stats_with_gaps():
 def test_atoms_alone_empty():
     s = compute_atoms_alone_stats([], [AtomsAloneResult(picked=(), gaps=())], rounds=[1])
     assert s.quantum_share == 0.0 and s.atoms_not_needed and s.gaps == []
+
+
+def test_atoms_alone_all_tiles_fail_flag_false():
+    log = DecisionLog("place", IDS)
+    log.add(1, "atoms", "skip", ["p0"], message="boom")
+    res = AtomsAloneResult(picked=(), gaps=("p0",), simulator_calls=1, skipped_parts=1)
+    s = compute_atoms_alone_stats(log.entries(), [res], rounds=[1])
+    assert s.quantum_picks == 0 and s.skipped_tiles == 1
+    assert s.atoms_not_needed is False

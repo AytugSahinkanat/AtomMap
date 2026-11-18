@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AtomMap smoke page</title>
+  <style>
+    body { font: 15px/1.4 system-ui, sans-serif; max-width: 52em; margin: 1.5em auto; padding: 0 1em; }
+    pre { background: #f4f4f4; padding: .6em; white-space: pre-wrap; }
+    .err { color: #c00; font-weight: bold; }
+    .pass { color: #070; font-weight: bold; }
+    .fail { color: #c00; font-weight: bold; }
+    td, th { padding: 2px 10px 2px 0; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>AtomMap smoke page</h1>
+  <p>Loads the engine in a web worker, then runs the 70-AP hero map (Channel plan, Hybrid only).
+     Every result here is a <b>simulation</b>, not real hardware.
+     Method: Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5.</p>
+  <p>Query: <code>?lean=0</code> turns Lean_Mode off, <code>?root=&lt;url&gt;</code> sets the site root.</p>
+
+  <h2>Load</h2>
+  <p id="loadstate">Loading... <span id="stage"></span></p>
+  <p>Time to READY (page clock): <b id="loadtime">-</b> &nbsp; (worker clock: <span id="workertime">-</span>)<br>
+     Targets: 45 s on a first visit, 20 s on a repeat visit. The page cannot tell which visit this is.</p>
+
+  <h2>Run</h2>
+  <button id="run1" disabled>Run hero (Hybrid)</button>
+  <button id="run2" disabled>Run again (warm run)</button>
+  <span id="runstate"></span>
+  <table id="runtimes">
+    <tr><th>First run</th><td id="t1">-</td></tr>
+    <tr><th>Warm run</th><td id="t2">-</td></tr>
+  </table>
+  <p id="verdict"></p>
+
+  <h2>Result</h2>
+  <pre id="result">no result yet</pre>
+  <p id="errbox" class="err"></p>
+
+  <h2>Notes (not measured here)</h2>
+  <ul>
+    <li>Check the Network tab: there must be no request to pypi.org or files.pythonhosted.org (Requirement 1.8). This page does not measure it.</li>
+    <li>Download size (at most 60 MB) and wasm memory (at most 256 MB) must be checked by hand in DevTools (Requirement 1.14). This page does not measure them.</li>
+  </ul>
+
+  <h2>Log</h2>
+  <pre id="log"></pre>
+
+  <script>
+    // Hero seed: engine/tests/test_settings.json, seeds.hero.
+    var HERO_SEED = 20260101;
+    var HERO_PICKS_TARGET_S = 20;
+    var q = new URLSearchParams(location.search);
+    var lean = q.get("lean") === "0" ? "0" : "1";
+    var root = q.get("root");
+    var $ = function (id) { return document.getElementById(id); };
+    var t0 = performance.now();
+    function log(text) {
+      $("log").textContent += ((performance.now() - t0) / 1000).toFixed(1).padStart(6) + " s  " + text + "\n";
+    }
+    function secs(ms) { return (ms / 1000).toFixed(1) + " s"; }
+    function showError(p) {
+      var parts = ["ERROR type=" + p.type];
+      if (p.stage) parts.push("stage=" + p.stage);
+      if (p.dependency) parts.push("dependency=" + p.dependency);
+      if (p.kind) parts.push("kind=" + p.kind);
+      if (p.items) parts.push("items=" + JSON.stringify(p.items));
+      $("errbox").textContent = parts.join("  ") + "\n" + p.message;
+      log(parts.join("  "));
+    }
+
+    var url = "../worker/dist/worker.js?lean=" + lean + (root ? "&root=" + encodeURIComponent(root) : "");
+    var w = new Worker(url); // classic worker (importScripts)
+    var runStart = 0, runEvents = 0, runNo = 0, busy = false;
+    var times = {};
+
+    w.onerror = function (ev) {
+      $("errbox").textContent = "WORKER SCRIPT ERROR: " + ev.message + " (" + ev.filename + ":" + ev.lineno + ")";
+    };
+    w.onmessage = function (ev) {
+      var m = ev.data, p = m.payload;
+      if (m.type === "progress" && p.type === "run") {
+        runEvents++;
+        $("runstate").textContent = "running... " + runEvents + " progress events";
+      } else if (m.type === "progress") {
+        $("stage").textContent = p.stage + " " + p.percent + "%" + (p.detail ? " (" + p.detail + ")" : "");
+        log("progress " + p.stage + " " + p.percent + "%" + (p.detail ? "  " + p.detail : ""));
+      } else if (m.type === "ready") {
+        $("loadstate").textContent = "Ready (lean=" + p.lean + ")";
+        $("loadtime").textContent = secs(performance.now() - t0);
+        $("workertime").textContent = secs(p.elapsedMs);
+        log("READY");
+        setButtons();
+      } else if (m.type === "result") {
+        var ms = performance.now() - runStart;
+        times[runNo] = ms;
+        $("t" + runNo).textContent = secs(ms) + " (" + runEvents + " progress events)";
+        busy = false;
+        showResult(p, ms);
+        if (runNo === 2) verdict(ms);
+        setButtons();
+      } else if (m.type === "error") {
+        busy = false;
+        $("runstate").textContent = "";
+        showError(p);
+        setButtons();
+      } else {
+        log("message " + JSON.stringify(m));
+      }
+    };
+
+    function setButtons() {
+      $("run1").disabled = busy || !$("loadtime").textContent.endsWith("s");
+      $("run2").disabled = busy || !times[1];
+    }
+
+    function verdict(ms) {
+      var ok = ms <= HERO_PICKS_TARGET_S * 1000;
+      var el = $("verdict");
+      el.className = ok ? "pass" : "fail";
+      el.textContent = (ok ? "PASS" : "FAIL") + " (1.15): warm hero run " + secs(ms) +
+        ", target <= " + HERO_PICKS_TARGET_S + " s. Time measured with performance.now() on this device.";
+    }
+
+    function showResult(res, ms) {
+      $("runstate").textContent = "";
+      var lines = ["Run " + runNo + " (" + (runNo === 1 ? "first run" : "warm run") + "), elapsed " + secs(ms) + " (" + Math.round(ms) + " ms)",
+                   "Meta label: " + (res.meta && res.meta.label)];
+      var names = Object.keys(res.competitors);
+      names.forEach(function (name) {
+        var c = res.competitors[name];
+        if (c.error) { lines.push(name + ": ERROR " + c.error); return; }
+        lines.push("", name + "  (Result_Label: " + c.label + ")");
+        c.rounds.forEach(function (r) {
+          lines.push("  Round channel " + r.channel + ": " + r.picks.length + " picks");
+        });
+        var s = c.stats;
+        lines.push("  total picks: " + s.total_picks + " (per round: " + s.picks_per_round.join("/") + ")");
+        lines.push("  quantum share: " + (s.quantum_share * 100).toFixed(1) + "% (" + s.quantum_picks + " of " + s.total_picks + " picks from atoms)");
+        if (s.atoms_not_needed) lines.push("  atoms weren't needed on this map");
+        lines.push("  splits=" + s.splits + " skipped_tiles=" + s.skipped_tiles + " mismatches=" + s.mismatches +
+                   " braket_calls=" + s.braket_calls + " cache_hits=" + s.cache_hits + " layout_fallbacks=" + s.layout_fallbacks);
+        if (c.five_ghz_only) lines.push("  5 GHz only: " + c.five_ghz_only.length + " APs");
+      });
+      lines.push("", "Label: simulation. Citation: " + (res.meta && res.meta.citation));
+      $("result").textContent = lines.join("\n");
+      log("result received, run " + runNo + ", " + Math.round(ms) + " ms");
+    }
+
+    function start(no) {
+      runNo = no; runEvents = 0; busy = true;
+      $("errbox").textContent = ""; $("verdict").textContent = ""; $("verdict").className = "";
+      setButtons();
+      $("runstate").textContent = "fetching fixture...";
+      fetch("../fixtures/wifi_hall_hero.json").then(function (r) {
+        if (!r.ok) throw new Error("fixture HTTP " + r.status);
+        return r.json();
+      }).then(function (fx) {
+        var payload = {
+          points: fx.points, mode: "channel_plan", graph: fx.graph,
+          seed: HERO_SEED, competitors: ["Hybrid"]
+        };
+        $("runstate").textContent = "running...";
+        runStart = performance.now();
+        w.postMessage({ type: "start", payload: payload });
+        log("start sent: " + fx.points.length + " points, r=" + fx.graph.r + " m, seed " + HERO_SEED + ", Hybrid only");
+      }).catch(function (e) {
+        busy = false;
+        showError({ type: "FixtureError", message: String(e) });
+        setButtons();
+      });
+    }
+    $("run1").onclick = function () { start(1); };
+    $("run2").onclick = function () { start(2); };
+  </script>
+</body>
+</html>

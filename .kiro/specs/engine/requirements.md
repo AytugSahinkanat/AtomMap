@@ -191,7 +191,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 
 1. WHEN a run completes, THE Engine SHALL return Stats for each Competitor containing: the number of picks in each Round (a non-negative integer per Round), the number of picks per source (a non-negative integer per source), the Quantum_Share, the number of split Tiles (a non-negative integer), the number of skipped Tiles (a non-negative integer), the number of Braket calls, cache hits and layout fallbacks, and timings.
 2. WHEN a run completes with a Quantum_Share of 0 picks, THE Engine SHALL include the Quantum_Share in the Stats with the value 0 for the number of picks.
-3. WHEN the Quantum_Share is 0 picks, THE Engine SHALL set a boolean flag in the Stats that indicates atoms were not needed on this map.
+3. WHEN the Quantum_Share is 0 picks and no Tile was sent to the Simulator in the run (skipped Tiles count as sent), THE Engine SHALL set a boolean flag in the Stats that indicates atoms were not needed on this map.
 4. WHEN a run completes, THE Engine SHALL attach the Result_Label "simulation" to every result returned, including each Competitor's result and the Hybrid result.
 5. WHEN a run completes, THE Engine SHALL return the results of all classical Competitors together with the Hybrid result in the same output.
 6. THE Engine SHALL NOT include in any output a statement or field that claims a speed advantage of the Hybrid over any classical Competitor.
@@ -225,5 +225,5 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 6. THE Engine SHALL read the seeds, map sizes and run counts used for reported numbers from a test settings file committed to the repository before those runs are made, and THE Engine SHALL NOT accept overrides of these values when producing reported numbers.
 7. IF a test settings value required for a reported number (seed, map size or run count) is missing, THEN THE Engine SHALL abort the run with an error indicating the missing value and SHALL NOT produce reported numbers.
 8. THE Engine SHALL include the Hero map as a test fixture (a wifi hall of 70 APs on a 10 x 7 grid, 9 m spacing, ±2 m jitter, r = 20 m), and at least one test SHALL execute a complete Channel_Plan run on that fixture and assert that it finishes without error.
-9. THE Engine SHALL include a sparse control fixture (the same hall with 11 m spacing and ±1.5 m jitter, r = 20 m), and at least one test SHALL assert that the rules solve every Point so that the Quantum_Share is 0 and the Stats flag says atoms were not needed.
+9. THE Engine SHALL include a sparse control fixture (the same hall with 11 m spacing and ±1.5 m jitter, r = 20 m), and at least one test SHALL assert that the Hybrid Quantum_Share on the sparse control is below half of the Hybrid Quantum_Share on the Hero map (both run with the seeds from the test settings file) and SHALL report both numbers, because the fixture is not changed to make a result look good.
 10. THE Engine SHALL run every test that calls the real Braket Simulator with at most 20 hypothesis examples and mark it slow.

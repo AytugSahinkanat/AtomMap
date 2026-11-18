@@ -102,10 +102,18 @@ def test_stats_agree_with_decision_log(req, fail_mask):
     if not (fail_mask >> 11) & 1:
         fail = []
 
-    res = run_competitors(req, FakeSimulator(fail_seeds=fail), COMPETITORS)
+    # One run (and one FakeSimulator) per Competitor, so each simulator's call
+    # counter (calls that raise included) is that Competitor's own number of
+    # Tiles sent. Same seeds as a joint run: Tile seeds do not depend on it.
+    results = {}
+    sim_calls = {}
+    for name in COMPETITORS:
+        sim = FakeSimulator(fail_seeds=fail)
+        results[name] = run_competitors(req, sim, (name,)).competitors[name]
+        sim_calls[name] = sim.calls
 
     for name in COMPETITORS:
-        c = res.competitors[name]
+        c = results[name]
         assert isinstance(c, CompetitorResult), c
         per_round, per_source, splits, skips, quantum, total = _recompute(c, req.mode)
         s = c.stats
@@ -116,7 +124,9 @@ def test_stats_agree_with_decision_log(req, fail_mask):
         assert s.quantum_picks == quantum
         expected_share = quantum / total if total else 0.0
         assert s.quantum_share == expected_share
-        assert s.atoms_not_needed == (quantum == 0)
+        # Skip entries are Tiles sent; other Tiles are the simulator's calls.
+        sent = max(sim_calls[name], skips)
+        assert s.atoms_not_needed == (quantum == 0 and sent == 0 and skips == 0)
         assert s.splits == splits
         assert s.skipped_tiles == skips
         assert s.mismatches == 0

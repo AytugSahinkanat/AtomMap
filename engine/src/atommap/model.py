@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 MODES = ("channel_plan", "place")
+COMPETITOR_NAMES = ("Atoms_Alone", "Hybrid", "Annealing_Rules", "Coin_Flip_Rules")
 
 
 class ValidationError(ValueError):
@@ -35,6 +36,7 @@ class Request:
     r: float
     edges: Optional[tuple[tuple[str, str], ...]]  # None means "build from r alone"
     seed: int
+    competitors: Optional[tuple[str, ...]] = None  # None means all four
 
 
 @dataclass
@@ -247,10 +249,27 @@ def validate_request(raw: Any) -> Request:
             )
         edges = tuple((str(a), str(b)) for a, b in pairs)
 
+    competitors: Optional[tuple[str, ...]] = None
+    names = raw.get("competitors")
+    if names is not None:
+        if not isinstance(names, list) or not names:
+            raise ValidationError(
+                "invalid_competitors", "competitors must be a non-empty list of names",
+                [repr(names)],
+            )
+        bad = [str(n) for n in names if n not in COMPETITOR_NAMES]
+        if bad:
+            raise ValidationError(
+                "invalid_competitors", "Unknown competitors: " + ", ".join(bad), bad
+            )
+        # keep the canonical order, drop duplicates
+        competitors = tuple(n for n in COMPETITOR_NAMES if n in names)
+
     return Request(
         points=tuple(Point(str(p["id"]), float(p["x"]), float(p["y"])) for p in points),
         mode=mode,
         r=float(r),
         edges=edges,
         seed=seed,
+        competitors=competitors,
     )

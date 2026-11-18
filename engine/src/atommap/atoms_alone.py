@@ -15,7 +15,7 @@ from __future__ import annotations
 import random
 import time
 from dataclasses import dataclass, field
-from typing import Iterable, Optional
+from typing import Callable, Iterable, Optional
 
 from .layout import ScaledLayout, layout_tile
 from .log import DecisionLog
@@ -74,8 +74,14 @@ def run_atoms_alone(
     seed: int = 0,
     log: Optional[DecisionLog] = None,
     round: int = 1,
+    emit: Optional[Callable[[dict], None]] = None,
 ) -> AtomsAloneResult:
-    """One Round of Atoms_Alone on the available Points."""
+    """One Round of Atoms_Alone on the available Points.
+
+    `emit` gets events without a competitor field: "simulate" before each
+    Simulator call (step = part number in the Round, tile = part ids) and one
+    "pick" per kept Point after its part (tile None, source "atoms").
+    """
     pts = {p.id: p for p in points}
     avail = set(available)
     edge_list = [(a, b) if a < b else (b, a) for a, b in edges]
@@ -106,6 +112,9 @@ def run_atoms_alone(
             # atom at the origin so the pick really comes from the atoms.
             positions = list(part.positions_um) or [(0.0, 0.0)]
             calls += 1
+            if emit is not None:
+                emit({"kind": "simulate", "round": round, "step": n_parts,
+                      "tile": list(part.ids)})
             t0 = time.perf_counter()
             try:
                 shots = simulator.run_tile(positions, tseed)
@@ -132,6 +141,10 @@ def run_atoms_alone(
                         log.add(round, "atoms", "remove", [pid])
             if new and log is not None:
                 log.add(round, "atoms", "pick", new)
+            if emit is not None:
+                for pid in new:
+                    emit({"kind": "pick", "round": round, "step": n_parts,
+                          "tile": None, "picked": [pid], "source": "atoms"})
 
     gaps = tuple(
         i for i in sorted(avail, key=lambda i: order[i])
