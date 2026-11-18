@@ -102,24 +102,24 @@ def run_atoms_alone(
             gids = set(part.ids)
             sub = [e for e in edge_list if e[0] in gids and e[1] in gids]
             tseed = tile_seed(seed, part.ids)
-            if part.fixed_frequency is not None:
-                candidates = list(part.ids)  # a single Point: always kept
-            else:
-                calls += 1
-                t0 = time.perf_counter()
-                try:
-                    shots = simulator.run_tile(list(part.positions_um), tseed)
-                except Exception as exc:  # noqa: BLE001 - skip the part, keep going
-                    timings.append(time.perf_counter() - t0)
-                    skipped += 1
-                    if log is not None:
-                        log.add(
-                            round, "atoms", "skip", list(part.ids),
-                            message=f"{type(exc).__name__}: {exc}",
-                        )
-                    continue
+            # A single Point has no positions from the layout: run it as one
+            # atom at the origin so the pick really comes from the atoms.
+            positions = list(part.positions_um) or [(0.0, 0.0)]
+            calls += 1
+            t0 = time.perf_counter()
+            try:
+                shots = simulator.run_tile(positions, tseed)
+            except Exception as exc:  # noqa: BLE001 - skip the part, keep going
                 timings.append(time.perf_counter() - t0)
-                candidates = _best_shot(part, shots, sub, tseed)
+                skipped += 1
+                if log is not None:
+                    log.add(
+                        round, "atoms", "skip", list(part.ids),
+                        message=f"{type(exc).__name__}: {exc}",
+                    )
+                continue
+            timings.append(time.perf_counter() - t0)
+            candidates = _best_shot(part, shots, sub, tseed)
             new: list[str] = []
             for pid in candidates:
                 if adj[pid].isdisjoint(kept_set):

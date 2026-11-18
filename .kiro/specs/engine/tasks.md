@@ -6,24 +6,24 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
 
 ## Tasks
 
-- [ ] 1. Worker bootstrap
-  - [ ] 1.1 Write `boot.py` for package loading and wheel checks
+- [x] 1. Worker bootstrap
+  - [x] 1.1 Write `boot.py` for package loading and wheel checks
     - Load the 16 Pyodide built-in packages, then install the pinned wheels from `wheels/` with micropip `deps=False` after checking sha256 and version against a manifest
     - Add boto3, botocore, s3transfer and jmespath wheels when Lean_Mode is off
     - On a missing, wrong-hash or wrong-version wheel, abort and raise an error naming the dependency, leaving no partial Engine state
     - Make no PyPI requests
     - _Requirements: 1.1, 1.5, 1.6, 1.7, 1.8, 1.11_
 
-  - [ ] 1.2 Add the fake numba module and the Lean_Mode import hook to `boot.py`
+  - [x] 1.2 Add the fake numba module and the Lean_Mode import hook to `boot.py`
     - Register fake numba before Braket is imported (config, njit, jit, prange, int64, int32, float64, complex128)
     - Install stub modules for boto3, botocore, s3transfer and jmespath, with `botocore.client.BaseClient`
     - _Requirements: 1.9, 1.10_
 
-  - [ ]* 1.3 Write unit tests for fake numba and the Lean_Mode stubs
+  - [x]* 1.3 Write unit tests for fake numba and the Lean_Mode stubs
     - Test njit with and without arguments, `prange is range`, attribute assignment on config, stub imports
     - _Requirements: 1.9, 1.10_
 
-  - [ ] 1.4 Write the Worker loader in `worker/src/worker.ts`
+  - [x] 1.4 Write the Worker loader in `worker/src/worker.ts`
     - Load Pyodide 0.27.7, run `boot.py`, run a tiny warm-up simulation, and send `progress` events with a stage and a percent
     - Send `ready` when done, or `error` with the dependency name on failure
     - _Requirements: 1.2, 1.3, 1.12, 1.13_
@@ -160,7 +160,7 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
     - **Property 12: Atoms_Alone is independent and reports its gaps exactly**
     - **Validates: Requirements 8.2, 8.3**
 
-  - [ ]* 9.5 Write unit tests for Rounds
+  - [x]* 9.5 Write unit tests for Rounds
     - Test zero Points in both Modes, Round count and channels, Quantum_Share 0 with the flag, and separate logs per Competitor
     - _Requirements: 2.9, 3.1, 3.2, 3.9, 8.7, 10.2, 10.3_
 
@@ -178,29 +178,29 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
     - Handle `start`, forward `progress`, `result` and `error` messages without changing payloads and with no MIS logic
     - _Requirements: 1.4, 9.9_
 
-- [ ] 11. Property tests and save hook
-  - [ ]* 11.1 Write property test for Rounds
+- [x] 11. Property tests and save hook
+  - [x]* 11.1 Write property test for Rounds
     - **Property 1: Rounds are disjoint independent sets that partition the Points**
     - **Validates: Requirements 3.3, 3.4, 3.5, 3.6**
 
-  - [ ]* 11.2 Write property test for maximal Rounds
+  - [x]* 11.2 Write property test for maximal Rounds
     - **Property 2: Rounds are maximal**
     - Include runs where the fake Simulator fails for some or all Tiles
     - **Validates: Requirements 3.7, 7.4, 7.5**
 
-  - [ ]* 11.3 Write property test for Decision_Log replay
+  - [x]* 11.3 Write property test for Decision_Log replay
     - **Property 3: Decision_Log replay equals the picks**
     - **Validates: Requirements 4.2, 4.3, 4.4, 9.2, 9.3, 9.4, 9.8**
 
-  - [ ]* 11.4 Write property test for determinism
+  - [x]* 11.4 Write property test for determinism
     - **Property 5: Same input and Seed give identical results**
     - **Validates: Requirements 5.4, 8.1, 8.5, 11.1, 12.4**
 
-  - [ ]* 11.5 Write property test for the JSON round trip
+  - [x]* 11.5 Write property test for the JSON round trip
     - **Property 11: Result JSON round trip**
     - **Validates: Requirements 9.5, 9.7**
 
-  - [ ] 11.6 Add a hook that runs the fast tests on save
+  - [x] 11.6 Add a hook that runs the fast tests on save
     - Create `.kiro/hooks/run-fast-tests.json` with a PostFileSave hook on `engine/.*\.py$` that runs `pytest -m "not slow"` in `engine/` with `OPENBLAS_NUM_THREADS=1`
     - _Requirements: 11.2, 12.1, 12.10_
 

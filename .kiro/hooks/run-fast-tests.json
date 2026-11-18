@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run fast engine tests on save",
+      "trigger": "PostFileSave",
+      "matcher": "engine[/\\\\].*\\.py$",
+      "action": {
+        "type": "command",
+        "command": "Set-Location engine; $env:OPENBLAS_NUM_THREADS=\"1\"; .venv\\Scripts\\python.exe -m pytest -q -m \"not slow\""
+      }
+    }
+  ]
+}

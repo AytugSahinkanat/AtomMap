@@ -87,3 +87,28 @@ def test_failing_part_is_skipped_and_counted():
     assert res.gaps == tuple(
         p.id for p in pts if p.id not in picked and p.id not in blocked
     )
+
+
+def _isolated():
+    pts = [Point("solo", 0.0, 0.0)]
+    return pts, [], {"solo": 0}
+
+
+def test_isolated_single_point_runs_on_simulator_as_one_atom():
+    pts, edges, order = _isolated()
+    sim = FakeSimulator(excite_probability=1.0)
+    log = DecisionLog("place")
+    res = run_atoms_alone(pts, edges, R, ["solo"], order, sim, 3, log)
+    assert sim.calls == 1 and res.simulator_calls == 1 and len(res.timings_s) == 1
+    assert res.picked == ("solo",) and res.gaps == ()
+    picks = [e for e in log if e.action == "pick"]
+    assert len(picks) == 1 and picks[0].source == "atoms"
+    assert res.skipped_parts == 0
+
+
+def test_isolated_single_point_not_excited_is_a_gap():
+    pts, edges, order = _isolated()
+    sim = FakeSimulator(excite_probability=0.0)
+    res = run_atoms_alone(pts, edges, R, ["solo"], order, sim, 3)
+    assert sim.calls == 1 and res.simulator_calls == 1
+    assert res.picked == () and res.gaps == ("solo",)

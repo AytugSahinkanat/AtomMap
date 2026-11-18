@@ -31,7 +31,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 - **Coin_Flip_Rules**: Competitor using Classical_Rules and random choices.
 - **Decision_Log**: The ordered record of every decision in a run, with its source (rule, atoms, annealing, coin flip), the Round it belongs to, and the Points it affects.
 - **Stats**: The numbers computed for a run: picks per Round, picks per source, quantum share, skipped Tiles, split Tiles and similar counts.
-- **Quantum_Share**: The number of picks made in atom-informed steps, divided by all picks.
+- **Quantum_Share**: The number of picks made in atom-informed steps, divided by all picks. A pick is atom-informed only if its frequency came from a real Simulator run.
 - **Result_Label**: The text "simulation" or "real hardware" attached to a result.
 - **Seed**: The integer of a run, from which numpy is seeded (together with the Tile) before each Simulator call.
 
@@ -133,7 +133,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 4. WHEN the Engine lays out a Tile, THE Engine SHALL scale the real coordinates so that r becomes the blockade radius, push apart pairs closer than 4.15 µm, and check the edge match from criterion 3.
 5. IF the scaled Layout does not match exactly, THEN THE Engine SHALL try an optimiser Layout and SHALL accept it only if it matches exactly.
 6. IF neither Layout matches exactly, THEN THE Engine SHALL split the Tile into two Tiles and repeat criteria 4 to 6 on each part.
-7. WHEN a Tile contains a single Point, THE Engine SHALL use no atoms and a frequency of 1.0 for that Point.
+7. WHEN a Tile contains a single Point, THE Engine SHALL, for the loop Competitors (Hybrid, Annealing_Rules and Coin_Flip_Rules), use no atoms and a frequency of 1.0 for that Point, SHALL treat this value as classical, SHALL log picks made from it with the source "annealing", and SHALL NOT count those picks as atom-informed. Atoms_Alone instead runs a single Point through the Simulator as one atom (Requirement 8.2).
 8. THE Engine SHALL fit every Layout in a 100 µm box.
 9. IF a Tile cannot be laid out, THEN THE Engine SHALL split the Tile and SHALL NOT skip it, so that every vertex of the original Tile belongs to exactly one laid-out part.
 10. IF a Tile cannot be laid out, THEN THE Engine SHALL NOT substitute a placeholder value (for example 0.5) for that Tile's result, and every reported Tile result SHALL come from a Simulator call on a valid Layout.
@@ -159,7 +159,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 #### Acceptance Criteria
 
 1. WHEN a comparison run is requested, THE Engine SHALL run exactly four Competitors (Atoms_Alone, Hybrid, Annealing_Rules and Coin_Flip_Rules), each on the same Points, Conflict_Graph, Mode and Seed, and SHALL leave those inputs unchanged by any Competitor.
-2. THE Engine SHALL run Atoms_Alone without applying Classical_Rules: it splits the Points into Tiles of at most 10 with the layout rule of Requirement 6, keeps the biggest repaired shot of each Tile, merges them, and drops every Point that conflicts with an already kept Point.
+2. THE Engine SHALL run Atoms_Alone without applying Classical_Rules: it splits the Points into Tiles of at most 10 with the layout rule of Requirement 6, keeps the biggest repaired shot of each Tile, merges them, and drops every Point that conflicts with an already kept Point. Single-Point pieces are also run on the Simulator as one atom, so every Atoms_Alone pick comes from a Simulator run.
 3. THE Engine SHALL return an Atoms_Alone result that is always an Independent_Set but can have gaps (a Point that is not picked and could be picked without creating a conflict), SHALL report in the Atoms_Alone Stats the number of gaps and their Point identifiers, and SHALL label the result "atoms alone (in pieces of 10 or less in simulation)".
 4. THE Engine SHALL run Annealing_Rules and Coin_Flip_Rules with the same Classical_Rules, in the same order and with the same parameters as Hybrid, replacing only the atom step.
 5. WHEN Coin_Flip_Rules is run twice on identical Points, Conflict_Graph, Mode and Seed, THE Engine SHALL return identical picks both times.
@@ -198,6 +198,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 7. WHEN a run completes, THE Engine SHALL report in the Stats the count of splits, the count of skipped Tiles and the count of mismatches, including when any count is 0. The count of mismatches SHALL always be 0.
 8. IF a layout problem (a split or a skipped Tile) occurs during a run, THEN THE Engine SHALL record it in the Stats of that run and SHALL complete the run without removing the record.
 9. THE Engine SHALL compute every Stats value only from the picks and decisions made during that run, and SHALL NOT use values from earlier runs or fixed values.
+10. THE Engine SHALL count a pick as atom-informed only if its frequency came from a real Simulator run, so that picks from a single-Point piece or from annealing frequencies are not part of the Quantum_Share.
 
 ### Requirement 11: Determinism on one device
 

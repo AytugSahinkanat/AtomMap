@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AtomMap worker dev page</title>
+</head>
+<body>
+  <h1>AtomMap worker dev page</h1>
+  <p>Open the browser console too (F12). Query: <code>?lean=0</code> turns Lean_Mode off.</p>
+  <pre id="out">starting...</pre>
+  <script>
+    var out = document.getElementById("out");
+    var t0 = performance.now();
+    var lean = new URLSearchParams(location.search).get("lean") === "0" ? "0" : "1";
+    function line(text) {
+      var s = ((performance.now() - t0) / 1000).toFixed(1).padStart(6) + " s  " + text;
+      out.textContent += "\n" + s;
+      console.log("[dev-page] " + text);
+    }
+    // The worker file is classic (not type: "module"), so importScripts works.
+    var w = new Worker("../dist/worker.js?lean=" + lean);
+    line("worker created, lean=" + lean);
+    w.onmessage = function (ev) {
+      var m = ev.data;
+      var p = m.payload;
+      if (m.type === "progress") {
+        line("progress  " + p.stage + " " + p.percent + "%" + (p.detail ? "  " + p.detail : ""));
+      } else if (m.type === "ready") {
+        line("READY in " + (p.elapsedMs / 1000).toFixed(1) + " s (worker time), lean=" + p.lean);
+      } else if (m.type === "error") {
+        line("ERROR  stage=" + p.stage + " type=" + p.type + " dependency=" + p.dependency + "\n" + p.message);
+        console.error("[dev-page] error payload", p);
+      } else {
+        line("message  " + JSON.stringify(m));
+      }
+    };
+    w.onerror = function (ev) {
+      line("WORKER SCRIPT ERROR: " + ev.message + " (" + ev.filename + ":" + ev.lineno + ")");
+      console.error("[dev-page] worker onerror", ev);
+    };
+  </script>
+</body>
+</html>

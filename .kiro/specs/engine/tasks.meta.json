@@ -23,6 +23,26 @@
     "6.4 Write property test for repaired shots": {
       "status": "passed",
       "lastRunTimestamp": 1795008316734
+    },
+    "11.1 Write property test for Rounds": {
+      "status": "passed",
+      "lastRunTimestamp": 1795013815076
+    },
+    "11.2 Write property test for maximal Rounds": {
+      "status": "passed",
+      "lastRunTimestamp": 1795035314180
+    },
+    "11.5 Write property test for the JSON round trip": {
+      "status": "passed",
+      "lastRunTimestamp": 1795035378227
+    },
+    "11.3 Write property test for Decision_Log replay": {
+      "status": "passed",
+      "lastRunTimestamp": 1795035391733
+    },
+    "11.4 Write property test for determinism": {
+      "status": "passed",
+      "lastRunTimestamp": 1795035394454
     }
   },
   "executionHistory": {
@@ -376,6 +396,16 @@
         "executionId": "7c5ff8b4-3ec5-4710-97b2-89294ba2debb",
         "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
         "timestamp": 1795009707097
+      },
+      {
+        "executionId": "9999332f-ace7-40fa-9a8a-fdf3b59652fc",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036135461
+      },
+      {
+        "executionId": "9999332f-ace7-40fa-9a8a-fdf3b59652fc",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036238016
       }
     ],
     "8. The loop, three frequency providers and Atoms_Alone": [
@@ -438,6 +468,162 @@
         "executionId": "62684421-0a86-4e6e-a390-ec7c584672c1",
         "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
         "timestamp": 1795010673448
+      }
+    ],
+    "9.5 Write unit tests for Rounds": [
+      {
+        "executionId": "0fc95cb3-704f-4767-b718-910254738de3",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795011328936
+      },
+      {
+        "executionId": "0fc95cb3-704f-4767-b718-910254738de3",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795011380814
+      }
+    ],
+    "11.1 Write property test for Rounds": [
+      {
+        "executionId": "ea5a30c8-5d32-45c6-ae31-a9d429aa4f5e",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795013712106
+      },
+      {
+        "executionId": "ea5a30c8-5d32-45c6-ae31-a9d429aa4f5e",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795013826267
+      }
+    ],
+    "11.2 Write property test for maximal Rounds": [
+      {
+        "executionId": "ea5a30c8-5d32-45c6-ae31-a9d429aa4f5e",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795013712220
+      },
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035329825
+      }
+    ],
+    "11.3 Write property test for Decision_Log replay": [
+      {
+        "executionId": "ea5a30c8-5d32-45c6-ae31-a9d429aa4f5e",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795013712302
+      },
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035138988
+      },
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035329905
+      },
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035405523
+      }
+    ],
+    "11.4 Write property test for determinism": [
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035330577
+      },
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035405998
+      }
+    ],
+    "11.5 Write property test for the JSON round trip": [
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035330896
+      },
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035406493
+      }
+    ],
+    "11.6 Add a hook that runs the fast tests on save": [
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035407164
+      },
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035942675
+      }
+    ],
+    "11. Property tests and save hook": [
+      {
+        "executionId": "ebbe68bd-b69d-4450-8a64-59fe415bef92",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795035942795
+      }
+    ],
+    "1.1 Write `boot.py` for package loading and wheel checks": [
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036457156
+      },
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036578966
+      }
+    ],
+    "1.2 Add the fake numba module and the Lean_Mode import hook to `boot.py`": [
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036579101
+      },
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036647196
+      }
+    ],
+    "1.3 Write unit tests for fake numba and the Lean_Mode stubs": [
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036646938
+      },
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036687944
+      }
+    ],
+    "1.4 Write the Worker loader in `worker/src/worker.ts`": [
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036688293
+      },
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036837255
+      }
+    ],
+    "1. Worker bootstrap": [
+      {
+        "executionId": "655ae882-b81a-403e-b18e-38b5e3670789",
+        "chatSessionId": "sess_f626fd9d-40fa-4a58-af3b-2e97e74fc6ad",
+        "timestamp": 1795036837370
       }
     ]
   }

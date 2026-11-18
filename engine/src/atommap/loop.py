@@ -141,6 +141,7 @@ def run_round(
     tiles: Optional[list[Tile]] = None
     layouts: dict[Tile, TileLayouts] = {}
     step = 0
+    real_ids: set[str] = set()  # Points whose frequency came from a real Simulator run
 
     def tile_edges(ids: Iterable[str]) -> list[tuple[str, str]]:
         s = set(ids)
@@ -176,6 +177,8 @@ def run_round(
                 out.update(
                     cache.part_frequencies(guarded, part, tile_edges(part.ids), seed)
                 )
+                if part.fixed_frequency is None:
+                    real_ids.update(part.ids)  # from a real Simulator run
                 if cache.misses > m0:
                     fresh.extend(part.ids)
         except SimulatorFailure:
@@ -208,6 +211,7 @@ def run_round(
         k = top_group_size(remaining)
         skipped_now = 0
         skipped_ids: set[str] = set()
+        real_ids.clear()
 
         if provider == "none":
             ranked = sorted(avail, key=lambda i: order[i])
@@ -233,10 +237,11 @@ def run_round(
         pick = ranked[rng.randrange(k)]
         informed = False
         if atoms:
-            if pick in skipped_ids:
-                source = "annealing"
-            else:
+            # Singleton pieces get 1.0 classically; skipped Tiles use annealing.
+            if pick in real_ids and pick not in skipped_ids:
                 informed = True
+            else:
+                source = "annealing"
 
         nbrs = adj[pick] & avail
         avail.discard(pick)

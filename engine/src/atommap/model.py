@@ -101,7 +101,7 @@ class Stats:
 
 @dataclass
 class Round:
-    channel: Optional[int]  # 1, 6, 11 or None for Place
+    channel: Optional[int]  # 1, 6 or 11 for Channel_Plan; Place uses 1
     picks: list[str]
 
 

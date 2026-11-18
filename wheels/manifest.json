@@ -1,0 +1,124 @@
+{
+  "format": 1,
+  "wheels": [
+    {
+      "name": "amazon-braket-sdk",
+      "version": "1.127.8",
+      "filename": "amazon_braket_sdk-1.127.8-py3-none-any.whl",
+      "sha256": "c2c916fb0f3a0ebc100f6ae3c827079116a64c757424babb6b08dc39f8e890b6",
+      "set": "lean"
+    },
+    {
+      "name": "amazon-braket-default-simulator",
+      "version": "1.43.1",
+      "filename": "amazon_braket_default_simulator-1.43.1-py3-none-any.whl",
+      "sha256": "c9bc90feabe7ab36c013f85455da5c17d16f7aca2970a1e68c452f6a059a8634",
+      "set": "lean"
+    },
+    {
+      "name": "amazon-braket-schemas",
+      "version": "1.33.0",
+      "filename": "amazon_braket_schemas-1.33.0-py3-none-any.whl",
+      "sha256": "5c2c162c77f4dafa35b2d0cbc3c7b73f9e42834032396c26fe0176c003ef92d4",
+      "set": "lean"
+    },
+    {
+      "name": "antlr4-python3-runtime",
+      "version": "4.13.2",
+      "filename": "antlr4_python3_runtime-4.13.2-py3-none-any.whl",
+      "sha256": "fe3835eb8d33daece0e799090eda89719dbccee7aa39ef94eed3818cafa5a7e8",
+      "set": "lean"
+    },
+    {
+      "name": "backoff",
+      "version": "2.2.1",
+      "filename": "backoff-2.2.1-py3-none-any.whl",
+      "sha256": "63579f9a0628e06278f7e47b7d7d5b6ce20dc65c5e96a6f3ca99a6adca0396e8",
+      "set": "lean"
+    },
+    {
+      "name": "boltons",
+      "version": "26.2.0",
+      "filename": "boltons-26.2.0-py3-none-any.whl",
+      "sha256": "41942cbce440211bbcf2487ccdc356964ad674f95a01068b8a0dd7a1d1fed036",
+      "set": "lean"
+    },
+    {
+      "name": "cloudpickle",
+      "version": "2.2.1",
+      "filename": "cloudpickle-2.2.1-py3-none-any.whl",
+      "sha256": "61f594d1f4c295fa5cd9014ceb3a1fc4a70b0de1164b94fbc2d854ccba056f9f",
+      "set": "lean"
+    },
+    {
+      "name": "mypy-extensions",
+      "version": "1.2.0",
+      "filename": "mypy_extensions-1.2.0-py3-none-any.whl",
+      "sha256": "993e7a20aa5671eb41a7132cf555af30062da99729601601b9a8382b11cae768",
+      "set": "lean"
+    },
+    {
+      "name": "nest-asyncio",
+      "version": "1.6.0",
+      "filename": "nest_asyncio-1.6.0-py3-none-any.whl",
+      "sha256": "87af6efd6b5e897c81050477ef65c62e2b2f35d51703cae01aff2905b1852e1c",
+      "set": "lean"
+    },
+    {
+      "name": "openpulse",
+      "version": "1.0.1",
+      "filename": "openpulse-1.0.1-py3-none-any.whl",
+      "sha256": "75fb2d4d7f74db3a86027719744541fcb725e1f5b79e14b78dc5b34ed8c66e87",
+      "set": "lean"
+    },
+    {
+      "name": "openqasm3",
+      "version": "1.0.2",
+      "filename": "openqasm3-1.0.2-py3-none-any.whl",
+      "sha256": "e5fa81d67279bb17808bd4825c81b2a18a90f27a60e577c6cebb4f23b602b7e7",
+      "set": "lean"
+    },
+    {
+      "name": "opt-einsum",
+      "version": "3.4.0",
+      "filename": "opt_einsum-3.4.0-py3-none-any.whl",
+      "sha256": "69bb92469f86a1565195ece4ac0323943e83477171b91d24c35afe028a90d7cd",
+      "set": "lean"
+    },
+    {
+      "name": "oqpy",
+      "version": "0.3.11",
+      "filename": "oqpy-0.3.11-py3-none-any.whl",
+      "sha256": "d9557bd5916f64e42fbefd84bcf5c93b8bd8fe76f747be8a915d7ec32b02e83b",
+      "set": "lean"
+    },
+    {
+      "name": "boto3",
+      "version": "1.44.4",
+      "filename": "boto3-1.44.4-py3-none-any.whl",
+      "sha256": "8f1b66649346a5b29a909827d1bb460c02bd795c4d39751e36e03d5a18a3eec8",
+      "set": "full"
+    },
+    {
+      "name": "botocore",
+      "version": "1.44.4",
+      "filename": "botocore-1.44.4-py3-none-any.whl",
+      "sha256": "5a9303fc65e9a133bbc515fbb8d5c486787fb12108c37b2143c1c111c4a46525",
+      "set": "full"
+    },
+    {
+      "name": "s3transfer",
+      "version": "0.19.3",
+      "filename": "s3transfer-0.19.3-py3-none-any.whl",
+      "sha256": "24eb7535804306355e31c952a90022bf5b2f9d760f9a11062c7493a217c08553",
+      "set": "full"
+    },
+    {
+      "name": "jmespath",
+      "version": "1.1.0",
+      "filename": "jmespath-1.1.0-py3-none-any.whl",
+      "sha256": "a5663118de4908c91729bea0acadca56526eb2698e83de10cd116ae0f4e97c64",
+      "set": "full"
+    }
+  ]
+}
