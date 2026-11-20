@@ -5,15 +5,24 @@
   success  {"ok": true,  "result": {"meta": {citation, label}, "competitors": {...}}}
   failure  {"ok": false, "error":  {"type": str, "message": str}}
 
-Progress (Req. 9.9): `emit(event)` gets plain dicts (not JSON text), in run order:
+Progress (Req. 9.9, 9.10): `emit(event)` gets plain dicts (not JSON text), in run
+order. The switch is `run(request_json, emit=None)`; with `emit=None` no events
+are sent, and the result text is identical with and without `emit`.
+Event kinds: `simulate`, `frequencies`, `pick` (rule picks use source "rule").
+Every `pick` carries `removed` (neighbour ids removed by it, [] when none), and
+a `frequencies` event follows each `simulate` event.
 
   {"type": "run", "kind": "simulate", "competitor": name, "round": 1|6|11,
    "step": int, "tile": [point ids]}
       right before each real Simulator call; `tile` is the part sent to it.
       Not sent for cache hits, single-Point parts of the loop, or competitors
       that make no Simulator call (Annealing_Rules, Coin_Flip_Rules).
+  {"type": "run", "kind": "frequencies", "competitor": name, "round": ...,
+   "step": int, "tile": [point ids], "frequencies": {id: 0..1}}
+      after each real Simulator call (same conditions as `simulate`).
   {"type": "run", "kind": "pick", "competitor": name, "round": ..., "step": int,
-   "tile": null, "picked": [id], "source": "atoms"|"annealing"|"coin flip"|"rule"}
+   "tile": null, "picked": [id], "removed": [ids],
+   "source": "atoms"|"annealing"|"coin flip"|"rule"}
       after each pick, one event per Point. Loop competitors: `step` is the loop
       step (rule picks carry the last finished step, 0 before the first).
       Atoms_Alone: `step` is the part number in the Round (1-based).

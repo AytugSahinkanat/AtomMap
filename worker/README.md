@@ -8,7 +8,7 @@ Messages are `{type, payload}`: `progress {stage, percent, detail?}`, `ready {el
 
 **Lean_Mode** comes from the worker URL: `worker.js?lean=0|1` (default 1). `?root=<url>` overrides the site root (default: two levels above `worker.js`).
 
-Pyodide 0.27.7 and its built-in packages are loaded from `https://cdn.jsdelivr.net/pyodide/v0.27.7/full/` (the full release is too big to ship). Our own wheels (`wheels/`) and the engine files (`web/engine/`) are self-hosted. Nothing is fetched from PyPI.
+Pyodide 0.27.7 and its built-in packages are self-hosted: `scripts/fetch_pyodide.py` downloads them once at build time into `pyodide/` (git-ignored), and the web build copies them to `dist/pyodide/`. Wheels (`wheels/`) and engine files (`dist/engine/`, or `web/engine/` in the repo layout) are self-hosted too. Nothing is fetched from a CDN or PyPI at runtime.
 
 ## Message API
 

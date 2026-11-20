@@ -4,7 +4,7 @@
 // passes messages. It has no MIS logic. All logic lives in the Python package.
 //
 // Load order (stage names are what the UI sees):
-//   pyodide   load pyodide.js and the runtime from the CDN   0..25 %
+//   pyodide   load pyodide.js and the runtime (self-hosted)  0..25 %
 //   engine    fetch the atommap source files, check sha256,
 //             write them into Pyodide's site-packages        25..35 %
 //   packages  boot.install_packages: verify wheels, then
@@ -41,11 +41,15 @@ interface PyodideApi {
 const T0 = performance.now();
 const params = new URL(self.location.href).searchParams;
 const LEAN = params.get("lean") !== "0";
-const ROOT = new URL(params.get("root") ?? "../../", self.location.href).href;
-// Pyodide core and its built-in packages come from the jsdelivr CDN (pinned to 0.27.7).
-// Only our own wheels and the engine files are self-hosted.
-const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.27.7/full/";
-const ENGINE_URL = ROOT + "web/engine/";
+// Two layouts, both resolved against this file's URL (no absolute paths):
+//   built site  <site>/worker.js        -> <site>/engine, <site>/wheels, <site>/pyodide
+//   repo        <repo>/worker/dist/worker.js (smoke.html) -> <repo>/web/engine, <repo>/wheels, <repo>/pyodide
+const REPO_LAYOUT = /\/worker\/dist\/worker\.js$/.test(new URL(self.location.href).pathname);
+const ROOT = new URL(params.get("root") ?? (REPO_LAYOUT ? "../../" : "./"), self.location.href).href;
+// Pyodide 0.27.7 core and its built-in packages are self-hosted too. scripts/fetch_pyodide.py
+// downloads them at build time into pyodide/. Nothing is fetched from a CDN at runtime.
+const PYODIDE_URL = ROOT + "pyodide/";
+const ENGINE_URL = ROOT + (REPO_LAYOUT ? "web/engine/" : "engine/");
 const WHEELS_URL = ROOT + "wheels/";
 
 let currentStage: LoadStage = "pyodide";

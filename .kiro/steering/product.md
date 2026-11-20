@@ -13,7 +13,7 @@ We use qReduMIS (Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.11
 ## Modes
 
 - **Channel plan**: the wifi hall, 3 rounds. One round per 2.4 GHz channel (1, 6, 11). Each round picks an independent set of APs, and those APs get that channel. APs not picked in any round go 5 GHz only.
-- **Place**: one round, for things like kiosks or stations. The preset is Kadikoy cafes with a 150 m walking rule on real streets.
+- **Place**: one round, for things like kiosks or stations. The preset is about 300 Kadikoy cafes with a 150 m walking rule on real streets.
 
 Each mode has one distance toggle:
 - Channel plan: walls on/off.

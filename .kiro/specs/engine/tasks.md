@@ -8,7 +8,7 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
 
 - [x] 1. Worker bootstrap
   - [x] 1.1 Write `boot.py` for package loading and wheel checks
-    - Load the 16 Pyodide built-in packages, then install the pinned wheels from `wheels/` with micropip `deps=False` after checking sha256 and version against a manifest
+    - Load the 15 Pyodide built-in packages, then install the pinned wheels from `wheels/` with micropip `deps=False` after checking sha256 and version against a manifest
     - Add boto3, botocore, s3transfer and jmespath wheels when Lean_Mode is off
     - On a missing, wrong-hash or wrong-version wheel, abort and raise an error naming the dependency, leaving no partial Engine state
     - Make no PyPI requests

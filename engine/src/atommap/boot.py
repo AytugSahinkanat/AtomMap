@@ -49,11 +49,10 @@ from typing import Awaitable, Callable, Iterable, Mapping, Sequence
 MANIFEST_FORMAT = 1
 MANIFEST_NAME = "manifest.json"
 
-# Req. 1.5: Pyodide 0.27.7 built-in packages (16).
+# Req. 1.5: Pyodide 0.27.7 built-in packages (15).
 BUILTIN_PACKAGES: tuple[str, ...] = (
     "numpy",
     "scipy",
-    "networkx",
     "micropip",
     "ssl",
     "pydantic",

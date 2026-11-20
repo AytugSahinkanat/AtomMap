@@ -1,0 +1,20 @@
+{
+  "name": "atommap-web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AtomMap UI (Vite and TypeScript, static build).",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/build-site.mjs",
+    "check": "tsc -p . --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "fast-check": "4.10.3",
+    "playwright": "1.65.1",
+    "typescript": "5.6.3",
+    "vite": "8.3.8",
+    "vitest": "5.1.1"
+  }
+}

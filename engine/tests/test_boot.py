@@ -41,7 +41,7 @@ def _blobs(entries, d: Path):
 
 
 def test_builtin_count():
-    assert len(boot.BUILTIN_PACKAGES) == 16
+    assert len(boot.BUILTIN_PACKAGES) == 15
 
 
 def test_lean_vs_full_selection(tmp_path):

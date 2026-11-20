@@ -127,8 +127,9 @@ def run_round(
 
     `emit` gets progress events without a competitor field (the caller adds it):
     `{"kind": "simulate", "round", "step", "tile": [ids]}` right before each real
-    Simulator call and `{"kind": "pick", "round", "step", "tile": None,
-    "picked": [id], "source"}` after each pick (source "rule" for rule picks;
+    Simulator call, `{"kind": "frequencies", "round", "step", "tile": [ids],
+    "frequencies": {id: 0..1}}` right after it, and `{"kind": "pick", "round", "step", "tile": None,
+    "picked": [id], "removed": [ids], "source"}` after each pick (source "rule" for rule picks;
     their step is the last finished step, 0 before the first).
     """
     atoms = provider == "atoms"
@@ -196,12 +197,18 @@ def run_round(
         try:
             for part in lay.parts:
                 m0 = cache.misses
+                c0 = cache.simulator_calls
                 current_part[:] = [tuple(part.ids)]
-                out.update(
-                    cache.part_frequencies(guarded, part, tile_edges(part.ids), seed)
+                part_freqs = cache.part_frequencies(
+                    guarded, part, tile_edges(part.ids), seed
                 )
+                out.update(part_freqs)
                 if part.fixed_frequency is None:
                     real_ids.update(part.ids)  # from a real Simulator run
+                    if emit is not None and cache.simulator_calls > c0:
+                        emit({"kind": "frequencies", "round": round, "step": step,
+                              "tile": list(part.ids),
+                              "frequencies": dict(part_freqs)})
                 if cache.misses > m0:
                     fresh.extend(part.ids)
         except SimulatorFailure:
@@ -219,9 +226,13 @@ def run_round(
         result.rule_picks.extend(rule_picks)
         result.picks.extend(rule_picks)
         if emit is not None:
+            replay = set(before)  # same sequence apply_rules followed
             for pid in rule_picks:
+                rem = sorted(adj[pid] & replay)
+                replay.discard(pid)
+                replay.difference_update(rem)
                 emit({"kind": "pick", "round": round, "step": step, "tile": None,
-                      "picked": [pid], "source": "rule"})
+                      "picked": [pid], "removed": rem, "source": "rule"})
         gone = before - avail
         if gone:
             cache.invalidate(gone)
@@ -277,7 +288,7 @@ def run_round(
         log.add(round, source, "pick", [pick])
         if emit is not None:
             emit({"kind": "pick", "round": round, "step": step, "tile": None,
-                  "picked": [pick], "source": source})
+                  "picked": [pick], "removed": sorted(nbrs), "source": source})
         if nbrs:
             log.add(round, source, "remove", sorted(nbrs))
         cache.invalidate({pick} | nbrs)

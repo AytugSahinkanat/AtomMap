@@ -64,6 +64,23 @@ def _best_shot(
     return [pid for pid in layout.ids if pid in best]
 
 
+def _shot_frequencies(
+    layout: ScaledLayout,
+    shots: list[list[int]],
+    edges: list[tuple[str, str]],
+    tseed: int,
+) -> dict[str, float]:
+    """Share of repaired shots containing each Point (events only, own rng)."""
+    rng = random.Random(tseed)
+    counts = {pid: 0 for pid in layout.ids}
+    for shot in shots:
+        picked = [pid for pid, v in zip(layout.ids, shot) if v == 0]
+        for pid in repair_shot(picked, edges, rng):
+            counts[pid] += 1
+    n = len(shots)
+    return {pid: (c / n if n else 0.0) for pid, c in counts.items()}
+
+
 def run_atoms_alone(
     points: Iterable[Point],
     edges: Iterable[tuple[str, str]],
@@ -79,8 +96,11 @@ def run_atoms_alone(
     """One Round of Atoms_Alone on the available Points.
 
     `emit` gets events without a competitor field: "simulate" before each
-    Simulator call (step = part number in the Round, tile = part ids) and one
-    "pick" per kept Point after its part (tile None, source "atoms").
+    Simulator call (step = part number in the Round, tile = part ids), a
+    "frequencies" event after each successful call (share of repaired shots
+    per Point) and one
+    "pick" per kept Point after its part (tile None, source "atoms"), with
+    `removed`: its neighbours not already removed by an earlier pick.
     """
     pts = {p.id: p for p in points}
     avail = set(available)
@@ -95,6 +115,8 @@ def run_atoms_alone(
     kept: list[str] = []
     kept_set: set[str] = set()
     dropped: list[str] = []
+    excluded: set[str] = set()  # neighbours of kept Points (events only)
+    removed_by: dict[str, list[str]] = {}
     splits = fallbacks = calls = skipped = n_parts = 0
     timings: list[float] = []
 
@@ -128,6 +150,10 @@ def run_atoms_alone(
                     )
                 continue
             timings.append(time.perf_counter() - t0)
+            if emit is not None:
+                emit({"kind": "frequencies", "round": round, "step": n_parts,
+                      "tile": list(part.ids),
+                      "frequencies": _shot_frequencies(part, shots, sub, tseed)})
             candidates = _best_shot(part, shots, sub, tseed)
             new: list[str] = []
             for pid in candidates:
@@ -135,6 +161,9 @@ def run_atoms_alone(
                     kept_set.add(pid)
                     kept.append(pid)
                     new.append(pid)
+                    fresh = adj[pid] - excluded - kept_set
+                    removed_by[pid] = sorted(fresh)
+                    excluded |= fresh
                 else:
                     dropped.append(pid)
                     if log is not None:
@@ -144,7 +173,8 @@ def run_atoms_alone(
             if emit is not None:
                 for pid in new:
                     emit({"kind": "pick", "round": round, "step": n_parts,
-                          "tile": None, "picked": [pid], "source": "atoms"})
+                          "tile": None, "picked": [pid], "removed": removed_by[pid],
+                          "source": "atoms"})
 
     gaps = tuple(
         i for i in sorted(avail, key=lambda i: order[i])

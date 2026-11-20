@@ -1,0 +1,156 @@
+{
+  "pbtResults": {
+    "1.5 Write property test: progress events do not change the result": {
+      "status": "passed",
+      "lastRunTimestamp": 1795176083973
+    }
+  },
+  "executionHistory": {
+    "1.1 Update the engine spec requirements": [
+      {
+        "executionId": "8eebb9d5-bd7a-43cf-90a5-503821ef963c",
+        "chatSessionId": "sess_6b3f514c-a782-422d-b8a2-9ba1452307e4",
+        "timestamp": 1795089072415
+      },
+      {
+        "executionId": "8eebb9d5-bd7a-43cf-90a5-503821ef963c",
+        "chatSessionId": "sess_6b3f514c-a782-422d-b8a2-9ba1452307e4",
+        "timestamp": 1795090018169
+      }
+    ],
+    "1.2 Add `removed` neighbour ids to every pick event": [
+      {
+        "executionId": "8eebb9d5-bd7a-43cf-90a5-503821ef963c",
+        "chatSessionId": "sess_6b3f514c-a782-422d-b8a2-9ba1452307e4",
+        "timestamp": 1795090018295
+      },
+      {
+        "executionId": "8eebb9d5-bd7a-43cf-90a5-503821ef963c",
+        "chatSessionId": "sess_6b3f514c-a782-422d-b8a2-9ba1452307e4",
+        "timestamp": 1795090195757
+      }
+    ],
+    "1.3 Add the `frequencies` event": [
+      {
+        "executionId": "8eebb9d5-bd7a-43cf-90a5-503821ef963c",
+        "chatSessionId": "sess_6b3f514c-a782-422d-b8a2-9ba1452307e4",
+        "timestamp": 1795090195842
+      },
+      {
+        "executionId": "8eebb9d5-bd7a-43cf-90a5-503821ef963c",
+        "chatSessionId": "sess_6b3f514c-a782-422d-b8a2-9ba1452307e4",
+        "timestamp": 1795091430105
+      }
+    ],
+    "1. Engine progress events (prerequisite)": [
+      {
+        "executionId": "8eebb9d5-bd7a-43cf-90a5-503821ef963c",
+        "chatSessionId": "sess_6b3f514c-a782-422d-b8a2-9ba1452307e4",
+        "timestamp": 1795091430195
+      }
+    ],
+    "1.4 Write unit tests for the new events": [
+      {
+        "executionId": "175aed03-bc98-4fbb-a5bf-c6962c31b7a3",
+        "chatSessionId": "sess_1852ef64-9c3c-4f6e-9d6c-cc793ce97345",
+        "timestamp": 1795126719643
+      },
+      {
+        "executionId": "175aed03-bc98-4fbb-a5bf-c6962c31b7a3",
+        "chatSessionId": "sess_1852ef64-9c3c-4f6e-9d6c-cc793ce97345",
+        "timestamp": 1795126946586
+      }
+    ],
+    "1.5 Write property test: progress events do not change the result": [
+      {
+        "executionId": "2dc933b8-fccf-41d1-9435-994527960c94",
+        "chatSessionId": "sess_e5fe8932-981a-4391-8d5f-387170d2e78f",
+        "timestamp": 1795126952752
+      },
+      {
+        "executionId": "41b74585-ea81-44b8-a038-96bdfdabf984",
+        "chatSessionId": "sess_e5fe8932-981a-4391-8d5f-387170d2e78f",
+        "timestamp": 1795176039055
+      },
+      {
+        "executionId": "41b74585-ea81-44b8-a038-96bdfdabf984",
+        "chatSessionId": "sess_e5fe8932-981a-4391-8d5f-387170d2e78f",
+        "timestamp": 1795176090782
+      }
+    ],
+    "3.1 Create the Vite and TypeScript project in `web/`": [
+      {
+        "executionId": "f4460f2b-f23a-431b-acb4-effc028ee584",
+        "chatSessionId": "sess_10668d58-8eb0-4912-a3b5-704d0338d2e2",
+        "timestamp": 1795177568251
+      },
+      {
+        "executionId": "f4460f2b-f23a-431b-acb4-effc028ee584",
+        "chatSessionId": "sess_10668d58-8eb0-4912-a3b5-704d0338d2e2",
+        "timestamp": 1795177735867
+      }
+    ],
+    "3.2 Add the typed Worker client": [
+      {
+        "executionId": "f4460f2b-f23a-431b-acb4-effc028ee584",
+        "chatSessionId": "sess_10668d58-8eb0-4912-a3b5-704d0338d2e2",
+        "timestamp": 1795177735941
+      },
+      {
+        "executionId": "f4460f2b-f23a-431b-acb4-effc028ee584",
+        "chatSessionId": "sess_10668d58-8eb0-4912-a3b5-704d0338d2e2",
+        "timestamp": 1795177777232
+      }
+    ],
+    "3. Web project setup": [
+      {
+        "executionId": "f4460f2b-f23a-431b-acb4-effc028ee584",
+        "chatSessionId": "sess_10668d58-8eb0-4912-a3b5-704d0338d2e2",
+        "timestamp": 1795177777310
+      }
+    ],
+    "4.1 Add state, screen switching and the Loading_Screen": [
+      {
+        "executionId": "cec08c73-6ac7-40b6-b191-5940e8d6f41c",
+        "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
+        "timestamp": 1795177931266
+      },
+      {
+        "executionId": "cec08c73-6ac7-40b6-b191-5940e8d6f41c",
+        "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
+        "timestamp": 1795177996688
+      }
+    ],
+    "4. App shell and loading screen": [
+      {
+        "executionId": "cec08c73-6ac7-40b6-b191-5940e8d6f41c",
+        "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
+        "timestamp": 1795177996754
+      }
+    ],
+    "4.2 Add `web/index.html`": [
+      {
+        "executionId": "5a82ef9f-c06c-49ce-b1ce-a958a881f204",
+        "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
+        "timestamp": 1795178215430
+      },
+      {
+        "executionId": "5a82ef9f-c06c-49ce-b1ce-a958a881f204",
+        "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
+        "timestamp": 1795178238896
+      }
+    ],
+    "4.3 Make `npm run build` produce one self-contained `dist/` for GitHub Pages under `/AtomMap/`": [
+      {
+        "executionId": "5a82ef9f-c06c-49ce-b1ce-a958a881f204",
+        "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
+        "timestamp": 1795178239437
+      },
+      {
+        "executionId": "5a82ef9f-c06c-49ce-b1ce-a958a881f204",
+        "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
+        "timestamp": 1795178532376
+      }
+    ]
+  }
+}

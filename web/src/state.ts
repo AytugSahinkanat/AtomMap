@@ -1,0 +1,38 @@
+// App state. UI state only, no MIS logic.
+
+export type ScreenName = "loading" | "map";
+
+export interface AppState {
+  screen: ScreenName;
+  /** Loading progress, 0..100, never decreases. */
+  loadPercent: number;
+  loadStage: LoadStage | null;
+  /** Plain-words loading error, or null. */
+  loadError: string | null;
+}
+
+export const state: AppState = {
+  screen: "loading",
+  loadPercent: 0,
+  loadStage: null,
+  loadError: null,
+};
+
+type Listener = (s: Readonly<AppState>) => void;
+const listeners = new Set<Listener>();
+
+export function subscribe(fn: Listener): () => void {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+export function update(patch: Partial<AppState>): void {
+  Object.assign(state, patch);
+  for (const fn of listeners) fn(state);
+}
+
+/** Record a loading progress event. The percent never goes down. */
+export function applyLoadProgress(p: ProgressLoadPayload): void {
+  const percent = Math.max(state.loadPercent, Math.min(100, Math.max(0, p.percent)));
+  update({ loadPercent: percent, loadStage: p.stage });
+}

@@ -8,10 +8,9 @@ version = "0.1.0"
 description = "AtomMap engine: qReduMIS on map points, with the Braket local AHS simulator"
 requires-python = ">=3.12"
 dependencies = [
-    # numpy, scipy and networkx match the versions built into Pyodide 0.27.7
+    # numpy and scipy match the versions built into Pyodide 0.27.7
     "numpy==2.0.2",
     "scipy==1.14.1",
-    "networkx==3.4.2",
     "amazon-braket-sdk==1.127.8",
     "amazon-braket-default-simulator==1.43.1",
     "amazon-braket-schemas==1.33.0",

@@ -47,7 +47,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 2. WHEN the Worker initializes the Engine, THE Worker SHALL load the Engine through Pyodide 0.27.7 (Python 3.12) and send the UI a ready message within 45 seconds on a first visit and within 20 seconds on a repeat visit.
 3. WHEN pytest runs the Engine test suite natively, THE Engine SHALL execute from the same source files as in the Worker, with zero source differences between the two environments (verified by comparing the package file hashes).
 4. WHEN the Worker receives a message from the UI or from the Engine, THE Worker SHALL forward it to the other party without modifying the payload and without performing any MIS computation.
-5. WHEN the Engine initializes, THE Engine SHALL load these Pyodide 0.27.7 built-in packages: numpy, scipy, networkx, micropip, ssl, pydantic, pydantic_core, annotated-types, typing_extensions, sympy, mpmath, packaging, python-dateutil, six, urllib3 and setuptools.
+5. WHEN the Engine initializes, THE Engine SHALL load these Pyodide 0.27.7 built-in packages: numpy, scipy, micropip, ssl, pydantic, pydantic_core, annotated-types, typing_extensions, sympy, mpmath, packaging, python-dateutil, six, urllib3 and setuptools.
 6. WHEN the Engine initializes, THE Engine SHALL install every other dependency from a self-hosted wheel, checked by sha256, with micropip deps=False, at these pinned versions: amazon-braket-sdk 1.127.8, amazon-braket-default-simulator 1.43.1, amazon-braket-schemas 1.33.0, antlr4-python3-runtime 4.13.2, backoff 2.2.1, boltons 26.2.0, cloudpickle 2.2.1, mypy_extensions 1.2.0, nest-asyncio 1.6.0, openpulse 1.0.1, openqasm3 1.0.2, opt_einsum 3.4.0 and oqpy 0.3.11.
 7. IF a dependency wheel is missing from the self-hosted location, its sha256 does not match or its version does not match the pinned version, THEN THE Engine SHALL abort initialization, send the UI an error message naming the dependency, and leave no partially loaded Engine state.
 8. WHILE the Engine runs, THE Engine SHALL make zero network requests to PyPI.
@@ -181,7 +181,12 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 6. IF a result cannot be serialized to the JSON-compatible format, THEN THE Engine SHALL return an error to the Worker that names the field that failed and SHALL NOT return a partial result.
 7. FOR ALL valid results, deserializing the serialized result SHALL produce a result equal to the original (round-trip property).
 8. FOR ALL Rounds of every Competitor, THE Engine SHALL produce a Decision_Log whose pick entries for that Round, replayed in order, produce a set of Point identifiers equal to the Round's returned Independent_Set, with no Point identifier picked more than once.
-9. WHILE a run is in progress, THE Engine SHALL send progress events per Round, step and Tile, so that the UI can light up the atoms.
+9. WHILE a run is in progress, THE Engine SHALL send progress events per Round, step and Tile, so that the UI can light up the atoms. The progress events SHALL include these kinds:
+   - a `simulate` event right before each real Simulator call, with the Tile ids;
+   - a `frequencies` event after each real Simulator call, with the Tile ids and the frequency (0 to 1) of each Point in the Tile;
+   - a `pick` event for every pick, carrying a `removed` list with the identifiers of the neighbour Points removed by that pick (an empty list when none);
+   - a `pick` event with source `"rule"` for every pick made by a Classical_Rule, also carrying `removed`.
+10. THE Engine SHALL provide the emit switch as `api.run(request_json, emit=None)`. WHEN `emit` is None, THE Engine SHALL send no progress events. FOR ALL valid requests, THE Engine SHALL return the same result text with and without `emit`.
 
 ### Requirement 10: Stats and honesty
 
@@ -191,7 +196,7 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 
 1. WHEN a run completes, THE Engine SHALL return Stats for each Competitor containing: the number of picks in each Round (a non-negative integer per Round), the number of picks per source (a non-negative integer per source), the Quantum_Share, the number of split Tiles (a non-negative integer), the number of skipped Tiles (a non-negative integer), the number of Braket calls, cache hits and layout fallbacks, and timings.
 2. WHEN a run completes with a Quantum_Share of 0 picks, THE Engine SHALL include the Quantum_Share in the Stats with the value 0 for the number of picks.
-3. WHEN the Quantum_Share is 0 picks and no Tile was sent to the Simulator in the run (skipped Tiles count as sent), THE Engine SHALL set a boolean flag in the Stats that indicates atoms were not needed on this map.
+3. WHEN the Quantum_Share is 0 picks and no Tile was sent to the Simulator in the run (skipped Tiles count as sent), THE Engine SHALL set a boolean flag in the Stats named `atoms_not_needed` to true, which indicates atoms were not needed on this map.
 4. WHEN a run completes, THE Engine SHALL attach the Result_Label "simulation" to every result returned, including each Competitor's result and the Hybrid result.
 5. WHEN a run completes, THE Engine SHALL return the results of all classical Competitors together with the Hybrid result in the same output.
 6. THE Engine SHALL NOT include in any output a statement or field that claims a speed advantage of the Hybrid over any classical Competitor.
