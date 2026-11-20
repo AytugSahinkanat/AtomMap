@@ -151,6 +151,69 @@
         "chatSessionId": "sess_8b5f0d84-37f8-47ab-9bd7-32d393ced45a",
         "timestamp": 1795178532376
       }
+    ],
+    "5.1 Add `fixtures/wifi_hall_walls.json`": [
+      {
+        "executionId": "53fcd6b8-c85b-4668-b941-5ce562d5b6f3",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210232160
+      },
+      {
+        "executionId": "53fcd6b8-c85b-4668-b941-5ce562d5b6f3",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210267390
+      }
+    ],
+    "5.2 Implement the wall edge builder": [
+      {
+        "executionId": "53fcd6b8-c85b-4668-b941-5ce562d5b6f3",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210232752
+      },
+      {
+        "executionId": "53fcd6b8-c85b-4668-b941-5ce562d5b6f3",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210267581
+      },
+      {
+        "executionId": "74beca94-9cd5-4420-81e1-2d6ab93f380f",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210427677
+      },
+      {
+        "executionId": "74beca94-9cd5-4420-81e1-2d6ab93f380f",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795212485568
+      },
+      {
+        "executionId": "44cf4fc8-ff54-4cd0-975a-b1ba156c2b82",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795212678356
+      },
+      {
+        "executionId": "44cf4fc8-ff54-4cd0-975a-b1ba156c2b82",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795212857064
+      }
+    ],
+    "5.5 Implement the straight-line edge builder": [
+      {
+        "executionId": "53fcd6b8-c85b-4668-b941-5ce562d5b6f3",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210233215
+      },
+      {
+        "executionId": "53fcd6b8-c85b-4668-b941-5ce562d5b6f3",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210267723
+      }
+    ],
+    "5. Edge builders and walls data": [
+      {
+        "executionId": "53fcd6b8-c85b-4668-b941-5ce562d5b6f3",
+        "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
+        "timestamp": 1795210267856
+      }
     ]
   }
 }

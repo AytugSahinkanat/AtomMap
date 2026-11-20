@@ -33,7 +33,8 @@ Layout of `web/src/` (new files):
 |---|---|
 | `main.ts`, `state.ts` | Boot, screen switching (including the `#/results` hash route), one state object (map, mode, toggle, seed, run status, result) |
 | `client.ts` | Wraps `new Worker`, typed with `worker/src/messages.ts` |
-| `screens/loading.ts`, `map.ts`, `run.ts`, `scoreboard.ts`, 	utor.ts, esults.ts | One module per screen or panel (`results.ts` is the Results_Page) |
+| `screens/loading.ts`, `map.ts`, `run.ts`, `scoreboard.ts`, 	utor.ts, 
+esults.ts | One module per screen or panel (`results.ts` is the Results_Page) |
 | `data/results.ts` | `loadResults()` and `validateResults()` for `results.json` (pure validator) |
 | `render/static-layer.ts`, `dynamic-layer.ts`, `sprites.ts`, `a11y.ts` | Canvas drawing, glow sprites, accessible point list |
 | `render/playback.ts` | Event buffer, rAF loop, pure reducer from events to point states |
@@ -102,10 +103,10 @@ All Engine work stays in the Worker (Req. 11.1). The main thread only appends ev
 
 ```ts
 interface Wall { x1:number; y1:number; x2:number; y2:number; kind:"concrete"|"drywall" }
-function buildWallEdges(points: Pt[], walls: Wall[], wallsOn: boolean): [string,string][]
+function buildWallEdges(points: Pt[], walls: Wall[], wallsOn: boolean, r: number): [string,string][]
 ```
-
-For each pair with distance d, received power = `10 - 40 - 30*log10(d) - sum(loss of crossed walls)`, where concrete is 12 dB and drywall is 4 dB (both only when `wallsOn`). An edge exists when power >= -69 dBm. A wall is crossed when the straight segment between the two APs properly intersects the wall segment. Pairs are returned once, sorted by id. Constants live in `settings.ts` with the Radio_Model comment. The request carries `graph: {r: 20, edges}` where `r` is read from the fixture.
+An edge exists when power is strictly greater than the Signal_Threshold. The function computes it as `receivedPowerDbm(r)`, with `r` read from the Hero_Map fixture (about -69.03 dBm for r = 20 m). It is not a constant in `settings.ts`. With walls off this equals the straight-line r < 20 m graph.
+For each pair with distance d, received power = `10 - 40 - 30*log10(d) - sum(loss of crossed walls)`, where concrete is 12 dB and drywall is 4 dB (both only when `wallsOn`). A wall is crossed when the straight segment between the two APs properly intersects the wall segment. Pairs are returned once, sorted by id. Constants live in `settings.ts` with the Radio_Model comment. The request carries `graph: {r: 20, edges}` where `r` is read from the fixture.
 
 `edges/straight.ts` (Place, straight line): all pairs with distance below `r`, the same rule the Engine uses when edges are omitted. The UI needs these only to draw them. The request sends `graph:{r:150}` without `edges`.
 

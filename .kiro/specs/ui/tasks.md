@@ -50,10 +50,10 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
 - [ ] 2. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [x] 3. Web project setup
+- [x] 3. Web   project setup
   - [x] 3.1 Create the Vite and TypeScript project in `web/`
     - `package.json` with every version pinned (`vite`, `typescript`, `vitest`, `fast-check`, `playwright`), relative `base: './'`, `server.fs.allow` for the repo root
-    - Create `web/src/settings.ts` with the default seed, speed steps, Radio_Model constants (with the comment), Signal_Threshold, wall losses (12 dB, 4 dB), accent colour
+    - Create `web/src/settings.ts` with the default seed, speed steps, Radio_Model constants (with the comment), the `receivedPowerDbm(d)` formula and a small `signalThresholdDbm(r)` helper (Signal_Threshold is not a constant in `settings.ts`; it is computed from the Hero_Map fixture's r), wall losses (12 dB, 4 dB), accent colour
     - Keep the existing `web/engine` and `web/smoke.html` untouched
     - _Requirements: 5.3, 4.12, 11.7_
 
@@ -79,15 +79,15 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Serving `dist/` alone from any sub path works in a browser; nothing is fetched from outside `dist/` at runtime
     - _Requirements: 1.1_
 
-- [ ] 5. Edge builders and walls data
-  - [ ] 5.1 Add `fixtures/wifi_hall_walls.json`
+- [x] 5. Edge builders and walls data
+  - [x] 5.1 Add `fixtures/wifi_hall_walls.json`
     - Concrete and drywall wall segments for the 9 m grid hero hall, at least one of each kind, committed as a file
     - Leave `fixtures/wifi_hall_hero.json` unchanged
     - _Requirements: 5.2_
 
-  - [ ] 5.2 Implement the wall edge builder
-    - Create `web/src/edges/walls.ts` with `buildWallEdges(points, walls, wallsOn)`
-    - Power = 10 - 40 - 30*log10(d) minus crossed wall losses (walls on only); edge when power >= -69 dBm; proper segment intersection; pairs once, sorted by id
+  - [x] 5.2 Implement the wall edge builder
+    - Create `web/src/edges/walls.ts` with `buildWallEdges(points, walls, wallsOn, r)` where `r` is the fixture's r in metres
+    - Power = 10 - 40 - 30*log10(d) minus crossed wall losses (walls on only); edge when power > Signal_Threshold, computed inside as `receivedPowerDbm(r)` from the fixture's r (about -69.03 dBm for r = 20 m); proper segment intersection; pairs once, sorted by id
     - _Requirements: 5.3, 5.4, 5.5, 5.6_
 
   - [ ]* 5.3 Write property test: walls never add an edge
@@ -100,7 +100,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Concrete and drywall loss, a pair near 19.95 m, walls on and off, the gap between 19.95 m and the Hero_Map_R of 20 m allowed
     - _Requirements: 12.1, 12.2_
 
-  - [ ] 5.5 Implement the straight-line edge builder
+  - [x] 5.5 Implement the straight-line edge builder
     - Create `web/src/edges/straight.ts`: all pairs with distance below r, each once, sorted
     - Used only for drawing; the Place request sends `graph:{r:150}` without edges
     - _Requirements: 6.3_

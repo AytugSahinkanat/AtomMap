@@ -1,4 +1,4 @@
-// Constants only. No logic. Values are decided before running (honesty rule 8).
+// Constants, plus the one radio formula that defines the threshold. Values are decided before running (honesty rule 8).
 
 /** Default seed, fixed in advance. */
 export const DEFAULT_SEED = 1;
@@ -16,8 +16,21 @@ export const TX_POWER_DBM = 10;
 export const PATH_LOSS_1M_DB = 40;
 export const PATH_LOSS_EXPONENT = 3;
 
-/** Signal_Threshold in dBm. Open-air range is about 20 m. */
-export const SIGNAL_THRESHOLD_DBM = -69;
+/** Open-air received power at distance d metres (no wall losses). */
+export function receivedPowerDbm(d: number): number {
+  return (
+    TX_POWER_DBM - PATH_LOSS_1M_DB - 10 * PATH_LOSS_EXPONENT * Math.log10(d)
+  );
+}
+
+/**
+ * Signal_Threshold in dBm: the received power at distance r metres, where r is
+ * read from the Hero_Map fixture (for example r = 20 gives about -69.03 dBm).
+ * An edge needs power strictly above it, so walls off gives the r-graph.
+ */
+export function signalThresholdDbm(r: number): number {
+  return receivedPowerDbm(r);
+}
 
 /** Wall losses in dB. */
 export const WALL_LOSS_DB = {

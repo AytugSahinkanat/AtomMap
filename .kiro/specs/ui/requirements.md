@@ -22,7 +22,7 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 - **Hero_Map**: The wifi hall fixture with 70 access points, as defined in the engine spec.
 - **Wall**: A line segment in the Hero_Map fixture, either concrete (12 dB loss) or drywall (4 dB loss).
 - **Radio_Model**: Received power in dBm = 10 - 40 - 30 * log10(d in metres) - the sum of the losses of the Walls crossed by the straight line between two APs. Pt is 10 dBm, path loss at 1 m is 40 dB and the exponent is 3. The Wall term is included only while the walls toggle is on.
-- **Signal_Threshold**: -69 dBm, which gives an open-air range of about 20 m, equal to the Hero_Map r.
+- **Signal_Threshold**: The received power at distance Hero_Map_R (r, read from the Hero_Map fixture) without Wall losses, computed from the Radio_Model as `receivedPowerDbm(r)`. It is about -69.03 dBm for r = 20 m. It is not a constant. An edge needs a power strictly above it, so with walls off the edges are exactly the pairs closer than r.
 - **Hero_Map_R**: The Conflict_Radius r of 20 m, stored in the Hero_Map fixture.
 - **Rule_Pick**: A pick whose Decision_Log source is "rule".
 - **Tie**: Two or more Competitors with the same total pick count.
@@ -113,8 +113,8 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 
 1. THE Map_Screen SHALL offer the Hero_Map in Channel_Plan mode with 3 Rounds and a toggle labelled "walls on / off".
 2. THE Map_Screen SHALL draw the Walls of the Hero_Map fixture, with concrete and drywall Walls visually distinct.
-3. WHILE the walls toggle is on, THE UI SHALL build an edge between two APs only if the Radio_Model, with the loss of every crossed Wall, gives a received power of at least the Signal_Threshold for that pair.
-4. WHILE the walls toggle is off, THE UI SHALL build an edge between two APs only if the Radio_Model, without Wall losses, gives a received power of at least the Signal_Threshold for that pair.
+3. WHILE the walls toggle is on, THE UI SHALL build an edge between two APs only if the Radio_Model, with the loss of every crossed Wall, gives a received power strictly above the Signal_Threshold for that pair.
+4. WHILE the walls toggle is off, THE UI SHALL build an edge between two APs only if the Radio_Model, without Wall losses, gives a received power strictly above the Signal_Threshold for that pair.
 5. WHEN the visitor turns the walls toggle on, THE UI SHALL remove edges or keep them as they are, and SHALL NOT add an edge that is absent while the toggle is off.
 6. THE UI SHALL read r (Hero_Map_R) from the Hero_Map fixture.
 7. WHEN the visitor presses the run button, THE UI SHALL send the Engine the Points, the Mode, the Seed, the edge list of criterion 3 or 4 and r.
