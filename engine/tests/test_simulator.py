@@ -2,6 +2,8 @@
 
 import math
 
+from hypothesis import given, settings, strategies as st
+
 from atommap import simulator
 from atommap.physics import OMEGA
 
@@ -34,3 +36,34 @@ def test_build_program_converts_to_metres():
     prog = simulator.build_program([(0.0, 0.0), (6.5, 0.0)])
     sites = prog.register.coordinate_list(0), prog.register.coordinate_list(1)
     assert [float(x) for x in sites[0]] == [0.0, 6.5e-6]
+
+
+@settings(max_examples=50, deadline=None)
+@given(st.integers(0, 1000), st.integers(0, 1000))
+def test_metres_are_exact_decimals_from_tenths(tx, ty):
+    from decimal import Decimal
+
+    prog = simulator.build_program([(tx / 10, ty / 10)])
+    x, y = prog.register.coordinate_list(0)[0], prog.register.coordinate_list(1)[0]
+    assert isinstance(x, Decimal) and isinstance(y, Decimal)
+    assert x == Decimal(tx) * Decimal("1e-7") and y == Decimal(ty) * Decimal("1e-7")
+
+
+def test_four_um_pair_is_exactly_four_um_apart_without_warning():
+    import warnings
+    from decimal import Decimal
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        prog = simulator.build_program([(0.0, 0.0), (4.0, 0.0)])
+        xs = prog.register.coordinate_list(0)
+        assert xs[1] - xs[0] == Decimal("4.0e-6")
+
+
+def test_braket_run_of_four_um_pair_emits_no_warning():
+    import warnings
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        shots = simulator.BraketSimulator().run_tile([(0.0, 0.0), (4.0, 0.0)], seed=1)
+    assert len(shots) == simulator.SHOTS

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import random
+from decimal import Decimal
 from typing import Iterable, Protocol, Sequence
 
 import numpy as np
@@ -190,8 +191,25 @@ def pulse_series() -> dict[str, list[tuple[float, float]]]:
     }
 
 
+_METRES_PER_TENTH_UM = Decimal("1e-7")
+
+
+def tenths_to_metres(tenths: int) -> Decimal:
+    """Exact metres for a position given in integer tenths of a micrometre."""
+    return Decimal(int(tenths)) * _METRES_PER_TENTH_UM
+
+
+def um_to_metres(um: float) -> Decimal:
+    """Exact metres for a layout position in µm already on the 0.1 µm grid."""
+    return tenths_to_metres(round(float(um) * 10))
+
+
 def build_program(positions_um: Sequence[Sequence[float]]):
-    """Braket AHS program for atoms at `positions_um` (converted to metres)."""
+    """Braket AHS program for atoms at `positions_um` (converted to metres).
+
+    Positions sit on the 0.1 µm grid, so they are converted from integer
+    tenths with exact Decimals (4.0 µm stays exactly 4.0e-6 m).
+    """
     from braket.ahs.analog_hamiltonian_simulation import AnalogHamiltonianSimulation
     from braket.ahs.atom_arrangement import AtomArrangement
     from braket.ahs.driving_field import DrivingField
@@ -199,7 +217,7 @@ def build_program(positions_um: Sequence[Sequence[float]]):
 
     register = AtomArrangement()
     for x, y in positions_um:
-        register.add((float(x) * 1e-6, float(y) * 1e-6))
+        register.add((um_to_metres(x), um_to_metres(y)))
 
     series = pulse_series()
 

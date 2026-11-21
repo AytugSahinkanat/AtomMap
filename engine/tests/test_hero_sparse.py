@@ -86,7 +86,7 @@ def test_hero_all_four_competitors_fake_simulator():
     for name, res in result.competitors.items():
         assert isinstance(res, CompetitorResult), (name, res)
         assert res.label == "simulation"
-    for name in COMPETITORS[1:]:
+    for name in (n for n in COMPETITORS if n != "Atoms_Alone"):
         _check_rounds(result.competitors[name], graph, len(request.points))
 
 

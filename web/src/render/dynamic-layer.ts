@@ -17,9 +17,9 @@ import {
 
 export const Status = {
   Undecided: 0,
-  /** Picked by atoms, annealing or coin flip. */
+  /** Picked by the atoms (filled). */
   Picked: 1,
-  /** Picked by a classical rule: outlined lock with a "rule" tag. */
+  /** Picked classically (rule, annealing, coin flip): outlined lock with a "classical" tag. */
   RulePicked: 2,
   /** Removed neighbour, fading out. */
   Removed: 3,
@@ -51,10 +51,13 @@ export class DynamicLayer {
   status = new Uint8Array(0);
   private glowTarget = new Float32Array(0);
   private channel = new Uint8Array(0);
+  /** 1 = classical pick that is not a rule (annealing fallback, coin flip): tag word "classical". */
+  private classical = new Uint8Array(0);
 
   private tile: number[] | null = null;
   private focus = -1;
   private reducedMotion = false;
+  private finalView = false;
   private dirty = true;
 
   constructor(private canvas: HTMLCanvasElement) {
@@ -93,19 +96,32 @@ export class DynamicLayer {
     this.status = new Uint8Array(n);
     this.glowTarget = new Float32Array(n);
     this.channel = new Uint8Array(n);
+    this.classical = new Uint8Array(n);
     this.tile = null;
     this.focus = -1;
     this.dirty = true;
   }
 
+  /**
+   * Final map: the "rule" text label is dropped (the legend explains the
+   * outlined padlock glyph instead). During playback the label stays.
+   */
+  setFinalView(on: boolean): void {
+    if (this.finalView === on) return;
+    this.finalView = on;
+    this.dirty = true;
+  }
+
   /** Clear run state but keep positions. */
   reset(): void {
+    this.finalView = false;
     this.glow.fill(0);
     this.glowTarget.fill(0);
     this.lockT.fill(0);
     this.fadeT.fill(0);
     this.status.fill(Status.Undecided);
     this.channel.fill(0);
+    this.classical.fill(0);
     this.tile = null;
     this.dirty = true;
   }
@@ -118,9 +134,10 @@ export class DynamicLayer {
     this.dirty = true;
   }
 
-  /** Lock a point on a channel. `rule` draws the outlined lock with a "rule" tag. */
-  lock(i: number, channel: number, rule: boolean, animate = true): void {
+  /** Lock a point on a channel. `rule` draws the outlined lock with a tag: "rule", or "classical" when `classical` is set (annealing fallback, coin flip). */
+  lock(i: number, channel: number, rule: boolean, animate = true, classical = false): void {
     this.status[i] = rule ? Status.RulePicked : Status.Picked;
+    this.classical[i] = rule && classical ? 1 : 0;
     this.channel[i] = channel;
     this.lockT[i] = animate && !this.reducedMotion ? 0 : 1;
     this.glowTarget[i] = 0;
@@ -272,12 +289,12 @@ export class DynamicLayer {
       const path = pathFor(shapeForChannel(ch));
       ctx.scale(r, r);
       if (st === Status.RulePicked) {
-        // Outlined (not filled): a rule pick, not a quantum or annealing one.
+        // Outlined (not filled): a classical pick, not an atoms pick.
         ctx.strokeStyle = colour;
         ctx.lineWidth = 1.6 / r;
         ctx.stroke(path);
         ctx.restore();
-        this.drawRuleTag(ctx, x, y, colour);
+        this.drawRuleTag(ctx, x, y, colour, this.classical[i] === 1 ? 'classical' : 'rule');
         return;
       }
       ctx.fillStyle = colour;
@@ -286,8 +303,8 @@ export class DynamicLayer {
     ctx.restore();
   }
 
-  /** Small padlock and the word "rule", so the tag is not colour alone. */
-  private drawRuleTag(ctx: CanvasRenderingContext2D, x: number, y: number, colour: string): void {
+  /** Small padlock and the tag word ("rule" or "classical"), so the tag is not colour alone. */
+  private drawRuleTag(ctx: CanvasRenderingContext2D, x: number, y: number, colour: string, word: string): void {
     ctx.save();
     ctx.translate(x + POINT_R + 5, y - POINT_R - 3);
     ctx.scale(4, 4);
@@ -295,11 +312,12 @@ export class DynamicLayer {
     ctx.lineWidth = 1 / 4;
     ctx.stroke(getShapes().lock);
     ctx.restore();
+    if (this.finalView) return;
     ctx.save();
     ctx.font = FONT;
     ctx.fillStyle = TEXT_COLOUR;
     ctx.textBaseline = 'top';
-    ctx.fillText('rule', x - 8, y + POINT_R + 3);
+    ctx.fillText(word, x - 12, y + POINT_R + 3);
     ctx.restore();
   }
 

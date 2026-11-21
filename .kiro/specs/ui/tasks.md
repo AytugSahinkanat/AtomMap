@@ -173,8 +173,8 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Place mode loads its place through `loadPlace` (Task 6.4); the preset selector is added in Task 6.6, attribution and counts in Task 6.7
     - _Requirements: 2.6, 2.7, 5.1, 5.6, 5.7, 6.1, 6.2, 6.3_
 
-- [ ] 8. Run screen and playback
-  - [ ] 8.1 Implement seed parsing
+- [x] 8. Run screen and playback
+  - [x] 8.1 Implement seed parsing
     - Create `web/src/seed.ts`: trim, match `^-?\d+$`, safe integer; "run again" uses the previous seed + 1
     - _Requirements: 4.11, 4.12, 4.13_
 
@@ -182,7 +182,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Valid, negative, empty, decimal, text, unsafe integer
     - _Requirements: 4.12, 4.13_
 
-  - [ ] 8.3 Implement the playback reducer
+  - [x] 8.3 Implement the playback reducer
     - Create `web/src/render/playback.ts` with the pure `apply(state, event)`: only `Hybrid` events change the map; `frequencies` sets glow, `pick` locks and fades `removed`, `simulate` shows the stitch outline; events of other competitors only update the status line
     - _Requirements: 2.9, 3.2, 3.3, 3.4, 3.5_
 
@@ -190,19 +190,19 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Event order, coalescing, other competitors ignored for the map, skip end state equals full playback end state
     - _Requirements: 3.7_
 
-  - [ ] 8.5 Add the buffer and rAF loop
+  - [x] 8.5 Add the buffer and rAF loop
     - In `playback.ts` and `client.ts`: read the buffer in a `requestAnimationFrame` loop, due events from the speed setting, at most one dynamic redraw per frame, loop stops when drained, no tween active and result received
     - Skip jumps to the end of the buffer and applies the final state without tweens
     - _Requirements: 3.2, 3.6, 3.7, 11.1_
 
-  - [ ] 8.6 Build the Run_Screen
+  - [x] 8.6 Build the Run_Screen
     - Create `web/src/screens/run.ts`: speed control, skip button, plain-words status line, error message with a back button on a run `error`
     - With `prefers-reduced-motion: reduce`: static steps, one state per Round with a "next round" button, no glow transitions or fades
     - Show the Scoreboard when the run finishes
     - _Requirements: 3.1, 3.6, 3.7, 3.8, 3.9_
 
-- [ ] 9. Scoreboard
-  - [ ] 9.1 Implement the Scoreboard model
+- [x] 9. Scoreboard
+  - [x] 9.1 Implement the Scoreboard model
     - Create `web/src/scoreboard-model.ts`: four cards (atoms alone, atoms + rules (hybrid), annealing + rules, coin flip + rules) with picks per Round, total, Quantum_Share (also 0%), `atoms_not_needed` text, splits, skipped tiles and mismatches (also 0), gaps for atoms alone, label, "tie" for equal totals, an `{error}` entry as plain words with no numbers
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.8_
 
@@ -210,7 +210,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Four cards, zero counts shown, `atoms_not_needed` text, ties, error entry, no banned words (faster, speed, wins, winner, beats) in rendered text
     - _Requirements: 4.7, 4.9, 12.1_
 
-  - [ ] 9.3 Build the Scoreboard screen
+  - [x] 9.3 Build the Scoreboard screen
     - Create `web/src/screens/scoreboard.ts`: one shared card component with equal visual weight and no winner styling, seed, the note "One run proves nothing.", the citation "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5", a typed seed input, and the "run again with another seed" button
     - _Requirements: 4.1, 4.6, 4.7, 4.9, 4.10, 4.11, 4.12, 4.13_
 

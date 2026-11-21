@@ -382,6 +382,132 @@
         "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
         "timestamp": 1795283340726
       }
+    ],
+    "8.1 Implement seed parsing": [
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795286118624
+      },
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795286136775
+      }
+    ],
+    "8.3 Implement the playback reducer": [
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795286137143
+      },
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795286207679
+      }
+    ],
+    "8.5 Add the buffer and rAF loop": [
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795286210037
+      },
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795286278879
+      },
+      {
+        "executionId": "6580fe1d-663d-43cf-b7ff-9dfc8b017934",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795288525117
+      },
+      {
+        "executionId": "6580fe1d-663d-43cf-b7ff-9dfc8b017934",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795289138862
+      }
+    ],
+    "8.6 Build the Run_Screen": [
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795286281323
+      },
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795287530384
+      },
+      {
+        "executionId": "6580fe1d-663d-43cf-b7ff-9dfc8b017934",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795288525003
+      },
+      {
+        "executionId": "6580fe1d-663d-43cf-b7ff-9dfc8b017934",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795289138391
+      }
+    ],
+    "8. Run screen and playback": [
+      {
+        "executionId": "65226478-5213-4940-8874-f5dac89cfa58",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795287530548
+      }
+    ],
+    "9.1 Implement the Scoreboard model": [
+      {
+        "executionId": "b196005e-3a38-4d01-a18f-846476b84340",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795290065125
+      },
+      {
+        "executionId": "b196005e-3a38-4d01-a18f-846476b84340",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795290347518
+      }
+    ],
+    "9.3 Build the Scoreboard screen": [
+      {
+        "executionId": "b196005e-3a38-4d01-a18f-846476b84340",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795290348023
+      },
+      {
+        "executionId": "b196005e-3a38-4d01-a18f-846476b84340",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795290729059
+      },
+      {
+        "executionId": "6d635142-0946-4344-a547-9d86908a3fb8",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795290925609
+      },
+      {
+        "executionId": "6d635142-0946-4344-a547-9d86908a3fb8",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795291330333
+      },
+      {
+        "executionId": "19ab46e4-2bf6-4b22-a53d-4f278694e7f3",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795291696177
+      },
+      {
+        "executionId": "19ab46e4-2bf6-4b22-a53d-4f278694e7f3",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795299651376
+      }
+    ],
+    "9. Scoreboard": [
+      {
+        "executionId": "b196005e-3a38-4d01-a18f-846476b84340",
+        "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
+        "timestamp": 1795290729190
+      }
     ]
   }
 }

@@ -12,9 +12,16 @@ export type RunEvent = ProgressRunPayload;
 /** Run progress events, in arrival order. Cleared by startRun(). */
 export const buffer: RunEvent[] = [];
 
+/** Finished Competitors of the current run, by engine name. Cleared by start(). */
+export const doneCompetitors: Record<string, any> = {};
+
 export interface ClientCallbacks {
   onLoadProgress?: (p: ProgressLoadPayload) => void;
+  /** Called after a run progress event was appended to `buffer`. */
+  onRunEvent?: (ev: RunEvent) => void;
   onReady?: (p: ReadyPayload) => void;
+  /** One Competitor finished; its entry is also in `doneCompetitors`. */
+  onCompetitorDone?: (competitor: string, result: any) => void;
   onResult?: (result: any) => void;
   onError?: (e: ErrorPayload) => void;
 }
@@ -48,11 +55,18 @@ export function createClient(
     const msg = ev.data;
     switch (msg.type) {
       case "progress":
-        if (isRunProgress(msg.payload)) buffer.push(msg.payload);
+        if (isRunProgress(msg.payload)) {
+          buffer.push(msg.payload);
+          cb.onRunEvent?.(msg.payload);
+        }
         else cb.onLoadProgress?.(msg.payload);
         break;
       case "ready":
         cb.onReady?.(msg.payload);
+        break;
+      case "competitor_done":
+        doneCompetitors[msg.payload.competitor] = msg.payload.result;
+        cb.onCompetitorDone?.(msg.payload.competitor, msg.payload.result);
         break;
       case "result":
         cb.onResult?.(msg.payload);
@@ -70,6 +84,7 @@ export function createClient(
   return {
     start(payload: StartPayload) {
       buffer.length = 0;
+      for (const k of Object.keys(doneCompetitors)) delete doneCompetitors[k];
       const m: ToWorkerMessage = { type: "start", payload };
       worker.postMessage(m);
     },

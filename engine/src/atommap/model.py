@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 MODES = ("channel_plan", "place")
-COMPETITOR_NAMES = ("Atoms_Alone", "Hybrid", "Annealing_Rules", "Coin_Flip_Rules")
+COMPETITOR_NAMES = ("Hybrid", "Atoms_Alone", "Annealing_Rules", "Coin_Flip_Rules")
 
 
 class ValidationError(ValueError):

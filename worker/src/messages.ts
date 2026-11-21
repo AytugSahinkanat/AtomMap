@@ -27,13 +27,23 @@ interface ProgressLoadPayload {
 // loading progress has "stage" instead.
 interface ProgressRunPayload {
   type: "run";
-  kind: "simulate" | "pick";
+  kind: "simulate" | "pick" | "frequencies";
   competitor: string;
   round: number;
   step: number;
-  tile: string[] | null; // simulate: ids sent to the simulator; pick: null
+  tile?: string[] | null; // simulate: ids sent to the simulator; otherwise null or absent
   picked?: string[]; // pick only
   source?: string; // pick only: "atoms" | "annealing" | "coin flip" | "rule"
+  removed?: string[]; // pick only: neighbours removed by the pick
+  frequencies?: Record<string, number>; // frequencies only: id -> how often picked in the shots (0..1)
+}
+
+// Sent as soon as one Competitor has finished, before the final "result".
+// `result` is the same entry that later sits in result.competitors[competitor]
+// (a competitor result object, or {error: text}).
+interface CompetitorDonePayload {
+  competitor: string;
+  result: any;
 }
 
 interface ReadyPayload {
@@ -55,5 +65,6 @@ type ToWorkerMessage = { type: "start"; payload: StartPayload };
 type FromWorkerMessage =
   | { type: "progress"; payload: ProgressLoadPayload | ProgressRunPayload }
   | { type: "ready"; payload: ReadyPayload }
+  | { type: "competitor_done"; payload: CompetitorDonePayload } // one Competitor finished
   | { type: "result"; payload: any } // the "result" object of atommap.api.run, as parsed
   | { type: "error"; payload: ErrorPayload };

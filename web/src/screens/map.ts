@@ -10,7 +10,12 @@ import { DynamicLayer } from "../render/dynamic-layer";
 import { StaticLayer, toScreenX, toScreenY, type StaticScene } from "../render/static-layer";
 import { DEFAULT_SEED, PLACES, type PlaceName } from "../settings";
 import { state, subscribe, update } from "../state";
-import { buildRequest, DEFAULT_PLACE, parseSeed, placeView, type MapChoice } from "./map-request";
+import { buildRequest, DEFAULT_PLACE, placeView, type MapChoice } from "./map-request";
+import { buffer, doneCompetitors } from "../client";
+import { parseSeed } from "../seed";
+import { createRunView, type RunView } from "./run";
+import { createScoreboard } from "./scoreboard";
+import { renderLegend } from "./legend";
 
 interface PlaceSelector {
   /** The picker (radios only), for the toolbar. */
@@ -118,6 +123,18 @@ function createPlaceSelector(): PlaceSelector {
 export interface MapScreenDeps {
   /** Send a run request to the worker. */
   start(payload: StartPayload): void;
+  /** The Run_Screen finished with a result (state transition to the scoreboard). */
+  onFinished(result: unknown): void;
+}
+
+export interface MapScreen {
+  el: HTMLElement;
+  /** Run_Screen controller. main.ts forwards worker events to it. */
+  run: RunView;
+  /** Back to the map controls after a run (error or scoreboard back button). */
+  showMap(): void;
+  /** One Competitor finished (client `onCompetitorDone`). Fills in its card. */
+  competitorDone(competitor: string): void;
 }
 
 type Mode = "channel_plan" | "place";
@@ -158,7 +175,7 @@ function radioGroup(
   };
 }
 
-export function createMapScreen(deps: MapScreenDeps): HTMLElement {
+export function createMapScreen(deps: MapScreenDeps): MapScreen {
   const el = document.createElement("main");
   el.className = "screen map";
   const h = document.createElement("h1");
@@ -264,7 +281,88 @@ export function createMapScreen(deps: MapScreenDeps): HTMLElement {
   noData.setAttribute("role", "status");
   noData.hidden = true;
 
-  el.append(h, tagline, toolbar, placeSelector.info, label, message, noData, wrap);
+  // Scoreboard panel next to the map. It opens when a run starts and fills in
+  // card by card. Its seed input and run-again button work only after the run.
+  const scoreboard = createScoreboard({
+    onRunAgain: (seed) => startRun(seed),
+    onBack: () => showMap(),
+    announce: (m) => a11y.announce(m),
+  });
+  const legendBox = document.createElement("div");
+  legendBox.className = "map-legend-box";
+  legendBox.hidden = true;
+  const mapCol = document.createElement("div");
+  mapCol.className = "map-col";
+  // Under the map (room there at 1366x768): the one-run note, the citation and the run-again form.
+  const under = document.createElement('div');
+  under.className = 'map-under';
+  for (const q of ['.score-note-one', '.score-cite', '.score-again']) {
+    const node = scoreboard.el.querySelector(q);
+    if (node) under.append(node);
+  }
+  mapCol.append(wrap, under);
+  // The legend sits in the scoreboard column, under the cards.
+  scoreboard.el.querySelector('.score-cards')?.after(legendBox);
+  const mapRow = document.createElement("div");
+  mapRow.className = "map-row";
+  mapRow.append(mapCol, scoreboard.el);
+
+  let running = false;
+  /** Seed and mode of the run on screen (for the scoreboard). */
+  let runSeed = DEFAULT_SEED;
+  /**
+   * Hybrid card choice: its numbers show once Hybrid has finished AND the
+   * playback has drained every Hybrid event, so the card never spoils the
+   * animation. `hybridEnd` is the buffer length when Hybrid's competitor_done
+   * arrived (all Hybrid events are before it).
+   */
+  let hybridEnd: number | null = null;
+
+  /** Finished Competitors that may be shown now. */
+  function visibleCompetitors(): Record<string, unknown> {
+    const out: Record<string, unknown> = { ...doneCompetitors };
+    const hybridShown = hybridEnd !== null && run.cursor >= hybridEnd;
+    if (!hybridShown) delete out.Hybrid;
+    return out;
+  }
+
+  function refreshScoreboard(): void {
+    if (!scoreboard.el.hidden && running) scoreboard.update(visibleCompetitors());
+  }
+
+  const run = createRunView({
+    buffer,
+    reducedMotion: () => reducedQuery?.matches ?? false,
+    onFinished: (result) => {
+      running = false;
+      runButton.disabled = choice === null;
+      const competitors = (result as { competitors?: Record<string, unknown> } | null)?.competitors ?? {};
+      scoreboard.finish(competitors);
+      legendBox.replaceChildren(renderLegend(mode));
+      legendBox.hidden = false;
+      layout(); // the run bar collapsed: use the room for the map; the final state is redrawn by resync()
+      deps.onFinished(result);
+    },
+    onProgress: () => refreshScoreboard(),
+    onBack: () => showMap(),
+    onStopped: () => {
+      running = false;
+      runButton.disabled = choice === null;
+      scoreboard.hide();
+    },
+  });
+
+  el.append(h, tagline, toolbar, placeSelector.info, label, message, noData, run.el, mapRow);
+
+  function showMap(): void {
+    run.hide();
+    running = false;
+    scoreboard.hide();
+    legendBox.hidden = true;
+    toolbar.hidden = false;
+    tagline.hidden = false;
+    update({ screen: "map" });
+  }
 
   // ---- data and scene ----
   let hero: HeroFixture | null = null;
@@ -313,7 +411,9 @@ export function createMapScreen(deps: MapScreenDeps): HTMLElement {
     const spanX = Math.max(...xs) - Math.min(...xs) || 1;
     const spanY = Math.max(...ys) - Math.min(...ys) || 1;
     // Keep the map and the toolbar on one laptop screen (about 1366x768).
-    const maxH = Math.max(240, Math.min(640, window.innerHeight - 250));
+    // Space below the map's top edge, minus a small bottom margin. Falls back to a fixed offset before the first paint.
+    const top = wrap.hidden ? 0 : wrap.getBoundingClientRect().top;
+    const maxH = Math.max(240, Math.min(640, top > 0 ? window.innerHeight - top - 24 : window.innerHeight - 250));
     const height = Math.round(Math.min(maxH, Math.max(240, (width * spanY) / spanX)));
     wrap.style.height = `${height}px`;
     const dpr = window.devicePixelRatio || 1;
@@ -333,6 +433,7 @@ export function createMapScreen(deps: MapScreenDeps): HTMLElement {
       indexById = new Map(scene.points.map((p, i) => [p.id, i]));
       a11y.setPoints(screen);
       dynamicLayer.draw(true);
+      run.resync(); // the final map survives a new size (finished panel opens)
     }
   }
 
@@ -385,7 +486,7 @@ export function createMapScreen(deps: MapScreenDeps): HTMLElement {
       noData.hidden = true;
       wrap.hidden = hero === null;
     }
-    runButton.disabled = choice === null;
+    runButton.disabled = choice === null || running;
     layout();
   }
 
@@ -399,17 +500,38 @@ export function createMapScreen(deps: MapScreenDeps): HTMLElement {
   });
 
   // ---- run ----
+  function startRun(seedValue: number): void {
+    if (run.active || running) return;
+    if (choice === null || scene === null) return;
+    showMessage(null);
+    const ids = scene.points.map((p) => p.id);
+    dynamicLayer.setFocus(-1);
+    toolbar.hidden = true;
+    tagline.hidden = true;
+    running = true;
+    runButton.disabled = true;
+    runSeed = seedValue;
+    seedInput.value = String(seedValue);
+    hybridEnd = null;
+    legendBox.hidden = true;
+    update({ screen: "run", result: null });
+    // The panel opens now, all cards "Computing…". Opening it narrows the map,
+    // so lay the map out before the first event arrives.
+    scoreboard.begin(runSeed, mode);
+    run.begin({ layer: dynamicLayer, ids, announce: (m) => a11y.announce(m) });
+    layout(); // after the run bar is shown, so the map height accounts for it
+    deps.start(buildRequest(choice, seedValue));
+  }
+
   runButton.addEventListener("click", () => {
+    if (run.active || running) return;
     const seed = parseSeed(seedInput.value);
-    if (seed === null) {
-      showMessage("The seed must be a whole number, such as 1 or -7. No run was started.");
+    if (!seed.ok) {
+      showMessage(`${seed.error} No run was started.`);
       seedInput.focus();
       return;
     }
-    if (choice === null) return;
-    showMessage(null);
-    a11y.announce(`Run started with seed ${seed}.`);
-    deps.start(buildRequest(choice, seed));
+    startRun(seed.value);
   });
 
   const ro = new ResizeObserver(() => {
@@ -432,5 +554,14 @@ export function createMapScreen(deps: MapScreenDeps): HTMLElement {
     },
   );
 
-  return el;
+  return {
+    el,
+    run,
+    showMap,
+    competitorDone(competitor) {
+      if (!running) return;
+      if (competitor === "Hybrid") hybridEnd = buffer.length;
+      refreshScoreboard();
+    },
+  };
 }

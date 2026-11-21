@@ -99,8 +99,16 @@ def run(
     request_json: str,
     emit: Optional[Callable[[dict], None]] = None,
     simulator: Optional[Simulator] = None,
+    on_done: Optional[Callable[[dict], None]] = None,
 ) -> str:
-    """Validate the request, run the four Competitors, return the JSON text."""
+    """Validate the request, run the four Competitors, return the JSON text.
+
+    `on_done(event)` (optional) gets one dict per finished Competitor, as soon
+    as it finishes: {"type": "competitor_done", "competitor": name,
+    "result": <the entry that is later in result.competitors[name]>}.
+    It is a separate callback from `emit`, so `emit` sees only run events.
+    The final result text is unchanged by it.
+    """
     try:
         try:
             raw = _parse(request_json)
@@ -122,6 +130,14 @@ def run(
             kwargs["names"] = request.competitors
         if emit is not None:
             kwargs["on_event"] = lambda ev: _emit(emit, ev)
+        if on_done is not None:
+            def _done(name: str, entry: dict) -> None:
+                bad_entry = _bad_field(entry, f"result.competitors.{name}")
+                if bad_entry:
+                    raise ValueError(f"Field {bad_entry} cannot be serialized to JSON")
+                on_done({"type": "competitor_done", "competitor": name, "result": entry})
+
+            kwargs["on_done"] = _done
         result = run_competitors(request, simulator, **kwargs).to_dict()
         payload = {"ok": True, "result": result}
         bad = _bad_field(result, "result")

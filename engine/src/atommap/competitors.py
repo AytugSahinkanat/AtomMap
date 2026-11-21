@@ -32,7 +32,8 @@ ATOMS_ALONE = "Atoms_Alone"
 HYBRID = "Hybrid"
 ANNEALING_RULES = "Annealing_Rules"
 COIN_FLIP_RULES = "Coin_Flip_Rules"
-COMPETITORS = (ATOMS_ALONE, HYBRID, ANNEALING_RULES, COIN_FLIP_RULES)
+# Hybrid first: the UI animates its events while the others compute silently.
+COMPETITORS = (HYBRID, ATOMS_ALONE, ANNEALING_RULES, COIN_FLIP_RULES)
 
 RESULT_LABEL = "simulation"
 CITATION = "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5"
@@ -133,10 +134,14 @@ def run_competitors(
     names: tuple[str, ...] = COMPETITORS,
     providers: Optional[dict[str, object]] = None,
     on_event: Optional[Callable[[dict], None]] = None,
+    on_done: Optional[Callable[[str, dict], None]] = None,
 ) -> Result:
     """Run the Competitors on the same request; a failing one gets an error entry.
 
-    An exception raised by `on_event` is not a Competitor failure: it propagates.
+    An exception raised by `on_event` or `on_done` is not a Competitor failure:
+    it propagates. `on_done(name, entry)` is called as soon as one Competitor
+    has finished, with the same dict that ends up in `result.competitors[name]`
+    (a result dict or `{"error": text}`). It never changes results.
     """
     providers = providers or {}
     out: dict = {}
@@ -149,4 +154,7 @@ def run_competitors(
             raise exc.original from None
         except Exception as exc:  # noqa: BLE001 - one Competitor must not sink the others
             out[name] = {"error": f"{type(exc).__name__}: {exc}"}
+        if on_done is not None:
+            v = out[name]
+            on_done(name, v.to_dict() if isinstance(v, CompetitorResult) else v)
     return Result(meta={"citation": CITATION, "label": RESULT_LABEL}, competitors=out)

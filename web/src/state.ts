@@ -3,7 +3,7 @@
 import type { PlaceFixture } from "./data/fixtures";
 import type { PlaceName } from "./settings";
 
-export type ScreenName = "loading" | "map";
+export type ScreenName = "loading" | "map" | "run" | "scoreboard";
 
 export interface AppState {
   screen: ScreenName;
@@ -52,4 +52,12 @@ export function update(patch: Partial<AppState>): void {
 export function applyLoadProgress(p: ProgressLoadPayload): void {
   const percent = Math.max(state.loadPercent, Math.min(100, Math.max(0, p.percent)));
   update({ loadPercent: percent, loadStage: p.stage });
+}
+
+/**
+ * A run finished: keep the result and move to the scoreboard screen. The
+ * scoreboard (task 9.3) plugs in by reacting to `screen === "scoreboard"`.
+ */
+export function onFinished(result: unknown): void {
+  update({ result, screen: "scoreboard" });
 }

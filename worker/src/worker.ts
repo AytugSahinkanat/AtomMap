@@ -291,7 +291,12 @@ import json
 import atommap_run_host as rh
 from atommap.api import run as _run
 
-_run(_atommap_request, lambda ev: rh.emit(json.dumps(ev)))
+_run(
+    _atommap_request,
+    lambda ev: rh.emit(json.dumps(ev)),
+    None,
+    lambda ev: rh.done(json.dumps(ev)),
+)
 `;
 
 function runLog(text: string): void {
@@ -311,6 +316,11 @@ async function handleStart(request: unknown): Promise<void> {
     const py = pyRef;
     py.registerJsModule("atommap_run_host", {
       emit: (eventJson: string) => post({ type: "progress", payload: JSON.parse(eventJson) }),
+      // One message per finished Competitor, passed on unchanged.
+      done: (eventJson: string) => {
+        const ev = JSON.parse(eventJson);
+        post({ type: "competitor_done", payload: { competitor: ev.competitor, result: ev.result } });
+      },
     });
     py.globals.set("_atommap_request", JSON.stringify(request));
     const text: string = await py.runPythonAsync(RUN_GLUE);

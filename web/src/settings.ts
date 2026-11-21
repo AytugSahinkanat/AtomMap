@@ -7,7 +7,7 @@ export const DEFAULT_SEED = 1;
 export const SPEED_STEPS: readonly number[] = [2, 5, 10, 25, 60];
 
 /** Default speed, one of SPEED_STEPS. */
-export const DEFAULT_SPEED = 10;
+export const DEFAULT_SPEED = 25;
 
 // Radio_Model:
 // Received power dBm = 10 - 40 - 30*log10(d) - wall losses
