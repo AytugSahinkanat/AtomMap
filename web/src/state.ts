@@ -1,5 +1,8 @@
 // App state. UI state only, no MIS logic.
 
+import type { PlaceFixture } from "./data/fixtures";
+import type { PlaceName } from "./settings";
+
 export type ScreenName = "loading" | "map";
 
 export interface AppState {
@@ -9,6 +12,15 @@ export interface AppState {
   loadStage: LoadStage | null;
   /** Plain-words loading error, or null. */
   loadError: string | null;
+  /** Selected Place_Mode preset, or null before the first choice. */
+  placeName: PlaceName | null;
+  /** The loaded fixture of the selected place, or null. */
+  placeFixture: PlaceFixture | null;
+  placeLoading: boolean;
+  /** Message naming the file that failed to load, or null. */
+  placeError: string | null;
+  /** Result of the previous run. Cleared when the place changes. */
+  result: unknown | null;
 }
 
 export const state: AppState = {
@@ -16,6 +28,11 @@ export const state: AppState = {
   loadPercent: 0,
   loadStage: null,
   loadError: null,
+  placeName: null,
+  placeFixture: null,
+  placeLoading: false,
+  placeError: null,
+  result: null,
 };
 
 type Listener = (s: Readonly<AppState>) => void;

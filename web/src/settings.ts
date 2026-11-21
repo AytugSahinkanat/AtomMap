@@ -40,3 +40,17 @@ export const WALL_LOSS_DB = {
 
 /** Accent colour, used for focus rings. */
 export const ACCENT_COLOUR = '#7f77dd';
+
+/** Place_Mode presets. `name` is the file suffix, `file` is served from fixtures/. */
+export const PLACES = [
+  { label: 'Kadikoy', name: 'kadikoy', file: 'place_kadikoy.json' },
+  { label: 'NYC Midtown', name: 'midtown', file: 'place_midtown.json' },
+] as const;
+
+export type PlaceName = (typeof PLACES)[number]['name'];
+
+/** Walking rule for Place_Mode, in metres. */
+export const PLACE_R_M = 150;
+
+/** Folder the fixtures are served from, relative to the page (same origin). */
+export const FIXTURES_DIR = 'fixtures/';

@@ -90,13 +90,13 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Power = 10 - 40 - 30*log10(d) minus crossed wall losses (walls on only); edge when power > Signal_Threshold, computed inside as `receivedPowerDbm(r)` from the fixture's r (about -69.03 dBm for r = 20 m); proper segment intersection; pairs once, sorted by id
     - _Requirements: 5.3, 5.4, 5.5, 5.6_
 
-  - [ ]* 5.3 Write property test: walls never add an edge
+  - [x] 5.3 Write property test: walls never add an edge
     - **Property 1: Turning walls on never adds an edge**
     - **Validates: Requirements 5.3, 5.4, 5.5**
     - `vitest` with `fast-check`, at least 100 runs, in `web/src/edges/walls.property.test.ts`
     - Comment `Feature: ui, Property 1: Turning walls on never adds an edge`
 
-  - [ ]* 5.4 Write unit tests for the wall edge builder
+  - [x] 5.4 Write unit tests for the wall edge builder
     - Concrete and drywall loss, a pair near 19.95 m, walls on and off, the gap between 19.95 m and the Hero_Map_R of 20 m allowed
     - _Requirements: 12.1, 12.2_
 
@@ -105,17 +105,17 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Used only for drawing; the Place request sends `graph:{r:150}` without edges
     - _Requirements: 6.3_
 
-  - [ ]* 5.6 Write unit tests for the straight-line builder
+  - [x] 5.6 Write unit tests for the straight-line builder
     - Boundary distance, pair order, no duplicates
     - _Requirements: 12.1_
 
-- [ ] 6. Place data
-  - [ ] 6.1 Write the core of `scripts/fetch_place.py`
+- [x] 6. Place data
+  - [x] 6.1 Write the core of `scripts/fetch_place.py`
     - Standard library only
     - Pure functions: equirectangular projection around the cafe centroid, street graph build, snap of each cafe to the nearest street segment with virtual nodes, bounded Dijkstra, walking edges where offset_i + path + offset_j <= 150, stable ids `cafe000`...
     - _Requirements: 6.2, 6.4_
 
-  - [ ] 6.2 Add arguments, fetch and write step to the script
+  - [x] 6.2 Add arguments, fetch and write step to the script
     - `parse_args`: `name` (lowercase letters, digits, underscore) and `bbox` as `south,west,north,east`; check four numbers, south < north, west < east, latitude within ±90, longitude within ±180; exit with a plain message before any network call
     - One Overpass request limited to the bbox for cafes (`nwr`, `out center`) and walkable ways; constants for endpoint, filters, limit 150 and minimum 20 (only catches a broken or empty download, not a quality bar; Midtown had about 150 cafes in tests)
     - Store `name`, `bbox`, `source` (attribution, licence, licence_url, endpoint, query, `osm_data_timestamp`, `fetched_at`, script, args) and `counts` including the real cafe count and `max_snap_m`
@@ -130,7 +130,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Fewer than 20 cafes aborts without writing a file (fetch function replaced by a stub)
     - _Requirements: 6.2, 6.8, 6.9, 12.1_
 
-  - [ ] 6.4 Add the PlaceFixture loader with per-place caching
+  - [x] 6.4 Add the PlaceFixture loader with per-place caching
     - Add the `PLACES` constant (Kadikoy, NYC Midtown: label, name, file) to `web/src/settings.ts`
     - Create `web/src/data/fixtures.ts`: load and validate the hero and walls fixtures; `loadPlace(name)` fetches `place_<name>.json` from the same origin the first time that place is selected, validates the `PlaceFixture` shape, and caches it per place
     - A missing or malformed file gives an error naming that file; the other place stays usable
@@ -144,12 +144,12 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Loader tests with a stubbed fetch: caching per place, switching places, missing file and wrong shape give an error naming the file
     - _Requirements: 6.7, 6.9, 12.1_
 
-  - [ ] 6.6 Add the preset selector to the Map_Screen
+  - [x] 6.6 Add the preset selector to the Map_Screen
     - In `web/src/screens/map.ts`, show the two presets ("Kadikoy", "NYC Midtown") as a keyboard-operable selector in Place mode, labels from `PLACES`
     - Selecting a place calls `loadPlace`, shows the cached or newly loaded map and clears the previous result; on a load error show the message naming the file and keep the other place usable
     - _Requirements: 6.1, 6.4, 11.3_
 
-  - [ ] 6.7 Show attribution, cafe count and fetch date
+  - [x] 6.7 Show attribution, cafe count and fetch date
     - In `web/src/screens/map.ts`, for the selected place show "© OpenStreetMap contributors" with the ODbL link (`source.licence_url`), the real cafe count (`counts.points`) and the fetch date (`source.fetched_at`), all read from that place's file
     - _Requirements: 6.5, 6.7_
 

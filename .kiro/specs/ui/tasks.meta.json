@@ -214,6 +214,109 @@
         "chatSessionId": "sess_e5d2bf12-c811-44bc-a51b-4339b7543ad2",
         "timestamp": 1795210267856
       }
+    ],
+    "5.3 Write property test: walls never add an edge": [
+      {
+        "executionId": "7e87c9de-dfd1-47a8-b98c-1f6118d9a0d3",
+        "chatSessionId": "sess_c9054eae-1b3a-46f5-b369-b0a461afb85a",
+        "timestamp": 1795213164874
+      },
+      {
+        "executionId": "7e87c9de-dfd1-47a8-b98c-1f6118d9a0d3",
+        "chatSessionId": "sess_c9054eae-1b3a-46f5-b369-b0a461afb85a",
+        "timestamp": 1795213207425
+      }
+    ],
+    "5.4 Write unit tests for the wall edge builder": [
+      {
+        "executionId": "03a63b77-c34b-46a8-86a4-c86472b9b953",
+        "chatSessionId": "sess_5ae505a6-cd1c-4b54-8248-1a692d6e56f4",
+        "timestamp": 1795213245356
+      },
+      {
+        "executionId": "03a63b77-c34b-46a8-86a4-c86472b9b953",
+        "chatSessionId": "sess_5ae505a6-cd1c-4b54-8248-1a692d6e56f4",
+        "timestamp": 1795213288283
+      }
+    ],
+    "5.6 Write unit tests for the straight-line builder": [
+      {
+        "executionId": "b9159201-f459-4d7b-9e9e-b93ea0a6ac6e",
+        "chatSessionId": "sess_3041cc6a-50c6-4854-aad6-62a01fcc7c65",
+        "timestamp": 1795213311385
+      },
+      {
+        "executionId": "b9159201-f459-4d7b-9e9e-b93ea0a6ac6e",
+        "chatSessionId": "sess_3041cc6a-50c6-4854-aad6-62a01fcc7c65",
+        "timestamp": 1795213348481
+      }
+    ],
+    "6.1 Write the core of `scripts/fetch_place.py`": [
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795213421216
+      },
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795213536386
+      }
+    ],
+    "6.4 Add the PlaceFixture loader with per-place caching": [
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795213421632
+      },
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795213536231
+      }
+    ],
+    "6.2 Add arguments, fetch and write step to the script": [
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795213538571
+      },
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795216793768
+      }
+    ],
+    "6.6 Add the preset selector to the Map_Screen": [
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795216800059
+      },
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795216839834
+      }
+    ],
+    "6.7 Show attribution, cafe count and fetch date": [
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795216840318
+      },
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795216863199
+      }
+    ],
+    "6. Place data": [
+      {
+        "executionId": "5082da84-bbf7-4371-a5d0-94383faba172",
+        "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
+        "timestamp": 1795216863382
+      }
     ]
   }
 }
