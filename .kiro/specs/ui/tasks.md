@@ -153,21 +153,21 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - In `web/src/screens/map.ts`, for the selected place show "© OpenStreetMap contributors" with the ODbL link (`source.licence_url`), the real cafe count (`counts.points`) and the fetch date (`source.fetched_at`), all read from that place's file
     - _Requirements: 6.5, 6.7_
 
-- [ ] 7. Map screen
-  - [ ] 7.1 Draw the static canvas layer
+- [x] 7. Map screen
+  - [x] 7.1 Draw the static canvas layer
     - Create `web/src/render/static-layer.ts`: streets, walls (concrete and drywall distinct) and conflict edges, one batched path per style; redraw only on map, toggle, size or pixel ratio change
     - _Requirements: 2.2, 2.8, 5.2, 6.4_
 
-  - [ ] 7.2 Draw the dynamic canvas layer
+  - [x] 7.2 Draw the dynamic canvas layer
     - Create `web/src/render/sprites.ts` (8 glow sprites, cached `Path2D` shapes: circle for channel 1, triangle for 6, square for 11, hollow circle for 5 GHz only) and `web/src/render/dynamic-layer.ts`
     - Per-point typed arrays (`glow`, `lockT`, `fadeT`, `status`); colour and shape both carry the channel; rule picks drawn as an outlined lock with a "rule" tag
     - _Requirements: 2.1, 2.3, 2.4, 2.5, 3.3, 3.5, 11.5_
 
-  - [ ] 7.3 Add the accessibility layer
+  - [x] 7.3 Add the accessibility layer
     - Create `web/src/render/a11y.ts`: hidden `<ul>` of Points in id order with one roving tabindex, arrow keys move to the nearest Point on screen, focus ring on the dynamic canvas, one `aria-live="polite"` region for Round and run changes, `aria-label` on the map
     - _Requirements: 11.3, 11.4_
 
-  - [ ] 7.4 Build the Map_Screen
+  - [x] 7.4 Build the Map_Screen
     - Create `web/src/screens/map.ts`: Hero_Map in Channel_Plan (3 Rounds) with the "walls on / off" toggle, a place map in Place (1 Round) with the "walking / straight line" toggle, and the run button
     - Build the request: Channel_Plan sends points, mode, seed, `graph:{r, edges}` from the wall builder with r from the fixture; Place walking sends the place's `walking_edges` with r 150; Place straight line sends `graph:{r:150}` only
     - Place mode loads its place through `loadPlace` (Task 6.4); the preset selector is added in Task 6.6, attribution and counts in Task 6.7

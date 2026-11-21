@@ -23,7 +23,7 @@ export const client = createClient({
   onLoadProgress: (p) => applyLoadProgress(p),
   onReady: () => {
     update({ screen: "map", loadPercent: 100 });
-    show(createMapScreen());
+    show(createMapScreen({ start: (payload) => client.start(payload) }));
   },
   onError: (e) => {
     // Only loading errors belong to this screen. Run errors are handled later.

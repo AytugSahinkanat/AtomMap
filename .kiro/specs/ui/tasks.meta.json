@@ -317,6 +317,71 @@
         "chatSessionId": "sess_29d19838-1c64-42d0-85ea-2c843f2f9b38",
         "timestamp": 1795216863382
       }
+    ],
+    "7.1 Draw the static canvas layer": [
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795282678076
+      },
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283206339
+      }
+    ],
+    "7.2 Draw the dynamic canvas layer": [
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795282678244
+      },
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283206926
+      }
+    ],
+    "7.3 Add the accessibility layer": [
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795282678371
+      },
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283207359
+      }
+    ],
+    "7.4 Build the Map_Screen": [
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283209534
+      },
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283340625
+      },
+      {
+        "executionId": "08fd5539-ef4e-417c-bf7b-0629b0465c89",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283550108
+      },
+      {
+        "executionId": "08fd5539-ef4e-417c-bf7b-0629b0465c89",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283659562
+      }
+    ],
+    "7. Map screen": [
+      {
+        "executionId": "9f160edb-abc4-4420-9f79-fc53f0b5d176",
+        "chatSessionId": "sess_f26cf3db-9939-405e-aedf-b1494e5a065b",
+        "timestamp": 1795283340726
+      }
     ]
   }
 }
