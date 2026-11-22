@@ -18,7 +18,6 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 - **Map_Screen**: The screen that shows the Points, their conflicts and the picks per Round.
 - **Run_Screen**: The view shown while a run is in progress.
 - **Scoreboard**: The view that shows the four Competitors side by side.
-- **Tutor_Panel**: A placeholder panel reserved for the later tutor spec.
 - **Hero_Map**: The wifi hall fixture with 70 access points, as defined in the engine spec.
 - **Wall**: A line segment in the Hero_Map fixture, either concrete (12 dB loss) or drywall (4 dB loss).
 - **Radio_Model**: Received power in dBm = 10 - 40 - 30 * log10(d in metres) - the sum of the losses of the Walls crossed by the straight line between two APs. Pt is 10 dBm, path loss at 1 m is 40 dB and the exponent is 3. The Wall term is included only while the walls toggle is on.
@@ -159,13 +158,13 @@ This requirement is the first to be cut if time runs out.
 2. WHERE the Custom_Map feature is included, THE UI SHALL let the visitor choose r in metres and run the Custom_Map with that r as the Conflict_Graph definition.
 3. WHERE the Custom_Map feature is included, IF an uploaded file cannot be read, THEN THE UI SHALL show the reason in plain words and keep the current map.
 
-### Requirement 9: Tutor panel placeholder
+### Requirement 9: Moved to the tutor spec
 
-**User Story:** As a visitor, I want the layout to reserve space for the tutor, so that the later tutor fits without a redesign.
+**User Story:** As a visitor, I want the tutor to explain the run, so that I understand the result.
 
 #### Acceptance Criteria
 
-1. THE UI SHALL show an empty Tutor_Panel next to the Scoreboard.
+1. THE UI SHALL show the Tutor as specified in `.kiro/specs/tutor/requirements.md`, in place of the empty tutor panel of earlier versions of this spec.
 
 ### Requirement 10: Engine prerequisite (progress events)
 

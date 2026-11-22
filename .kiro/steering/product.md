@@ -36,7 +36,7 @@ The quantum share is always shown: how many picks came from the atoms.
 
 ## Later
 
-A small AI tutor on Amazon Bedrock explains each run in plain language.
+This version has no AI model. The tutor is fixed sentences filled with numbers from that run. Amazon Bedrock may later rephrase the same facts. Facts (the numbers from the run) and sentences are kept separate.
 
 ## Audience
 

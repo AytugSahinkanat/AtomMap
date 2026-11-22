@@ -95,7 +95,7 @@ All Engine work stays in the Worker (Req. 11.1). The main thread only appends ev
 - One `aria-live="polite"` region announces Round and run state changes ("Round 2 of 3 done, 21 picks"), never per event.
 - Every button, toggle and input has a visible label and focus ring (accent `#7f77dd`). The map container has an `aria-label` that states the map name, Point count and mode.
 - Channel and state shapes come from `.kiro/steering/design.md` (1 circle, 6 triangle, 11 square, 5 GHz only hollow circle) and are drawn with colour and shape. Text and background colours follow the steering palette (AA).
-- One column below a CSS width breakpoint. The Tutor_Panel is an empty `<aside aria-label="Tutor, coming later">` beside the Scoreboard (one column when narrow).
+- One column below a CSS width breakpoint.
 
 ### Edge builders
 

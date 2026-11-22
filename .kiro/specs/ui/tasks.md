@@ -243,11 +243,12 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Add CSV and GeoJSON buttons to the finished-run view, reading the Plan_Selector selection
     - _Requirements: 7.1, 7.2_
 
-- [ ] 12. Tutor placeholder and layout
-  - [ ] 12.1 Add the Tutor_Panel and responsive layout
-    - Empty `<aside aria-label="Tutor, coming later">` next to the Scoreboard; one column below the CSS breakpoint
+- [ ] 12. Responsive layout
+  - [ ] 12.1 Add the responsive layout
+    - The empty Tutor_Panel is moved to the tutor spec (`.kiro/specs/tutor/`) and is no longer built here
+    - One column below the CSS breakpoint
     - Visible focus ring (accent `#7f77dd`), visible labels on every control, AA text contrast from the steering palette, English text only
-    - _Requirements: 9.1, 11.2, 11.3, 11.4, 11.6, 11.7_
+    - _Requirements: 11.2, 11.3, 11.4, 11.6, 11.7_
 
 - [ ] 13. Custom map upload (optional, first to cut)
   - [ ]* 13.1 Implement the Custom_Map parser
@@ -337,3 +338,4 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
   ]
 }
 ```
+  
