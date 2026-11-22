@@ -13,6 +13,7 @@ import { state, subscribe, update } from "../state";
 import { buildRequest, DEFAULT_PLACE, placeView, type MapChoice } from "./map-request";
 import { buffer, doneCompetitors } from "../client";
 import { parseSeed } from "../seed";
+import { focusInside } from "../focus";
 import { createRunView, type RunView } from "./run";
 import { createScoreboard } from "./scoreboard";
 import { renderLegend } from "./legend";
@@ -285,7 +286,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   // card by card. Its seed input and run-again button work only after the run.
   const scoreboard = createScoreboard({
     onRunAgain: (seed) => startRun(seed),
-    onBack: () => showMap(),
+    onBack: () => showMap(true),
     announce: (m) => a11y.announce(m),
   });
   const legendBox = document.createElement("div");
@@ -344,7 +345,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       deps.onFinished(result);
     },
     onProgress: () => refreshScoreboard(),
-    onBack: () => showMap(),
+    onBack: () => showMap(true),
     onStopped: () => {
       running = false;
       runButton.disabled = choice === null;
@@ -354,7 +355,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
 
   el.append(h, tagline, toolbar, placeSelector.info, label, message, noData, run.el, mapRow);
 
-  function showMap(): void {
+  function showMap(fromBack = false): void {
+    const restoreFocus =
+      fromBack || focusInside(run.el, document.activeElement) || focusInside(scoreboard.el, document.activeElement);
     run.hide();
     running = false;
     scoreboard.hide();
@@ -362,6 +365,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     toolbar.hidden = false;
     tagline.hidden = false;
     update({ screen: "map" });
+    if (restoreFocus && !runButton.disabled) runButton.focus();
   }
 
   // ---- data and scene ----
@@ -413,7 +417,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     // Keep the map and the toolbar on one laptop screen (about 1366x768).
     // Space below the map's top edge, minus a small bottom margin. Falls back to a fixed offset before the first paint.
     const top = wrap.hidden ? 0 : wrap.getBoundingClientRect().top;
-    const maxH = Math.max(240, Math.min(640, top > 0 ? window.innerHeight - top - 24 : window.innerHeight - 250));
+    const maxH = Math.max(240, Math.min(640, top > 0 ? window.innerHeight - top - 40 - under.offsetHeight : window.innerHeight - 250));
     const height = Math.round(Math.min(maxH, Math.max(240, (width * spanY) / spanX)));
     wrap.style.height = `${height}px`;
     const dpr = window.devicePixelRatio || 1;

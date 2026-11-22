@@ -15,6 +15,7 @@ import {
   type PlaybackState,
 } from "../render/playback";
 import { DEFAULT_SPEED, SPEED_STEPS } from "../settings";
+import { focusInside } from "../focus";
 
 /** What the Run_Screen needs from the Map_Screen. */
 export interface RunMapHandle {
@@ -79,6 +80,7 @@ export function createRunView(deps: RunDeps): RunView {
 
   const status = document.createElement("p");
   status.className = "run-status";
+  status.tabIndex = -1;
   status.textContent = "Starting the run…";
 
   const controls = document.createElement("div");
@@ -199,6 +201,7 @@ export function createRunView(deps: RunDeps): RunView {
     finished = true;
     active = false;
     player?.stop();
+    const hadFocus = focusInside(controls, document.activeElement);
     skipButton.disabled = true;
     nextButton.disabled = true;
     controls.hidden = true; // finished: the speed/skip bar goes (display:none, so nothing focusable stays)
@@ -206,6 +209,7 @@ export function createRunView(deps: RunDeps): RunView {
     const st = currentState();
     if (st !== null) sync(st, 0, true); // draw the final map, no tweens
     status.textContent = "The run is finished. These results are a simulation.";
+    if (hadFocus) status.focus(); // the bar that held focus is gone
     map?.announce("The run is finished.");
     deps.onFinished(resultValue);
   }

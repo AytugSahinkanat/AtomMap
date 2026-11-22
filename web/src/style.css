@@ -137,3 +137,8 @@ h1 { font-weight: 500; }
 .finished-panel .score-card .score-detail, .finished-panel .score-card .score-note { margin: 0.05rem 0; }
 .finished-panel.scoreboard { flex-basis: 27rem; }
 .finished-panel .map-legend ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.1rem 0.6rem; font-size: 0.72rem; }
+
+/* Phone: the title wraps instead of running under the absolute "simulation" label */
+.finished-panel .score-card h3 { padding-right: 4.6rem; }
+.finished-panel .score-card:not(:has(.score-label)) h3 { padding-right: 0; }
+.run-status:focus { outline: none; }
