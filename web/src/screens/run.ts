@@ -45,6 +45,8 @@ export interface RunView {
   el: HTMLElement;
   /** A run starts: call before the worker start message. Resets playback. */
   begin(map: RunMapHandle): void;
+  /** Move focus to the Skip to the end button (after a run began). */
+  focusSkip(): void;
   /** Run progress events arrived. */
   wake(): void;
   /** The worker sent the result. */
@@ -309,6 +311,9 @@ export function createRunView(deps: RunDeps): RunView {
         });
         player.reset();
       }
+    },
+    focusSkip() {
+      if (!skipButton.disabled && !controls.hidden && !el.hidden) skipButton.focus();
     },
     wake() {
       if (!active) return;

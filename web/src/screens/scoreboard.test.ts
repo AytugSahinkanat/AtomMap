@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildCards, type PartialResults } from '../scoreboard-model';
-import { describeCard, type CardView } from './scoreboard';
+import { cardChanged, describeCard, type CardView } from './scoreboard';
 import { legendEntries } from './legend';
 import { DEFAULT_SPEED, SPEED_STEPS } from '../settings';
 import { finalizeState, initialState, PointStatus, apply, type PlaybackEvent } from '../render/playback';
@@ -176,5 +176,25 @@ describe('default speed', () => {
     expect(DEFAULT_SPEED).toBe(25);
     expect(SPEED_STEPS).toEqual([2, 5, 10, 25, 60]);
     expect(SPEED_STEPS).toContain(DEFAULT_SPEED);
+  });
+});
+describe('cardChanged', () => {
+  it('is true for a first draw', () => {
+    const [v] = views({});
+    expect(cardChanged(null, v)).toBe(true);
+    expect(cardChanged(undefined, v)).toBe(true);
+  });
+  it('is false for the same content, even as a fresh object', () => {
+    const a = views({ Hybrid: ready(10, 0.2) })[1];
+    const b = views({ Hybrid: ready(10, 0.2) })[1];
+    expect(a).not.toBe(b);
+    expect(cardChanged(a, b)).toBe(false);
+  });
+  it('is true when the card goes from pending to ready or the share changes', () => {
+    const pending = views({})[1];
+    const done = views({ Hybrid: ready(10, 0.2) })[1];
+    expect(cardChanged(pending, done)).toBe(true);
+    expect(cardChanged(done, views({ Hybrid: ready(10, 0.5) })[1])).toBe(true);
+    expect(cardChanged(done, views({ Hybrid: ready(10, 0.2, { splits: 1 }) })[1])).toBe(true);
   });
 });

@@ -508,6 +508,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     if (run.active || running) return;
     if (choice === null || scene === null) return;
     showMessage(null);
+    // Run and Run again get hidden or disabled below. Remember if focus was on them.
+    const hadFocus = document.activeElement === runButton || scoreboard.holdsRunFocus();
     const ids = scene.points.map((p) => p.id);
     dynamicLayer.setFocus(-1);
     toolbar.hidden = true;
@@ -524,6 +526,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     scoreboard.begin(runSeed, mode);
     run.begin({ layer: dynamicLayer, ids, announce: (m) => a11y.announce(m) });
     layout(); // after the run bar is shown, so the map height accounts for it
+    if (hadFocus) run.focusSkip();
     deps.start(buildRequest(choice, seedValue));
   }
 

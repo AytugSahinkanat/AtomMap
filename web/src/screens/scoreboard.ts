@@ -88,6 +88,12 @@ export function describeCard(card: Card, mode: ScoreboardMode): CardView {
   };
 }
 
+/** True when a card must be redrawn: first draw, or its content differs. Pure. */
+export function cardChanged(prev: CardView | null | undefined, next: CardView): boolean {
+  if (prev === null || prev === undefined) return true;
+  return JSON.stringify(prev) !== JSON.stringify(next);
+}
+
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, text?: string): HTMLElementTagNameMap[K] {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -162,6 +168,8 @@ export interface ScoreboardView {
   update(partial: PartialResults): void;
   /** The run is fully finished (result in, playback done). Enables the controls. */
   finish(partial: PartialResults): void;
+  /** True when focus sits on a control that `begin` disables (seed input, run again). */
+  holdsRunFocus(): boolean;
   /** The run stopped with an error: panel hidden, nothing partial stays. */
   hide(): void;
 }
@@ -211,6 +219,8 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
 
   let mode: ScoreboardMode = "channel_plan";
   let shown = new Set<string>();
+  let views: CardView[] = [];
+  let nodes: HTMLElement[] = [];
 
   function setControls(enabled: boolean): void {
     seedInput.disabled = !enabled;
@@ -220,7 +230,25 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
 
   function render(partial: PartialResults): void {
     const cards = buildCards(partial);
-    cardsBox.replaceChildren(...cards.map((c) => renderCard(describeCard(c, mode))));
+    const next = cards.map((c) => describeCard(c, mode));
+    if (nodes.length !== next.length) {
+      nodes = next.map(renderCard);
+      cardsBox.replaceChildren(...nodes);
+    } else {
+      next.forEach((v, i) => {
+        if (!cardChanged(views[i], v)) return;
+        const old = nodes[i];
+        const fresh = renderCard(v);
+        const oldDet = old.querySelector("details");
+        const newDet = fresh.querySelector("details");
+        const keepFocus = oldDet !== null && oldDet.contains(document.activeElement);
+        if (oldDet?.open && newDet) newDet.open = true;
+        old.replaceWith(fresh);
+        if (keepFocus) fresh.querySelector("summary")?.focus();
+        nodes[i] = fresh;
+      });
+    }
+    views = next;
     for (const c of cards) {
       if (c.state !== "pending" && !shown.has(c.key)) {
         shown.add(c.key);
@@ -251,6 +279,8 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
     begin(seed, m) {
       mode = m;
       shown = new Set();
+      views = [];
+      nodes = [];
       seedLine.textContent = `Seed of this run: ${seed}`;
       seedInput.value = String(nextSeed(seed));
       message.hidden = true;
@@ -264,6 +294,9 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
     finish(partial) {
       render(partial);
       setControls(true);
+    },
+    holdsRunFocus() {
+      return document.activeElement === again || document.activeElement === seedInput;
     },
     hide() {
       el.hidden = true;

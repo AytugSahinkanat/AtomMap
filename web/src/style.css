@@ -72,10 +72,9 @@ h1 { font-weight: 500; }
 /* Finished run: the final map stays, a side panel sits next to it */
 .map-row { display: flex; gap: 0.75rem; align-items: flex-start; }
 .map-row .map-wrap { flex: 1 1 0; min-width: 0; }
-.finished-panel { flex: 0 0 16rem; padding: 0.5rem 0.75rem; margin: 0.5rem 0; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; }
+.finished-panel { box-sizing: border-box; flex: 0 0 16rem; padding: 0.5rem 0.75rem; margin: 0.5rem 0; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; }
 .finished-panel[hidden] { display: none; }
 .finished-panel h2 { font-size: 1.1rem; font-weight: 500; margin: 0.25rem 0; }
-@media (max-width: 40rem) { .map-row { flex-direction: column; } .finished-panel { flex-basis: auto; width: 100%; } }
 
 /* Scoreboard panel and legend (task 9.3). All cards share one look. */
 .map-col { flex: 1 1 0; min-width: 0; }
@@ -113,7 +112,6 @@ h1 { font-weight: 500; }
 .map-legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.2rem 1rem; font-size: 0.85rem; }
 .map-legend li { display: flex; align-items: center; gap: 0.4rem; }
 .map-legend svg { flex: none; }
-@media (max-width: 40rem) { .finished-panel.scoreboard { flex-basis: auto; width: 100%; } }
 
 /* Finished run (task 9.3 follow-up): one short status line, compact legend in the scoreboard column */
 .run-view.run-done { padding: 0.25rem 0.75rem; }
@@ -142,3 +140,19 @@ h1 { font-weight: 500; }
 .finished-panel .score-card h3 { padding-right: 4.6rem; }
 .finished-panel .score-card:not(:has(.score-label)) h3 { padding-right: 0; }
 .run-status:focus { outline: none; }
+
+/* One column up to 60rem. Last in the file so it beats the flex-basis rules above. */
+@media (max-width: 60rem) {
+  .map-row { flex-direction: column; }
+  .map-col { flex: none; width: 100%; }
+  .finished-panel, .finished-panel.scoreboard { flex-basis: auto; width: 100%; }
+}
+
+/* Phone: the simulation label sits on its own line under the title */
+@media (max-width: 40rem) {
+  .finished-panel .score-card { display: flex; flex-wrap: wrap; align-items: baseline; }
+  .finished-panel .score-card > * { flex: 0 0 100%; }
+  .finished-panel .score-card > .score-total, .finished-panel .score-card > .score-rounds { flex: 0 0 auto; }
+  .finished-panel .score-card h3 { order: -2; padding-right: 0; }
+  .finished-panel .score-card .score-label { position: static; order: -1; }
+}
