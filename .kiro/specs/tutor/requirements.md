@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Tutor explains one finished run in plain words to a visitor who has never touched quantum computing. This version has no AI model. The Tutor is a set of fixed sentences filled with numbers from that run. Facts (the numbers of the run) and sentences are kept separate, so that Amazon Bedrock may later rephrase the same facts without any change to the facts.
+The Tutor explains one finished run in plain words to a visitor who has never touched quantum computing. This version has no AI model. The Tutor is a set of fixed sentences filled with numbers from that run. Facts (the numbers of the run) and sentences are kept separate.
 
 The Tutor is a strip above the map, full width. Its first line is always the existing line of the ui spec (Task 12.1 there): before a run the "Wifi hall, 70 access points. Results are a simulation." label, after a run the "run is finished" line. The Tutor_Sentences come after that line. It depends on four additions to the Engine's progress events (Requirement 1), defined here and implemented as the first task of this spec. The Engine, its events, the Decision_Log and the Stats are defined in the engine spec, and the screens in the ui spec. They are not repeated here. All honesty rules of `.kiro/steering/honesty.md` apply.
 

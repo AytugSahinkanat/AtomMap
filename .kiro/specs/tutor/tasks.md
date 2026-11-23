@@ -45,15 +45,15 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - Fields per source: rule, annealing, coin flip, Atoms_Alone
     - _Requirements: 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 2. Record script and recorded runs
-  - [ ] 2.1 Write `scripts/record_tutor_runs.py`
+- [x] 2. Record script and recorded runs
+  - [x] 2.1 Write `scripts/record_tutor_runs.py`
     - Calls `atommap.api.run` natively with the real Braket simulator and writes `{request, events, result}` to `web/test-data/tutor/<name>.json`
     - Fixed settings in constants at the top, decided before any run: `hero_seed1` (`fixtures/wifi_hall_hero.json`, Channel_Plan, walls off, Seed 1), `sparse_seed1` (`fixtures/wifi_hall_sparse.json`, Seed 1), `rules_only` (hand-made 6 Point tree, Channel_Plan, Seed 1), `place_rules_only` (hand-made 6 Point tree, Place, straight line, Seed 1)
     - The two tree maps are built inside the script from fixed coordinates, so the rules solve them alone
     - Print the four file paths when done; do not run the script
     - _Requirements: 6.6_
 
-  - [ ] 2.2 Add the recorded run loader and the checks over the recordings
+  - [x] 2.2 Add the recorded run loader and the checks over the recordings
     - Create `web/src/tutor/recorded.ts` (test helper): `loadRecorded(name)` returns the parsed file or `null` when it is missing
     - Create `web/src/tutor/recorded.test.ts`: a missing file skips its tests with a message naming the file (`it.skipIf`), no invented data
     - Required check for each file: every Point available in a Round ends it picked or removed, disjoint, over the `pick` events (Property 4 on recordings)

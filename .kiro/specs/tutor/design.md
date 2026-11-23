@@ -5,7 +5,7 @@
 The Tutor is a strip above the map in `web/`. Its first line is always the existing line (before a run the "Wifi hall, 70 access points. Results are a simulation." label, after a run the finished line), and its sentences come after it. It explains one finished run in fixed sentences filled with numbers from that run. It has no AI model. It reads the Engine result and the buffered progress events that the UI already keeps, plus four small additions to the Engine's events (Requirement 1).
 
 Design decisions:
-- **Three modules, one direction.** `facts.ts` (pure) turns the result, the events and the request edges into a `Facts` object with numbers and ids only. `sentences.ts` (pure) turns `Facts` into Steps of text. `strip.ts` (DOM only) shows a Step, handles back, next and "why this point", and tells the map which Points to ring. `facts.ts` imports nothing from `sentences.ts`, and `sentences.ts` imports no DOM. Amazon Bedrock may later receive the same `Facts` JSON and return other sentences. Nothing in `Facts` is text.
+- **Three modules, one direction.** `facts.ts` (pure) turns the result, the events and the request edges into a `Facts` object with numbers and ids only. `sentences.ts` (pure) turns `Facts` into Steps of text. `strip.ts` (DOM only) shows a Step, handles back, next and "why this point", and tells the map which Points to ring. `facts.ts` imports nothing from `sentences.ts`, and `sentences.ts` imports no DOM. Nothing in `Facts` is text.
 - **No arithmetic in `sentences.ts`.** Every number a sentence shows is a field of `Facts`, including derived ones such as "34 of 100 tries" (`hits` and `shots`). The number rule (Requirement 6.1) is then checkable by looking at the fields.
 - **A sentence needs named facts.** Each sentence declares the `Facts` fields it needs. If one is missing, the sentence is not built (Requirement 4.14). A Step with no sentence left is not shown and not counted.
 - **The Engine sends what the Tutor needs.** Rank was wrong for 3 of 15 picks when recomputed from the events (Requirement 1), so the Engine sends it.
@@ -21,7 +21,6 @@ flowchart LR
     BUF --> F[facts.ts]
     REQ[request edges, ids, mode, seed] --> F
     F -->|Facts JSON| S[sentences.ts]
-    F -.->|later, same Facts| BED[Bedrock via Lambda]
     S -->|Steps: sentences + ring ids| ST[strip.ts]
     ST -->|ring ids| MAP[dynamic layer]
     MAP -->|click, tap, Enter on list item| ST

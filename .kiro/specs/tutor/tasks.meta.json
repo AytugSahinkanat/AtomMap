@@ -70,6 +70,37 @@
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795388030751
       }
+    ],
+    "2.1 Write `scripts/record_tutor_runs.py`": [
+      {
+        "executionId": "797f6ebd-e164-4ae8-8db6-870661da141a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795436504570
+      },
+      {
+        "executionId": "797f6ebd-e164-4ae8-8db6-870661da141a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795436604018
+      }
+    ],
+    "2.2 Add the recorded run loader and the checks over the recordings": [
+      {
+        "executionId": "797f6ebd-e164-4ae8-8db6-870661da141a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795436604438
+      },
+      {
+        "executionId": "797f6ebd-e164-4ae8-8db6-870661da141a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795436677692
+      }
+    ],
+    "2. Record script and recorded runs": [
+      {
+        "executionId": "797f6ebd-e164-4ae8-8db6-870661da141a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795436677911
+      }
     ]
   }
 }
