@@ -80,7 +80,7 @@ h1 { font-weight: 500; }
 .map-col { flex: 1 1 0; min-width: 0; }
 .map-col .map-wrap { flex: none; }
 .finished-panel.scoreboard { flex: 0 0 24rem; max-width: 100%; }
-.score-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem; margin: 0.35rem 0; }
+.score-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.25rem; margin: 0.2rem 0; }
 .score-card { padding: 0.4rem 0.55rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; min-width: 0; }
 .score-card h3 { font-size: 0.8rem; font-weight: 500; margin: 0; }
 .score-card p { margin: 0.1rem 0; font-size: 0.78rem; }
@@ -157,10 +157,13 @@ h1 { font-weight: 500; }
   .finished-panel .score-card .score-label { position: static; order: -1; }
 }
 /* Tutor strip (tutor task 5.6). Same panel look as the other boxes. */
-.tutor-strip { box-sizing: border-box; display: grid; grid-template-columns: 1fr auto; gap: 0.25rem 1rem; align-items: start; margin: 0.5rem 0; padding: 0.4rem 0.75rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; line-height: 1.4; }
+/* Fixed height (3 lines + 1rem incl. padding and border) for every Step, Why_Answer and idle text, so the map never moves. */
+.tutor-strip { box-sizing: border-box; display: grid; grid-template-columns: 1fr auto; grid-template-rows: minmax(0, 1fr); gap: 0.25rem 1rem; align-items: start; height: calc(3 * 1.4 * 0.9rem + 1rem); margin: 0.5rem 0; padding: 0.4rem 0.75rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; line-height: 1.4; }
 .tutor-strip[hidden], .tutor-controls[hidden] { display: none; }
-.tutor-text { min-width: 0; }
-.tutor-text p { margin: 0; }
+/* Text is never clipped: if a Step ever exceeds the box it scrolls inside it. */
+.tutor-text { min-width: 0; min-height: 0; max-height: 100%; overflow-y: auto; }
+/* Needs the .screen.map prefix: the stronger `.screen.map p` rule would otherwise win. */
+.screen.map .tutor-text p { margin: 0; }
 .tutor-first { font-weight: 500; }
 .tutor-first:focus { outline: none; }
 .tutor-body { color: var(--text); }
@@ -170,5 +173,7 @@ h1 { font-weight: 500; }
 .tutor-controls button[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
 .tutor-controls button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
 @media (max-width: 40rem) {
-  .tutor-strip { grid-template-columns: 1fr; }
+  .tutor-strip { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; min-height: calc(3 * 1.4 * 0.9rem + 1rem); }
+  .tutor-text { max-height: none; overflow-y: visible; }
+  .tutor-controls { flex-wrap: wrap; white-space: normal; }
 }

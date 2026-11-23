@@ -323,6 +323,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     if (running || finishedShown) return;
     if (labelText === "") strip.hide();
     else strip.showIdle(labelText, buildIdle(mode));
+    layout(); // the strip height changed, so the room left for the map did too
   }
   function setLabel(text: string): void {
     labelText = text;
@@ -627,6 +628,17 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     if (Math.round(wrap.clientWidth) !== lastW) layout();
   });
   ro.observe(wrap);
+  // The map height depends on the window height, which the wrap observer does not see
+  // (it only fires when the wrap itself changes size). Compare both inner sizes.
+  let lastInnerW = window.innerWidth;
+  let lastInnerH = window.innerHeight;
+  window.addEventListener("resize", () => {
+    if (!el.isConnected) return;
+    if (window.innerWidth === lastInnerW && window.innerHeight === lastInnerH) return;
+    lastInnerW = window.innerWidth;
+    lastInnerH = window.innerHeight;
+    layout();
+  });
   reducedQuery?.addEventListener?.("change", (e) => dynamicLayer.setReducedMotion(e.matches));
 
   // ---- first load of the Hero_Map ----

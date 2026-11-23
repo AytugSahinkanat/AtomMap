@@ -168,7 +168,7 @@ export function createStrip(deps: StripDeps): Strip {
       const text = answer.sentences.join(" ");
       whyId = id;
       body.textContent = text;
-      backToStep.textContent = `back to step ${index + 1}`;
+      backToStep.textContent = `Back to step ${index + 1}`;
       counter.textContent = `about ${id}`;
       showStepButtons(false);
       live.textContent = text;

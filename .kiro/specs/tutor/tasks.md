@@ -197,12 +197,12 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - One button "back to step N" instead of Back and Next; the button and Escape restore the Step and its ring; a click on no Point leaves the Why_Answer
     - _Requirements: 2.6, 5.6_
 
-- [ ] 7. Layout and 1366x768 fit
-  - [ ] 7.1 Make `layout()` react to height
+- [x] 7. Layout and 1366x768 fit
+  - [x] 7.1 Make `layout()` react to height
     - In `map.ts` the resize handler compares both `innerWidth` and `innerHeight` with the last values; call `layout()` after `showFinished`, `hide` and `showIdle`
     - _Requirements: 2.9_
 
-  - [ ] 7.2 Fix the strip height and shrink the card gaps
+  - [x] 7.2 Fix the strip height and shrink the card gaps
     - In `style.css`: strip `height: calc(3 * 1.4 * 0.9rem + 1rem)` for every Step, Why_Answer and idle text, grid `1fr auto`, `overflow-y: auto` on the text; Scoreboard card gaps shrink so the finished page fits 768 px inner height
     - Narrow screens (max 40 rem): one column, `min-height`, buttons under the text
     - Below about 650 px inner height the page may scroll, with the Tutor, map and four cards visible
@@ -217,7 +217,7 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - At a phone width the strip may grow
     - _Requirements: 2.7, 2.8, 2.9_
 
-- [ ] 8. Checkpoint - Ensure all tests pass
+- [x] 8. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
