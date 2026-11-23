@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import type { Facts } from "./facts";
-import { arbFacts } from "./generators";
-import { buildSteps, RESULT_AND_COMPARE, roundDefs, SENTENCES, type SentenceDef } from "./sentences";
+import type { Facts, WhyFacts } from "./facts";
+import { arbFacts, arbWhy } from "./generators";
+import { buildSteps, buildWhy, RESULT_AND_COMPARE, roundDefs, SENTENCES, whyDefs, type SentenceDef } from "./sentences";
 
 const SKIP_TOP = new Set(["mode", "seed", "rounds"]);
 
@@ -110,6 +110,49 @@ describe("tutor sentences: missing facts", () => {
   });
 });
 
+describe("tutor sentences: missing facts in a Why_Answer", () => {
+  const whyPaths = (w: WhyFacts): string[] => [
+    ...(w.clashes !== undefined ? ["clashes"] : []),
+    ...w.rounds.flatMap((r, i) => Object.keys(r).map((k) => `rounds.${i}.${k}`)),
+  ];
+
+  // Feature: tutor, Property 3: A missing fact drops its sentence and nothing else
+  // **Validates: Requirements 2.6, 4.14, 6.8**
+  it("a missing WhyFacts field drops its sentence and nothing else", () => {
+    fc.assert(
+      fc.property(arbWhy, fc.nat(), (why, pick) => {
+        const paths = whyPaths(why);
+        fc.pre(paths.length > 0);
+        const path = paths[pick % paths.length];
+        const reduced = without(why as unknown as Facts, path) as unknown as WhyFacts;
+
+        const got = buildWhy(reduced).sentences;
+        for (const t of got) expect(t).not.toMatch(BAD);
+
+        // Defs with `absent` (the "no record" sentence) are checked on the
+        // reduced facts: removing `clashes` may add it. Every other def is
+        // kept or dropped exactly as in the full build.
+        const satisfied = (w: WhyFacts, d: { needs: string[]; when?: (w: WhyFacts) => boolean }) =>
+          d.needs.every((p) => hasPath(w, p)) && (d.when ? d.when(w) : true);
+        const reducedDefs = whyDefs(reduced);
+        const expected = whyDefs(why)
+          .filter((d) => (d.absent ? satisfied(reduced, d) : !affects(d.needs, path) && satisfied(why, d)))
+          .map((d) => d.make(d.absent ? reduced : why));
+        expect(reducedDefs.length).toBe(whyDefs(why).length);
+        expect(got, `removing "${path}"`).toEqual(expected);
+      }),
+      { numRuns: 300 },
+    );
+  });
+
+  it("the no-record sentence is built exactly when clashes and rounds are both empty", () => {
+    const base = { id: "ap01", mode: "channel_plan" as const, ring: ["ap01"] };
+    expect(buildWhy({ ...base, rounds: [] }).sentences).toEqual(["This run holds no record of this point."]);
+    expect(buildWhy({ ...base, clashes: 0, rounds: [] }).sentences).toEqual(["ap01 clashes with 0 other points."]);
+    // A lost channel drops the sentence and does not switch to Place wording.
+    expect(buildWhy({ ...base, clashes: 2, rounds: [{ outcome: "rule" }] }).sentences).toEqual(["ap01 clashes with 2 other points."]);
+  });
+});
 function hasPath(f: unknown, path: string): boolean {
   let cur: any = f;
   for (const part of path.split(".")) {

@@ -5,7 +5,7 @@
 // Task 4.2 adds Steps 6 to 8, the idle text and the non-Hybrid sentence.
 
 import { CARD_LABELS, CARD_ORDER, formatPercent, type EngineName } from "../scoreboard-model";
-import type { Facts } from "./facts";
+import type { Facts, WhyFacts } from "./facts";
 
 export interface SentenceDef {
   step: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -246,7 +246,14 @@ export const RESULT_AND_COMPARE: SentenceDef[] = [
   },
   {
     step: 7,
-    needs: ["result.splits", "result.skippedTiles"],
+    needs: ["result.atomsNotNeeded"],
+    when: (f) => f.result!.atomsNotNeeded === true,
+    make: () => "No group went to the atoms, so nothing was split or skipped.",
+  },
+  {
+    step: 7,
+    needs: ["result.splits", "result.skippedTiles", "result.atomsNotNeeded"],
+    when: (f) => f.result!.atomsNotNeeded !== true,
     make: (f) =>
       `${n(f.result!.splits)} ${noun(f.result!.splits, "group was", "groups were")} split in two because the atoms couldn't be placed exactly like the map, and ${n(f.result!.skippedTiles)} ${noun(f.result!.skippedTiles, "was", "were")} skipped.`,
   },
@@ -272,6 +279,88 @@ export const RESULT_AND_COMPARE: SentenceDef[] = [
     make: () => "One run proves nothing.",
   },
 ];
+
+// Why this point (task 6.2). Same mechanism as the Steps: each def lists the
+// WhyFacts paths it needs and is not built when one is missing. Wording
+// (channels or not) is chosen by `mode`, never by whether a round has a
+// channel, so a lost channel drops the sentence instead of switching wording.
+export interface WhyDef {
+  needs: string[];
+  /**
+   * Paths whose absence this def depends on (the "no record" sentence). A def
+   * with `absent` is built when those paths are missing, so removing one of
+   * them may add the sentence. Checkable by tests.
+   */
+  absent?: string[];
+  when?: (w: WhyFacts) => boolean;
+  make(w: WhyFacts): string;
+}
+
+const PICKED: Record<"rule" | "atoms" | "classic", string> = {
+  rule: "picked by a rule",
+  atoms: "picked with help from the atoms",
+  classic: "picked classically, without atoms",
+};
+
+function whyRoundDefs(i: number): WhyDef[] {
+  const base = `rounds.${i}`;
+  const r = (w: WhyFacts) => w.rounds[i];
+  const picked = (o: string) => o === "rule" || o === "atoms" || o === "classic";
+  const pickedText = (w: WhyFacts) => PICKED[r(w).outcome as "rule" | "atoms" | "classic"];
+  return [
+    {
+      needs: [`${base}.channel`, `${base}.outcome`],
+      when: (w) => w.mode === "channel_plan" && picked(r(w).outcome),
+      make: (w) => `Channel ${n(r(w).channel)}: ${pickedText(w)}.`,
+    },
+    {
+      needs: [`${base}.outcome`],
+      when: (w) => w.mode === "place" && picked(r(w).outcome),
+      make: (w) => cap(`${pickedText(w)}.`),
+    },
+    {
+      needs: [`${base}.channel`, `${base}.outcome`, `${base}.by`],
+      when: (w) => w.mode === "channel_plan" && r(w).outcome === "neighbour",
+      make: (w) => `Channel ${n(r(w).channel)}: not possible, its neighbour ${r(w).by} was picked.`,
+    },
+    {
+      needs: [`${base}.outcome`, `${base}.by`],
+      when: (w) => w.mode === "place" && r(w).outcome === "neighbour",
+      make: (w) => `Not picked, its neighbour ${r(w).by} was picked.`,
+    },
+    {
+      needs: [`${base}.outcome`],
+      when: (w) => w.mode === "channel_plan" && r(w).outcome === "fiveGhz",
+      make: () => "No channel was left, so it uses 5 GHz only.",
+    },
+  ];
+}
+
+/** The sentence table for one Why_Answer, in order. */
+export function whyDefs(why: WhyFacts): WhyDef[] {
+  return [
+    {
+      needs: ["clashes"],
+      make: (w) => `${w.id} clashes with ${n(w.clashes)} other ${noun(w.clashes, "point", "points")}.`,
+    },
+    ...why.rounds.flatMap((_, i) => whyRoundDefs(i)),
+    {
+      // Honesty rule 3: say so when the run holds nothing about this Point.
+      needs: ["id"],
+      absent: ["clashes"],
+      when: (w) => w.clashes === undefined && w.rounds.length === 0,
+      make: () => "This run holds no record of this point.",
+    },
+  ];
+}
+
+/** The Why_Answer for one Point: one Step with its ring. */
+export function buildWhy(why: WhyFacts): Step {
+  const sentences = whyDefs(why)
+    .filter((d) => d.needs.every((p) => has(why, p)) && (d.when ? d.when(why) : true))
+    .map((d) => d.make(why));
+  return { key: "why", sentences, ring: why.ring };
+}
 
 export const NON_HYBRID_SENTENCE = "This explanation covers the atoms + rules (hybrid) plan only.";
 

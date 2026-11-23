@@ -5,7 +5,7 @@
 
 import fc from "fast-check";
 import { CARD_ORDER, type EngineName } from "../scoreboard-model";
-import type { Facts, RoundFacts } from "./facts";
+import type { Facts, RoundFacts, WhyFacts, WhyRound } from "./facts";
 
 /** Counts: small, typical and worst case values (long numbers). */
 export const arbCount = fc.oneof(
@@ -124,3 +124,27 @@ export const arbFacts: fc.Arbitrary<Facts> = fc.record(
   },
   { requiredKeys: ["mode", "seed", "rounds"] },
 ) as fc.Arbitrary<Facts>;
+
+const arbWhyRound: fc.Arbitrary<WhyRound> = fc.record(
+  {
+    channel: fc.constantFrom(1, 6, 11),
+    outcome: fc.constantFrom("rule" as const, "atoms" as const, "classic" as const, "neighbour" as const, "fiveGhz" as const),
+    by: arbId,
+  },
+  { requiredKeys: ["outcome"] },
+);
+
+/**
+ * Any WhyFacts: `clashes` and every round's `channel` and `by` may be absent,
+ * rounds may be empty (the "no record" case), mode is either.
+ */
+export const arbWhy: fc.Arbitrary<WhyFacts> = fc.record(
+  {
+    id: arbId,
+    mode: fc.constantFrom("channel_plan" as const, "place" as const),
+    clashes: arbCount,
+    rounds: fc.array(arbWhyRound, { maxLength: 4 }),
+    ring: arbIds(4),
+  },
+  { requiredKeys: ["id", "mode", "rounds", "ring"] },
+) as fc.Arbitrary<WhyFacts>;

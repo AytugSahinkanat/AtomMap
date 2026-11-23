@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
 import { formatPercent } from "../scoreboard-model";
-import type { Facts } from "./facts";
-import { arbFacts } from "./generators";
-import { buildSteps } from "./sentences";
+import type { Facts, WhyFacts } from "./facts";
+import { arbFacts, arbWhy } from "./generators";
+import { buildSteps, buildWhy } from "./sentences";
 
 // Every numeric field of Facts, formatted the way sentences write it.
-function allowedNumbers(f: Facts): Set<string> {
+function allowedNumbers(f: Facts | WhyFacts): Set<string> {
   const out = new Set<string>();
   const walk = (v: unknown, key?: string): void => {
     if (typeof v === "number") {
@@ -41,6 +41,22 @@ describe("tutor sentences: numbers", () => {
                 throw new Error(`number ${num} in "${s}" is not a Facts field`);
               }
             }
+          }
+        }
+      }),
+      { numRuns: 200 },
+    );
+  });
+
+  // Feature: tutor, Property 1: Every number in a sentence is a fact of the run
+  // **Validates: Requirements 6.1, 6.5**
+  it("every number in a Why_Answer is a WhyFacts field", () => {
+    fc.assert(
+      fc.property(arbWhy, (why) => {
+        const allowed = allowedNumbers(why);
+        for (const s of buildWhy(why).sentences) {
+          for (const num of numbersIn(s)) {
+            if (!allowed.has(num)) throw new Error(`number ${num} in "${s}" is not a WhyFacts field`);
           }
         }
       }),

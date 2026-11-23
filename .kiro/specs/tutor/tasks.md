@@ -167,28 +167,28 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - Back and Next change text and counter, live region equals the Step text, focus stays on the button, finished line takes focus, non-Hybrid plan shows the one sentence
     - _Requirements: 2.6, 2.11, 3.2_
 
-- [ ] 6. Why this point
-  - [ ] 6.1 Add `whyFacts(facts, id)` to `facts.ts`
+- [x] 6. Why this point
+  - [x] 6.1 Add `whyFacts(facts, id)` to `facts.ts`
     - Returns `{ id, clashes, rounds: [{ channel?, outcome, by? }], ring }`: `clashes` is the degree in `edges`; outcomes `rule`, `atoms`, `classic`, `neighbour` (with the picked neighbour id), `fiveGhz`; a picked Point has no entry for later Rounds
     - Place: no channels, outcomes picked or neighbour only
     - _Requirements: 5.2, 5.3, 5.4_
 
-  - [ ] 6.2 Add `buildWhy(why)` to `sentences.ts`
+  - [x] 6.2 Add `buildWhy(why)` to `sentences.ts`
     - Wording: "picked by a rule", "picked with help from the atoms", "picked classically, without atoms", "not possible, its neighbour <id> was picked", "no channel was left, so it uses 5 GHz only"; Place: "not picked, its neighbour <id> was picked"
     - Same `needs` mechanism as the Steps; ring is the Point and its picked neighbours
     - _Requirements: 5.2, 5.3, 5.4, 6.1_
 
-  - [ ] 6.3 Add `showWhy(id)` and `leaveWhy()` to `strip.ts`
+  - [x] 6.3 Add `showWhy(id)` and `leaveWhy()` to `strip.ts`
     - The Why_Answer replaces the Step; Back and Next are replaced by one button "back to step N" and the counter reads "about <id>"
     - `leaveWhy()` (button, Escape, click on empty map) restores the Step and its ring
     - _Requirements: 2.6, 5.1, 5.6_
 
-  - [ ] 6.4 Wire clicks, taps and the keyboard list in `map.ts`
+  - [x] 6.4 Wire clicks, taps and the keyboard list in `map.ts`
     - Pointer events on the dynamic canvas call `nearestPoint(..., 12)` and `showWhy`; a miss while a Why_Answer is shown calls `leaveWhy`; `a11y.onActivate` calls `showWhy`; Escape calls `leaveWhy`
     - Not active for a non-Hybrid plan
     - _Requirements: 5.1, 5.6, 3.2_
 
-  - [ ] 6.5 Extend the generators and run the checks over Why_Answers
+  - [x] 6.5 Extend the generators and run the checks over Why_Answers
     - Add a `WhyFacts` arbitrary to `generators.ts` and include `buildWhy` in the Property 1 to 3 test files (no new property numbers)
     - Required recorded run check in `web/src/tutor/why.recorded.test.ts`, skipped per missing file: for every Point of every recorded run the Why_Answer has no banned word, at most 260 characters, only numbers that are Facts; `place_rules_only` uses "picked by a rule" or "not picked, its neighbour <id> was picked"
     - _Requirements: 5.3, 5.4, 6.1, 6.3, 6.5, 6.7_

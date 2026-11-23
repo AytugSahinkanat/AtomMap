@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { arbFacts } from "./generators";
-import { NON_HYBRID_SENTENCE, buildIdle, buildSteps } from "./sentences";
+import { arbFacts, arbWhy } from "./generators";
+import { NON_HYBRID_SENTENCE, buildIdle, buildSteps, buildWhy } from "./sentences";
 
 const BANNED = [
   "faster",
@@ -38,6 +38,21 @@ describe("tutor sentences: banned words", () => {
     );
   });
 
+  // Feature: tutor, Property 2: Banned words never appear
+  // **Validates: Requirements 4.6, 6.3, 6.7**
+  it("no sentence of any Why_Answer contains a banned word", () => {
+    fc.assert(
+      fc.property(arbWhy, (why) => {
+        for (const s of buildWhy(why).sentences) {
+          const found = bannedIn(s);
+          if (found.length > 0) throw new Error(`banned word ${JSON.stringify(found)} in "${s}"`);
+        }
+      }),
+      { numRuns: 200 },
+    );
+  });
+
+  
   it("idle text and the non-Hybrid sentence have no banned word", () => {
     for (const s of [...buildIdle("channel_plan"), ...buildIdle("place"), NON_HYBRID_SENTENCE]) {
       expect(bannedIn(s)).toEqual([]);

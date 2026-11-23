@@ -86,6 +86,8 @@ interface Facts {                      // numbers, ids, booleans only. Any field
   result?: { total: number; quantumShare: number; quantumPicks: number; fiveGhzOnly: number;
              splits: number; skippedTiles: number; atomsNotNeeded: boolean };
   compare?: { name: EngineName; total: number; tie: boolean }[];
+  points?: Record<string, { clashes: number; rounds: { channel?: number; outcome: "rule" | "atoms" | "classic" | "neighbour" | "fiveGhz"; by?: string }[] }>;
+                                       // per Point record read by whyFacts; absent when the Hybrid has no events
 }
 ```
 
@@ -99,7 +101,7 @@ Derivations, all from Hybrid events in arrival order:
 - `result` and `compare` come from `stats` and the four `total_picks`. `quantumShare` uses the Scoreboard's number and its formatting function (`scoreboard-model.ts`).
 - Fields whose source is missing (no events, an `{error}` entry, no `simulate` event, `atoms_not_needed`) are left out and never defaulted.
 
-`whyFacts(facts, id)` returns `{ id, clashes: number, rounds: { channel?, outcome: "rule" | "atoms" | "classic" | "neighbour" | "fiveGhz", by?: string }[], ring: string[] }`. `clashes` is the degree in `edges`. `neighbour` carries the id of the picked neighbour (the `pick` event whose `removed` contains the Point). `fiveGhz` is the last entry of a Channel_Plan Point in `five_ghz_only`. A picked Point gets no entry for later Rounds.
+`Facts.points` is filled by `deriveFacts` for every Point (ids and numbers only) and `whyFacts` is a pure lookup into it. `whyFacts(facts, id)` returns `{ id, clashes?: number, rounds: { channel?, outcome: "rule" | "atoms" | "classic" | "neighbour" | "fiveGhz", by?: string }[], ring: string[] }`. `clashes` is the degree in `edges`. `neighbour` carries the id of the picked neighbour (the `pick` event whose `removed` contains the Point). `fiveGhz` is the last entry of a Channel_Plan Point in `five_ghz_only`. A picked Point gets no entry for later Rounds. `clashes` is left out when the run holds no record of the Point. `WhyFacts` also carries `mode` (filled by `whyFacts` from `Facts.mode`). `buildWhy(why)` chooses channel or Place wording from `mode`, never from whether a round entry has `channel`, so a lost `channel` in Channel_Plan drops its sentence and does not switch wording (same rule as the Step 2 and Step 6 defs). The 5 GHz sentence is Channel_Plan only. `buildWhy` exposes its table as `whyDefs(why)`; the "no record" def declares `absent: ["clashes"]` (it is built when `clashes` is missing and `rounds` is empty), so Property 3 checks it on the reduced facts, and every other def against the full build. `buildWhy` says "This run holds no record of this point." when both `clashes` and `rounds` are empty.
 
 ### Rings (Requirement 2.10)
 
@@ -124,7 +126,7 @@ The strip calls `deps.onRing(ids)`. `map.ts` maps ids to indices and calls `dyna
 interface SentenceDef { step: 1|2|3|4|5|6|7|8; needs: string[]; make(f: Facts, i?: number): string }
 interface Step { key: string; sentences: string[]; ring: string[] }
 ```
-`buildSteps` evaluates the table in order. A def runs only when every path in `needs` is defined in `Facts`. Steps with no sentence are removed, then `strip.ts` numbers the rest 1 to M. Step 6 is one Step per entry in `rounds`. Step 7 and Step 8 text, "One run proves nothing.", the label "simulation" and "tie" are fixed wording. Step 4 says "doesn't just take the top point" and never "the atoms chose" or "decided" (Requirement 4.6). Step 8 lists totals as plain numbers, no winner. `buildWhy` uses the same table mechanism with `needs` on `WhyFacts`.
+`buildSteps` evaluates the table in order. A def runs only when every path in `needs` is defined in `Facts`. Steps with no sentence are removed, then `strip.ts` numbers the rest 1 to M. Step 6 is one Step per entry in `rounds`. Step 7 and Step 8 text (when `atomsNotNeeded` Step 7 says "No group went to the atoms, so nothing was split or skipped." in place of the splits and skipped sentence, which still shows 0 for runs where atoms were used), "One run proves nothing.", the label "simulation" and "tie" are fixed wording. Step 4 says "doesn't just take the top point" and never "the atoms chose" or "decided" (Requirement 4.6). Step 8 lists totals as plain numbers, no winner. `buildWhy` uses the same table mechanism with `needs` on `WhyFacts`.
 
 Length budget: the strip has 3 lines and the first line (the finished line) takes one, so a Step or a Why_Answer gets 2 lines. Each is at most 260 characters. Measured at 0.9rem: about 6.4 px per character and about 900 px of text width, so about 140 characters per line and 280 for 2 lines. A test checks this on the Recorded_Runs and on the worst case numbers of the generator. Text is never clipped: if a Step ever exceeds the box it scrolls inside it (`overflow-y: auto`), so nothing is hidden.
 

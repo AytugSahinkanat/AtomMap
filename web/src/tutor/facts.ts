@@ -90,6 +90,36 @@ export interface Facts {
     atomsNotNeeded: boolean;
   };
   compare?: { name: EngineName; total: number; tie: boolean }[];
+  /**
+   * Per Point record of the run, read by whyFacts. Left out when the Hybrid
+   * has no events. Ids and numbers only.
+   */
+  points?: Record<string, PointFacts>;
+}
+
+export type WhyOutcome = "rule" | "atoms" | "classic" | "neighbour" | "fiveGhz";
+
+export interface WhyRound {
+  /** Left out in Place. */
+  channel?: number;
+  outcome: WhyOutcome;
+  /** The picked neighbour, for outcome "neighbour". */
+  by?: string;
+}
+
+export interface PointFacts {
+  clashes: number;
+  rounds: WhyRound[];
+}
+
+export interface WhyFacts {
+  id: string;
+  /** From Facts.mode. Picks the wording (channels or not), never a round field. */
+  mode: "channel_plan" | "place";
+  /** Left out when the run holds no record of this Point. */
+  clashes?: number;
+  rounds: WhyRound[];
+  ring: string[];
 }
 
 function isNum(v: unknown): v is number {
@@ -303,6 +333,61 @@ function deriveResult(input: FactsInput, out: Facts): void {
   }
 }
 
+function derivePoints(input: FactsInput, ev: TutorEvent[], out: Facts): void {
+  const channelPlan = input.mode === "channel_plan";
+  const adj = new Map<string, Set<string>>();
+  for (const id of input.ids) adj.set(id, new Set());
+  for (const [a, b] of input.edges) {
+    adj.get(a)?.add(b);
+    adj.get(b)?.add(a);
+  }
+  const fiveGhz = new Set<string>(
+    channelPlan && Array.isArray(input.result?.competitors?.Hybrid?.five_ghz_only)
+      ? input.result.competitors.Hybrid.five_ghz_only
+      : [],
+  );
+  const order: number[] = [];
+  for (const e of ev) {
+    if (e.kind === "pick" && isNum(e.round) && !order.includes(e.round)) order.push(e.round);
+  }
+  const points: Record<string, PointFacts> = {};
+  for (const id of input.ids) {
+    const rounds: WhyRound[] = [];
+    let picked = false;
+    for (const round of order) {
+      if (picked) break;
+      const chan = channelPlan ? { channel: round } : {};
+      for (const p of ev) {
+        if (p.kind !== "pick" || p.round !== round) continue;
+        if (p.picked?.includes(id)) {
+          const outcome: WhyOutcome = p.source === "rule" ? "rule" : isNum(p.frequency) ? "atoms" : "classic";
+          rounds.push({ ...chan, outcome });
+          picked = true;
+          break;
+        }
+        if (p.removed?.includes(id)) {
+          const near = adj.get(id);
+          const by = (p.picked ?? []).find((q) => near?.has(q)) ?? p.picked?.[0];
+          rounds.push({ ...chan, outcome: "neighbour", ...(by !== undefined ? { by } : {}) });
+          break;
+        }
+      }
+    }
+    if (!picked && fiveGhz.has(id)) rounds.push({ outcome: "fiveGhz" });
+    points[id] = { clashes: adj.get(id)?.size ?? 0, rounds };
+  }
+  out.points = points;
+}
+
+/** Facts for "why this point". Pure lookup into facts.points. */
+export function whyFacts(facts: Facts, id: string): WhyFacts {
+  const pf = facts.points?.[id];
+  if (!pf) return { id, mode: facts.mode, rounds: [], ring: [id] };
+  const ring = [id];
+  for (const r of pf.rounds) if (r.by !== undefined && !ring.includes(r.by)) ring.push(r.by);
+  return { id, mode: facts.mode, clashes: pf.clashes, rounds: pf.rounds.map((r) => ({ ...r })), ring };
+}
+
 export function deriveFacts(input: FactsInput): Facts {
   const hybridResult = input.result?.competitors?.Hybrid;
   const metaLabel = input.result?.meta?.label;
@@ -325,5 +410,6 @@ export function deriveFacts(input: FactsInput): Facts {
   deriveHybrid(input, ev, out);
   deriveRounds(input, ev, out);
   deriveResult(input, out);
+  derivePoints(input, ev, out);
   return out;
 }

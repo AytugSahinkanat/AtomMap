@@ -5,6 +5,7 @@
 import { loadHero, loadPlace, loadWalls, type HeroFixture } from "../data/fixtures";
 import { buildStraightEdges } from "../edges/straight";
 import type { Wall } from "../edges/walls";
+import { nearestPoint } from "../render/hit";
 import { createA11y, type A11yLayer } from "../render/a11y";
 import { DynamicLayer } from "../render/dynamic-layer";
 import { StaticLayer, toScreenX, toScreenY, type StaticScene } from "../render/static-layer";
@@ -264,7 +265,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   dynamicLayer.setReducedMotion(reducedQuery?.matches ?? false);
 
   let indexById = new Map<string, number>();
+  /** Screen positions (x,y pairs, CSS px, canvas space) of the Points, for the hit test. */
+  let pointXY: number[] = [];
   const a11y: A11yLayer = createA11y(wrap, {
+    onActivate: (id) => {
+      // Why this point: only after a finished run (the strip ignores it for non-Hybrid plans).
+      if (finishedShown) strip.showWhy(id);
+    },
     onFocusChange: (id) => {
       dynamicLayer.setFocus(id === null ? -1 : (indexById.get(id) ?? -1));
       dynamicLayer.draw();
@@ -274,17 +281,41 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   // Tutor strip: its first line is the label (before a run) or the finished line (after a run).
   const strip = createStrip({
     onRing: (ids) => {
-      const idx: number[] = [];
-      for (const id of ids) {
-        const i = indexById.get(id);
-        if (i !== undefined) idx.push(i);
-      }
-      dynamicLayer.setRing(idx);
+      currentRingIds = ids;
+      applyRing();
       dynamicLayer.draw();
     },
   });
+  /** Ids the strip wants ringed now. layout() re-applies them, because setPoints clears the ring. */
+  let currentRingIds: string[] = [];
+  function applyRing(): void {
+    const idx: number[] = [];
+    for (const id of currentRingIds) {
+      const i = indexById.get(id);
+      if (i !== undefined) idx.push(i);
+    }
+    dynamicLayer.setRing(idx);
+  }
   let labelText = "";
   let finishedShown = false;
+
+  // Why this point: click or tap on a Point after a finished run. A click on
+  // no Point leaves the answer. leaveWhy does nothing when no answer is shown.
+  dynamicCanvas.addEventListener("pointerdown", (e) => {
+    if (!finishedShown) return;
+    const r = dynamicCanvas.getBoundingClientRect();
+    const i = nearestPoint(pointXY, e.clientX - r.left, e.clientY - r.top, 12);
+    if (i < 0) {
+      strip.leaveWhy();
+      return;
+    }
+    const id = scene?.points[i]?.id;
+    if (id !== undefined) strip.showWhy(id);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !el.isConnected || !finishedShown) return;
+    strip.leaveWhy();
+  });
   /** Request edges of the run on screen, for the Facts. */
   let runEdges: [string, string][] = [];
 
@@ -479,10 +510,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         return { id: p.id, x: sx, y: sy };
       });
       dynamicLayer.setPoints(xy);
+      pointXY = xy;
       indexById = new Map(scene.points.map((p, i) => [p.id, i]));
       a11y.setPoints(screen);
       dynamicLayer.draw(true);
       run.resync(); // the final map survives a new size (finished panel opens)
+      applyRing(); // setPoints and resync may have cleared the Tutor ring
+      dynamicLayer.draw();
     }
   }
 

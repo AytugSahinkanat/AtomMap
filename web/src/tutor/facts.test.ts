@@ -5,7 +5,7 @@
 
 import { describe, expect, it } from "vitest";
 import { buildStraightEdges } from "../edges/straight";
-import { deriveFacts, type Facts, type TutorEvent } from "./facts";
+import { deriveFacts, whyFacts, type Facts, type TutorEvent } from "./facts";
 import { loadRecorded, recordedTitle, type RecordedName } from "./recorded";
 
 function factsOf(name: RecordedName): Facts {
@@ -188,3 +188,61 @@ describe("Facts atomPick frequencies event", () => {
     expect(hand([freqs(1, { b: 0.5 }), pick(2), freqs(2, { a: 0.5 })]).atomPick).toBeUndefined();
   });
 });
+
+describe("whyFacts", () => {
+  const edges: [string, string][] = [["a", "b"], ["b", "c"]];
+  const mk = (events: TutorEvent[], five: string[] = []) =>
+    deriveFacts({
+      mode: "channel_plan",
+      seed: 1,
+      ids: ["a", "b", "c", "d"],
+      edges,
+      events,
+      result: { competitors: { Hybrid: { five_ghz_only: five } } },
+    });
+  const rp = (round: number, picked: string[], removed: string[], extra: Partial<TutorEvent> = {}) =>
+    ({ ...H, kind: "pick", round, step: 1, picked, removed, source: "rule", ...extra }) as TutorEvent;
+
+  it("picked, neighbour, later pick, five GHz, degree and ring", () => {
+    const f = mk([rp(1, ["a"], ["b"]), rp(1, ["c"], [], { source: "annealing" }), rp(6, ["b"], ["a"], { source: "atoms", frequency: 0.4 })], ["d"]);
+    expect(whyFacts(f, "a")).toEqual({ id: "a", mode: "channel_plan", clashes: 1, rounds: [{ channel: 1, outcome: "rule" }], ring: ["a"] });
+    expect(whyFacts(f, "b")).toEqual({
+      id: "b",
+      mode: "channel_plan",
+      clashes: 2,
+      rounds: [{ channel: 1, outcome: "neighbour", by: "a" }, { channel: 6, outcome: "atoms" }],
+      ring: ["b", "a"],
+    });
+    expect(whyFacts(f, "c").rounds).toEqual([{ channel: 1, outcome: "classic" }]);
+    expect(whyFacts(f, "d").rounds).toEqual([{ outcome: "fiveGhz" }]);
+  });
+  it("unknown id or no events: no clashes field", () => {
+    expect(whyFacts(mk([]), "a")).toEqual({ id: "a", mode: "channel_plan", rounds: [], ring: ["a"] });
+  });
+  it("Place has no channels", () => {
+    const f = deriveFacts({ mode: "place", seed: 1, ids: ["a", "b"], edges: [["a", "b"]], events: [rp(1, ["a"], ["b"])], result: { competitors: {} } });
+    expect(whyFacts(f, "b").rounds).toEqual([{ outcome: "neighbour", by: "a" }]);
+  });
+
+  for (const name of ["hero_seed1", "sparse_seed1", "rules_only", "place_rules_only"] as const) {
+    it.skipIf(!has(name))(recordedTitle(name, `${name}: why facts are consistent with rounds`), () => {
+      const f = factsOf(name);
+      const picked = new Set<string>();
+      for (const id of Object.keys(f.points!)) {
+        const w = whyFacts(f, id);
+        const k = w.rounds.findIndex((r) => r.outcome === "rule" || r.outcome === "atoms" || r.outcome === "classic");
+        if (k !== -1) {
+          expect(k).toBe(w.rounds.length - 1);
+          picked.add(id);
+        }
+        for (const r of w.rounds) expect(r.by !== undefined).toBe(r.outcome === "neighbour");
+        expect(w.ring[0]).toBe(id);
+      }
+      // Every pick of every Round is one Point's pick entry (a Point is picked at most once).
+      expect(picked.size).toBe(f.rounds.reduce((s, r) => s + r.picks, 0));
+      const place = name === "place_rules_only";
+      for (const p of Object.values(f.points!)) for (const r of p.rounds) expect(r.channel === undefined).toBe(place || r.outcome === "fiveGhz");
+    });
+  }
+});
+

@@ -119,6 +119,12 @@ describe.each(["rules_only", "place_rules_only"] as const)("Sentences of %s (ato
     expect(text).toContain("The atoms weren't needed on this map.");
     expect(text).toContain("Quantum share: 0%");
   });
+
+  it_("says no group went to the atoms instead of 0 splits", () => {
+    const text = textOf(stepsOf(name));
+    expect(text).toContain("No group went to the atoms, so nothing was split or skipped.");
+    expect(text).not.toContain("split in two");
+  });
 });
 
 describe("Wording of recorded runs", () => {

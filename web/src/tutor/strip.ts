@@ -2,11 +2,11 @@
 // It shows text built by sentences.ts and tells the map which Points to ring.
 // No algorithm and no sentence text beyond labels: all wording comes from
 // sentences.ts. Text is set with textContent, never innerHTML.
-// "Why this point" (showWhy, leaveWhy) is task 6.3.
+// "Why this point": showWhy and leaveWhy (task 6.3).
 
 import type { EngineName } from "../scoreboard-model";
-import type { Facts } from "./facts";
-import { buildSteps, NON_HYBRID_SENTENCE, type Step } from "./sentences";
+import { whyFacts, type Facts } from "./facts";
+import { buildSteps, buildWhy, NON_HYBRID_SENTENCE, type Step } from "./sentences";
 
 export interface StripDeps {
   /** Ids of the Points to ring. An empty list clears the ring. */
@@ -19,6 +19,10 @@ export interface Strip {
   showIdle(label: string, text: string[]): void;
   /** After a run: the finished line first, then one Step at a time. */
   showFinished(firstLine: string, facts: Facts, plan: EngineName, focus: boolean): void;
+  /** Explain one Point in place of the Step. Only while Steps are shown. */
+  showWhy(id: string): void;
+  /** Leave the Why_Answer and restore the Step and its ring. */
+  leaveWhy(): void;
   /** During a run: the run bar is shown in the place of the Tutor. */
   hide(): void;
 }
@@ -50,7 +54,11 @@ export function createStrip(deps: StripDeps): Strip {
   next.textContent = "Next";
   const counter = document.createElement("span");
   counter.className = "tutor-counter";
-  controls.append(back, next, counter);
+  const backToStep = document.createElement("button");
+  backToStep.type = "button";
+  backToStep.className = "tutor-back-to-step";
+  backToStep.hidden = true;
+  controls.append(back, next, backToStep, counter);
 
   // Visually hidden live region. The visible text is not live, so nothing is read twice.
   const live = document.createElement("div");
@@ -62,6 +70,8 @@ export function createStrip(deps: StripDeps): Strip {
 
   let steps: Step[] = [];
   let index = 0;
+  let currentFacts: Facts | null = null;
+  let whyId: string | null = null;
 
   function ring(ids: string[]): void {
     deps.onRing(ids);
@@ -92,10 +102,28 @@ export function createStrip(deps: StripDeps): Strip {
     controls.hidden = !on;
   }
 
+  function showStepButtons(on: boolean): void {
+    back.hidden = !on;
+    next.hidden = !on;
+    backToStep.hidden = on;
+  }
+
+  function leave(): void {
+    if (whyId === null) return;
+    whyId = null;
+    showStepButtons(true);
+    if (steps.length > 0) renderStep(true);
+  }
+
+  backToStep.addEventListener("click", leave);
+
   return {
     el,
 
     showIdle(label, text) {
+      whyId = null;
+      showStepButtons(true);
+      currentFacts = null;
       steps = [];
       index = 0;
       el.hidden = false;
@@ -107,6 +135,9 @@ export function createStrip(deps: StripDeps): Strip {
     },
 
     showFinished(firstLine, facts, plan, focus) {
+      whyId = null;
+      showStepButtons(true);
+      currentFacts = facts;
       el.hidden = false;
       first.textContent = firstLine;
       live.textContent = "";
@@ -131,7 +162,25 @@ export function createStrip(deps: StripDeps): Strip {
       if (focus) first.focus();
     },
 
+    showWhy(id) {
+      if (!currentFacts || steps.length === 0) return;
+      const answer = buildWhy(whyFacts(currentFacts, id));
+      const text = answer.sentences.join(" ");
+      whyId = id;
+      body.textContent = text;
+      backToStep.textContent = `back to step ${index + 1}`;
+      counter.textContent = `about ${id}`;
+      showStepButtons(false);
+      live.textContent = text;
+      ring(answer.ring);
+    },
+
+    leaveWhy: leave,
+
     hide() {
+      whyId = null;
+      showStepButtons(true);
+      currentFacts = null;
       steps = [];
       index = 0;
       el.hidden = true;
