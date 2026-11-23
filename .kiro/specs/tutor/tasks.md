@@ -15,19 +15,19 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
 ## Tasks
 
 - [ ] 1. Engine event fields (prerequisite)
-  - [ ] 1.1 Add the new fields to the `pick` events in `loop.py`
+  - [x] 1.1 Add the new fields to the `pick` events in `loop.py`
     - Rule picks: `remaining = len(replay)` read before the pick is removed; `top_group`, `rank`, `frequency` null
     - Loop picks: `remaining` and `top_group` from the step; for source `atoms` after the fallback check, `rank = ranked.index(pick) + 1` and `frequency = freqs[pick]`; for `annealing` and `coin flip`, `rank` and `frequency` null
     - No random number is drawn for the new fields
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.7_
 
-  - [ ] 1.2 Add `shots` to the `frequencies` events and null fields in Atoms_Alone
+  - [x] 1.2 Add `shots` to the `frequencies` events and null fields in Atoms_Alone
     - `simulator.py`: `FrequencyCache.last_shots`, set to `len(result)` on a real call only
     - `loop.py`: the `frequencies` event reads `cache.last_shots`
     - `atoms_alone.py`: `frequencies` gets `shots: len(shots)`; each `pick` gets `remaining`, `top_group`, `rank`, `frequency` as null
     - _Requirements: 1.5, 1.6, 1.7_
 
-  - [ ] 1.3 Update the engine spec
+  - [x] 1.3 Update the engine spec
     - List the new fields in Requirement 9.9 of `.kiro/specs/engine/requirements.md` and in the "Progress" bullet of the engine design
     - Update the progress docstring at the top of `engine/src/atommap/api.py`
     - Run `validate_spec_format` on the edited requirements file
@@ -39,9 +39,9 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - Hypothesis in `engine/tests/`, at least 100 examples, fake Simulator returning a random number of shots
     - Comment `Feature: tutor, Property 5: Progress events do not change picks, log or Stats, and carry well-formed fields`
 
-  - [ ] 1.5 Write unit tests for the event fields
+  - [x] 1.5 Write unit tests for the event fields
     - `frequencies` event `shots` equals the fake Simulator's shot count
-    - `rank` and `frequency` for a Point alone in its group (frequency 1.0, no event); required, this is the case that was wrong
+    - Rank of an atoms pick in a step where other Points are alone in their group (they have frequency 1.0, no frequencies event, and the rank counts them); required, this is the case that was wrong
     - Fields per source: rule, annealing, coin flip, Atoms_Alone
     - _Requirements: 1.2, 1.3, 1.4, 1.5, 1.6_
 

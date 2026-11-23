@@ -153,7 +153,8 @@ def run_atoms_alone(
             if emit is not None:
                 emit({"kind": "frequencies", "round": round, "step": n_parts,
                       "tile": list(part.ids),
-                      "frequencies": _shot_frequencies(part, shots, sub, tseed)})
+                      "frequencies": _shot_frequencies(part, shots, sub, tseed),
+                      "shots": len(shots)})
             candidates = _best_shot(part, shots, sub, tseed)
             new: list[str] = []
             for pid in candidates:
@@ -174,7 +175,8 @@ def run_atoms_alone(
                 for pid in new:
                     emit({"kind": "pick", "round": round, "step": n_parts,
                           "tile": None, "picked": [pid], "removed": removed_by[pid],
-                          "source": "atoms"})
+                          "source": "atoms", "remaining": None,
+                          "top_group": None, "rank": None, "frequency": None})
 
     gaps = tuple(
         i for i in sorted(avail, key=lambda i: order[i])

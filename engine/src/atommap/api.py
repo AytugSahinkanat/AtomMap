@@ -18,14 +18,21 @@ a `frequencies` event follows each `simulate` event.
       Not sent for cache hits, single-Point parts of the loop, or competitors
       that make no Simulator call (Annealing_Rules, Coin_Flip_Rules).
   {"type": "run", "kind": "frequencies", "competitor": name, "round": ...,
-   "step": int, "tile": [point ids], "frequencies": {id: 0..1}}
-      after each real Simulator call (same conditions as `simulate`).
+   "step": int, "tile": [point ids], "frequencies": {id: 0..1}, "shots": int}
+      after each real Simulator call (same conditions as `simulate`);
+      `shots` is the number of shots the Simulator returned.
   {"type": "run", "kind": "pick", "competitor": name, "round": ..., "step": int,
    "tile": null, "picked": [id], "removed": [ids],
-   "source": "atoms"|"annealing"|"coin flip"|"rule"}
+   "source": "atoms"|"annealing"|"coin flip"|"rule",
+   "remaining": int|null, "top_group": int|null,
+   "rank": int|null, "frequency": 0..1|null}
       after each pick, one event per Point. Loop competitors: `step` is the loop
       step (rule picks carry the last finished step, 0 before the first).
       Atoms_Alone: `step` is the part number in the Round (1-based).
+      New fields by source: loop `atoms` has all four as numbers (`rank` 1 is
+      the top Point); `annealing` and `coin flip` have `remaining` and
+      `top_group` and null `rank` and `frequency`; `rule` has only `remaining`;
+      Atoms_Alone has all four null.
 
 `emit` never changes the result. If it raises, `run` returns an error.
 

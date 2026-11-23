@@ -208,7 +208,8 @@ def run_round(
                     if emit is not None and cache.simulator_calls > c0:
                         emit({"kind": "frequencies", "round": round, "step": step,
                               "tile": list(part.ids),
-                              "frequencies": dict(part_freqs)})
+                              "frequencies": dict(part_freqs),
+                              "shots": cache.last_shots})
                 if cache.misses > m0:
                     fresh.extend(part.ids)
         except SimulatorFailure:
@@ -229,10 +230,13 @@ def run_round(
             replay = set(before)  # same sequence apply_rules followed
             for pid in rule_picks:
                 rem = sorted(adj[pid] & replay)
+                remaining_before = len(replay)
                 replay.discard(pid)
                 replay.difference_update(rem)
                 emit({"kind": "pick", "round": round, "step": step, "tile": None,
-                      "picked": [pid], "removed": rem, "source": "rule"})
+                      "picked": [pid], "removed": rem, "source": "rule",
+                      "remaining": remaining_before, "top_group": None,
+                      "rank": None, "frequency": None})
         gone = before - avail
         if gone:
             cache.invalidate(gone)
@@ -288,7 +292,10 @@ def run_round(
         log.add(round, source, "pick", [pick])
         if emit is not None:
             emit({"kind": "pick", "round": round, "step": step, "tile": None,
-                  "picked": [pick], "removed": sorted(nbrs), "source": source})
+                  "picked": [pick], "removed": sorted(nbrs), "source": source,
+                  "remaining": remaining, "top_group": k,
+                  "rank": ranked.index(pick) + 1 if source == "atoms" else None,
+                  "frequency": freqs[pick] if source == "atoms" else None})
         if nbrs:
             log.add(round, source, "remove", sorted(nbrs))
         cache.invalidate({pick} | nbrs)

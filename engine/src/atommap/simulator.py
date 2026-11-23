@@ -115,7 +115,9 @@ class _CountingSimulator:
         self, positions_um: list[tuple[float, float]], seed: int
     ) -> list[list[int]]:
         self._owner.simulator_calls += 1
-        return self._inner.run_tile(positions_um, seed)
+        result = self._inner.run_tile(positions_um, seed)
+        self._owner.last_shots = len(result)
+        return result
 
 
 class FrequencyCache:
@@ -135,6 +137,7 @@ class FrequencyCache:
         self.hits = 0
         self.misses = 0
         self.simulator_calls = 0
+        self.last_shots = 0  # shots of the latest real Simulator call (not cache hits)
 
     def __len__(self) -> int:
         return len(self._entries)

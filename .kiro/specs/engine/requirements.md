@@ -183,9 +183,9 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 8. FOR ALL Rounds of every Competitor, THE Engine SHALL produce a Decision_Log whose pick entries for that Round, replayed in order, produce a set of Point identifiers equal to the Round's returned Independent_Set, with no Point identifier picked more than once.
 9. WHILE a run is in progress, THE Engine SHALL send progress events per Round, step and Tile, so that the UI can light up the atoms. The progress events SHALL include these kinds:
    - a `simulate` event right before each real Simulator call, with the Tile ids;
-   - a `frequencies` event after each real Simulator call, with the Tile ids and the frequency (0 to 1) of each Point in the Tile;
-   - a `pick` event for every pick, carrying a `removed` list with the identifiers of the neighbour Points removed by that pick (an empty list when none);
-   - a `pick` event with source `"rule"` for every pick made by a Classical_Rule, also carrying `removed`.
+   - a `frequencies` event after each real Simulator call, with the Tile ids, the frequency (0 to 1) of each Point in the Tile, and `shots`, the number of shots the Simulator returned;
+   - a `pick` event for every pick, carrying a `removed` list with the identifiers of the neighbour Points removed by that pick (an empty list when none), and the fields `remaining` (number of undecided Points before the pick), `top_group` (size of the top frequency group at that step), `rank` (1 is the top Point) and `frequency` (0 to 1) of the picked Point. These four fields are null where they do not apply: a pick with source `"atoms"` from the loop carries all four as numbers; a pick with source `"annealing"` or `"coin flip"` carries `remaining` and `top_group` as numbers and `rank` and `frequency` as null; a pick with source `"rule"` carries only `remaining` and the other three as null; every pick of Atoms_Alone carries all four as null;
+   - a `pick` event with source `"rule"` for every pick made by a Classical_Rule, also carrying `removed` and the fields above.
 10. THE Engine SHALL provide the emit switch as `api.run(request_json, emit=None)`. WHEN `emit` is None, THE Engine SHALL send no progress events. FOR ALL valid requests, THE Engine SHALL return the same result text with and without `emit`.
 
 ### Requirement 10: Stats and honesty
