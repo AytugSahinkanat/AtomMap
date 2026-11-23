@@ -75,6 +75,8 @@ const VISUALLY_HIDDEN: Partial<CSSStyleDeclaration> = {
 export interface A11yOptions {
   /** Called with the focused Point id, or null when focus leaves the list. */
   onFocusChange?: (id: string | null) => void;
+  /** Called with the focused Point id when Enter or Space is pressed on it. */
+  onActivate?: (id: string) => void;
 }
 
 export interface A11yLayer {
@@ -129,6 +131,14 @@ export function createA11y(container: HTMLElement, options: A11yOptions = {}): A
   }
 
   function onKeyDown(e: KeyboardEvent): void {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      const li = (e.target as HTMLElement).closest('li');
+      const id = li?.dataset.id;
+      if (id === undefined || !items.has(id)) return;
+      e.preventDefault();
+      options.onActivate?.(id);
+      return;
+    }
     const dir = KEY_DIRECTION[e.key];
     if (!dir || activeId === null) return;
     const from = points.find((p) => p.id === activeId);

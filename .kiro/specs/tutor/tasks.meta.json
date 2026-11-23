@@ -56,6 +56,11 @@
         "executionId": "1a03c2bc-915b-4603-a231-eb889acac43f",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795386526538
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441504943
       }
     ],
     "1.5 Write unit tests for the event fields": [
@@ -181,6 +186,16 @@
         "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795439489685
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795440837016
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441143469
       }
     ],
     "4.3 Write the `Facts` generator and property test for numbers": [
@@ -236,6 +251,80 @@
         "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795440619394
+      }
+    ],
+    "5.1 Add `web/src/render/hit.ts`": [
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441148335
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441494102
+      }
+    ],
+    "5.3 Add `setRing(indices)` to the dynamic layer": [
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441148447
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441495157
+      }
+    ],
+    "5.5 Add `onActivate(id)` to the keyboard list in `a11y.ts`": [
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441148906
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441495749
+      }
+    ],
+    "5.4 Create `web/src/tutor/strip.ts`": [
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441500486
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795443495674
+      }
+    ],
+    "1. Engine event fields (prerequisite)": [
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795441505182
+      }
+    ],
+    "5.6 Wire the strip into `map.ts`, `run.ts` and `style.css`": [
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795443496333
+      },
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795443616705
+      }
+    ],
+    "5. Strip, hit test, ring and wiring": [
+      {
+        "executionId": "64265f57-d97a-45db-be5d-c625c89c2926",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795443616819
       }
     ]
   }

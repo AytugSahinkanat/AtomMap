@@ -32,7 +32,8 @@ export interface RunDeps {
   /** True when the system asks for reduced motion. */
   reducedMotion(): boolean;
   /** The run finished with this result. */
-  onFinished(result: unknown): void;
+  /** `hadFocus`: the run bar held focus, so the Tutor strip takes it. */
+  onFinished(result: unknown, hadFocus: boolean): void;
   /** Back to the Map_Screen (after an error). */
   onBack(): void;
   /** Playback moved: `cursor` events of the buffer are applied. */
@@ -210,10 +211,9 @@ export function createRunView(deps: RunDeps): RunView {
     el.classList.add('run-done');
     const st = currentState();
     if (st !== null) sync(st, 0, true); // draw the final map, no tweens
-    status.textContent = "The run is finished. These results are a simulation.";
-    if (hadFocus) status.focus(); // the bar that held focus is gone
+    el.hidden = true; // the Tutor strip shows the finished line now
     map?.announce("The run is finished.");
-    deps.onFinished(resultValue);
+    deps.onFinished(resultValue, hadFocus);
   }
 
   // ---- reduced motion steps ----
@@ -265,6 +265,7 @@ export function createRunView(deps: RunDeps): RunView {
     player?.stop();
     player = null;
     active = false;
+    map = null;
     el.hidden = true;
   }
 
@@ -346,7 +347,7 @@ export function createRunView(deps: RunDeps): RunView {
       deps.onStopped?.();
     },
     resync() {
-      if (el.hidden || map === null) return;
+      if (map === null || (el.hidden && !finished)) return;
       const st = currentState();
       if (st !== null) sync(st, 0, true);
     },

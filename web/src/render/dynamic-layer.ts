@@ -56,6 +56,7 @@ export class DynamicLayer {
 
   private tile: number[] | null = null;
   private focus = -1;
+  private ring: number[] = [];
   private reducedMotion = false;
   private finalView = false;
   private dirty = true;
@@ -99,6 +100,7 @@ export class DynamicLayer {
     this.classical = new Uint8Array(n);
     this.tile = null;
     this.focus = -1;
+    this.ring = [];
     this.dirty = true;
   }
 
@@ -175,6 +177,14 @@ export class DynamicLayer {
     this.dirty = true;
   }
 
+  /** Tutor ring: accent-coloured rings around the given points, no animation. An empty list clears it. */
+  setRing(indices: readonly number[]): void {
+    const next = indices.filter((i) => Number.isInteger(i) && i >= 0 && i < this.n);
+    if (next.length === 0 && this.ring.length === 0) return;
+    this.ring = next;
+    this.dirty = true;
+  }
+
   /** Jump every tween to its end (skip, reduced motion, plan switch). */
   finishTweens(): void {
     for (let i = 0; i < this.n; i++) {
@@ -244,6 +254,18 @@ export class DynamicLayer {
     }
 
     for (let i = 0; i < this.n; i++) this.drawPoint(ctx, i);
+
+    if (this.ring.length) {
+      ctx.strokeStyle = ACCENT_COLOUR;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([]);
+      for (const i of this.ring) {
+        if (i >= this.n) continue;
+        ctx.beginPath();
+        ctx.arc(this.pos[2 * i], this.pos[2 * i + 1], POINT_R + 4, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
 
     if (this.focus >= 0 && this.focus < this.n) {
       ctx.strokeStyle = ACCENT_COLOUR;

@@ -14,7 +14,7 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
 
 ## Tasks
 
-- [ ] 1. Engine event fields (prerequisite)
+- [x] 1. Engine event fields (prerequisite)
   - [x] 1.1 Add the new fields to the `pick` events in `loop.py`
     - Rule picks: `remaining = len(replay)` read before the pick is removed; `top_group`, `rank`, `frequency` null
     - Loop picks: `remaining` and `top_group` from the step; for source `atoms` after the fallback check, `rank = ranked.index(pick) + 1` and `frequency = freqs[pick]`; for `annealing` and `coin flip`, `rank` and `frequency` null
@@ -33,7 +33,7 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - Run `validate_spec_format` on the edited requirements file
     - _Requirements: 1.8_
 
-  - [ ] 1.4 Write property test for the event fields
+  - [x] 1.4 Write property test for the event fields
     - **Property 5: Progress events do not change picks, log or Stats, and carry well-formed fields**
     - **Validates: Requirements 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7**
     - Hypothesis in `engine/tests/`, at least 100 examples, fake Simulator returning a random number of shots
@@ -102,7 +102,7 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
   - [x] 4.2 Add Steps 6 to 8, the idle text and the non-Hybrid sentence
     - Step 6 one per Round (no channel in Place), Step 7 with the Result_Label, Step 8 with plain totals, "One run proves nothing." and "tie"; `atomsNotNeeded` sentence that skips Steps 2 to 5
     - Steps with no sentence are removed
-    - `buildIdle()` with one or two sentences; the non-Hybrid plan returns only "This explanation covers the atoms + rules (hybrid) plan only."
+    - `buildIdle(mode)` with two sentences (hall or place text, then "Press Run to see how the atoms and the rules build the plan, step by step."); the non-Hybrid plan returns only "This explanation covers the atoms + rules (hybrid) plan only."
     - _Requirements: 2.2, 2.6, 3.1, 3.2, 4.8, 4.9, 4.10, 4.11, 4.12, 4.13, 6.2_
 
   - [x] 4.3 Write the `Facts` generator and property test for numbers
@@ -133,8 +133,8 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - Steps of each recorded file match a snapshot; Step 8 shows "tie" for equal totals; Place wording has no channels; `sentences.ts` imports no DOM (grep style check)
     - _Requirements: 4.11, 4.13, 6.4_
 
-- [ ] 5. Strip, hit test, ring and wiring
-  - [ ] 5.1 Add `web/src/render/hit.ts`
+- [x] 5. Strip, hit test, ring and wiring
+  - [x] 5.1 Add `web/src/render/hit.ts`
     - `nearestPoint(xy, x, y, maxPx = 12): number`, -1 when none; pure
     - _Requirements: 5.1_
 
@@ -142,22 +142,22 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - Hit at 12 px, miss at 13 px, nearest of two, empty list
     - _Requirements: 5.1_
 
-  - [ ] 5.3 Add `setRing(indices)` to the dynamic layer
+  - [x] 5.3 Add `setRing(indices)` to the dynamic layer
     - In `web/src/render/dynamic-layer.ts`: ring in the accent colour, no animation, empty list clears it, one redraw
     - _Requirements: 2.10_
 
-  - [ ] 5.4 Create `web/src/tutor/strip.ts`
+  - [x] 5.4 Create `web/src/tutor/strip.ts`
     - `createStrip(deps)` with `showIdle`, `showFinished`, `hide`; markup as in the design (`<section aria-label="Tutor">`, text left, Back, Next and "step N of M" right, hidden `aria-live="polite"` region, text set with `textContent`)
     - Back and Next change the Step, the counter and the live region; focus stays on the button; `deps.onRing(ids)` called per Step
     - The first line is the finished line with `tabindex="-1"` and takes focus when the old bar held it
     - Non-Hybrid plan: the first line and one sentence, no Steps, no ring
     - _Requirements: 2.1, 2.4, 2.5, 2.6, 2.10, 2.11, 2.12, 3.2_
 
-  - [ ] 5.5 Add `onActivate(id)` to the keyboard list in `a11y.ts`
+  - [x] 5.5 Add `onActivate(id)` to the keyboard list in `a11y.ts`
     - Enter or Space on the focused item calls it; arrow keys still only move focus
     - _Requirements: 5.1, 2.11_
 
-  - [ ] 5.6 Wire the strip into `map.ts`, `run.ts` and `style.css`
+  - [x] 5.6 Wire the strip into `map.ts`, `run.ts` and `style.css`
     - `map.ts`: place the strip above `.map-row`, full width, where the label line was (the label becomes its first line); `onRing` maps ids to indices and calls `setRing`; leaving the Tutor clears the ring
     - `run.ts`: no longer shows the finished line, calls `showFinished` and `hide` during a run; the Result_Label and "Results are a simulation" stay as they are
     - Build `Facts` from the buffered events and the request; strip styles in `style.css` (focus ring, weights as in the steering design)

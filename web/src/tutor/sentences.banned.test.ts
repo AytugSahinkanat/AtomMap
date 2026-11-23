@@ -39,7 +39,7 @@ describe("tutor sentences: banned words", () => {
   });
 
   it("idle text and the non-Hybrid sentence have no banned word", () => {
-    for (const s of [...buildIdle(), NON_HYBRID_SENTENCE]) {
+    for (const s of [...buildIdle("channel_plan"), ...buildIdle("place"), NON_HYBRID_SENTENCE]) {
       expect(bannedIn(s)).toEqual([]);
     }
   });

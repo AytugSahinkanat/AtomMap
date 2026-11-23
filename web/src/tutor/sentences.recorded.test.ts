@@ -5,7 +5,7 @@
 import { describe, expect, it } from "vitest";
 import { buildStraightEdges } from "../edges/straight";
 import { deriveFacts, type Facts, type TutorEvent } from "./facts";
-import { buildSteps, type Step } from "./sentences";
+import { buildIdle, buildSteps, type Step } from "./sentences";
 import { RECORDED_NAMES, loadRecorded, recordedTitle, type RecordedName } from "./recorded";
 
 const BANNED = ["faster", "speed", "wins", "winner", "beats", "best", "the atoms chose", "the atoms decided"];
@@ -118,5 +118,42 @@ describe.each(["rules_only", "place_rules_only"] as const)("Sentences of %s (ato
     const text = textOf(stepsOf(name));
     expect(text).toContain("The atoms weren't needed on this map.");
     expect(text).toContain("Quantum share: 0%");
+  });
+});
+
+describe("Wording of recorded runs", () => {
+  it.skipIf(!has("hero_seed1"))(recordedTitle("hero_seed1", "uses the new wording"), () => {
+    const steps = stepsOf("hero_seed1");
+    const by = (k: string) => steps.find((s) => s.key === k)!.sentences.join(" ");
+    expect(by("rules-first")).toContain("so picking it is always safe");
+    expect(by("groups")).toContain(
+      "The other 65 points were too tangled for the rules. On channel 1 they were cut into 15 small groups of 4 to 8 points, and each group ran on the atoms 100 times. This is a simulation.",
+    );
+    expect(by("group").startsWith("Close atoms can't light up together")).toBe(true);
+    expect(by("pick")).toContain("ranks the 65 points left by how often they lit up, keeps the top 26");
+    expect(by("pick")).toContain("ap60, rank 5, lit up in 34 of 100 tries.");
+    expect(by("after")).toBe("That pick opened no new safe picks for the rules.");
+    expect(by("round-1")).toContain("70 points to choose from, 11 picks.");
+    expect(by("round-1")).not.toContain("classically");
+    expect(by("round-2")).toContain("1 classically, without atoms.");
+    expect(by("result")).toContain("groups were split in two because the atoms couldn't be placed exactly like the map");
+    expect(by("result")).not.toContain("Result label");
+    expect(textOf(steps)).not.toMatch(/\bPoints?\b/);
+  });
+
+  it.skipIf(!has("place_rules_only"))(recordedTitle("place_rules_only", "says the rules made all picks"), () => {
+    const text = textOf(stepsOf("place_rules_only"));
+    expect(text).toMatch(/The rules made all \d+ picks on their own\./);
+    expect(text).not.toContain("Before any atoms ran");
+  });
+});
+
+describe("buildIdle", () => {
+  it("has the hall and the place text", () => {
+    expect(buildIdle("channel_plan")).toEqual([
+      "Each dot is a wifi access point. A line joins two that are too close to share a channel.",
+      "Press Run to see how the atoms and the rules build the plan, step by step.",
+    ]);
+    expect(buildIdle("place")[0]).toBe("Each dot is a cafe. A line joins two that are too close to both be picked.");
   });
 });

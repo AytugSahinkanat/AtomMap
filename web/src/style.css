@@ -156,3 +156,20 @@ h1 { font-weight: 500; }
   .finished-panel .score-card h3 { order: -2; padding-right: 0; }
   .finished-panel .score-card .score-label { position: static; order: -1; }
 }
+/* Tutor strip (tutor task 5.6). Same panel look as the other boxes. */
+.tutor-strip { box-sizing: border-box; display: grid; grid-template-columns: 1fr auto; gap: 0.25rem 1rem; align-items: start; margin: 0.5rem 0; padding: 0.4rem 0.75rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; line-height: 1.4; }
+.tutor-strip[hidden], .tutor-controls[hidden] { display: none; }
+.tutor-text { min-width: 0; }
+.tutor-text p { margin: 0; }
+.tutor-first { font-weight: 500; }
+.tutor-first:focus { outline: none; }
+.tutor-first:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tutor-body { color: var(--text); }
+.tutor-controls { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+.tutor-counter { color: var(--muted); font-variant-numeric: tabular-nums; }
+.tutor-controls button { background: var(--accent); color: #0b0d17; border: 0; border-radius: 8px; padding: 0.3rem 0.8rem; font: 500 0.9rem system-ui, sans-serif; cursor: pointer; }
+.tutor-controls button[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+.tutor-controls button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+@media (max-width: 40rem) {
+  .tutor-strip { grid-template-columns: 1fr; }
+}

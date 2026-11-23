@@ -17,6 +17,9 @@ import { focusInside } from "../focus";
 import { createRunView, type RunView } from "./run";
 import { createScoreboard } from "./scoreboard";
 import { renderLegend } from "./legend";
+import { deriveFacts, type TutorEvent } from "../tutor/facts";
+import { buildIdle } from "../tutor/sentences";
+import { createStrip } from "../tutor/strip";
 
 interface PlaceSelector {
   /** The picker (radios only), for the toolbar. */
@@ -177,6 +180,7 @@ function radioGroup(
 }
 
 export function createMapScreen(deps: MapScreenDeps): MapScreen {
+  let running = false;
   const el = document.createElement("main");
   el.className = "screen map";
   const h = document.createElement("h1");
@@ -247,8 +251,6 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   message.setAttribute("role", "alert");
   message.hidden = true;
 
-  const label = document.createElement("p");
-  label.className = "muted";
 
   // ---- map area ----
   const wrap = document.createElement("div");
@@ -268,6 +270,33 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       dynamicLayer.draw();
     },
   });
+
+  // Tutor strip: its first line is the label (before a run) or the finished line (after a run).
+  const strip = createStrip({
+    onRing: (ids) => {
+      const idx: number[] = [];
+      for (const id of ids) {
+        const i = indexById.get(id);
+        if (i !== undefined) idx.push(i);
+      }
+      dynamicLayer.setRing(idx);
+      dynamicLayer.draw();
+    },
+  });
+  let labelText = "";
+  let finishedShown = false;
+  /** Request edges of the run on screen, for the Facts. */
+  let runEdges: [string, string][] = [];
+
+  function refreshIdle(): void {
+    if (running || finishedShown) return;
+    if (labelText === "") strip.hide();
+    else strip.showIdle(labelText, buildIdle(mode));
+  }
+  function setLabel(text: string): void {
+    labelText = text;
+    refreshIdle();
+  }
 
   const tagline = document.createElement("p");
   tagline.className = "muted tagline";
@@ -308,7 +337,6 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   mapRow.className = "map-row";
   mapRow.append(mapCol, scoreboard.el);
 
-  let running = false;
   /** Seed and mode of the run on screen (for the scoreboard). */
   let runSeed = DEFAULT_SEED;
   /**
@@ -334,13 +362,27 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   const run = createRunView({
     buffer,
     reducedMotion: () => reducedQuery?.matches ?? false,
-    onFinished: (result) => {
+    onFinished: (result, hadFocus) => {
       running = false;
       runButton.disabled = choice === null;
       const competitors = (result as { competitors?: Record<string, unknown> } | null)?.competitors ?? {};
       scoreboard.finish(competitors);
       legendBox.replaceChildren(renderLegend(mode));
       legendBox.hidden = false;
+      finishedShown = true;
+      strip.showFinished(
+        "The run is finished. These results are a simulation.",
+        deriveFacts({
+          mode,
+          seed: runSeed,
+          ids: scene?.points.map((p) => p.id) ?? [],
+          edges: runEdges,
+          events: buffer as unknown as TutorEvent[],
+          result: { competitors, meta: (result as { meta?: Record<string, unknown> } | null)?.meta },
+        }),
+        "Hybrid",
+        hadFocus,
+      );
       layout(); // the run bar collapsed: use the room for the map; the final state is redrawn by resync()
       deps.onFinished(result);
     },
@@ -353,18 +395,21 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     },
   });
 
-  el.append(h, tagline, toolbar, placeSelector.info, label, message, noData, run.el, mapRow);
+  el.append(h, tagline, toolbar, placeSelector.info, strip.el, message, noData, run.el, mapRow);
 
   function showMap(fromBack = false): void {
     const restoreFocus =
       fromBack || focusInside(run.el, document.activeElement) || focusInside(scoreboard.el, document.activeElement);
     run.hide();
     running = false;
+    finishedShown = false;
     scoreboard.hide();
     legendBox.hidden = true;
     toolbar.hidden = false;
     tagline.hidden = false;
     update({ screen: "map" });
+    refreshIdle();
+    layout();
     if (restoreFocus && !runButton.disabled) runButton.focus();
   }
 
@@ -395,7 +440,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       const edges = buildRequest(edgesChoice, 0).graph.edges ?? [];
       scene = { points: hero.points, edges, walls: wallsOn ? walls : [] };
       sceneKey = `channel:${wallsOn}`;
-      label.textContent = `Wifi hall, ${hero.points.length} access points. Results are a simulation.`;
+      setLabel(`Wifi hall, ${hero.points.length} access points. Results are a simulation.`);
     } else {
       const f = state.placeFixture;
       if (f === null) return;
@@ -403,7 +448,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       const edges = walking ? f.walking_edges : buildStraightEdges(f.points, f.r);
       scene = { points: f.points, edges, streets: f.streets };
       sceneKey = `place:${f.name}:${walking}`;
-      label.textContent = `${f.name}, ${f.points.length} cafes. Results are a simulation.`;
+      setLabel(`${f.name}, ${f.points.length} cafes. Results are a simulation.`);
     }
   }
 
@@ -470,7 +515,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       scene = null;
       choice = null;
       sceneKey = "";
-      label.textContent = mode === "place" ? "" : "Loading the wifi hall…";
+      setLabel(mode === "place" ? "" : "Loading the wifi hall…");
     } else if (scene === null || key !== sceneKey) {
       rebuildScene();
       a11y.setMapLabel(
@@ -519,6 +564,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     runSeed = seedValue;
     seedInput.value = String(seedValue);
     hybridEnd = null;
+    finishedShown = false;
+    runEdges = scene.edges.map((e): [string, string] => [e[0], e[1]]);
+    strip.hide();
     legendBox.hidden = true;
     update({ screen: "run", result: null });
     // The panel opens now, all cards "Computing…". Opening it narrows the map,

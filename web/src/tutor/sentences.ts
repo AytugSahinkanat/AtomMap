@@ -38,14 +38,20 @@ export const SENTENCES: SentenceDef[] = [
   // Step 1: rules first
   {
     step: 1,
-    needs: ["rulesFirst.count"],
-    when: (f) => f.rulesFirst!.count === 0,
+    needs: ["rulesFirst.count", "result.atomsNotNeeded"],
+    when: (f) => f.rulesFirst!.count === 0 && f.result!.atomsNotNeeded !== true,
     make: () => "The rules found no safe pick, so the atoms went first.",
   },
   {
     step: 1,
-    needs: ["rulesFirst.count"],
-    when: (f) => f.rulesFirst!.count > 0,
+    needs: ["result.total", "result.atomsNotNeeded"],
+    when: (f) => f.result!.atomsNotNeeded === true,
+    make: (f) => `The rules made all ${n(f.result!.total)} ${noun(f.result!.total, "pick", "picks")} on their own.`,
+  },
+  {
+    step: 1,
+    needs: ["rulesFirst.count", "result.atomsNotNeeded"],
+    when: (f) => f.rulesFirst!.count > 0 && f.result!.atomsNotNeeded !== true,
     make: (f) =>
       `Before any atoms ran, the rules made ${n(f.rulesFirst!.count)} safe ${noun(f.rulesFirst!.count, "pick", "picks")}.`,
   },
@@ -54,111 +60,107 @@ export const SENTENCES: SentenceDef[] = [
     needs: ["rulesFirst.count", "rulesFirst.first", "rulesFirst.firstNeighboursLeft"],
     when: (f) => f.rulesFirst!.count > 0 && f.rulesFirst!.firstNeighboursLeft === 0,
     make: (f) =>
-      `The first was ${f.rulesFirst!.first}. Among the Points left at that moment it has no neighbours, so taking it loses no other pick.`,
+      `The first was ${f.rulesFirst!.first}. Among the points left at that moment it has no neighbours, so picking it is always safe.`,
   },
   {
     step: 1,
     needs: ["rulesFirst.count", "rulesFirst.first", "rulesFirst.firstNeighboursLeft"],
     when: (f) => f.rulesFirst!.count > 0 && f.rulesFirst!.firstNeighboursLeft === 1,
     make: (f) =>
-      `The first was ${f.rulesFirst!.first}. Among the Points left at that moment it has one neighbour, and the two clash with each other, so taking it loses no other pick.`,
+      `The first was ${f.rulesFirst!.first}. Among the points left at that moment it has one neighbour, and the two clash with each other, so picking it is always safe.`,
   },
   {
     step: 1,
     needs: ["rulesFirst.count", "rulesFirst.first", "rulesFirst.firstNeighboursLeft"],
     when: (f) => f.rulesFirst!.count > 0 && f.rulesFirst!.firstNeighboursLeft! >= 2,
     make: (f) =>
-      `The first was ${f.rulesFirst!.first}. Among the Points left at that moment it has ${n(f.rulesFirst!.firstNeighboursLeft)} neighbours, and they all clash with each other and with it, so taking it loses no other pick.`,
+      `The first was ${f.rulesFirst!.first}. Among the points left at that moment it has ${n(f.rulesFirst!.firstNeighboursLeft)} neighbours, and they all clash with each other and with it, so picking it is always safe.`,
   },
 
   // Step 2: groups
   {
     step: 2,
-    needs: ["groups.channel", "groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest"],
+    needs: ["groups.channel", "groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "channel_plan" && f.groups!.smallest !== f.groups!.biggest,
     make: (f) =>
-      `Then the atoms got the Points still left. On channel ${n(f.groups!.channel)}, ${n(f.groups!.pointsLeft)} Points were left. They were split into ${n(f.groups!.count)} ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.smallest)} to ${n(f.groups!.biggest)} Points.`,
+      `The other ${n(f.groups!.pointsLeft)} points were too tangled for the rules. On channel ${n(f.groups!.channel)} they were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.smallest)} to ${n(f.groups!.biggest)} points, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
   },
   {
     step: 2,
-    needs: ["groups.channel", "groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest"],
+    needs: ["groups.channel", "groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "channel_plan" && f.groups!.smallest === f.groups!.biggest,
     make: (f) =>
-      `Then the atoms got the Points still left. On channel ${n(f.groups!.channel)}, ${n(f.groups!.pointsLeft)} Points were left. They were split into ${n(f.groups!.count)} ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.biggest)} Points.`,
+      `The other ${n(f.groups!.pointsLeft)} points were too tangled for the rules. On channel ${n(f.groups!.channel)} they were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.biggest)} ${noun(f.groups!.biggest, "point", "points")}, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
   },
   {
     step: 2,
-    needs: ["groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest"],
+    needs: ["groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "place" && f.groups!.smallest !== f.groups!.biggest,
     make: (f) =>
-      `Then the atoms got the Points still left. ${n(f.groups!.pointsLeft)} Points were left. They were split into ${n(f.groups!.count)} ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.smallest)} to ${n(f.groups!.biggest)} Points.`,
+      `The other ${n(f.groups!.pointsLeft)} points were too tangled for the rules. They were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.smallest)} to ${n(f.groups!.biggest)} points, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
   },
   {
     step: 2,
-    needs: ["groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest"],
+    needs: ["groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "place" && f.groups!.smallest === f.groups!.biggest,
     make: (f) =>
-      `Then the atoms got the Points still left. ${n(f.groups!.pointsLeft)} Points were left. They were split into ${n(f.groups!.count)} ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.biggest)} Points.`,
+      `The other ${n(f.groups!.pointsLeft)} points were too tangled for the rules. They were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.biggest)} ${noun(f.groups!.biggest, "point", "points")}, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
   },
   {
+    // Honesty rule 2: the label word is shown. Without a label this
+    // sentence drops and the rest of Step 2 stays.
     step: 2,
-    needs: ["groups.shots", "label"],
-    make: (f) => `Each group was tried ${n(f.groups!.shots)} times. Result label: ${f.label}.`,
+    needs: ["label"],
+    make: (f) => `This is ${f.label === "simulation" ? "a simulation" : f.label}.`,
   },
 
   // Step 3: one group
   {
     step: 3,
     needs: ["group.size"],
-    make: (f) => `Take the biggest group, with ${n(f.group!.size)} Points.`,
+    make: () =>
+      "Close atoms can't light up together, so a point that fits well with its group lights up more often.",
+  },
+  {
+    step: 3,
+    needs: ["group.size"],
+    make: (f) => `Take the biggest group, with ${n(f.group!.size)} ${noun(f.group!.size, "point", "points")}.`,
   },
   {
     step: 3,
     needs: ["group.allClash"],
     when: (f) => f.group!.allClash === true,
-    make: () => "All its Points clash with each other, so the atoms had no clear favourite.",
+    make: () => "All its points clash with each other, so the atoms had no clear favourite.",
   },
   {
     step: 3,
     needs: ["group.size", "group.allClash", "group.top.0", "group.top.1", "group.topHits.0", "group.topHits.1", "groups.shots"],
     when: (f) => f.group!.allClash === false && f.group!.size >= 2,
     make: (f) =>
-      `Its two most often lit Points are ${f.group!.top[0]} (${n(f.group!.topHits[0])} of ${n(f.groups!.shots)} tries) and ${f.group!.top[1]} (${n(f.group!.topHits[1])} of ${n(f.groups!.shots)} tries).`,
+      `Its two most often lit points are ${f.group!.top[0]} (${n(f.group!.topHits[0])} of ${n(f.groups!.shots)} tries) and ${f.group!.top[1]} (${n(f.group!.topHits[1])} of ${n(f.groups!.shots)} tries).`,
   },
   {
     step: 3,
-    // A one-Point group has one lit Point. Keyed on size, not on a missing
+    // A one-point group has one lit point. Keyed on size, not on a missing
     // top[1], so a lost second entry drops the sentence above (Req. 4.14).
     needs: ["group.size", "group.allClash", "group.top.0", "group.topHits.0", "groups.shots"],
     when: (f) => f.group!.allClash === false && f.group!.size === 1,
     make: (f) =>
-      `Its most often lit Point is ${f.group!.top[0]} (${n(f.group!.topHits[0])} of ${n(f.groups!.shots)} tries).`,
+      `Its most often lit point is ${f.group!.top[0]} (${n(f.group!.topHits[0])} of ${n(f.groups!.shots)} tries).`,
   },
   {
     step: 3,
     needs: ["group.neverLit"],
     make: (f) =>
-      `${n(f.group!.neverLit)} of its ${noun(f.group!.neverLit, "Point", "Points")} never lit up.`,
+      `${n(f.group!.neverLit)} of its ${noun(f.group!.neverLit, "point", "points")} never lit up.`,
   },
 
   // Step 4: one pick
   {
     step: 4,
-    needs: ["atomPick.id"],
-    make: () =>
-      "The app does not take the top Point. It ranks the Points left, keeps the top group, and picks one of its Points at random.",
-  },
-  {
-    step: 4,
-    needs: ["atomPick.id", "atomPick.pointsLeft", "atomPick.topGroup"],
+    needs: ["atomPick.id", "atomPick.pointsLeft", "atomPick.topGroup", "atomPick.rank", "atomPick.hits", "atomPick.shots"],
     make: (f) =>
-      `At that moment ${n(f.atomPick!.pointsLeft)} Points were left and the top group had ${n(f.atomPick!.topGroup)} Points.`,
-  },
-  {
-    step: 4,
-    needs: ["atomPick.id", "atomPick.rank", "atomPick.hits", "atomPick.shots"],
-    make: (f) =>
-      `It picked ${f.atomPick!.id}, at rank ${n(f.atomPick!.rank)}. That Point lit up in ${n(f.atomPick!.hits)} of ${n(f.atomPick!.shots)} tries.`,
+      `The app doesn't just take the top point. It ranks the ${n(f.atomPick!.pointsLeft)} ${noun(f.atomPick!.pointsLeft, "point", "points")} left by how often they lit up, keeps the top ${n(f.atomPick!.topGroup)} and picks one of them at random: ${f.atomPick!.id}, rank ${n(f.atomPick!.rank)}, lit up in ${n(f.atomPick!.hits)} of ${n(f.atomPick!.shots)} tries.`,
   },
 
   // Step 5: after it
@@ -173,7 +175,7 @@ export const SENTENCES: SentenceDef[] = [
     needs: ["opened.count"],
     when: (f) => f.opened!.count > 0,
     make: (f) =>
-      `After it, the rules found ${n(f.opened!.count)} safe ${noun(f.opened!.count, "pick", "picks")} that this pick opened.`,
+      `That pick opened ${n(f.opened!.count)} new safe ${noun(f.opened!.count, "pick", "picks")} for the rules.`,
   },
 ];
 
@@ -190,7 +192,7 @@ export function roundDefs(i: number): SentenceDef[] {
       needs: [`${base}.channel`, `${base}.available`, `${base}.picks`],
       when: (f) => f.mode === "channel_plan",
       make: (f) =>
-        `Channel ${n(r(f).channel)}: ${n(r(f).available)} Points to choose from, ${n(r(f).picks)} ${noun(r(f).picks, "pick", "picks")}.`,
+        `Channel ${n(r(f).channel)}: ${n(r(f).available)} ${noun(r(f).available, "point", "points")} to choose from, ${n(r(f).picks)} ${noun(r(f).picks, "pick", "picks")}.`,
     },
     {
       step: 6,
@@ -199,13 +201,18 @@ export function roundDefs(i: number): SentenceDef[] {
       // the sentence above instead of switching wording (Req. 4.13, 4.14).
       when: (f) => f.mode === "place",
       make: (f) =>
-        `${n(r(f).available)} Points to choose from, ${n(r(f).picks)} ${noun(r(f).picks, "pick", "picks")}.`,
+        `${n(r(f).available)} ${noun(r(f).available, "point", "points")} to choose from, ${n(r(f).picks)} ${noun(r(f).picks, "pick", "picks")}.`,
     },
     {
       step: 6,
-      needs: [`${base}.byRule`, `${base}.byAtoms`, `${base}.byClassic`],
-      make: (f) =>
-        `${n(r(f).byRule)} by a rule, ${n(r(f).byAtoms)} with help from the atoms, ${n(r(f).byClassic)} classically, without atoms.`,
+      needs: [`${base}.byRule`, `${base}.byAtoms`],
+      make: (f) => `${n(r(f).byRule)} by a rule, ${n(r(f).byAtoms)} with help from the atoms.`,
+    },
+    {
+      step: 6,
+      needs: [`${base}.byClassic`],
+      when: (f) => r(f).byClassic > 0,
+      make: (f) => `${n(r(f).byClassic)} classically, without atoms.`,
     },
   ];
 }
@@ -215,13 +222,8 @@ export function roundDefs(i: number): SentenceDef[] {
 export const RESULT_AND_COMPARE: SentenceDef[] = [
   {
     step: 7,
-    needs: ["label"],
-    make: (f) => `Result label: ${f.label}.`,
-  },
-  {
-    step: 7,
     needs: ["result.total"],
-    make: (f) => `In total, this plan picked ${n(f.result!.total)} ${noun(f.result!.total, "Point", "Points")}.`,
+    make: (f) => `In total, this plan picked ${n(f.result!.total)} ${noun(f.result!.total, "point", "points")}.`,
   },
   {
     step: 7,
@@ -240,18 +242,13 @@ export const RESULT_AND_COMPARE: SentenceDef[] = [
   {
     step: 7,
     needs: ["result.fiveGhzOnly"],
-    make: (f) => `${n(f.result!.fiveGhzOnly)} ${noun(f.result!.fiveGhzOnly, "Point is", "Points are")} 5 GHz only.`,
+    make: (f) => `${n(f.result!.fiveGhzOnly)} ${noun(f.result!.fiveGhzOnly, "point is", "points are")} 5 GHz only.`,
   },
   {
     step: 7,
-    needs: ["result.splits"],
-    make: (f) => `The layout has ${n(f.result!.splits)} ${noun(f.result!.splits, "split", "splits")}.`,
-  },
-  {
-    step: 7,
-    needs: ["result.skippedTiles"],
+    needs: ["result.splits", "result.skippedTiles"],
     make: (f) =>
-      `${n(f.result!.skippedTiles)} ${noun(f.result!.skippedTiles, "group was", "groups were")} skipped.`,
+      `${n(f.result!.splits)} ${noun(f.result!.splits, "group was", "groups were")} split in two because the atoms couldn't be placed exactly like the map, and ${n(f.result!.skippedTiles)} ${noun(f.result!.skippedTiles, "was", "were")} skipped.`,
   },
   {
     step: 8,
@@ -278,11 +275,13 @@ export const RESULT_AND_COMPARE: SentenceDef[] = [
 
 export const NON_HYBRID_SENTENCE = "This explanation covers the atoms + rules (hybrid) plan only.";
 
-/** Idle text shown before a run is finished: one or two sentences, no numbers. */
-export function buildIdle(): string[] {
+/** Idle text shown before a run is finished: two sentences, no numbers. */
+export function buildIdle(mode: Facts["mode"]): string[] {
   return [
-    "Run a map to see how the atoms and the rules built the result, step by step.",
-    "Every number here will come from your run.",
+    mode === "channel_plan"
+      ? "Each dot is a wifi access point. A line joins two that are too close to share a channel."
+      : "Each dot is a cafe. A line joins two that are too close to both be picked.",
+    "Press Run to see how the atoms and the rules build the plan, step by step.",
   ];
 }
 const STEP_KEYS: Record<number, string> = {
