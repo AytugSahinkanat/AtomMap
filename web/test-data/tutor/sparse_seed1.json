@@ -1,0 +1,9274 @@
+{
+ "request": {
+  "points": [
+   {
+    "id": "ap00",
+    "x": 1.438,
+    "y": 0.165
+   },
+   {
+    "id": "ap01",
+    "x": 9.951,
+    "y": -0.347
+   },
+   {
+    "id": "ap02",
+    "x": 22.145,
+    "y": 1.406
+   },
+   {
+    "id": "ap03",
+    "x": 33.75,
+    "y": 0.455
+   },
+   {
+    "id": "ap04",
+    "x": 44.044,
+    "y": -1.235
+   },
+   {
+    "id": "ap05",
+    "x": 55.359,
+    "y": -0.586
+   },
+   {
+    "id": "ap06",
+    "x": 66.023,
+    "y": 1.208
+   },
+   {
+    "id": "ap07",
+    "x": 76.432,
+    "y": 1.278
+   },
+   {
+    "id": "ap08",
+    "x": 88.356,
+    "y": 0.079
+   },
+   {
+    "id": "ap09",
+    "x": 99.71,
+    "y": 0.546
+   },
+   {
+    "id": "ap10",
+    "x": -1.232,
+    "y": 11.487
+   },
+   {
+    "id": "ap11",
+    "x": 9.967,
+    "y": 11.532
+   },
+   {
+    "id": "ap12",
+    "x": 21.937,
+    "y": 11.788
+   },
+   {
+    "id": "ap13",
+    "x": 33.565,
+    "y": 11.769
+   },
+   {
+    "id": "ap14",
+    "x": 45.029,
+    "y": 9.967
+   },
+   {
+    "id": "ap15",
+    "x": 55.234,
+    "y": 10.223
+   },
+   {
+    "id": "ap16",
+    "x": 64.923,
+    "y": 11.048
+   },
+   {
+    "id": "ap17",
+    "x": 76.4,
+    "y": 10.322
+   },
+   {
+    "id": "ap18",
+    "x": 87.626,
+    "y": 11.156
+   },
+   {
+    "id": "ap19",
+    "x": 98.354,
+    "y": 11.477
+   },
+   {
+    "id": "ap20",
+    "x": 1.011,
+    "y": 22.095
+   },
+   {
+    "id": "ap21",
+    "x": 10.635,
+    "y": 21.189
+   },
+   {
+    "id": "ap22",
+    "x": 23.213,
+    "y": 21.353
+   },
+   {
+    "id": "ap23",
+    "x": 32.631,
+    "y": 21.078
+   },
+   {
+    "id": "ap24",
+    "x": 44.169,
+    "y": 20.691
+   },
+   {
+    "id": "ap25",
+    "x": 54.22,
+    "y": 21.219
+   },
+   {
+    "id": "ap26",
+    "x": 64.741,
+    "y": 23.482
+   },
+   {
+    "id": "ap27",
+    "x": 78.443,
+    "y": 21.469
+   },
+   {
+    "id": "ap28",
+    "x": 88.055,
+    "y": 21.51
+   },
+   {
+    "id": "ap29",
+    "x": 98.64,
+    "y": 22.896
+   },
+   {
+    "id": "ap30",
+    "x": -0.989,
+    "y": 34.421
+   },
+   {
+    "id": "ap31",
+    "x": 10.789,
+    "y": 32.886
+   },
+   {
+    "id": "ap32",
+    "x": 23.289,
+    "y": 32.805
+   },
+   {
+    "id": "ap33",
+    "x": 33.892,
+    "y": 31.591
+   },
+   {
+    "id": "ap34",
+    "x": 43.239,
+    "y": 34.066
+   },
+   {
+    "id": "ap35",
+    "x": 55.77,
+    "y": 33.404
+   },
+   {
+    "id": "ap36",
+    "x": 67.219,
+    "y": 32.462
+   },
+   {
+    "id": "ap37",
+    "x": 76.183,
+    "y": 33.991
+   },
+   {
+    "id": "ap38",
+    "x": 89.403,
+    "y": 32.414
+   },
+   {
+    "id": "ap39",
+    "x": 98.359,
+    "y": 32.892
+   },
+   {
+    "id": "ap40",
+    "x": -0.955,
+    "y": 42.931
+   },
+   {
+    "id": "ap41",
+    "x": 11.849,
+    "y": 43.046
+   },
+   {
+    "id": "ap42",
+    "x": 22.507,
+    "y": 45.471
+   },
+   {
+    "id": "ap43",
+    "x": 34.468,
+    "y": 44.657
+   },
+   {
+    "id": "ap44",
+    "x": 43.184,
+    "y": 44.505
+   },
+   {
+    "id": "ap45",
+    "x": 56.3,
+    "y": 44.788
+   },
+   {
+    "id": "ap46",
+    "x": 65.794,
+    "y": 43.346
+   },
+   {
+    "id": "ap47",
+    "x": 76.101,
+    "y": 43.112
+   },
+   {
+    "id": "ap48",
+    "x": 89.313,
+    "y": 43.406
+   },
+   {
+    "id": "ap49",
+    "x": 97.605,
+    "y": 44.395
+   },
+   {
+    "id": "ap50",
+    "x": -0.259,
+    "y": 54.249
+   },
+   {
+    "id": "ap51",
+    "x": 11.638,
+    "y": 53.874
+   },
+   {
+    "id": "ap52",
+    "x": 21.286,
+    "y": 56.345
+   },
+   {
+    "id": "ap53",
+    "x": 31.896,
+    "y": 53.937
+   },
+   {
+    "id": "ap54",
+    "x": 44.223,
+    "y": 53.696
+   },
+   {
+    "id": "ap55",
+    "x": 55.893,
+    "y": 53.655
+   },
+   {
+    "id": "ap56",
+    "x": 66.048,
+    "y": 55.341
+   },
+   {
+    "id": "ap57",
+    "x": 77.158,
+    "y": 53.634
+   },
+   {
+    "id": "ap58",
+    "x": 89.459,
+    "y": 54.224
+   },
+   {
+    "id": "ap59",
+    "x": 100.026,
+    "y": 56.009
+   },
+   {
+    "id": "ap60",
+    "x": -1.492,
+    "y": 65.078
+   },
+   {
+    "id": "ap61",
+    "x": 9.554,
+    "y": 67.17
+   },
+   {
+    "id": "ap62",
+    "x": 22.395,
+    "y": 64.926
+   },
+   {
+    "id": "ap63",
+    "x": 31.972,
+    "y": 64.719
+   },
+   {
+    "id": "ap64",
+    "x": 42.877,
+    "y": 64.511
+   },
+   {
+    "id": "ap65",
+    "x": 54.803,
+    "y": 66.384
+   },
+   {
+    "id": "ap66",
+    "x": 65.829,
+    "y": 67.096
+   },
+   {
+    "id": "ap67",
+    "x": 77.004,
+    "y": 64.872
+   },
+   {
+    "id": "ap68",
+    "x": 88.493,
+    "y": 66.11
+   },
+   {
+    "id": "ap69",
+    "x": 100.256,
+    "y": 66.554
+   }
+  ],
+  "mode": "channel_plan",
+  "graph": {
+   "r": 20.0
+  },
+  "seed": 1
+ },
+ "events": [
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap00"
+   ],
+   "removed": [
+    "ap01",
+    "ap10",
+    "ap11"
+   ],
+   "source": "rule",
+   "remaining": 70,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [
+    "ap08",
+    "ap18",
+    "ap19"
+   ],
+   "source": "rule",
+   "remaining": 66,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap07"
+   ],
+   "removed": [
+    "ap06",
+    "ap16",
+    "ap17"
+   ],
+   "source": "rule",
+   "remaining": 62,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap04",
+    "ap14",
+    "ap15"
+   ],
+   "source": "rule",
+   "remaining": 58,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap03"
+   ],
+   "removed": [
+    "ap02",
+    "ap12",
+    "ap13"
+   ],
+   "source": "rule",
+   "remaining": 54,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap20"
+   ],
+   "removed": [
+    "ap21",
+    "ap30",
+    "ap31"
+   ],
+   "source": "rule",
+   "remaining": 50,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap22"
+   ],
+   "removed": [
+    "ap23",
+    "ap32",
+    "ap33"
+   ],
+   "source": "rule",
+   "remaining": 46,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap24"
+   ],
+   "removed": [
+    "ap25",
+    "ap34",
+    "ap35"
+   ],
+   "source": "rule",
+   "remaining": 42,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap29"
+   ],
+   "removed": [
+    "ap28",
+    "ap38",
+    "ap39"
+   ],
+   "source": "rule",
+   "remaining": 38,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap27"
+   ],
+   "removed": [
+    "ap26",
+    "ap36",
+    "ap37"
+   ],
+   "source": "rule",
+   "remaining": 34,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap40"
+   ],
+   "removed": [
+    "ap41",
+    "ap50",
+    "ap51"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap49"
+   ],
+   "removed": [
+    "ap48",
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 26,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 22,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap69"
+   ],
+   "removed": [
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap67"
+   ],
+   "removed": [
+    "ap56",
+    "ap57",
+    "ap66"
+   ],
+   "source": "rule",
+   "remaining": 18,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap47"
+   ],
+   "removed": [
+    "ap45",
+    "ap46"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap65"
+   ],
+   "removed": [
+    "ap54",
+    "ap55",
+    "ap64"
+   ],
+   "source": "rule",
+   "remaining": 11,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap44"
+   ],
+   "removed": [
+    "ap43",
+    "ap53"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap42"
+   ],
+   "removed": [
+    "ap52",
+    "ap62"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap63"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap11",
+    "ap12",
+    "ap21"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap11",
+    "ap12",
+    "ap21"
+   ],
+   "frequencies": {
+    "ap01": 0.0,
+    "ap02": 0.91,
+    "ap10": 0.98,
+    "ap11": 0.0,
+    "ap12": 0.09,
+    "ap21": 0.02
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap04",
+    "ap13",
+    "ap14",
+    "ap23",
+    "ap32",
+    "ap33"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap04",
+    "ap13",
+    "ap14",
+    "ap23",
+    "ap32",
+    "ap33"
+   ],
+   "frequencies": {
+    "ap04": 0.91,
+    "ap13": 0.04,
+    "ap14": 0.05,
+    "ap23": 0.06,
+    "ap32": 0.94,
+    "ap33": 0.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26",
+    "ap36"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26",
+    "ap36"
+   ],
+   "frequencies": {
+    "ap06": 0.89,
+    "ap15": 0.1,
+    "ap16": 0.01,
+    "ap25": 0.04,
+    "ap26": 0.01,
+    "ap36": 0.95
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap08",
+    "ap17",
+    "ap18",
+    "ap19",
+    "ap28",
+    "ap38"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap08",
+    "ap17",
+    "ap18",
+    "ap19",
+    "ap28",
+    "ap38"
+   ],
+   "frequencies": {
+    "ap08": 0.02,
+    "ap17": 0.98,
+    "ap18": 0.0,
+    "ap19": 0.98,
+    "ap28": 0.0,
+    "ap38": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap30",
+    "ap31",
+    "ap41",
+    "ap50",
+    "ap51",
+    "ap61"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap30",
+    "ap31",
+    "ap41",
+    "ap50",
+    "ap51",
+    "ap61"
+   ],
+   "frequencies": {
+    "ap30": 0.45,
+    "ap31": 0.52,
+    "ap41": 0.03,
+    "ap50": 0.0,
+    "ap51": 0.01,
+    "ap61": 0.99
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap34",
+    "ap43",
+    "ap52",
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap34",
+    "ap43",
+    "ap52",
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap34": 1.0,
+    "ap43": 0.0,
+    "ap52": 0.99,
+    "ap53": 0.0,
+    "ap54": 0.0,
+    "ap62": 0.01,
+    "ap64": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap35",
+    "ap45",
+    "ap46",
+    "ap55",
+    "ap56",
+    "ap66"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap35",
+    "ap45",
+    "ap46",
+    "ap55",
+    "ap56",
+    "ap66"
+   ],
+   "frequencies": {
+    "ap35": 0.93,
+    "ap45": 0.05,
+    "ap46": 0.02,
+    "ap55": 0.0,
+    "ap56": 0.04,
+    "ap66": 0.96
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap37",
+    "ap39",
+    "ap48",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap68"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap37",
+    "ap39",
+    "ap48",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap68"
+   ],
+   "frequencies": {
+    "ap37": 0.99,
+    "ap39": 1.0,
+    "ap48": 0.0,
+    "ap57": 0.01,
+    "ap58": 0.0,
+    "ap59": 0.07,
+    "ap68": 0.93
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap17"
+   ],
+   "removed": [
+    "ap06",
+    "ap08",
+    "ap16",
+    "ap18",
+    "ap26",
+    "ap28"
+   ],
+   "source": "atoms",
+   "remaining": 50,
+   "top_group": 20,
+   "rank": 9,
+   "frequency": 0.98
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap19"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 43,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap39"
+   ],
+   "removed": [
+    "ap38",
+    "ap48"
+   ],
+   "source": "rule",
+   "remaining": 42,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap59"
+   ],
+   "removed": [
+    "ap58",
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 39,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap15",
+    "ap25",
+    "ap36"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap15",
+    "ap25",
+    "ap36"
+   ],
+   "frequencies": {
+    "ap15": 0.98,
+    "ap25": 0.01,
+    "ap36": 0.99
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap37",
+    "ap57"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap37",
+    "ap57"
+   ],
+   "frequencies": {
+    "ap37": 0.49,
+    "ap57": 0.51
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap31"
+   ],
+   "removed": [
+    "ap21",
+    "ap30",
+    "ap32",
+    "ap41"
+   ],
+   "source": "atoms",
+   "remaining": 36,
+   "top_group": 14,
+   "rank": 13,
+   "frequency": 0.52
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap10"
+   ],
+   "removed": [
+    "ap01",
+    "ap11"
+   ],
+   "source": "rule",
+   "remaining": 31,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap02"
+   ],
+   "removed": [
+    "ap12",
+    "ap13"
+   ],
+   "source": "rule",
+   "remaining": 28,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap04"
+   ],
+   "removed": [
+    "ap14",
+    "ap15"
+   ],
+   "source": "rule",
+   "remaining": 25,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap23"
+   ],
+   "removed": [
+    "ap33",
+    "ap34"
+   ],
+   "source": "rule",
+   "remaining": 22,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap25"
+   ],
+   "removed": [
+    "ap35",
+    "ap36"
+   ],
+   "source": "rule",
+   "remaining": 19,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap37"
+   ],
+   "removed": [
+    "ap46",
+    "ap57"
+   ],
+   "source": "rule",
+   "remaining": 16,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap50"
+   ],
+   "removed": [
+    "ap51",
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 13,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap62"
+   ],
+   "removed": [
+    "ap52",
+    "ap53"
+   ],
+   "source": "rule",
+   "remaining": 10,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap43"
+   ],
+   "removed": [
+    "ap54"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap45"
+   ],
+   "removed": [
+    "ap55",
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 5,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap64"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 2,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap01"
+   ],
+   "removed": [
+    "ap11",
+    "ap12"
+   ],
+   "source": "rule",
+   "remaining": 33,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap06"
+   ],
+   "removed": [
+    "ap15",
+    "ap16"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [
+    "ap18"
+   ],
+   "source": "rule",
+   "remaining": 27,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap14"
+   ],
+   "removed": [
+    "ap13"
+   ],
+   "source": "rule",
+   "remaining": 25,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap26"
+   ],
+   "removed": [
+    "ap35",
+    "ap36",
+    "ap46"
+   ],
+   "source": "rule",
+   "remaining": 23,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap28"
+   ],
+   "removed": [
+    "ap38"
+   ],
+   "source": "rule",
+   "remaining": 19,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap33"
+   ],
+   "removed": [
+    "ap32",
+    "ap34"
+   ],
+   "source": "rule",
+   "remaining": 17,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap21"
+   ],
+   "removed": [
+    "ap30"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap41"
+   ],
+   "removed": [
+    "ap51",
+    "ap52"
+   ],
+   "source": "rule",
+   "remaining": 12,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap48"
+   ],
+   "removed": [
+    "ap57",
+    "ap58"
+   ],
+   "source": "rule",
+   "remaining": 9,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap53"
+   ],
+   "removed": [
+    "ap54"
+   ],
+   "source": "rule",
+   "remaining": 6,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap55"
+   ],
+   "removed": [
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 2,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap68"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap11",
+    "ap12",
+    "ap20",
+    "ap21"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap11",
+    "ap12",
+    "ap20",
+    "ap21"
+   ],
+   "frequencies": {
+    "ap00": 1.0,
+    "ap01": 0.0,
+    "ap02": 0.36,
+    "ap10": 0.0,
+    "ap11": 0.0,
+    "ap12": 0.64,
+    "ap20": 0.98,
+    "ap21": 0.02
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap00"
+   ],
+   "removed": [
+    "ap01",
+    "ap10",
+    "ap11"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap12"
+   ],
+   "removed": [
+    "ap02",
+    "ap03",
+    "ap13",
+    "ap21",
+    "ap22",
+    "ap23"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap20"
+   ],
+   "removed": [
+    "ap30",
+    "ap31"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap03",
+    "ap04",
+    "ap13",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap24",
+    "ap32",
+    "ap33"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap03",
+    "ap04",
+    "ap13",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap24",
+    "ap32",
+    "ap33"
+   ],
+   "frequencies": {
+    "ap03": 0.14,
+    "ap04": 0.86,
+    "ap13": 0.0,
+    "ap14": 0.0,
+    "ap22": 0.01,
+    "ap23": 0.0,
+    "ap24": 1.0,
+    "ap32": 0.99,
+    "ap33": 0.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap04"
+   ],
+   "removed": [
+    "ap05",
+    "ap14",
+    "ap15"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap24"
+   ],
+   "removed": [
+    "ap25",
+    "ap33",
+    "ap34",
+    "ap35"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap32"
+   ],
+   "removed": [
+    "ap41",
+    "ap42",
+    "ap43"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap17",
+    "ap25",
+    "ap26",
+    "ap36"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap17",
+    "ap25",
+    "ap26",
+    "ap36"
+   ],
+   "frequencies": {
+    "ap05": 0.98,
+    "ap06": 0.0,
+    "ap15": 0.02,
+    "ap16": 0.0,
+    "ap17": 1.0,
+    "ap25": 0.01,
+    "ap26": 0.0,
+    "ap36": 0.99
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap17"
+   ],
+   "removed": [
+    "ap06",
+    "ap07",
+    "ap08",
+    "ap16",
+    "ap18",
+    "ap26",
+    "ap27",
+    "ap28"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap36"
+   ],
+   "removed": [
+    "ap37",
+    "ap45",
+    "ap46",
+    "ap47"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 4,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap09",
+    "ap18",
+    "ap19",
+    "ap27",
+    "ap28",
+    "ap29",
+    "ap38"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 4,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap09",
+    "ap18",
+    "ap19",
+    "ap27",
+    "ap28",
+    "ap29",
+    "ap38"
+   ],
+   "frequencies": {
+    "ap07": 1.0,
+    "ap08": 0.0,
+    "ap09": 0.99,
+    "ap18": 0.0,
+    "ap19": 0.01,
+    "ap27": 0.64,
+    "ap28": 0.0,
+    "ap29": 0.65,
+    "ap38": 0.35
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [
+    "ap19"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap29"
+   ],
+   "removed": [
+    "ap38",
+    "ap39"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 5,
+   "tile": [
+    "ap30",
+    "ap31",
+    "ap40",
+    "ap41",
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap60",
+    "ap61"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 5,
+   "tile": [
+    "ap30",
+    "ap31",
+    "ap40",
+    "ap41",
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap60",
+    "ap61"
+   ],
+   "frequencies": {
+    "ap30": 0.64,
+    "ap31": 0.34,
+    "ap40": 0.02,
+    "ap41": 0.0,
+    "ap50": 0.01,
+    "ap51": 0.0,
+    "ap52": 1.0,
+    "ap60": 0.99,
+    "ap61": 0.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap40"
+   ],
+   "removed": [
+    "ap50",
+    "ap51"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap52"
+   ],
+   "removed": [
+    "ap53",
+    "ap61",
+    "ap62",
+    "ap63"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 6,
+   "tile": [
+    "ap34",
+    "ap42",
+    "ap43",
+    "ap44",
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap63",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 6,
+   "tile": [
+    "ap34",
+    "ap42",
+    "ap43",
+    "ap44",
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap63",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap34": 0.74,
+    "ap42": 0.9,
+    "ap43": 0.0,
+    "ap44": 0.26,
+    "ap53": 0.0,
+    "ap54": 0.0,
+    "ap62": 0.1,
+    "ap63": 0.02,
+    "ap64": 0.98
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 6,
+   "tile": null,
+   "picked": [
+    "ap44"
+   ],
+   "removed": [
+    "ap54",
+    "ap55"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 6,
+   "tile": null,
+   "picked": [
+    "ap64"
+   ],
+   "removed": [
+    "ap65"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 7,
+   "tile": [
+    "ap35",
+    "ap37",
+    "ap45",
+    "ap46",
+    "ap47",
+    "ap55",
+    "ap56",
+    "ap65",
+    "ap66"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 7,
+   "tile": [
+    "ap35",
+    "ap37",
+    "ap45",
+    "ap46",
+    "ap47",
+    "ap55",
+    "ap56",
+    "ap65",
+    "ap66"
+   ],
+   "frequencies": {
+    "ap35": 0.99,
+    "ap37": 1.0,
+    "ap45": 0.01,
+    "ap46": 0.0,
+    "ap47": 0.0,
+    "ap55": 0.02,
+    "ap56": 0.0,
+    "ap65": 0.52,
+    "ap66": 0.46
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 7,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [
+    "ap56",
+    "ap57",
+    "ap67"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 8,
+   "tile": [
+    "ap39",
+    "ap48",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap67",
+    "ap68",
+    "ap69"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 8,
+   "tile": [
+    "ap39",
+    "ap48",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap67",
+    "ap68",
+    "ap69"
+   ],
+   "frequencies": {
+    "ap39": 1.0,
+    "ap48": 0.0,
+    "ap49": 0.0,
+    "ap57": 0.92,
+    "ap58": 0.0,
+    "ap59": 0.01,
+    "ap67": 0.08,
+    "ap68": 0.0,
+    "ap69": 0.99
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 8,
+   "tile": null,
+   "picked": [
+    "ap69"
+   ],
+   "removed": [
+    "ap58",
+    "ap59",
+    "ap68"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap11",
+    "ap21",
+    "ap31"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap11",
+    "ap21",
+    "ap31"
+   ],
+   "frequencies": {
+    "ap01": 0.02,
+    "ap02": 0.98,
+    "ap10": 0.96,
+    "ap11": 0.0,
+    "ap21": 0.0,
+    "ap31": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap02"
+   ],
+   "removed": [
+    "ap01",
+    "ap03",
+    "ap11",
+    "ap13",
+    "ap22"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap10"
+   ],
+   "removed": [
+    "ap21"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap31"
+   ],
+   "removed": [
+    "ap30",
+    "ap41",
+    "ap42"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap03",
+    "ap13",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap25",
+    "ap33"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap03",
+    "ap13",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap25",
+    "ap33"
+   ],
+   "frequencies": {
+    "ap03": 1.0,
+    "ap13": 0.0,
+    "ap14": 0.0,
+    "ap22": 0.03,
+    "ap23": 0.02,
+    "ap25": 1.0,
+    "ap33": 0.95
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap25"
+   ],
+   "removed": [
+    "ap14",
+    "ap15",
+    "ap16",
+    "ap26",
+    "ap34",
+    "ap35"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap33"
+   ],
+   "removed": [
+    "ap23",
+    "ap43"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 3,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap07",
+    "ap15",
+    "ap16",
+    "ap26"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 3,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap07",
+    "ap15",
+    "ap16",
+    "ap26"
+   ],
+   "frequencies": {
+    "ap05": 1.0,
+    "ap06": 0.0,
+    "ap07": 1.0,
+    "ap15": 0.0,
+    "ap16": 0.0,
+    "ap26": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap06"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap07"
+   ],
+   "removed": [
+    "ap08",
+    "ap18"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 4,
+   "tile": [
+    "ap08",
+    "ap18",
+    "ap19",
+    "ap27",
+    "ap28",
+    "ap38",
+    "ap39"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 4,
+   "tile": [
+    "ap08",
+    "ap18",
+    "ap19",
+    "ap27",
+    "ap28",
+    "ap38",
+    "ap39"
+   ],
+   "frequencies": {
+    "ap08": 0.99,
+    "ap18": 0.0,
+    "ap19": 0.01,
+    "ap27": 0.98,
+    "ap28": 0.0,
+    "ap38": 0.01,
+    "ap39": 0.99
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap19"
+   ],
+   "removed": [
+    "ap28"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap27"
+   ],
+   "removed": [
+    "ap37",
+    "ap38"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap39"
+   ],
+   "removed": [
+    "ap48",
+    "ap49"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 5,
+   "tile": [
+    "ap30",
+    "ap41",
+    "ap50",
+    "ap51",
+    "ap61",
+    "ap62"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 5,
+   "tile": [
+    "ap30",
+    "ap41",
+    "ap50",
+    "ap51",
+    "ap61",
+    "ap62"
+   ],
+   "frequencies": {
+    "ap30": 0.97,
+    "ap41": 0.01,
+    "ap50": 0.02,
+    "ap51": 0.04,
+    "ap61": 0.4,
+    "ap62": 0.56
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap50"
+   ],
+   "removed": [
+    "ap51",
+    "ap61"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap62"
+   ],
+   "removed": [
+    "ap53",
+    "ap63"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 6,
+   "tile": [
+    "ap34",
+    "ap42",
+    "ap43",
+    "ap53",
+    "ap54",
+    "ap63",
+    "ap65"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 6,
+   "tile": [
+    "ap34",
+    "ap42",
+    "ap43",
+    "ap53",
+    "ap54",
+    "ap63",
+    "ap65"
+   ],
+   "frequencies": {
+    "ap34": 1.0,
+    "ap42": 1.0,
+    "ap43": 0.0,
+    "ap53": 0.0,
+    "ap54": 0.0,
+    "ap63": 1.0,
+    "ap65": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 6,
+   "tile": null,
+   "picked": [
+    "ap65"
+   ],
+   "removed": [
+    "ap54",
+    "ap55",
+    "ap56"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 7,
+   "tile": [
+    "ap35",
+    "ap37",
+    "ap45",
+    "ap46",
+    "ap47",
+    "ap55",
+    "ap56"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 7,
+   "tile": [
+    "ap35",
+    "ap37",
+    "ap45",
+    "ap46",
+    "ap47",
+    "ap55",
+    "ap56"
+   ],
+   "frequencies": {
+    "ap35": 1.0,
+    "ap37": 1.0,
+    "ap45": 0.0,
+    "ap46": 0.0,
+    "ap47": 0.0,
+    "ap55": 0.35,
+    "ap56": 0.65
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 8,
+   "tile": [
+    "ap48",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap67",
+    "ap68"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 8,
+   "tile": [
+    "ap48",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap67",
+    "ap68"
+   ],
+   "frequencies": {
+    "ap48": 0.09,
+    "ap49": 0.82,
+    "ap57": 0.03,
+    "ap58": 0.0,
+    "ap59": 0.09,
+    "ap67": 0.93,
+    "ap68": 0.04
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 8,
+   "tile": null,
+   "picked": [
+    "ap59"
+   ],
+   "removed": [
+    "ap58",
+    "ap68"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 8,
+   "tile": null,
+   "picked": [
+    "ap67"
+   ],
+   "removed": [
+    "ap57"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap01",
+    "ap03",
+    "ap11",
+    "ap13",
+    "ap14",
+    "ap15",
+    "ap21",
+    "ap22",
+    "ap23"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap01",
+    "ap03",
+    "ap11",
+    "ap13",
+    "ap14",
+    "ap15",
+    "ap21",
+    "ap22",
+    "ap23"
+   ],
+   "frequencies": {
+    "ap01": 1.0,
+    "ap03": 1.0,
+    "ap11": 0.0,
+    "ap13": 0.0,
+    "ap14": 0.0,
+    "ap15": 1.0,
+    "ap21": 1.0,
+    "ap22": 0.0,
+    "ap23": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap01"
+   ],
+   "removed": [
+    "ap11"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap03"
+   ],
+   "removed": [
+    "ap13",
+    "ap14"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap15"
+   ],
+   "removed": [
+    "ap06",
+    "ap16",
+    "ap26"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap21"
+   ],
+   "removed": [
+    "ap22",
+    "ap30"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap23"
+   ],
+   "removed": [
+    "ap34"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap06",
+    "ap08",
+    "ap16",
+    "ap18",
+    "ap26",
+    "ap28",
+    "ap35",
+    "ap37",
+    "ap38"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap06",
+    "ap08",
+    "ap16",
+    "ap18",
+    "ap26",
+    "ap28",
+    "ap35",
+    "ap37",
+    "ap38"
+   ],
+   "frequencies": {
+    "ap06": 0.63,
+    "ap08": 0.99,
+    "ap16": 0.37,
+    "ap18": 0.01,
+    "ap26": 0.0,
+    "ap28": 0.0,
+    "ap35": 1.0,
+    "ap37": 0.0,
+    "ap38": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [
+    "ap18"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap35"
+   ],
+   "removed": [
+    "ap45",
+    "ap46"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap38"
+   ],
+   "removed": [
+    "ap28",
+    "ap37",
+    "ap47",
+    "ap48",
+    "ap49"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 3,
+   "tile": [
+    "ap30",
+    "ap34",
+    "ap41",
+    "ap42",
+    "ap43",
+    "ap51",
+    "ap53",
+    "ap54",
+    "ap61",
+    "ap63"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 3,
+   "tile": [
+    "ap30",
+    "ap34",
+    "ap41",
+    "ap42",
+    "ap43",
+    "ap51",
+    "ap53",
+    "ap54",
+    "ap61",
+    "ap63"
+   ],
+   "frequencies": {
+    "ap30": 1.0,
+    "ap34": 1.0,
+    "ap41": 0.0,
+    "ap42": 1.0,
+    "ap43": 0.0,
+    "ap51": 0.0,
+    "ap53": 0.0,
+    "ap54": 0.0,
+    "ap61": 1.0,
+    "ap63": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap42"
+   ],
+   "removed": [
+    "ap41",
+    "ap43",
+    "ap51",
+    "ap53"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap63"
+   ],
+   "removed": [
+    "ap54"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 4,
+   "tile": [
+    "ap45",
+    "ap46",
+    "ap47",
+    "ap48",
+    "ap49",
+    "ap55",
+    "ap56",
+    "ap57",
+    "ap58",
+    "ap68"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 4,
+   "tile": [
+    "ap45",
+    "ap46",
+    "ap47",
+    "ap48",
+    "ap49",
+    "ap55",
+    "ap56",
+    "ap57",
+    "ap58",
+    "ap68"
+   ],
+   "frequencies": {
+    "ap45": 0.07,
+    "ap46": 0.0,
+    "ap47": 0.86,
+    "ap48": 0.02,
+    "ap49": 0.98,
+    "ap55": 0.9,
+    "ap56": 0.03,
+    "ap57": 0.0,
+    "ap58": 0.0,
+    "ap68": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap55"
+   ],
+   "removed": [
+    "ap56"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap68"
+   ],
+   "removed": [
+    "ap57",
+    "ap58"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap00"
+   ],
+   "removed": [
+    "ap01",
+    "ap10",
+    "ap11"
+   ],
+   "source": "rule",
+   "remaining": 70,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [
+    "ap08",
+    "ap18",
+    "ap19"
+   ],
+   "source": "rule",
+   "remaining": 66,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap07"
+   ],
+   "removed": [
+    "ap06",
+    "ap16",
+    "ap17"
+   ],
+   "source": "rule",
+   "remaining": 62,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap04",
+    "ap14",
+    "ap15"
+   ],
+   "source": "rule",
+   "remaining": 58,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap03"
+   ],
+   "removed": [
+    "ap02",
+    "ap12",
+    "ap13"
+   ],
+   "source": "rule",
+   "remaining": 54,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap20"
+   ],
+   "removed": [
+    "ap21",
+    "ap30",
+    "ap31"
+   ],
+   "source": "rule",
+   "remaining": 50,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap22"
+   ],
+   "removed": [
+    "ap23",
+    "ap32",
+    "ap33"
+   ],
+   "source": "rule",
+   "remaining": 46,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap24"
+   ],
+   "removed": [
+    "ap25",
+    "ap34",
+    "ap35"
+   ],
+   "source": "rule",
+   "remaining": 42,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap29"
+   ],
+   "removed": [
+    "ap28",
+    "ap38",
+    "ap39"
+   ],
+   "source": "rule",
+   "remaining": 38,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap27"
+   ],
+   "removed": [
+    "ap26",
+    "ap36",
+    "ap37"
+   ],
+   "source": "rule",
+   "remaining": 34,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap40"
+   ],
+   "removed": [
+    "ap41",
+    "ap50",
+    "ap51"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap49"
+   ],
+   "removed": [
+    "ap48",
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 26,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 22,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap69"
+   ],
+   "removed": [
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap67"
+   ],
+   "removed": [
+    "ap56",
+    "ap57",
+    "ap66"
+   ],
+   "source": "rule",
+   "remaining": 18,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap47"
+   ],
+   "removed": [
+    "ap45",
+    "ap46"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap65"
+   ],
+   "removed": [
+    "ap54",
+    "ap55",
+    "ap64"
+   ],
+   "source": "rule",
+   "remaining": 11,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap44"
+   ],
+   "removed": [
+    "ap43",
+    "ap53"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap42"
+   ],
+   "removed": [
+    "ap52",
+    "ap62"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap63"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap36"
+   ],
+   "removed": [
+    "ap25",
+    "ap26",
+    "ap35",
+    "ap37",
+    "ap45",
+    "ap46"
+   ],
+   "source": "annealing",
+   "remaining": 50,
+   "top_group": 20,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap34"
+   ],
+   "removed": [
+    "ap23",
+    "ap32",
+    "ap33",
+    "ap43",
+    "ap54"
+   ],
+   "source": "annealing",
+   "remaining": 43,
+   "top_group": 17,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap55"
+   ],
+   "removed": [
+    "ap56",
+    "ap64",
+    "ap66"
+   ],
+   "source": "annealing",
+   "remaining": 37,
+   "top_group": 15,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap53"
+   ],
+   "removed": [
+    "ap52",
+    "ap62"
+   ],
+   "source": "rule",
+   "remaining": 33,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [
+    "ap50",
+    "ap51"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap41"
+   ],
+   "removed": [
+    "ap30",
+    "ap31"
+   ],
+   "source": "rule",
+   "remaining": 27,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap19"
+   ],
+   "removed": [
+    "ap08",
+    "ap18",
+    "ap28"
+   ],
+   "source": "annealing",
+   "remaining": 24,
+   "top_group": 10,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap17"
+   ],
+   "removed": [
+    "ap06",
+    "ap16"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap15"
+   ],
+   "removed": [
+    "ap04",
+    "ap14"
+   ],
+   "source": "rule",
+   "remaining": 17,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap13"
+   ],
+   "removed": [
+    "ap02",
+    "ap12"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap01"
+   ],
+   "removed": [
+    "ap10",
+    "ap11"
+   ],
+   "source": "rule",
+   "remaining": 11,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap21"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 8,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap38"
+   ],
+   "removed": [
+    "ap39",
+    "ap48"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap57"
+   ],
+   "removed": [
+    "ap58",
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap59"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap02"
+   ],
+   "removed": [
+    "ap11",
+    "ap12"
+   ],
+   "source": "rule",
+   "remaining": 35,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap04"
+   ],
+   "removed": [
+    "ap14"
+   ],
+   "source": "rule",
+   "remaining": 32,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap06"
+   ],
+   "removed": [
+    "ap16"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [
+    "ap18"
+   ],
+   "source": "rule",
+   "remaining": 28,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap10"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 26,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap23"
+   ],
+   "removed": [
+    "ap32",
+    "ap33"
+   ],
+   "source": "rule",
+   "remaining": 25,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap25"
+   ],
+   "removed": [
+    "ap26",
+    "ap35"
+   ],
+   "source": "rule",
+   "remaining": 22,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap31"
+   ],
+   "removed": [
+    "ap30"
+   ],
+   "source": "rule",
+   "remaining": 19,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap50"
+   ],
+   "removed": [
+    "ap51"
+   ],
+   "source": "rule",
+   "remaining": 17,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap62"
+   ],
+   "removed": [
+    "ap52"
+   ],
+   "source": "rule",
+   "remaining": 15,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap43"
+   ],
+   "removed": [
+    "ap54"
+   ],
+   "source": "rule",
+   "remaining": 13,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap45"
+   ],
+   "removed": [
+    "ap46",
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 11,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap64"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 8,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap68"
+   ],
+   "removed": [
+    "ap58"
+   ],
+   "source": "rule",
+   "remaining": 6,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap48"
+   ],
+   "removed": [
+    "ap37",
+    "ap39"
+   ],
+   "source": "annealing",
+   "remaining": 4,
+   "top_group": 2,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap28"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap00"
+   ],
+   "removed": [
+    "ap01",
+    "ap10",
+    "ap11"
+   ],
+   "source": "rule",
+   "remaining": 70,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [
+    "ap08",
+    "ap18",
+    "ap19"
+   ],
+   "source": "rule",
+   "remaining": 66,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap07"
+   ],
+   "removed": [
+    "ap06",
+    "ap16",
+    "ap17"
+   ],
+   "source": "rule",
+   "remaining": 62,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap04",
+    "ap14",
+    "ap15"
+   ],
+   "source": "rule",
+   "remaining": 58,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap03"
+   ],
+   "removed": [
+    "ap02",
+    "ap12",
+    "ap13"
+   ],
+   "source": "rule",
+   "remaining": 54,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap20"
+   ],
+   "removed": [
+    "ap21",
+    "ap30",
+    "ap31"
+   ],
+   "source": "rule",
+   "remaining": 50,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap22"
+   ],
+   "removed": [
+    "ap23",
+    "ap32",
+    "ap33"
+   ],
+   "source": "rule",
+   "remaining": 46,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap24"
+   ],
+   "removed": [
+    "ap25",
+    "ap34",
+    "ap35"
+   ],
+   "source": "rule",
+   "remaining": 42,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap29"
+   ],
+   "removed": [
+    "ap28",
+    "ap38",
+    "ap39"
+   ],
+   "source": "rule",
+   "remaining": 38,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap27"
+   ],
+   "removed": [
+    "ap26",
+    "ap36",
+    "ap37"
+   ],
+   "source": "rule",
+   "remaining": 34,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap40"
+   ],
+   "removed": [
+    "ap41",
+    "ap50",
+    "ap51"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap49"
+   ],
+   "removed": [
+    "ap48",
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 26,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 22,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap69"
+   ],
+   "removed": [
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap67"
+   ],
+   "removed": [
+    "ap56",
+    "ap57",
+    "ap66"
+   ],
+   "source": "rule",
+   "remaining": 18,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap47"
+   ],
+   "removed": [
+    "ap45",
+    "ap46"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap65"
+   ],
+   "removed": [
+    "ap54",
+    "ap55",
+    "ap64"
+   ],
+   "source": "rule",
+   "remaining": 11,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap44"
+   ],
+   "removed": [
+    "ap43",
+    "ap53"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap42"
+   ],
+   "removed": [
+    "ap52",
+    "ap62"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap63"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap23"
+   ],
+   "removed": [
+    "ap12",
+    "ap13",
+    "ap14",
+    "ap32",
+    "ap33",
+    "ap34"
+   ],
+   "source": "coin flip",
+   "remaining": 50,
+   "top_group": 50,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap02"
+   ],
+   "removed": [
+    "ap01",
+    "ap11"
+   ],
+   "source": "rule",
+   "remaining": 43,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap04"
+   ],
+   "removed": [
+    "ap15"
+   ],
+   "source": "rule",
+   "remaining": 40,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap06"
+   ],
+   "removed": [
+    "ap16",
+    "ap17"
+   ],
+   "source": "rule",
+   "remaining": 38,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [
+    "ap18",
+    "ap19"
+   ],
+   "source": "rule",
+   "remaining": 35,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap10"
+   ],
+   "removed": [
+    "ap21"
+   ],
+   "source": "rule",
+   "remaining": 32,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap25"
+   ],
+   "removed": [
+    "ap26",
+    "ap35",
+    "ap36"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap31"
+   ],
+   "removed": [
+    "ap30",
+    "ap41"
+   ],
+   "source": "rule",
+   "remaining": 26,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap50"
+   ],
+   "removed": [
+    "ap51",
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 23,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap62"
+   ],
+   "removed": [
+    "ap52",
+    "ap53"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap43"
+   ],
+   "removed": [
+    "ap54"
+   ],
+   "source": "rule",
+   "remaining": 17,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap45"
+   ],
+   "removed": [
+    "ap46",
+    "ap55",
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 15,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap64"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 11,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [
+    "ap57"
+   ],
+   "source": "rule",
+   "remaining": 10,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap68"
+   ],
+   "removed": [
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 8,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap37"
+   ],
+   "removed": [
+    "ap28",
+    "ap38",
+    "ap48"
+   ],
+   "source": "coin flip",
+   "remaining": 5,
+   "top_group": 5,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap39"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap01"
+   ],
+   "removed": [
+    "ap11",
+    "ap12"
+   ],
+   "source": "rule",
+   "remaining": 33,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap19"
+   ],
+   "removed": [
+    "ap18",
+    "ap28"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap17"
+   ],
+   "removed": [
+    "ap16",
+    "ap26"
+   ],
+   "source": "rule",
+   "remaining": 27,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap15"
+   ],
+   "removed": [
+    "ap14"
+   ],
+   "source": "rule",
+   "remaining": 24,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap13"
+   ],
+   "removed": [
+    "ap33"
+   ],
+   "source": "rule",
+   "remaining": 22,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap36"
+   ],
+   "removed": [
+    "ap35",
+    "ap46"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap38"
+   ],
+   "removed": [
+    "ap48"
+   ],
+   "source": "rule",
+   "remaining": 17,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap59"
+   ],
+   "removed": [
+    "ap58"
+   ],
+   "source": "rule",
+   "remaining": 15,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap57"
+   ],
+   "removed": [
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 13,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap55"
+   ],
+   "removed": [
+    "ap54"
+   ],
+   "source": "rule",
+   "remaining": 11,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap34"
+   ],
+   "removed": [
+    "ap32"
+   ],
+   "source": "rule",
+   "remaining": 9,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap21"
+   ],
+   "removed": [
+    "ap30"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap41"
+   ],
+   "removed": [
+    "ap51",
+    "ap52"
+   ],
+   "source": "rule",
+   "remaining": 5,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap53"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 2,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  }
+ ],
+ "result": {
+  "meta": {
+   "citation": "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5",
+   "label": "simulation"
+  },
+  "competitors": {
+   "Hybrid": {
+    "name": "Hybrid",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap00",
+       "ap09",
+       "ap07",
+       "ap05",
+       "ap03",
+       "ap20",
+       "ap22",
+       "ap24",
+       "ap29",
+       "ap27",
+       "ap40",
+       "ap49",
+       "ap60",
+       "ap69",
+       "ap67",
+       "ap47",
+       "ap65",
+       "ap44",
+       "ap42",
+       "ap63"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap17",
+       "ap19",
+       "ap39",
+       "ap59",
+       "ap31",
+       "ap10",
+       "ap02",
+       "ap04",
+       "ap23",
+       "ap25",
+       "ap37",
+       "ap50",
+       "ap62",
+       "ap43",
+       "ap45",
+       "ap64",
+       "ap66"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap01",
+       "ap06",
+       "ap08",
+       "ap14",
+       "ap26",
+       "ap28",
+       "ap33",
+       "ap21",
+       "ap41",
+       "ap48",
+       "ap53",
+       "ap55",
+       "ap61",
+       "ap68"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap00"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap10",
+       "ap11"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap09"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap08",
+       "ap18",
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap07"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap06",
+       "ap16",
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap05"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap04",
+       "ap14",
+       "ap15"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap03"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap02",
+       "ap12",
+       "ap13"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap20"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap21",
+       "ap30",
+       "ap31"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap22"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap23",
+       "ap32",
+       "ap33"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap24"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap25",
+       "ap34",
+       "ap35"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap29"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap28",
+       "ap38",
+       "ap39"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap27"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap36",
+       "ap37"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap40"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap41",
+       "ap50",
+       "ap51"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap49"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap48",
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap60"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap69"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap67"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap56",
+       "ap57",
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap47"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap45",
+       "ap46"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54",
+       "ap55",
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap44"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap43",
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap42"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap52",
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap63"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap17"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap06",
+       "ap08",
+       "ap16",
+       "ap18",
+       "ap26",
+       "ap28"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap39"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap38",
+       "ap48"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap58",
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap31"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap21",
+       "ap30",
+       "ap32",
+       "ap41"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap10"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap11"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap02"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap12",
+       "ap13"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap04"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap14",
+       "ap15"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap23"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap33",
+       "ap34"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap25"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap35",
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap37"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap46",
+       "ap57"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap50"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51",
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap52",
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap43"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap45"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap55",
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap01"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap11",
+       "ap12"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap06"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap15",
+       "ap16"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap08"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap18"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap14"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap13"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap26"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap35",
+       "ap36",
+       "ap46"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap28"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap38"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap33"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap32",
+       "ap34"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap21"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap30"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap41"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51",
+       "ap52"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap48"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap57",
+       "ap58"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap55"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 2,
+     "total_picks": 51,
+     "picks_per_round": [
+      20,
+      17,
+      14
+     ],
+     "picks_per_source": {
+      "rule": 49,
+      "atoms": 2,
+      "annealing": 0,
+      "coin flip": 0
+     },
+     "quantum_share": 0.0392156862745098,
+     "atoms_not_needed": false,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 10,
+     "cache_hits": 5,
+     "layout_fallbacks": 1,
+     "timings": {
+      "rules": 0.00042089999942618306,
+      "layout": 0.01327209999999468,
+      "simulator": 1.6931071999993037,
+      "annealing": 0.0,
+      "total": 1.7071659999996882
+     }
+    },
+    "five_ghz_only": [
+     "ap11",
+     "ap12",
+     "ap13",
+     "ap15",
+     "ap16",
+     "ap18",
+     "ap30",
+     "ap32",
+     "ap34",
+     "ap35",
+     "ap36",
+     "ap38",
+     "ap46",
+     "ap51",
+     "ap52",
+     "ap54",
+     "ap56",
+     "ap57",
+     "ap58"
+    ]
+   },
+   "Atoms_Alone": {
+    "name": "Atoms_Alone",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap00",
+       "ap12",
+       "ap20",
+       "ap04",
+       "ap24",
+       "ap32",
+       "ap17",
+       "ap36",
+       "ap09",
+       "ap29",
+       "ap40",
+       "ap52",
+       "ap60",
+       "ap44",
+       "ap64",
+       "ap66",
+       "ap69"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap02",
+       "ap10",
+       "ap31",
+       "ap25",
+       "ap33",
+       "ap05",
+       "ap07",
+       "ap19",
+       "ap27",
+       "ap39",
+       "ap50",
+       "ap62",
+       "ap65",
+       "ap59",
+       "ap67"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap01",
+       "ap03",
+       "ap15",
+       "ap21",
+       "ap23",
+       "ap08",
+       "ap35",
+       "ap38",
+       "ap42",
+       "ap61",
+       "ap63",
+       "ap55",
+       "ap68"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap00",
+       "ap12",
+       "ap20"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap04",
+       "ap24",
+       "ap32"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap15"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap17",
+       "ap36"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap07"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap27"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap09",
+       "ap29"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap40",
+       "ap52",
+       "ap60"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap62"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap44",
+       "ap64"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap37"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap45"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap39"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap67"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap69"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap02",
+       "ap10",
+       "ap31"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap03"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap25",
+       "ap33"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap26"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap05",
+       "ap07"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap19",
+       "ap27",
+       "ap39"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap50",
+       "ap62"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap34"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap42"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap63"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap65"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap35"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap37"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap56"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap59",
+       "ap67"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap01",
+       "ap03",
+       "ap15",
+       "ap21",
+       "ap23"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap16"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap08",
+       "ap35",
+       "ap38"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap30"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap34"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap42",
+       "ap61",
+       "ap63"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap47"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap49"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap55",
+       "ap68"
+      ]
+     }
+    ],
+    "stats": {
+     "quantum_picks": 45,
+     "total_picks": 45,
+     "picks_per_round": [
+      17,
+      15,
+      13
+     ],
+     "picks_per_source": {
+      "rule": 0,
+      "atoms": 45,
+      "annealing": 0,
+      "coin flip": 0
+     },
+     "quantum_share": 1.0,
+     "atoms_not_needed": false,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 20,
+     "cache_hits": 0,
+     "layout_fallbacks": 7,
+     "timings": {
+      "simulator": 3.911571400000412
+     },
+     "gaps": [
+      "ap48",
+      "ap49",
+      "ap45",
+      "ap46",
+      "ap47"
+     ]
+    },
+    "five_ghz_only": [
+     "ap06",
+     "ap11",
+     "ap13",
+     "ap14",
+     "ap16",
+     "ap18",
+     "ap22",
+     "ap26",
+     "ap28",
+     "ap30",
+     "ap34",
+     "ap37",
+     "ap41",
+     "ap43",
+     "ap45",
+     "ap46",
+     "ap47",
+     "ap48",
+     "ap49",
+     "ap51",
+     "ap53",
+     "ap54",
+     "ap56",
+     "ap57",
+     "ap58"
+    ]
+   },
+   "Annealing_Rules": {
+    "name": "Annealing_Rules",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap00",
+       "ap09",
+       "ap07",
+       "ap05",
+       "ap03",
+       "ap20",
+       "ap22",
+       "ap24",
+       "ap29",
+       "ap27",
+       "ap40",
+       "ap49",
+       "ap60",
+       "ap69",
+       "ap67",
+       "ap47",
+       "ap65",
+       "ap44",
+       "ap42",
+       "ap63"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap36",
+       "ap34",
+       "ap55",
+       "ap53",
+       "ap61",
+       "ap41",
+       "ap19",
+       "ap17",
+       "ap15",
+       "ap13",
+       "ap01",
+       "ap21",
+       "ap38",
+       "ap57",
+       "ap59"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap02",
+       "ap04",
+       "ap06",
+       "ap08",
+       "ap10",
+       "ap23",
+       "ap25",
+       "ap31",
+       "ap50",
+       "ap62",
+       "ap43",
+       "ap45",
+       "ap64",
+       "ap66",
+       "ap68",
+       "ap48",
+       "ap28"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap00"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap10",
+       "ap11"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap09"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap08",
+       "ap18",
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap07"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap06",
+       "ap16",
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap05"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap04",
+       "ap14",
+       "ap15"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap03"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap02",
+       "ap12",
+       "ap13"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap20"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap21",
+       "ap30",
+       "ap31"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap22"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap23",
+       "ap32",
+       "ap33"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap24"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap25",
+       "ap34",
+       "ap35"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap29"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap28",
+       "ap38",
+       "ap39"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap27"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap36",
+       "ap37"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap40"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap41",
+       "ap50",
+       "ap51"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap49"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap48",
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap60"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap69"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap67"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap56",
+       "ap57",
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap47"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap45",
+       "ap46"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54",
+       "ap55",
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap44"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap43",
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap42"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap52",
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap63"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap36"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap25",
+       "ap26",
+       "ap35",
+       "ap37",
+       "ap45",
+       "ap46"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap34"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap23",
+       "ap32",
+       "ap33",
+       "ap43",
+       "ap54"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap55"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap56",
+       "ap64",
+       "ap66"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap52",
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap50",
+       "ap51"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap41"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap30",
+       "ap31"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap19"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap08",
+       "ap18",
+       "ap28"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap06",
+       "ap16"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap15"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap04",
+       "ap14"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap13"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap02",
+       "ap12"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap01"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap10",
+       "ap11"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap21"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap38"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap39",
+       "ap48"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap57"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap58",
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap02"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap11",
+       "ap12"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap04"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap14"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap06"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap16"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap08"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap18"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap10"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap23"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap32",
+       "ap33"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap25"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap35"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap31"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap30"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap50"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap52"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap43"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap45"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap46",
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap58"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap48"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap37",
+       "ap39"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap28"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 0,
+     "total_picks": 52,
+     "picks_per_round": [
+      20,
+      15,
+      17
+     ],
+     "picks_per_source": {
+      "rule": 47,
+      "atoms": 0,
+      "annealing": 5,
+      "coin flip": 0
+     },
+     "quantum_share": 0.0,
+     "atoms_not_needed": true,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 0,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "rules": 0.000498899999911373,
+      "layout": 0.0,
+      "simulator": 0.0,
+      "annealing": 0.3327652000002672,
+      "total": 0.33374849999972866
+     }
+    },
+    "five_ghz_only": [
+     "ap11",
+     "ap12",
+     "ap14",
+     "ap16",
+     "ap18",
+     "ap26",
+     "ap30",
+     "ap32",
+     "ap33",
+     "ap35",
+     "ap37",
+     "ap39",
+     "ap46",
+     "ap51",
+     "ap52",
+     "ap54",
+     "ap56",
+     "ap58"
+    ]
+   },
+   "Coin_Flip_Rules": {
+    "name": "Coin_Flip_Rules",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap00",
+       "ap09",
+       "ap07",
+       "ap05",
+       "ap03",
+       "ap20",
+       "ap22",
+       "ap24",
+       "ap29",
+       "ap27",
+       "ap40",
+       "ap49",
+       "ap60",
+       "ap69",
+       "ap67",
+       "ap47",
+       "ap65",
+       "ap44",
+       "ap42",
+       "ap63"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap23",
+       "ap02",
+       "ap04",
+       "ap06",
+       "ap08",
+       "ap10",
+       "ap25",
+       "ap31",
+       "ap50",
+       "ap62",
+       "ap43",
+       "ap45",
+       "ap64",
+       "ap66",
+       "ap68",
+       "ap37",
+       "ap39"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap01",
+       "ap19",
+       "ap17",
+       "ap15",
+       "ap13",
+       "ap36",
+       "ap38",
+       "ap59",
+       "ap57",
+       "ap55",
+       "ap34",
+       "ap21",
+       "ap41",
+       "ap53",
+       "ap61"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap00"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap10",
+       "ap11"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap09"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap08",
+       "ap18",
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap07"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap06",
+       "ap16",
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap05"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap04",
+       "ap14",
+       "ap15"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap03"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap02",
+       "ap12",
+       "ap13"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap20"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap21",
+       "ap30",
+       "ap31"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap22"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap23",
+       "ap32",
+       "ap33"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap24"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap25",
+       "ap34",
+       "ap35"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap29"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap28",
+       "ap38",
+       "ap39"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap27"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap36",
+       "ap37"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap40"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap41",
+       "ap50",
+       "ap51"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap49"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap48",
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap60"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap69"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap67"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap56",
+       "ap57",
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap47"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap45",
+       "ap46"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54",
+       "ap55",
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap44"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap43",
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap42"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap52",
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap63"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap23"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap12",
+       "ap13",
+       "ap14",
+       "ap32",
+       "ap33",
+       "ap34"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap02"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap11"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap04"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap15"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap06"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap16",
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap08"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap18",
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap10"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap21"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap25"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap35",
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap31"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap30",
+       "ap41"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap50"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51",
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap52",
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap43"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap45"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap46",
+       "ap55",
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap57"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap37"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap28",
+       "ap38",
+       "ap48"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap39"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap01"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap11",
+       "ap12"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap18",
+       "ap28"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap16",
+       "ap26"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap15"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap14"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap13"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap33"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap35",
+       "ap46"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap38"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap48"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap58"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap57"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap55"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap54"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap34"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap32"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap21"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap30"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap41"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51",
+       "ap52"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 0,
+     "total_picks": 52,
+     "picks_per_round": [
+      20,
+      17,
+      15
+     ],
+     "picks_per_source": {
+      "rule": 50,
+      "atoms": 0,
+      "annealing": 0,
+      "coin flip": 2
+     },
+     "quantum_share": 0.0,
+     "atoms_not_needed": true,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 0,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "rules": 0.00045189999991634977,
+      "layout": 0.0,
+      "simulator": 0.0,
+      "annealing": 0.0,
+      "total": 0.0006719000002703979
+     }
+    },
+    "five_ghz_only": [
+     "ap11",
+     "ap12",
+     "ap14",
+     "ap16",
+     "ap18",
+     "ap26",
+     "ap28",
+     "ap30",
+     "ap32",
+     "ap33",
+     "ap35",
+     "ap46",
+     "ap48",
+     "ap51",
+     "ap52",
+     "ap54",
+     "ap56",
+     "ap58"
+    ]
+   }
+  }
+ }
+}

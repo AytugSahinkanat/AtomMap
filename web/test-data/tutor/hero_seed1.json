@@ -1,0 +1,9342 @@
+{
+ "request": {
+  "points": [
+   {
+    "id": "ap00",
+    "x": -0.136,
+    "y": 1.377
+   },
+   {
+    "id": "ap01",
+    "x": 7.605,
+    "y": 1.492
+   },
+   {
+    "id": "ap02",
+    "x": 18.94,
+    "y": 0.412
+   },
+   {
+    "id": "ap03",
+    "x": 28.374,
+    "y": 1.827
+   },
+   {
+    "id": "ap04",
+    "x": 36.694,
+    "y": -1.428
+   },
+   {
+    "id": "ap05",
+    "x": 43.476,
+    "y": 1.147
+   },
+   {
+    "id": "ap06",
+    "x": 52.18,
+    "y": -1.747
+   },
+   {
+    "id": "ap07",
+    "x": 64.942,
+    "y": 1.146
+   },
+   {
+    "id": "ap08",
+    "x": 71.169,
+    "y": -1.655
+   },
+   {
+    "id": "ap09",
+    "x": 81.389,
+    "y": -1.817
+   },
+   {
+    "id": "ap10",
+    "x": 0.706,
+    "y": 10.199
+   },
+   {
+    "id": "ap11",
+    "x": 8.692,
+    "y": 8.779
+   },
+   {
+    "id": "ap12",
+    "x": 17.002,
+    "y": 8.758
+   },
+   {
+    "id": "ap13",
+    "x": 28.667,
+    "y": 8.09
+   },
+   {
+    "id": "ap14",
+    "x": 35.688,
+    "y": 10.435
+   },
+   {
+    "id": "ap15",
+    "x": 45.621,
+    "y": 10.066
+   },
+   {
+    "id": "ap16",
+    "x": 52.049,
+    "y": 9.169
+   },
+   {
+    "id": "ap17",
+    "x": 64.578,
+    "y": 10.316
+   },
+   {
+    "id": "ap18",
+    "x": 71.113,
+    "y": 10.724
+   },
+   {
+    "id": "ap19",
+    "x": 82.294,
+    "y": 7.618
+   },
+   {
+    "id": "ap20",
+    "x": 0.737,
+    "y": 16.642
+   },
+   {
+    "id": "ap21",
+    "x": 7.603,
+    "y": 18.339
+   },
+   {
+    "id": "ap22",
+    "x": 17.908,
+    "y": 18.524
+   },
+   {
+    "id": "ap23",
+    "x": 26.685,
+    "y": 16.152
+   },
+   {
+    "id": "ap24",
+    "x": 35.115,
+    "y": 19.0
+   },
+   {
+    "id": "ap25",
+    "x": 43.721,
+    "y": 16.001
+   },
+   {
+    "id": "ap26",
+    "x": 53.945,
+    "y": 17.904
+   },
+   {
+    "id": "ap27",
+    "x": 62.339,
+    "y": 19.778
+   },
+   {
+    "id": "ap28",
+    "x": 71.646,
+    "y": 17.939
+   },
+   {
+    "id": "ap29",
+    "x": 80.668,
+    "y": 19.434
+   },
+   {
+    "id": "ap30",
+    "x": -0.667,
+    "y": 27.849
+   },
+   {
+    "id": "ap31",
+    "x": 9.726,
+    "y": 27.388
+   },
+   {
+    "id": "ap32",
+    "x": 16.635,
+    "y": 25.37
+   },
+   {
+    "id": "ap33",
+    "x": 27.307,
+    "y": 27.941
+   },
+   {
+    "id": "ap34",
+    "x": 34.656,
+    "y": 28.654
+   },
+   {
+    "id": "ap35",
+    "x": 46.491,
+    "y": 28.524
+   },
+   {
+    "id": "ap36",
+    "x": 54.813,
+    "y": 27.015
+   },
+   {
+    "id": "ap37",
+    "x": 63.747,
+    "y": 28.19
+   },
+   {
+    "id": "ap38",
+    "x": 73.443,
+    "y": 26.757
+   },
+   {
+    "id": "ap39",
+    "x": 80.922,
+    "y": 27.504
+   },
+   {
+    "id": "ap40",
+    "x": 1.527,
+    "y": 34.041
+   },
+   {
+    "id": "ap41",
+    "x": 8.408,
+    "y": 34.768
+   },
+   {
+    "id": "ap42",
+    "x": 16.908,
+    "y": 34.706
+   },
+   {
+    "id": "ap43",
+    "x": 27.317,
+    "y": 37.433
+   },
+   {
+    "id": "ap44",
+    "x": 37.755,
+    "y": 34.973
+   },
+   {
+    "id": "ap45",
+    "x": 45.355,
+    "y": 35.989
+   },
+   {
+    "id": "ap46",
+    "x": 54.839,
+    "y": 35.499
+   },
+   {
+    "id": "ap47",
+    "x": 62.447,
+    "y": 34.079
+   },
+   {
+    "id": "ap48",
+    "x": 73.86,
+    "y": 35.842
+   },
+   {
+    "id": "ap49",
+    "x": 79.357,
+    "y": 37.546
+   },
+   {
+    "id": "ap50",
+    "x": -1.212,
+    "y": 44.732
+   },
+   {
+    "id": "ap51",
+    "x": 7.515,
+    "y": 44.808
+   },
+   {
+    "id": "ap52",
+    "x": 16.087,
+    "y": 46.081
+   },
+   {
+    "id": "ap53",
+    "x": 26.926,
+    "y": 46.186
+   },
+   {
+    "id": "ap54",
+    "x": 36.554,
+    "y": 43.602
+   },
+   {
+    "id": "ap55",
+    "x": 45.319,
+    "y": 43.477
+   },
+   {
+    "id": "ap56",
+    "x": 52.54,
+    "y": 46.248
+   },
+   {
+    "id": "ap57",
+    "x": 64.855,
+    "y": 46.941
+   },
+   {
+    "id": "ap58",
+    "x": 72.964,
+    "y": 44.367
+   },
+   {
+    "id": "ap59",
+    "x": 79.36,
+    "y": 44.263
+   },
+   {
+    "id": "ap60",
+    "x": -0.468,
+    "y": 53.177
+   },
+   {
+    "id": "ap61",
+    "x": 10.633,
+    "y": 54.946
+   },
+   {
+    "id": "ap62",
+    "x": 18.055,
+    "y": 54.029
+   },
+   {
+    "id": "ap63",
+    "x": 28.48,
+    "y": 53.266
+   },
+   {
+    "id": "ap64",
+    "x": 35.341,
+    "y": 53.185
+   },
+   {
+    "id": "ap65",
+    "x": 44.319,
+    "y": 54.355
+   },
+   {
+    "id": "ap66",
+    "x": 53.065,
+    "y": 53.521
+   },
+   {
+    "id": "ap67",
+    "x": 64.973,
+    "y": 54.2
+   },
+   {
+    "id": "ap68",
+    "x": 72.374,
+    "y": 54.057
+   },
+   {
+    "id": "ap69",
+    "x": 80.022,
+    "y": 55.679
+   }
+  ],
+  "mode": "channel_plan",
+  "graph": {
+   "r": 20.0
+  },
+  "seed": 1
+ },
+ "events": [
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap19"
+   ],
+   "source": "rule",
+   "remaining": 70,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap11"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap11"
+   ],
+   "frequencies": {
+    "ap00": 0.21,
+    "ap01": 0.23,
+    "ap10": 0.31,
+    "ap11": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap20",
+    "ap21",
+    "ap31",
+    "ap32"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap20",
+    "ap21",
+    "ap31",
+    "ap32"
+   ],
+   "frequencies": {
+    "ap20": 0.2,
+    "ap21": 0.2,
+    "ap31": 0.3,
+    "ap32": 0.3
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap12",
+    "ap13",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap24"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap12",
+    "ap13",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap24"
+   ],
+   "frequencies": {
+    "ap02": 0.53,
+    "ap03": 0.0,
+    "ap12": 0.43,
+    "ap13": 0.01,
+    "ap14": 0.01,
+    "ap22": 0.0,
+    "ap23": 0.0,
+    "ap24": 0.97
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap04",
+    "ap05",
+    "ap06",
+    "ap16"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap04",
+    "ap05",
+    "ap06",
+    "ap16"
+   ],
+   "frequencies": {
+    "ap04": 0.35,
+    "ap05": 0.17,
+    "ap06": 0.24,
+    "ap16": 0.24
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap15",
+    "ap25",
+    "ap26",
+    "ap35"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap15",
+    "ap25",
+    "ap26",
+    "ap35"
+   ],
+   "frequencies": {
+    "ap15": 0.19,
+    "ap25": 0.24,
+    "ap26": 0.33,
+    "ap35": 0.24
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap17",
+    "ap27",
+    "ap36",
+    "ap37"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap17",
+    "ap27",
+    "ap36",
+    "ap37"
+   ],
+   "frequencies": {
+    "ap17": 0.26,
+    "ap27": 0.31,
+    "ap36": 0.17,
+    "ap37": 0.26
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap28",
+    "ap29",
+    "ap38",
+    "ap39"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap28",
+    "ap29",
+    "ap38",
+    "ap39"
+   ],
+   "frequencies": {
+    "ap28": 0.23,
+    "ap29": 0.24,
+    "ap38": 0.28,
+    "ap39": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap30",
+    "ap40",
+    "ap41",
+    "ap50"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap30",
+    "ap40",
+    "ap41",
+    "ap50"
+   ],
+   "frequencies": {
+    "ap30": 0.3,
+    "ap40": 0.22,
+    "ap41": 0.25,
+    "ap50": 0.23
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap51",
+    "ap52",
+    "ap60",
+    "ap61"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap51",
+    "ap52",
+    "ap60",
+    "ap61"
+   ],
+   "frequencies": {
+    "ap51": 0.2,
+    "ap52": 0.27,
+    "ap60": 0.34,
+    "ap61": 0.19
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap42",
+    "ap43"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap42",
+    "ap43"
+   ],
+   "frequencies": {
+    "ap33": 0.26,
+    "ap34": 0.28,
+    "ap42": 0.23,
+    "ap43": 0.23
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap53",
+    "ap62",
+    "ap63",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap53",
+    "ap62",
+    "ap63",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap53": 0.22,
+    "ap62": 0.18,
+    "ap63": 0.26,
+    "ap64": 0.34
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap44",
+    "ap45",
+    "ap46",
+    "ap55"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap44",
+    "ap45",
+    "ap46",
+    "ap55"
+   ],
+   "frequencies": {
+    "ap44": 0.25,
+    "ap45": 0.23,
+    "ap46": 0.25,
+    "ap55": 0.27
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap54",
+    "ap56",
+    "ap65",
+    "ap66"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap54",
+    "ap56",
+    "ap65",
+    "ap66"
+   ],
+   "frequencies": {
+    "ap54": 0.17,
+    "ap56": 0.25,
+    "ap65": 0.33,
+    "ap66": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap47",
+    "ap48",
+    "ap49",
+    "ap59"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap47",
+    "ap48",
+    "ap49",
+    "ap59"
+   ],
+   "frequencies": {
+    "ap47": 0.25,
+    "ap48": 0.27,
+    "ap49": 0.22,
+    "ap59": 0.26
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap57",
+    "ap58",
+    "ap67",
+    "ap68",
+    "ap69"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap57",
+    "ap58",
+    "ap67",
+    "ap68",
+    "ap69"
+   ],
+   "frequencies": {
+    "ap57": 0.19,
+    "ap58": 0.16,
+    "ap67": 0.24,
+    "ap68": 0.16,
+    "ap69": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [
+    "ap40",
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap61",
+    "ap62"
+   ],
+   "source": "atoms",
+   "remaining": 65,
+   "top_group": 26,
+   "rank": 5,
+   "frequency": 0.34
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap30",
+    "ap41"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap30",
+    "ap41"
+   ],
+   "frequencies": {
+    "ap30": 0.51,
+    "ap41": 0.49
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap42",
+    "ap43",
+    "ap53",
+    "ap63",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap42",
+    "ap43",
+    "ap53",
+    "ap63",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap33": 0.12,
+    "ap34": 0.11,
+    "ap42": 0.77,
+    "ap43": 0.0,
+    "ap53": 0.0,
+    "ap63": 0.41,
+    "ap64": 0.59
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap48"
+   ],
+   "removed": [
+    "ap27",
+    "ap28",
+    "ap29",
+    "ap37",
+    "ap38",
+    "ap39",
+    "ap46",
+    "ap47",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap68"
+   ],
+   "source": "atoms",
+   "remaining": 58,
+   "top_group": 23,
+   "rank": 17,
+   "frequency": 0.27
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap69"
+   ],
+   "removed": [
+    "ap67"
+   ],
+   "source": "rule",
+   "remaining": 44,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [
+    "ap45",
+    "ap54",
+    "ap55",
+    "ap56",
+    "ap64",
+    "ap65"
+   ],
+   "source": "rule",
+   "remaining": 42,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap63"
+   ],
+   "removed": [
+    "ap43",
+    "ap53"
+   ],
+   "source": "rule",
+   "remaining": 35,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap17",
+    "ap36"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap17",
+    "ap36"
+   ],
+   "frequencies": {
+    "ap17": 0.49,
+    "ap36": 0.51
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap42"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap42"
+   ],
+   "frequencies": {
+    "ap33": 0.26,
+    "ap34": 0.45,
+    "ap42": 0.29
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap12"
+   ],
+   "removed": [
+    "ap00",
+    "ap01",
+    "ap02",
+    "ap03",
+    "ap10",
+    "ap11",
+    "ap13",
+    "ap14",
+    "ap20",
+    "ap21",
+    "ap22",
+    "ap23",
+    "ap32"
+   ],
+   "source": "atoms",
+   "remaining": 32,
+   "top_group": 13,
+   "rank": 9,
+   "frequency": 0.43
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap04"
+   ],
+   "removed": [
+    "ap05",
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap25"
+   ],
+   "source": "rule",
+   "remaining": 18,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap17"
+   ],
+   "removed": [
+    "ap26",
+    "ap36"
+   ],
+   "source": "rule",
+   "remaining": 12,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap24"
+   ],
+   "removed": [
+    "ap33",
+    "ap34",
+    "ap35",
+    "ap44"
+   ],
+   "source": "rule",
+   "remaining": 9,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap30"
+   ],
+   "removed": [
+    "ap31",
+    "ap41",
+    "ap42"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap11",
+    "ap20",
+    "ap21",
+    "ap31"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap11",
+    "ap20",
+    "ap21",
+    "ap31"
+   ],
+   "frequencies": {
+    "ap00": 0.02,
+    "ap01": 0.98,
+    "ap10": 0.0,
+    "ap11": 0.0,
+    "ap20": 0.0,
+    "ap21": 0.0,
+    "ap31": 0.99
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap13"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap13"
+   ],
+   "frequencies": {
+    "ap02": 0.32,
+    "ap03": 0.32,
+    "ap13": 0.36
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap32"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap32"
+   ],
+   "frequencies": {
+    "ap14": 0.95,
+    "ap22": 0.04,
+    "ap23": 0.01,
+    "ap32": 0.94
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap16"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap16"
+   ],
+   "frequencies": {
+    "ap05": 0.32,
+    "ap06": 0.37,
+    "ap16": 0.31
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap15",
+    "ap25",
+    "ap26",
+    "ap36"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap15",
+    "ap25",
+    "ap26",
+    "ap36"
+   ],
+   "frequencies": {
+    "ap15": 0.29,
+    "ap25": 0.29,
+    "ap26": 0.2,
+    "ap36": 0.22
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap19"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap19"
+   ],
+   "frequencies": {
+    "ap07": 0.3,
+    "ap08": 0.25,
+    "ap18": 0.18,
+    "ap19": 0.27
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap27",
+    "ap28",
+    "ap29",
+    "ap38"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap27",
+    "ap28",
+    "ap29",
+    "ap38"
+   ],
+   "frequencies": {
+    "ap27": 0.27,
+    "ap28": 0.31,
+    "ap29": 0.2,
+    "ap38": 0.22
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap44"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap44"
+   ],
+   "frequencies": {
+    "ap33": 0.26,
+    "ap34": 0.23,
+    "ap43": 0.2,
+    "ap44": 0.31
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap53": 0.01,
+    "ap54": 0.98,
+    "ap62": 0.99,
+    "ap64": 0.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap35",
+    "ap46",
+    "ap47"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap35",
+    "ap46",
+    "ap47"
+   ],
+   "frequencies": {
+    "ap35": 0.29,
+    "ap46": 0.29,
+    "ap47": 0.42
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap45",
+    "ap55",
+    "ap56",
+    "ap65"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap45",
+    "ap55",
+    "ap56",
+    "ap65"
+   ],
+   "frequencies": {
+    "ap45": 0.27,
+    "ap55": 0.2,
+    "ap56": 0.27,
+    "ap65": 0.26
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap37",
+    "ap39",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap67",
+    "ap68"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap37",
+    "ap39",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap67",
+    "ap68"
+   ],
+   "frequencies": {
+    "ap37": 0.14,
+    "ap39": 0.82,
+    "ap49": 0.04,
+    "ap57": 0.06,
+    "ap58": 0.0,
+    "ap59": 0.02,
+    "ap67": 0.86,
+    "ap68": 0.06
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap40",
+    "ap41",
+    "ap42",
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap61"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap40",
+    "ap41",
+    "ap42",
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap61"
+   ],
+   "frequencies": {
+    "ap40": 0.02,
+    "ap41": 0.15,
+    "ap42": 0.83,
+    "ap50": 0.03,
+    "ap51": 0.0,
+    "ap52": 0.0,
+    "ap61": 0.97
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap42"
+   ],
+   "removed": [
+    "ap21",
+    "ap22",
+    "ap31",
+    "ap32",
+    "ap33",
+    "ap34",
+    "ap40",
+    "ap41",
+    "ap43",
+    "ap51",
+    "ap52",
+    "ap53",
+    "ap62"
+   ],
+   "source": "atoms",
+   "remaining": 59,
+   "top_group": 24,
+   "rank": 9,
+   "frequency": 0.83
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap10"
+   ],
+   "removed": [
+    "ap00",
+    "ap01",
+    "ap11",
+    "ap20"
+   ],
+   "source": "rule",
+   "remaining": 45,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap02"
+   ],
+   "removed": [
+    "ap03",
+    "ap13",
+    "ap14",
+    "ap23"
+   ],
+   "source": "rule",
+   "remaining": 40,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26"
+   ],
+   "source": "rule",
+   "remaining": 35,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [
+    "ap07",
+    "ap18",
+    "ap19",
+    "ap28"
+   ],
+   "source": "rule",
+   "remaining": 29,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap50"
+   ],
+   "removed": [
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 24,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap65"
+   ],
+   "removed": [
+    "ap45",
+    "ap54",
+    "ap55",
+    "ap56",
+    "ap64"
+   ],
+   "source": "rule",
+   "remaining": 22,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap44"
+   ],
+   "removed": [
+    "ap35",
+    "ap36",
+    "ap46"
+   ],
+   "source": "rule",
+   "remaining": 16,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap67"
+   ],
+   "removed": [
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 12,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap27",
+    "ap29",
+    "ap38"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap27",
+    "ap29",
+    "ap38"
+   ],
+   "frequencies": {
+    "ap27": 0.34,
+    "ap29": 0.37,
+    "ap38": 0.29
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap37",
+    "ap39",
+    "ap49"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap37",
+    "ap39",
+    "ap49"
+   ],
+   "frequencies": {
+    "ap37": 0.31,
+    "ap39": 0.34,
+    "ap49": 0.35
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap47"
+   ],
+   "removed": [
+    "ap27",
+    "ap37",
+    "ap38",
+    "ap39",
+    "ap49"
+   ],
+   "source": "annealing",
+   "remaining": 7,
+   "top_group": 3,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap29"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap00"
+   ],
+   "removed": [
+    "ap01",
+    "ap11",
+    "ap20",
+    "ap21"
+   ],
+   "source": "rule",
+   "remaining": 48,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [
+    "ap51",
+    "ap52",
+    "ap53",
+    "ap62"
+   ],
+   "source": "rule",
+   "remaining": 43,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap40"
+   ],
+   "removed": [
+    "ap31",
+    "ap32",
+    "ap41"
+   ],
+   "source": "rule",
+   "remaining": 38,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap68"
+   ],
+   "removed": [
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 34,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap03",
+    "ap13",
+    "ap14",
+    "ap15",
+    "ap22",
+    "ap23",
+    "ap25"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap03",
+    "ap13",
+    "ap14",
+    "ap15",
+    "ap22",
+    "ap23",
+    "ap25"
+   ],
+   "frequencies": {
+    "ap03": 0.05,
+    "ap13": 0.0,
+    "ap14": 0.0,
+    "ap15": 0.03,
+    "ap22": 0.95,
+    "ap23": 0.0,
+    "ap25": 0.96
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap06",
+    "ap07",
+    "ap16",
+    "ap18",
+    "ap19",
+    "ap26",
+    "ap28"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap06",
+    "ap07",
+    "ap16",
+    "ap18",
+    "ap19",
+    "ap26",
+    "ap28"
+   ],
+   "frequencies": {
+    "ap06": 0.78,
+    "ap07": 0.0,
+    "ap16": 0.07,
+    "ap18": 0.0,
+    "ap19": 1.0,
+    "ap26": 0.15,
+    "ap28": 0.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap27",
+    "ap35",
+    "ap36",
+    "ap37",
+    "ap38",
+    "ap39",
+    "ap46",
+    "ap56"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap27",
+    "ap35",
+    "ap36",
+    "ap37",
+    "ap38",
+    "ap39",
+    "ap46",
+    "ap56"
+   ],
+   "frequencies": {
+    "ap27": 0.98,
+    "ap35": 0.0,
+    "ap36": 0.01,
+    "ap37": 0.0,
+    "ap38": 0.0,
+    "ap39": 1.0,
+    "ap46": 0.01,
+    "ap56": 0.97
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap45"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap45"
+   ],
+   "frequencies": {
+    "ap33": 0.38,
+    "ap34": 0.43,
+    "ap45": 0.19
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap43",
+    "ap54",
+    "ap55",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap43",
+    "ap54",
+    "ap55",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap43": 0.18,
+    "ap54": 0.28,
+    "ap55": 0.25,
+    "ap64": 0.29
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap54"
+   ],
+   "removed": [
+    "ap33",
+    "ap34",
+    "ap35",
+    "ap43",
+    "ap45",
+    "ap46",
+    "ap55",
+    "ap56",
+    "ap64"
+   ],
+   "source": "atoms",
+   "remaining": 29,
+   "top_group": 12,
+   "rank": 11,
+   "frequency": 0.28
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap22"
+   ],
+   "removed": [
+    "ap03",
+    "ap13",
+    "ap14",
+    "ap23"
+   ],
+   "source": "rule",
+   "remaining": 19,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap15",
+    "ap25"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap15",
+    "ap25"
+   ],
+   "frequencies": {
+    "ap15": 0.49,
+    "ap25": 0.51
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "simulate",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap27",
+    "ap36",
+    "ap37",
+    "ap38",
+    "ap39"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap27",
+    "ap36",
+    "ap37",
+    "ap38",
+    "ap39"
+   ],
+   "frequencies": {
+    "ap27": 0.04,
+    "ap36": 0.96,
+    "ap37": 0.0,
+    "ap38": 0.0,
+    "ap39": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap39"
+   ],
+   "removed": [
+    "ap18",
+    "ap19",
+    "ap28",
+    "ap37",
+    "ap38"
+   ],
+   "source": "atoms",
+   "remaining": 14,
+   "top_group": 6,
+   "rank": 2,
+   "frequency": 1.0
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap36"
+   ],
+   "removed": [
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26",
+    "ap27"
+   ],
+   "source": "rule",
+   "remaining": 8,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap06"
+   ],
+   "removed": [
+    "ap07"
+   ],
+   "source": "rule",
+   "remaining": 2,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap11"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap11"
+   ],
+   "frequencies": {
+    "ap00": 0.21,
+    "ap01": 0.23,
+    "ap10": 0.31,
+    "ap11": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap11"
+   ],
+   "removed": [
+    "ap00",
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap12",
+    "ap13",
+    "ap20",
+    "ap21",
+    "ap22",
+    "ap23",
+    "ap31",
+    "ap32"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap20",
+    "ap21",
+    "ap31",
+    "ap32"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 2,
+   "tile": [
+    "ap20",
+    "ap21",
+    "ap31",
+    "ap32"
+   ],
+   "frequencies": {
+    "ap20": 0.2,
+    "ap21": 0.2,
+    "ap31": 0.3,
+    "ap32": 0.3
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap04",
+    "ap13"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 3,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap04",
+    "ap13"
+   ],
+   "frequencies": {
+    "ap02": 0.19,
+    "ap03": 0.33,
+    "ap04": 0.21,
+    "ap13": 0.27
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 4,
+   "tile": [
+    "ap12",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap24"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 4,
+   "tile": [
+    "ap12",
+    "ap14",
+    "ap22",
+    "ap23",
+    "ap24"
+   ],
+   "frequencies": {
+    "ap12": 0.92,
+    "ap14": 0.0,
+    "ap22": 0.04,
+    "ap23": 0.02,
+    "ap24": 0.94
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap24"
+   ],
+   "removed": [
+    "ap03",
+    "ap05",
+    "ap14",
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26",
+    "ap33",
+    "ap34",
+    "ap35",
+    "ap44",
+    "ap45"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 5,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap15",
+    "ap16"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 5,
+   "tile": [
+    "ap05",
+    "ap06",
+    "ap15",
+    "ap16"
+   ],
+   "frequencies": {
+    "ap05": 0.28,
+    "ap06": 0.23,
+    "ap15": 0.23,
+    "ap16": 0.26
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 6,
+   "tile": [
+    "ap25",
+    "ap26",
+    "ap27",
+    "ap36"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 6,
+   "tile": [
+    "ap25",
+    "ap26",
+    "ap27",
+    "ap36"
+   ],
+   "frequencies": {
+    "ap25": 0.24,
+    "ap26": 0.27,
+    "ap27": 0.24,
+    "ap36": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 6,
+   "tile": null,
+   "picked": [
+    "ap36"
+   ],
+   "removed": [
+    "ap17",
+    "ap27",
+    "ap28",
+    "ap37",
+    "ap38",
+    "ap46",
+    "ap47",
+    "ap55",
+    "ap56"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 7,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap09",
+    "ap19"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 7,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap09",
+    "ap19"
+   ],
+   "frequencies": {
+    "ap07": 0.29,
+    "ap08": 0.28,
+    "ap09": 0.16,
+    "ap19": 0.27
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 7,
+   "tile": null,
+   "picked": [
+    "ap19"
+   ],
+   "removed": [
+    "ap07",
+    "ap08",
+    "ap09",
+    "ap18",
+    "ap29",
+    "ap39"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 8,
+   "tile": [
+    "ap17",
+    "ap18",
+    "ap28",
+    "ap29",
+    "ap38"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 8,
+   "tile": [
+    "ap17",
+    "ap18",
+    "ap28",
+    "ap29",
+    "ap38"
+   ],
+   "frequencies": {
+    "ap17": 0.17,
+    "ap18": 0.22,
+    "ap28": 0.18,
+    "ap29": 0.17,
+    "ap38": 0.26
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 9,
+   "tile": [
+    "ap30",
+    "ap40",
+    "ap41",
+    "ap42"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 9,
+   "tile": [
+    "ap30",
+    "ap40",
+    "ap41",
+    "ap42"
+   ],
+   "frequencies": {
+    "ap30": 0.18,
+    "ap40": 0.31,
+    "ap41": 0.29,
+    "ap42": 0.22
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 9,
+   "tile": null,
+   "picked": [
+    "ap42"
+   ],
+   "removed": [
+    "ap30",
+    "ap40",
+    "ap41",
+    "ap43",
+    "ap51",
+    "ap52",
+    "ap53",
+    "ap62"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 10,
+   "tile": [
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap60",
+    "ap61"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 10,
+   "tile": [
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap60",
+    "ap61"
+   ],
+   "frequencies": {
+    "ap50": 0.23,
+    "ap51": 0.22,
+    "ap52": 0.16,
+    "ap60": 0.15,
+    "ap61": 0.24
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 10,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [
+    "ap50",
+    "ap60",
+    "ap63"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 11,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap44"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 11,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap44"
+   ],
+   "frequencies": {
+    "ap33": 0.26,
+    "ap34": 0.23,
+    "ap43": 0.2,
+    "ap44": 0.31
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 12,
+   "tile": [
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap63",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 12,
+   "tile": [
+    "ap53",
+    "ap54",
+    "ap62",
+    "ap63",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap53": 0.04,
+    "ap54": 0.92,
+    "ap62": 0.92,
+    "ap63": 0.03,
+    "ap64": 0.01
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 12,
+   "tile": null,
+   "picked": [
+    "ap54"
+   ],
+   "removed": [
+    "ap64",
+    "ap65",
+    "ap66"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 13,
+   "tile": [
+    "ap35",
+    "ap37",
+    "ap46",
+    "ap47"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 13,
+   "tile": [
+    "ap35",
+    "ap37",
+    "ap46",
+    "ap47"
+   ],
+   "frequencies": {
+    "ap35": 0.38,
+    "ap37": 0.21,
+    "ap46": 0.23,
+    "ap47": 0.18
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 14,
+   "tile": [
+    "ap45",
+    "ap55",
+    "ap56",
+    "ap65",
+    "ap66"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 14,
+   "tile": [
+    "ap45",
+    "ap55",
+    "ap56",
+    "ap65",
+    "ap66"
+   ],
+   "frequencies": {
+    "ap45": 0.21,
+    "ap55": 0.17,
+    "ap56": 0.21,
+    "ap65": 0.16,
+    "ap66": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 15,
+   "tile": [
+    "ap39",
+    "ap48",
+    "ap49",
+    "ap59"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 15,
+   "tile": [
+    "ap39",
+    "ap48",
+    "ap49",
+    "ap59"
+   ],
+   "frequencies": {
+    "ap39": 0.23,
+    "ap48": 0.31,
+    "ap49": 0.25,
+    "ap59": 0.21
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 15,
+   "tile": null,
+   "picked": [
+    "ap59"
+   ],
+   "removed": [
+    "ap48",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap67",
+    "ap68",
+    "ap69"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 16,
+   "tile": [
+    "ap57",
+    "ap58",
+    "ap67",
+    "ap68",
+    "ap69"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 16,
+   "tile": [
+    "ap57",
+    "ap58",
+    "ap67",
+    "ap68",
+    "ap69"
+   ],
+   "frequencies": {
+    "ap57": 0.19,
+    "ap58": 0.16,
+    "ap67": 0.24,
+    "ap68": 0.16,
+    "ap69": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap12",
+    "ap20",
+    "ap21",
+    "ap32"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap10",
+    "ap12",
+    "ap20",
+    "ap21",
+    "ap32"
+   ],
+   "frequencies": {
+    "ap00": 0.02,
+    "ap01": 0.03,
+    "ap10": 0.95,
+    "ap12": 0.0,
+    "ap20": 0.0,
+    "ap21": 0.0,
+    "ap32": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap10"
+   ],
+   "removed": [
+    "ap00",
+    "ap01",
+    "ap12",
+    "ap20",
+    "ap21",
+    "ap22",
+    "ap30",
+    "ap31"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap32"
+   ],
+   "removed": [
+    "ap23",
+    "ap33",
+    "ap34",
+    "ap40",
+    "ap41",
+    "ap43"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap22",
+    "ap23"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 2,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap22",
+    "ap23"
+   ],
+   "frequencies": {
+    "ap02": 0.24,
+    "ap03": 0.33,
+    "ap22": 0.23,
+    "ap23": 0.2
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 3,
+   "tile": [
+    "ap04",
+    "ap05",
+    "ap13",
+    "ap14"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 3,
+   "tile": [
+    "ap04",
+    "ap05",
+    "ap13",
+    "ap14"
+   ],
+   "frequencies": {
+    "ap04": 0.23,
+    "ap05": 0.27,
+    "ap13": 0.3,
+    "ap14": 0.2
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap14"
+   ],
+   "removed": [
+    "ap02",
+    "ap03",
+    "ap04",
+    "ap05",
+    "ap13",
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 4,
+   "tile": [
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap17",
+    "ap25",
+    "ap26",
+    "ap27"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 4,
+   "tile": [
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap17",
+    "ap25",
+    "ap26",
+    "ap27"
+   ],
+   "frequencies": {
+    "ap06": 0.49,
+    "ap15": 0.0,
+    "ap16": 0.0,
+    "ap17": 0.51,
+    "ap25": 0.5,
+    "ap26": 0.0,
+    "ap27": 0.49
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap17"
+   ],
+   "removed": [
+    "ap06",
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap27",
+    "ap28",
+    "ap29",
+    "ap37",
+    "ap38"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 5,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap09",
+    "ap18",
+    "ap28",
+    "ap29",
+    "ap38",
+    "ap39"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 5,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap09",
+    "ap18",
+    "ap28",
+    "ap29",
+    "ap38",
+    "ap39"
+   ],
+   "frequencies": {
+    "ap07": 0.1,
+    "ap08": 0.03,
+    "ap09": 0.87,
+    "ap18": 0.0,
+    "ap28": 0.05,
+    "ap29": 0.25,
+    "ap38": 0.16,
+    "ap39": 0.54
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap39"
+   ],
+   "removed": [
+    "ap47",
+    "ap48",
+    "ap49",
+    "ap58"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 6,
+   "tile": [
+    "ap30",
+    "ap31",
+    "ap40",
+    "ap41"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 6,
+   "tile": [
+    "ap30",
+    "ap31",
+    "ap40",
+    "ap41"
+   ],
+   "frequencies": {
+    "ap30": 0.24,
+    "ap31": 0.25,
+    "ap40": 0.26,
+    "ap41": 0.25
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 7,
+   "tile": [
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap60"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 7,
+   "tile": [
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap60"
+   ],
+   "frequencies": {
+    "ap50": 0.27,
+    "ap51": 0.22,
+    "ap52": 0.24,
+    "ap60": 0.27
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 7,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap62"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 8,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap44"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 8,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap44"
+   ],
+   "frequencies": {
+    "ap33": 0.26,
+    "ap34": 0.23,
+    "ap43": 0.2,
+    "ap44": 0.31
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 8,
+   "tile": null,
+   "picked": [
+    "ap44"
+   ],
+   "removed": [
+    "ap35",
+    "ap45",
+    "ap46",
+    "ap53",
+    "ap55",
+    "ap56",
+    "ap64"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 9,
+   "tile": [
+    "ap53",
+    "ap62",
+    "ap63",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 9,
+   "tile": [
+    "ap53",
+    "ap62",
+    "ap63",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap53": 0.22,
+    "ap62": 0.18,
+    "ap63": 0.26,
+    "ap64": 0.34
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 10,
+   "tile": [
+    "ap35",
+    "ap45",
+    "ap46",
+    "ap47"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 10,
+   "tile": [
+    "ap35",
+    "ap45",
+    "ap46",
+    "ap47"
+   ],
+   "frequencies": {
+    "ap35": 0.24,
+    "ap45": 0.25,
+    "ap46": 0.22,
+    "ap47": 0.29
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 11,
+   "tile": [
+    "ap55",
+    "ap56",
+    "ap65",
+    "ap66"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 11,
+   "tile": [
+    "ap55",
+    "ap56",
+    "ap65",
+    "ap66"
+   ],
+   "frequencies": {
+    "ap55": 0.24,
+    "ap56": 0.2,
+    "ap65": 0.28,
+    "ap66": 0.28
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 6,
+   "step": 11,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [
+    "ap57",
+    "ap65",
+    "ap67",
+    "ap68"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 6,
+   "step": 12,
+   "tile": [
+    "ap37",
+    "ap48",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap67",
+    "ap68",
+    "ap69"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 6,
+   "step": 12,
+   "tile": [
+    "ap37",
+    "ap48",
+    "ap49",
+    "ap57",
+    "ap58",
+    "ap67",
+    "ap68",
+    "ap69"
+   ],
+   "frequencies": {
+    "ap37": 0.47,
+    "ap48": 0.52,
+    "ap49": 0.01,
+    "ap57": 0.0,
+    "ap58": 0.0,
+    "ap67": 0.32,
+    "ap68": 0.04,
+    "ap69": 0.64
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap12",
+    "ap20",
+    "ap21",
+    "ap31"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 1,
+   "tile": [
+    "ap00",
+    "ap01",
+    "ap12",
+    "ap20",
+    "ap21",
+    "ap31"
+   ],
+   "frequencies": {
+    "ap00": 0.77,
+    "ap01": 0.23,
+    "ap12": 0.0,
+    "ap20": 0.0,
+    "ap21": 0.0,
+    "ap31": 1.0
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap01"
+   ],
+   "removed": [
+    "ap00",
+    "ap02",
+    "ap12",
+    "ap20",
+    "ap21",
+    "ap22"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap31"
+   ],
+   "removed": [
+    "ap30",
+    "ap33",
+    "ap40",
+    "ap41",
+    "ap51",
+    "ap52"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap04",
+    "ap05",
+    "ap13",
+    "ap22",
+    "ap23"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 2,
+   "tile": [
+    "ap02",
+    "ap03",
+    "ap04",
+    "ap05",
+    "ap13",
+    "ap22",
+    "ap23"
+   ],
+   "frequencies": {
+    "ap02": 0.23,
+    "ap03": 0.0,
+    "ap04": 0.05,
+    "ap05": 0.95,
+    "ap13": 0.0,
+    "ap22": 0.74,
+    "ap23": 0.03
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap03",
+    "ap04",
+    "ap06",
+    "ap13",
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap23"
+   ],
+   "removed": [
+    "ap34"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 3,
+   "tile": [
+    "ap06",
+    "ap15",
+    "ap16"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 3,
+   "tile": [
+    "ap06",
+    "ap15",
+    "ap16"
+   ],
+   "frequencies": {
+    "ap06": 0.44,
+    "ap15": 0.32,
+    "ap16": 0.24
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 4,
+   "tile": [
+    "ap25",
+    "ap26",
+    "ap27"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 4,
+   "tile": [
+    "ap25",
+    "ap26",
+    "ap27"
+   ],
+   "frequencies": {
+    "ap25": 0.37,
+    "ap26": 0.34,
+    "ap27": 0.29
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap27"
+   ],
+   "removed": [
+    "ap07",
+    "ap18",
+    "ap28",
+    "ap29",
+    "ap35",
+    "ap37",
+    "ap38",
+    "ap46",
+    "ap47",
+    "ap48"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 5,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap28",
+    "ap29",
+    "ap37",
+    "ap38"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 5,
+   "tile": [
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap28",
+    "ap29",
+    "ap37",
+    "ap38"
+   ],
+   "frequencies": {
+    "ap07": 0.79,
+    "ap08": 0.21,
+    "ap18": 0.0,
+    "ap28": 0.0,
+    "ap29": 0.24,
+    "ap37": 0.09,
+    "ap38": 0.67
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 5,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 6,
+   "tile": [
+    "ap30",
+    "ap40",
+    "ap41"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 6,
+   "tile": [
+    "ap30",
+    "ap40",
+    "ap41"
+   ],
+   "frequencies": {
+    "ap30": 0.32,
+    "ap40": 0.33,
+    "ap41": 0.35
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 7,
+   "tile": [
+    "ap50",
+    "ap51",
+    "ap52"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 7,
+   "tile": [
+    "ap50",
+    "ap51",
+    "ap52"
+   ],
+   "frequencies": {
+    "ap50": 0.44,
+    "ap51": 0.25,
+    "ap52": 0.31
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 8,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap53",
+    "ap62",
+    "ap63",
+    "ap64"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 8,
+   "tile": [
+    "ap33",
+    "ap34",
+    "ap43",
+    "ap53",
+    "ap62",
+    "ap63",
+    "ap64"
+   ],
+   "frequencies": {
+    "ap33": 0.16,
+    "ap34": 0.84,
+    "ap43": 0.0,
+    "ap53": 0.0,
+    "ap62": 0.03,
+    "ap63": 0.69,
+    "ap64": 0.28
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 8,
+   "tile": null,
+   "picked": [
+    "ap64"
+   ],
+   "removed": [
+    "ap43",
+    "ap45",
+    "ap53",
+    "ap55",
+    "ap56",
+    "ap62",
+    "ap63",
+    "ap65"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 9,
+   "tile": [
+    "ap35",
+    "ap46",
+    "ap47"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 9,
+   "tile": [
+    "ap35",
+    "ap46",
+    "ap47"
+   ],
+   "frequencies": {
+    "ap35": 0.29,
+    "ap46": 0.29,
+    "ap47": 0.42
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 10,
+   "tile": [
+    "ap45",
+    "ap55",
+    "ap56",
+    "ap65"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 10,
+   "tile": [
+    "ap45",
+    "ap55",
+    "ap56",
+    "ap65"
+   ],
+   "frequencies": {
+    "ap45": 0.27,
+    "ap55": 0.2,
+    "ap56": 0.27,
+    "ap65": 0.26
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 11,
+   "tile": [
+    "ap48",
+    "ap49",
+    "ap58"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 11,
+   "tile": [
+    "ap48",
+    "ap49",
+    "ap58"
+   ],
+   "frequencies": {
+    "ap48": 0.32,
+    "ap49": 0.26,
+    "ap58": 0.42
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 11,
+   "step": 11,
+   "tile": null,
+   "picked": [
+    "ap58"
+   ],
+   "removed": [
+    "ap49",
+    "ap57",
+    "ap67",
+    "ap68",
+    "ap69"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 11,
+   "step": 12,
+   "tile": [
+    "ap57",
+    "ap67",
+    "ap68",
+    "ap69"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 11,
+   "step": 12,
+   "tile": [
+    "ap57",
+    "ap67",
+    "ap68",
+    "ap69"
+   ],
+   "frequencies": {
+    "ap57": 0.26,
+    "ap67": 0.22,
+    "ap68": 0.18,
+    "ap69": 0.33
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap19"
+   ],
+   "source": "rule",
+   "remaining": 70,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap44"
+   ],
+   "removed": [
+    "ap24",
+    "ap25",
+    "ap33",
+    "ap34",
+    "ap35",
+    "ap36",
+    "ap43",
+    "ap45",
+    "ap46",
+    "ap53",
+    "ap54",
+    "ap55",
+    "ap56",
+    "ap64"
+   ],
+   "source": "annealing",
+   "remaining": 65,
+   "top_group": 26,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap00"
+   ],
+   "removed": [
+    "ap01",
+    "ap02",
+    "ap10",
+    "ap11",
+    "ap12",
+    "ap20",
+    "ap21"
+   ],
+   "source": "annealing",
+   "remaining": 50,
+   "top_group": 20,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [
+    "ap40",
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap61",
+    "ap62"
+   ],
+   "source": "annealing",
+   "remaining": 42,
+   "top_group": 17,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap30"
+   ],
+   "removed": [
+    "ap31",
+    "ap32",
+    "ap41",
+    "ap42"
+   ],
+   "source": "rule",
+   "remaining": 35,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap22"
+   ],
+   "removed": [
+    "ap03",
+    "ap13",
+    "ap14",
+    "ap23"
+   ],
+   "source": "rule",
+   "remaining": 30,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap04"
+   ],
+   "removed": [
+    "ap05",
+    "ap06",
+    "ap15",
+    "ap16"
+   ],
+   "source": "rule",
+   "remaining": 25,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap63"
+   ],
+   "removed": [
+    "ap65"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [
+    "ap57",
+    "ap67",
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 18,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap69"
+   ],
+   "removed": [
+    "ap49",
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap26"
+   ],
+   "removed": [
+    "ap17",
+    "ap27",
+    "ap28",
+    "ap37",
+    "ap47"
+   ],
+   "source": "annealing",
+   "remaining": 10,
+   "top_group": 4,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 4,
+   "tile": null,
+   "picked": [
+    "ap29"
+   ],
+   "removed": [
+    "ap38",
+    "ap39",
+    "ap48"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap31"
+   ],
+   "removed": [
+    "ap10",
+    "ap11",
+    "ap20",
+    "ap21",
+    "ap32",
+    "ap33",
+    "ap40",
+    "ap41",
+    "ap42",
+    "ap51",
+    "ap52"
+   ],
+   "source": "annealing",
+   "remaining": 58,
+   "top_group": 23,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap01"
+   ],
+   "removed": [
+    "ap02",
+    "ap12"
+   ],
+   "source": "rule",
+   "remaining": 46,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap50"
+   ],
+   "removed": [
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 43,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap62"
+   ],
+   "removed": [
+    "ap43",
+    "ap53",
+    "ap64"
+   ],
+   "source": "rule",
+   "remaining": 41,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap65"
+   ],
+   "removed": [
+    "ap45",
+    "ap54",
+    "ap55",
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 37,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap67"
+   ],
+   "removed": [
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 32,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap49"
+   ],
+   "removed": [
+    "ap37",
+    "ap38",
+    "ap39",
+    "ap47",
+    "ap48"
+   ],
+   "source": "rule",
+   "remaining": 27,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap19"
+   ],
+   "removed": [
+    "ap07",
+    "ap08",
+    "ap17",
+    "ap18",
+    "ap28"
+   ],
+   "source": "rule",
+   "remaining": 21,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap06"
+   ],
+   "removed": [
+    "ap05",
+    "ap15",
+    "ap16",
+    "ap25"
+   ],
+   "source": "rule",
+   "remaining": 15,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap03"
+   ],
+   "removed": [
+    "ap13",
+    "ap14",
+    "ap23",
+    "ap24"
+   ],
+   "source": "rule",
+   "remaining": 10,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap27"
+   ],
+   "removed": [
+    "ap35",
+    "ap36",
+    "ap46"
+   ],
+   "source": "rule",
+   "remaining": 5,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap34"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [
+    "ap07",
+    "ap17",
+    "ap18",
+    "ap28"
+   ],
+   "source": "rule",
+   "remaining": 46,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap10"
+   ],
+   "removed": [
+    "ap11",
+    "ap12",
+    "ap20",
+    "ap21"
+   ],
+   "source": "rule",
+   "remaining": 41,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap02"
+   ],
+   "removed": [
+    "ap13",
+    "ap14",
+    "ap23"
+   ],
+   "source": "rule",
+   "remaining": 36,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap15",
+    "ap16",
+    "ap24",
+    "ap25"
+   ],
+   "source": "rule",
+   "remaining": 32,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [
+    "ap51",
+    "ap52",
+    "ap53"
+   ],
+   "source": "rule",
+   "remaining": 27,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap40"
+   ],
+   "removed": [
+    "ap32",
+    "ap41",
+    "ap42"
+   ],
+   "source": "rule",
+   "remaining": 23,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap68"
+   ],
+   "removed": [
+    "ap48",
+    "ap57",
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 19,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap39"
+   ],
+   "removed": [
+    "ap37",
+    "ap38",
+    "ap47"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap36"
+   ],
+   "removed": [
+    "ap35",
+    "ap45",
+    "ap46",
+    "ap55",
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 10,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap33"
+   ],
+   "removed": [
+    "ap43",
+    "ap54"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap64"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap09"
+   ],
+   "removed": [
+    "ap07",
+    "ap08",
+    "ap18",
+    "ap19"
+   ],
+   "source": "rule",
+   "remaining": 70,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap23"
+   ],
+   "removed": [
+    "ap02",
+    "ap03",
+    "ap11",
+    "ap12",
+    "ap13",
+    "ap14",
+    "ap15",
+    "ap21",
+    "ap22",
+    "ap24",
+    "ap25",
+    "ap32",
+    "ap33",
+    "ap34"
+   ],
+   "source": "coin flip",
+   "remaining": 65,
+   "top_group": 65,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap00"
+   ],
+   "removed": [
+    "ap01",
+    "ap10",
+    "ap20"
+   ],
+   "source": "rule",
+   "remaining": 50,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap04"
+   ],
+   "removed": [
+    "ap05",
+    "ap06",
+    "ap16"
+   ],
+   "source": "rule",
+   "remaining": 46,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap60"
+   ],
+   "removed": [
+    "ap40",
+    "ap50",
+    "ap51",
+    "ap52",
+    "ap61",
+    "ap62"
+   ],
+   "source": "coin flip",
+   "remaining": 42,
+   "top_group": 42,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap30"
+   ],
+   "removed": [
+    "ap31",
+    "ap41",
+    "ap42"
+   ],
+   "source": "rule",
+   "remaining": 35,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap49"
+   ],
+   "removed": [
+    "ap29",
+    "ap37",
+    "ap38",
+    "ap39",
+    "ap47",
+    "ap48",
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap68",
+    "ap69"
+   ],
+   "source": "coin flip",
+   "remaining": 31,
+   "top_group": 31,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap17"
+   ],
+   "removed": [
+    "ap26",
+    "ap27",
+    "ap28",
+    "ap36"
+   ],
+   "source": "rule",
+   "remaining": 19,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap35"
+   ],
+   "removed": [
+    "ap44",
+    "ap45",
+    "ap46",
+    "ap54",
+    "ap55",
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 14,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap43"
+   ],
+   "removed": [
+    "ap53",
+    "ap63",
+    "ap64"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap65"
+   ],
+   "removed": [
+    "ap66"
+   ],
+   "source": "rule",
+   "remaining": 3,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 3,
+   "tile": null,
+   "picked": [
+    "ap67"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap69"
+   ],
+   "removed": [
+    "ap57",
+    "ap58",
+    "ap59",
+    "ap68"
+   ],
+   "source": "rule",
+   "remaining": 58,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap20"
+   ],
+   "removed": [
+    "ap01",
+    "ap10",
+    "ap11",
+    "ap12",
+    "ap21",
+    "ap22",
+    "ap31",
+    "ap32",
+    "ap40",
+    "ap41"
+   ],
+   "source": "coin flip",
+   "remaining": 53,
+   "top_group": 53,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap02"
+   ],
+   "removed": [
+    "ap03",
+    "ap13",
+    "ap14"
+   ],
+   "source": "rule",
+   "remaining": 42,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap50"
+   ],
+   "removed": [
+    "ap51",
+    "ap52",
+    "ap61"
+   ],
+   "source": "rule",
+   "remaining": 38,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap33"
+   ],
+   "removed": [
+    "ap24",
+    "ap34",
+    "ap42",
+    "ap44",
+    "ap45",
+    "ap53",
+    "ap54"
+   ],
+   "source": "coin flip",
+   "remaining": 34,
+   "top_group": 34,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap05"
+   ],
+   "removed": [
+    "ap06",
+    "ap15",
+    "ap16",
+    "ap25",
+    "ap26"
+   ],
+   "source": "rule",
+   "remaining": 26,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap08"
+   ],
+   "removed": [
+    "ap07",
+    "ap18",
+    "ap19",
+    "ap28"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap62"
+   ],
+   "removed": [
+    "ap63",
+    "ap64"
+   ],
+   "source": "rule",
+   "remaining": 15,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap66"
+   ],
+   "removed": [
+    "ap46",
+    "ap55",
+    "ap56"
+   ],
+   "source": "rule",
+   "remaining": 12,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap36"
+   ],
+   "removed": [
+    "ap27",
+    "ap37",
+    "ap38",
+    "ap47"
+   ],
+   "source": "rule",
+   "remaining": 8,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 6,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap29"
+   ],
+   "removed": [
+    "ap39",
+    "ap48"
+   ],
+   "source": "rule",
+   "remaining": 3,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap01"
+   ],
+   "removed": [
+    "ap10",
+    "ap11",
+    "ap12",
+    "ap21",
+    "ap22"
+   ],
+   "source": "rule",
+   "remaining": 47,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap03"
+   ],
+   "removed": [
+    "ap13",
+    "ap14",
+    "ap15",
+    "ap24"
+   ],
+   "source": "rule",
+   "remaining": 41,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "ap68"
+   ],
+   "removed": [
+    "ap48",
+    "ap57",
+    "ap58",
+    "ap59"
+   ],
+   "source": "rule",
+   "remaining": 36,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap47"
+   ],
+   "removed": [
+    "ap26",
+    "ap27",
+    "ap28",
+    "ap37",
+    "ap38",
+    "ap39",
+    "ap45",
+    "ap46",
+    "ap55",
+    "ap56"
+   ],
+   "source": "coin flip",
+   "remaining": 31,
+   "top_group": 31,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap19"
+   ],
+   "removed": [
+    "ap07",
+    "ap18"
+   ],
+   "source": "rule",
+   "remaining": 20,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "ap06"
+   ],
+   "removed": [
+    "ap16",
+    "ap25"
+   ],
+   "source": "rule",
+   "remaining": 17,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap40"
+   ],
+   "removed": [
+    "ap31",
+    "ap32",
+    "ap41",
+    "ap42",
+    "ap51",
+    "ap52"
+   ],
+   "source": "coin flip",
+   "remaining": 14,
+   "top_group": 14,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap34"
+   ],
+   "removed": [
+    "ap44",
+    "ap53",
+    "ap54"
+   ],
+   "source": "rule",
+   "remaining": 7,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap61"
+   ],
+   "removed": [
+    "ap63"
+   ],
+   "source": "rule",
+   "remaining": 3,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 11,
+   "step": 2,
+   "tile": null,
+   "picked": [
+    "ap64"
+   ],
+   "removed": [],
+   "source": "rule",
+   "remaining": 1,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  }
+ ],
+ "result": {
+  "meta": {
+   "citation": "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5",
+   "label": "simulation"
+  },
+  "competitors": {
+   "Hybrid": {
+    "name": "Hybrid",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap09",
+       "ap60",
+       "ap48",
+       "ap69",
+       "ap66",
+       "ap63",
+       "ap12",
+       "ap04",
+       "ap17",
+       "ap24",
+       "ap30"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap42",
+       "ap10",
+       "ap02",
+       "ap05",
+       "ap08",
+       "ap50",
+       "ap65",
+       "ap44",
+       "ap67",
+       "ap47",
+       "ap29"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap00",
+       "ap61",
+       "ap40",
+       "ap68",
+       "ap54",
+       "ap22",
+       "ap39",
+       "ap36",
+       "ap06"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap09"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap08",
+       "ap18",
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap00",
+       "ap01",
+       "ap10",
+       "ap11",
+       "ap20",
+       "ap21",
+       "ap31",
+       "ap32"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap00', 'ap21'), ('ap01', 'ap20'), ('ap10', 'ap31')], extra []; optimiser: atoms ap00 and ap20 are closer than 4.0 \u00b5m after rounding); split into ['ap00', 'ap01', 'ap10', 'ap11'] and ['ap20', 'ap21', 'ap31', 'ap32']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap04",
+       "ap05",
+       "ap06",
+       "ap15",
+       "ap16",
+       "ap25",
+       "ap26",
+       "ap35"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap04', 'ap16'), ('ap04', 'ap25'), ('ap05', 'ap26'), ('ap06', 'ap25'), ('ap06', 'ap26')], extra []; optimiser: atoms ap06 and ap16 are closer than 4.0 \u00b5m after rounding); split into ['ap04', 'ap05', 'ap06', 'ap16'] and ['ap15', 'ap25', 'ap26', 'ap35']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap17",
+       "ap27",
+       "ap28",
+       "ap29",
+       "ap36",
+       "ap37",
+       "ap38",
+       "ap39"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap17', 'ap36'), ('ap29', 'ap37')], extra []; optimiser: atoms ap28 and ap37 are closer than 4.0 \u00b5m after rounding); split into ['ap17', 'ap27', 'ap36', 'ap37'] and ['ap28', 'ap29', 'ap38', 'ap39']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap30",
+       "ap40",
+       "ap41",
+       "ap50",
+       "ap51",
+       "ap52",
+       "ap60",
+       "ap61"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap30', 'ap51'), ('ap40', 'ap52')], extra []; optimiser: atoms ap51 and ap52 are closer than 4.0 \u00b5m after rounding); split into ['ap30', 'ap40', 'ap41', 'ap50'] and ['ap51', 'ap52', 'ap60', 'ap61']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap33",
+       "ap34",
+       "ap42",
+       "ap43",
+       "ap53",
+       "ap62",
+       "ap63",
+       "ap64"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap34', 'ap42'), ('ap43', 'ap62')], extra []; optimiser: atoms ap43 and ap53 are closer than 4.0 \u00b5m after rounding); split into ['ap33', 'ap34', 'ap42', 'ap43'] and ['ap53', 'ap62', 'ap63', 'ap64']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap44",
+       "ap45",
+       "ap46",
+       "ap54",
+       "ap55",
+       "ap56",
+       "ap65",
+       "ap66"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap44', 'ap56'), ('ap45', 'ap66'), ('ap46', 'ap54'), ('ap54', 'ap66')], extra []; optimiser: atoms ap45 and ap55 are closer than 4.0 \u00b5m after rounding); split into ['ap44', 'ap45', 'ap46', 'ap55'] and ['ap54', 'ap56', 'ap65', 'ap66']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap47",
+       "ap48",
+       "ap49",
+       "ap57",
+       "ap58",
+       "ap59",
+       "ap67",
+       "ap68",
+       "ap69"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap47', 'ap59'), ('ap49', 'ap57'), ('ap49', 'ap69'), ('ap57', 'ap69'), ('ap59', 'ap67')], extra []; optimiser: atoms ap57 and ap58 are closer than 4.0 \u00b5m after rounding); split into ['ap47', 'ap48', 'ap49', 'ap59'] and ['ap57', 'ap58', 'ap67', 'ap68', 'ap69']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap60"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap40",
+       "ap50",
+       "ap51",
+       "ap52",
+       "ap61",
+       "ap62"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap48"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap27",
+       "ap28",
+       "ap29",
+       "ap37",
+       "ap38",
+       "ap39",
+       "ap46",
+       "ap47",
+       "ap49",
+       "ap57",
+       "ap58",
+       "ap59",
+       "ap68"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap69"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap67"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap45",
+       "ap54",
+       "ap55",
+       "ap56",
+       "ap64",
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap63"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap43",
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap12"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap00",
+       "ap01",
+       "ap02",
+       "ap03",
+       "ap10",
+       "ap11",
+       "ap13",
+       "ap14",
+       "ap20",
+       "ap21",
+       "ap22",
+       "ap23",
+       "ap32"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap04"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap05",
+       "ap06",
+       "ap15",
+       "ap16",
+       "ap25"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap24"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap33",
+       "ap34",
+       "ap35",
+       "ap44"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap30"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap31",
+       "ap41",
+       "ap42"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap02",
+       "ap03",
+       "ap13",
+       "ap14",
+       "ap22",
+       "ap23",
+       "ap32"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap02', 'ap14'), ('ap03', 'ap22'), ('ap14', 'ap22')], extra []; optimiser: atoms ap02 and ap14 are closer than 4.0 \u00b5m after rounding); split into ['ap02', 'ap03', 'ap13'] and ['ap14', 'ap22', 'ap23', 'ap32']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap05",
+       "ap06",
+       "ap15",
+       "ap16",
+       "ap25",
+       "ap26",
+       "ap36"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap05', 'ap26'), ('ap06', 'ap25'), ('ap15', 'ap36')], extra []; optimiser: atoms ap25 and ap26 are closer than 4.0 \u00b5m after rounding); split into ['ap05', 'ap06', 'ap16'] and ['ap15', 'ap25', 'ap26', 'ap36']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap07",
+       "ap08",
+       "ap18",
+       "ap19",
+       "ap27",
+       "ap28",
+       "ap29",
+       "ap38"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap08', 'ap28'), ('ap18', 'ap38')], extra []; optimiser: atoms ap18 and ap28 are closer than 4.0 \u00b5m after rounding); split into ['ap07', 'ap08', 'ap18', 'ap19'] and ['ap27', 'ap28', 'ap29', 'ap38']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap33",
+       "ap34",
+       "ap43",
+       "ap44",
+       "ap53",
+       "ap54",
+       "ap62",
+       "ap64"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap33', 'ap54'), ('ap34', 'ap53')], extra []; optimiser: atoms ap43 and ap44 are closer than 4.0 \u00b5m after rounding); split into ['ap33', 'ap34', 'ap43', 'ap44'] and ['ap53', 'ap54', 'ap62', 'ap64']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap35",
+       "ap45",
+       "ap46",
+       "ap47",
+       "ap55",
+       "ap56",
+       "ap65"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap35', 'ap56'), ('ap47', 'ap55')], extra []; optimiser: atoms ap55 and ap56 are closer than 4.0 \u00b5m after rounding); split into ['ap35', 'ap46', 'ap47'] and ['ap45', 'ap55', 'ap56', 'ap65']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap42"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap21",
+       "ap22",
+       "ap31",
+       "ap32",
+       "ap33",
+       "ap34",
+       "ap40",
+       "ap41",
+       "ap43",
+       "ap51",
+       "ap52",
+       "ap53",
+       "ap62"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap10"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap00",
+       "ap01",
+       "ap11",
+       "ap20"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap02"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap03",
+       "ap13",
+       "ap14",
+       "ap23"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap05"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap06",
+       "ap15",
+       "ap16",
+       "ap25",
+       "ap26"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap08"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap18",
+       "ap19",
+       "ap28"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap50"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap45",
+       "ap54",
+       "ap55",
+       "ap56",
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap44"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap35",
+       "ap36",
+       "ap46"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap67"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap57",
+       "ap58",
+       "ap59",
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap47"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap27",
+       "ap37",
+       "ap38",
+       "ap39",
+       "ap49"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap29"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap00"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap11",
+       "ap20",
+       "ap21"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51",
+       "ap52",
+       "ap53",
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap40"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap31",
+       "ap32",
+       "ap41"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap49",
+       "ap57",
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap33",
+       "ap34",
+       "ap43",
+       "ap45",
+       "ap54",
+       "ap55",
+       "ap64"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap33', 'ap45'), ('ap45', 'ap64')], extra []; optimiser: atoms ap43 and ap45 are closer than 4.0 \u00b5m after rounding); split into ['ap33', 'ap34', 'ap45'] and ['ap43', 'ap54', 'ap55', 'ap64']"
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap54"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap33",
+       "ap34",
+       "ap35",
+       "ap43",
+       "ap45",
+       "ap46",
+       "ap55",
+       "ap56",
+       "ap64"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap22"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap03",
+       "ap13",
+       "ap14",
+       "ap23"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap39"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap18",
+       "ap19",
+       "ap28",
+       "ap37",
+       "ap38"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap15",
+       "ap16",
+       "ap25",
+       "ap26",
+       "ap27"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap06"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 6,
+     "total_picks": 31,
+     "picks_per_round": [
+      11,
+      11,
+      9
+     ],
+     "picks_per_source": {
+      "rule": 24,
+      "atoms": 6,
+      "annealing": 1,
+      "coin flip": 0
+     },
+     "quantum_share": 0.1935483870967742,
+     "atoms_not_needed": false,
+     "splits": 13,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 41,
+     "cache_hits": 18,
+     "layout_fallbacks": 18,
+     "timings": {
+      "rules": 0.001276500000130909,
+      "layout": 0.5812002999996366,
+      "simulator": 9.396717399998124,
+      "annealing": 0.0,
+      "total": 9.980655800000022
+     }
+    },
+    "five_ghz_only": [
+     "ap01",
+     "ap03",
+     "ap07",
+     "ap11",
+     "ap13",
+     "ap14",
+     "ap15",
+     "ap16",
+     "ap18",
+     "ap19",
+     "ap20",
+     "ap21",
+     "ap23",
+     "ap25",
+     "ap26",
+     "ap27",
+     "ap28",
+     "ap31",
+     "ap32",
+     "ap33",
+     "ap34",
+     "ap35",
+     "ap37",
+     "ap38",
+     "ap41",
+     "ap43",
+     "ap45",
+     "ap46",
+     "ap49",
+     "ap51",
+     "ap52",
+     "ap53",
+     "ap55",
+     "ap56",
+     "ap57",
+     "ap58",
+     "ap59",
+     "ap62",
+     "ap64"
+    ]
+   },
+   "Atoms_Alone": {
+    "name": "Atoms_Alone",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap11",
+       "ap24",
+       "ap36",
+       "ap19",
+       "ap42",
+       "ap61",
+       "ap54",
+       "ap59"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap10",
+       "ap32",
+       "ap14",
+       "ap17",
+       "ap09",
+       "ap39",
+       "ap60",
+       "ap44",
+       "ap66"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap01",
+       "ap31",
+       "ap05",
+       "ap23",
+       "ap27",
+       "ap08",
+       "ap64",
+       "ap58"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap00",
+       "ap01",
+       "ap10",
+       "ap11",
+       "ap20",
+       "ap21",
+       "ap31",
+       "ap32"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap00', 'ap21'), ('ap01', 'ap20'), ('ap10', 'ap31')], extra []; optimiser: atoms ap00 and ap20 are closer than 4.0 \u00b5m after rounding); split into ['ap00', 'ap01', 'ap10', 'ap11'] and ['ap20', 'ap21', 'ap31', 'ap32']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap11"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap32"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap02",
+       "ap03",
+       "ap04",
+       "ap12",
+       "ap13",
+       "ap14",
+       "ap22",
+       "ap23",
+       "ap24"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap02', 'ap14'), ('ap02', 'ap23'), ('ap03', 'ap22'), ('ap03', 'ap24'), ('ap12', 'ap14'), ('ap14', 'ap22')], extra []; optimiser: atoms ap03 and ap14 are closer than 4.0 \u00b5m after rounding); split into ['ap02', 'ap03', 'ap04', 'ap13'] and ['ap12', 'ap14', 'ap22', 'ap23', 'ap24']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap13"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap12"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap24"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap05",
+       "ap06",
+       "ap15",
+       "ap16",
+       "ap25",
+       "ap26",
+       "ap27",
+       "ap36"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap05', 'ap26'), ('ap06', 'ap25'), ('ap15', 'ap27'), ('ap15', 'ap36'), ('ap25', 'ap27')], extra []; optimiser: atoms ap15 and ap26 are closer than 4.0 \u00b5m after rounding); split into ['ap05', 'ap06', 'ap15', 'ap16'] and ['ap25', 'ap26', 'ap27', 'ap36']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap16"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap36"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap07",
+       "ap08",
+       "ap09",
+       "ap17",
+       "ap18",
+       "ap19",
+       "ap28",
+       "ap29",
+       "ap38"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap07', 'ap19'), ('ap08', 'ap28'), ('ap17', 'ap19'), ('ap17', 'ap38')], extra []; optimiser: atoms ap07 and ap18 are closer than 4.0 \u00b5m after rounding); split into ['ap07', 'ap08', 'ap09', 'ap19'] and ['ap17', 'ap18', 'ap28', 'ap29', 'ap38']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap19"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap38"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap30",
+       "ap40",
+       "ap41",
+       "ap42",
+       "ap50",
+       "ap51",
+       "ap52",
+       "ap60",
+       "ap61"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap30', 'ap42'), ('ap30', 'ap51'), ('ap40', 'ap52')], extra []; optimiser: atoms ap40 and ap50 are closer than 4.0 \u00b5m after rounding); split into ['ap30', 'ap40', 'ap41', 'ap42'] and ['ap50', 'ap51', 'ap52', 'ap60', 'ap61']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap42"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap61"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap33",
+       "ap34",
+       "ap43",
+       "ap44",
+       "ap53",
+       "ap54",
+       "ap62",
+       "ap63",
+       "ap64"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap33', 'ap54'), ('ap34', 'ap53'), ('ap43', 'ap62'), ('ap43', 'ap64')], extra []; optimiser: atoms ap33 and ap44 are closer than 4.0 \u00b5m after rounding); split into ['ap33', 'ap34', 'ap43', 'ap44'] and ['ap53', 'ap54', 'ap62', 'ap63', 'ap64']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap44"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap62"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap54"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap35",
+       "ap37",
+       "ap45",
+       "ap46",
+       "ap47",
+       "ap55",
+       "ap56",
+       "ap65",
+       "ap66"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap35', 'ap56'), ('ap37', 'ap45'), ('ap45', 'ap66'), ('ap47', 'ap55')], extra []; optimiser: atoms ap45 and ap56 are closer than 4.0 \u00b5m after rounding); split into ['ap35', 'ap37', 'ap46', 'ap47'] and ['ap45', 'ap55', 'ap56', 'ap65', 'ap66']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap47"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap66"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap39",
+       "ap48",
+       "ap49",
+       "ap57",
+       "ap58",
+       "ap59",
+       "ap67",
+       "ap68",
+       "ap69"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap49', 'ap57'), ('ap57', 'ap69'), ('ap59', 'ap67')], extra []; optimiser: atoms ap58 and ap59 are closer than 4.0 \u00b5m after rounding); split into ['ap39', 'ap48', 'ap49', 'ap59'] and ['ap57', 'ap58', 'ap67', 'ap68', 'ap69']"
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap59"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap69"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap10",
+       "ap32"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap02",
+       "ap03",
+       "ap04",
+       "ap05",
+       "ap13",
+       "ap14",
+       "ap22",
+       "ap23"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap02', 'ap14'), ('ap02', 'ap23'), ('ap03', 'ap22'), ('ap14', 'ap22')], extra []; optimiser: atoms ap03 and ap13 are closer than 4.0 \u00b5m after rounding); split into ['ap02', 'ap03', 'ap22', 'ap23'] and ['ap04', 'ap05', 'ap13', 'ap14']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap23"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap14"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap25"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap17"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap09",
+       "ap39"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap30",
+       "ap31",
+       "ap40",
+       "ap41",
+       "ap50",
+       "ap51",
+       "ap52",
+       "ap60"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap30', 'ap51'), ('ap31', 'ap52')], extra []; optimiser: atoms ap40 and ap50 are closer than 4.0 \u00b5m after rounding); split into ['ap30', 'ap31', 'ap40', 'ap41'] and ['ap50', 'ap51', 'ap52', 'ap60']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap41"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap60"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap33",
+       "ap34",
+       "ap43",
+       "ap44",
+       "ap53",
+       "ap62",
+       "ap63",
+       "ap64"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap34', 'ap53'), ('ap43', 'ap62')], extra []; optimiser: atoms ap43 and ap53 are closer than 4.0 \u00b5m after rounding); split into ['ap33', 'ap34', 'ap43', 'ap44'] and ['ap53', 'ap62', 'ap63', 'ap64']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap44"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap64"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap35",
+       "ap45",
+       "ap46",
+       "ap47",
+       "ap55",
+       "ap56",
+       "ap65",
+       "ap66"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap35', 'ap56'), ('ap45', 'ap66'), ('ap47', 'ap55')], extra []; optimiser: atoms ap45 and ap47 are closer than 4.0 \u00b5m after rounding); split into ['ap35', 'ap45', 'ap46', 'ap47'] and ['ap55', 'ap56', 'ap65', 'ap66']"
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap47"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap49"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap67"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap01",
+       "ap31"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap05",
+       "ap23"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap06",
+       "ap15",
+       "ap16",
+       "ap25",
+       "ap26",
+       "ap27"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap06', 'ap25'), ('ap06', 'ap26'), ('ap15', 'ap27')], extra []; optimiser: atoms ap15 and ap25 are closer than 4.0 \u00b5m after rounding); split into ['ap06', 'ap15', 'ap16'] and ['ap25', 'ap26', 'ap27']"
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap16"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap27"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap38"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap08"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap30",
+       "ap40",
+       "ap41",
+       "ap50",
+       "ap51",
+       "ap52"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap30', 'ap51')], extra []; optimiser: atoms ap40 and ap50 are closer than 4.0 \u00b5m after rounding); split into ['ap30', 'ap40', 'ap41'] and ['ap50', 'ap51', 'ap52']"
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap41"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap52"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap34"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap64"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap35",
+       "ap45",
+       "ap46",
+       "ap47",
+       "ap55",
+       "ap56",
+       "ap65"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap35', 'ap56'), ('ap47', 'ap55')], extra []; optimiser: atoms ap55 and ap56 are closer than 4.0 \u00b5m after rounding); split into ['ap35', 'ap46', 'ap47'] and ['ap45', 'ap55', 'ap56', 'ap65']"
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap47"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap65"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "split",
+      "points": [
+       "ap48",
+       "ap49",
+       "ap57",
+       "ap58",
+       "ap67",
+       "ap68",
+       "ap69"
+      ],
+      "reason": "no layout matched the graph (scaled: edges do not match: missing [('ap57', 'ap69')], extra []; optimiser: atoms ap49 and ap58 are closer than 4.0 \u00b5m after rounding); split into ['ap48', 'ap49', 'ap58'] and ['ap57', 'ap67', 'ap68', 'ap69']"
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "ap58"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "atoms",
+      "action": "remove",
+      "points": [
+       "ap69"
+      ]
+     }
+    ],
+    "stats": {
+     "quantum_picks": 25,
+     "total_picks": 25,
+     "picks_per_round": [
+      8,
+      9,
+      8
+     ],
+     "picks_per_source": {
+      "rule": 0,
+      "atoms": 25,
+      "annealing": 0,
+      "coin flip": 0
+     },
+     "quantum_share": 1.0,
+     "atoms_not_needed": false,
+     "splits": 16,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 40,
+     "cache_hits": 0,
+     "layout_fallbacks": 18,
+     "timings": {
+      "simulator": 6.232826300001307
+     },
+     "gaps": [
+      "ap04",
+      "ap06",
+      "ap63",
+      "ap69",
+      "ap50"
+     ]
+    },
+    "five_ghz_only": [
+     "ap00",
+     "ap02",
+     "ap03",
+     "ap04",
+     "ap06",
+     "ap07",
+     "ap12",
+     "ap13",
+     "ap15",
+     "ap16",
+     "ap18",
+     "ap20",
+     "ap21",
+     "ap22",
+     "ap25",
+     "ap26",
+     "ap28",
+     "ap29",
+     "ap30",
+     "ap33",
+     "ap34",
+     "ap35",
+     "ap37",
+     "ap38",
+     "ap40",
+     "ap41",
+     "ap43",
+     "ap45",
+     "ap46",
+     "ap47",
+     "ap48",
+     "ap49",
+     "ap50",
+     "ap51",
+     "ap52",
+     "ap53",
+     "ap55",
+     "ap56",
+     "ap57",
+     "ap62",
+     "ap63",
+     "ap65",
+     "ap67",
+     "ap68",
+     "ap69"
+    ]
+   },
+   "Annealing_Rules": {
+    "name": "Annealing_Rules",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap09",
+       "ap44",
+       "ap00",
+       "ap60",
+       "ap30",
+       "ap22",
+       "ap04",
+       "ap63",
+       "ap66",
+       "ap69",
+       "ap26",
+       "ap29"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap31",
+       "ap01",
+       "ap50",
+       "ap62",
+       "ap65",
+       "ap67",
+       "ap49",
+       "ap19",
+       "ap06",
+       "ap03",
+       "ap27",
+       "ap34"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap08",
+       "ap10",
+       "ap02",
+       "ap05",
+       "ap61",
+       "ap40",
+       "ap68",
+       "ap39",
+       "ap36",
+       "ap33",
+       "ap64"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap09"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap08",
+       "ap18",
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap44"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap24",
+       "ap25",
+       "ap33",
+       "ap34",
+       "ap35",
+       "ap36",
+       "ap43",
+       "ap45",
+       "ap46",
+       "ap53",
+       "ap54",
+       "ap55",
+       "ap56",
+       "ap64"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap00"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap02",
+       "ap10",
+       "ap11",
+       "ap12",
+       "ap20",
+       "ap21"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap60"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap40",
+       "ap50",
+       "ap51",
+       "ap52",
+       "ap61",
+       "ap62"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap30"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap31",
+       "ap32",
+       "ap41",
+       "ap42"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap22"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap03",
+       "ap13",
+       "ap14",
+       "ap23"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap04"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap05",
+       "ap06",
+       "ap15",
+       "ap16"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap63"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap57",
+       "ap67",
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap69"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap49",
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap26"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap17",
+       "ap27",
+       "ap28",
+       "ap37",
+       "ap47"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap29"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap38",
+       "ap39",
+       "ap48"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "pick",
+      "points": [
+       "ap31"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "annealing",
+      "action": "remove",
+      "points": [
+       "ap10",
+       "ap11",
+       "ap20",
+       "ap21",
+       "ap32",
+       "ap33",
+       "ap40",
+       "ap41",
+       "ap42",
+       "ap51",
+       "ap52"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap01"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap02",
+       "ap12"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap50"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap43",
+       "ap53",
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap45",
+       "ap54",
+       "ap55",
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap67"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap57",
+       "ap58",
+       "ap59",
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap49"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap37",
+       "ap38",
+       "ap39",
+       "ap47",
+       "ap48"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap08",
+       "ap17",
+       "ap18",
+       "ap28"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap06"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap05",
+       "ap15",
+       "ap16",
+       "ap25"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap03"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap13",
+       "ap14",
+       "ap23",
+       "ap24"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap27"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap35",
+       "ap36",
+       "ap46"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap34"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap08"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap17",
+       "ap18",
+       "ap28"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap10"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap11",
+       "ap12",
+       "ap20",
+       "ap21"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap02"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap13",
+       "ap14",
+       "ap23"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap05"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap15",
+       "ap16",
+       "ap24",
+       "ap25"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51",
+       "ap52",
+       "ap53"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap40"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap32",
+       "ap41",
+       "ap42"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap48",
+       "ap57",
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap39"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap37",
+       "ap38",
+       "ap47"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap35",
+       "ap45",
+       "ap46",
+       "ap55",
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap33"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap43",
+       "ap54"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap64"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 0,
+     "total_picks": 35,
+     "picks_per_round": [
+      12,
+      12,
+      11
+     ],
+     "picks_per_source": {
+      "rule": 30,
+      "atoms": 0,
+      "annealing": 5,
+      "coin flip": 0
+     },
+     "quantum_share": 0.0,
+     "atoms_not_needed": true,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 0,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "rules": 0.0007086000000526838,
+      "layout": 0.0,
+      "simulator": 0.0,
+      "annealing": 0.7314992000024176,
+      "total": 0.7328553999996075
+     }
+    },
+    "five_ghz_only": [
+     "ap07",
+     "ap11",
+     "ap12",
+     "ap13",
+     "ap14",
+     "ap15",
+     "ap16",
+     "ap17",
+     "ap18",
+     "ap20",
+     "ap21",
+     "ap23",
+     "ap24",
+     "ap25",
+     "ap28",
+     "ap32",
+     "ap35",
+     "ap37",
+     "ap38",
+     "ap41",
+     "ap42",
+     "ap43",
+     "ap45",
+     "ap46",
+     "ap47",
+     "ap48",
+     "ap51",
+     "ap52",
+     "ap53",
+     "ap54",
+     "ap55",
+     "ap56",
+     "ap57",
+     "ap58",
+     "ap59"
+    ]
+   },
+   "Coin_Flip_Rules": {
+    "name": "Coin_Flip_Rules",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "ap09",
+       "ap23",
+       "ap00",
+       "ap04",
+       "ap60",
+       "ap30",
+       "ap49",
+       "ap17",
+       "ap35",
+       "ap43",
+       "ap65",
+       "ap67"
+      ]
+     },
+     {
+      "channel": 6,
+      "picks": [
+       "ap69",
+       "ap20",
+       "ap02",
+       "ap50",
+       "ap33",
+       "ap05",
+       "ap08",
+       "ap62",
+       "ap66",
+       "ap36",
+       "ap29"
+      ]
+     },
+     {
+      "channel": 11,
+      "picks": [
+       "ap01",
+       "ap03",
+       "ap68",
+       "ap47",
+       "ap19",
+       "ap06",
+       "ap40",
+       "ap34",
+       "ap61",
+       "ap64"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap09"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap08",
+       "ap18",
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap23"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap02",
+       "ap03",
+       "ap11",
+       "ap12",
+       "ap13",
+       "ap14",
+       "ap15",
+       "ap21",
+       "ap22",
+       "ap24",
+       "ap25",
+       "ap32",
+       "ap33",
+       "ap34"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap00"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap10",
+       "ap20"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap04"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap05",
+       "ap06",
+       "ap16"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap60"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap40",
+       "ap50",
+       "ap51",
+       "ap52",
+       "ap61",
+       "ap62"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap30"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap31",
+       "ap41",
+       "ap42"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap49"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap29",
+       "ap37",
+       "ap38",
+       "ap39",
+       "ap47",
+       "ap48",
+       "ap57",
+       "ap58",
+       "ap59",
+       "ap68",
+       "ap69"
+      ]
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap17"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap27",
+       "ap28",
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap35"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap44",
+       "ap45",
+       "ap46",
+       "ap54",
+       "ap55",
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap43"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap53",
+       "ap63",
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap65"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap67"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap69"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap57",
+       "ap58",
+       "ap59",
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap20"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap01",
+       "ap10",
+       "ap11",
+       "ap12",
+       "ap21",
+       "ap22",
+       "ap31",
+       "ap32",
+       "ap40",
+       "ap41"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap02"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap03",
+       "ap13",
+       "ap14"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap50"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap51",
+       "ap52",
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap33"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap24",
+       "ap34",
+       "ap42",
+       "ap44",
+       "ap45",
+       "ap53",
+       "ap54"
+      ]
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap05"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap06",
+       "ap15",
+       "ap16",
+       "ap25",
+       "ap26"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap08"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap18",
+       "ap19",
+       "ap28"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap62"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap63",
+       "ap64"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap66"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap46",
+       "ap55",
+       "ap56"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap36"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap27",
+       "ap37",
+       "ap38",
+       "ap47"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap29"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 6,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap39",
+       "ap48"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap01"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap10",
+       "ap11",
+       "ap12",
+       "ap21",
+       "ap22"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap03"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap13",
+       "ap14",
+       "ap15",
+       "ap24"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap68"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap48",
+       "ap57",
+       "ap58",
+       "ap59"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap47"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap26",
+       "ap27",
+       "ap28",
+       "ap37",
+       "ap38",
+       "ap39",
+       "ap45",
+       "ap46",
+       "ap55",
+       "ap56"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap19"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap07",
+       "ap18"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap06"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap16",
+       "ap25"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "coin flip",
+      "action": "pick",
+      "points": [
+       "ap40"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "coin flip",
+      "action": "remove",
+      "points": [
+       "ap31",
+       "ap32",
+       "ap41",
+       "ap42",
+       "ap51",
+       "ap52"
+      ]
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap34"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap44",
+       "ap53",
+       "ap54"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap61"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "ap63"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 11,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "ap64"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 0,
+     "total_picks": 33,
+     "picks_per_round": [
+      12,
+      11,
+      10
+     ],
+     "picks_per_source": {
+      "rule": 26,
+      "atoms": 0,
+      "annealing": 0,
+      "coin flip": 7
+     },
+     "quantum_share": 0.0,
+     "atoms_not_needed": true,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 0,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "rules": 0.0007001999993008212,
+      "layout": 0.0,
+      "simulator": 0.0,
+      "annealing": 0.0,
+      "total": 0.001191100000141887
+     }
+    },
+    "five_ghz_only": [
+     "ap07",
+     "ap10",
+     "ap11",
+     "ap12",
+     "ap13",
+     "ap14",
+     "ap15",
+     "ap16",
+     "ap18",
+     "ap21",
+     "ap22",
+     "ap24",
+     "ap25",
+     "ap26",
+     "ap27",
+     "ap28",
+     "ap31",
+     "ap32",
+     "ap37",
+     "ap38",
+     "ap39",
+     "ap41",
+     "ap42",
+     "ap44",
+     "ap45",
+     "ap46",
+     "ap48",
+     "ap51",
+     "ap52",
+     "ap53",
+     "ap54",
+     "ap55",
+     "ap56",
+     "ap57",
+     "ap58",
+     "ap59",
+     "ap63"
+    ]
+   }
+  }
+ }
+}

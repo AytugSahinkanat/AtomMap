@@ -1,0 +1,662 @@
+{
+ "request": {
+  "points": [
+   {
+    "id": "t0",
+    "x": 0.0,
+    "y": 0.0
+   },
+   {
+    "id": "t1",
+    "x": 8.0,
+    "y": 0.0
+   },
+   {
+    "id": "t2",
+    "x": 16.0,
+    "y": 0.0
+   },
+   {
+    "id": "t3",
+    "x": 24.0,
+    "y": 0.0
+   },
+   {
+    "id": "t4",
+    "x": 16.0,
+    "y": 8.0
+   },
+   {
+    "id": "t5",
+    "x": 32.0,
+    "y": 0.0
+   }
+  ],
+  "mode": "place",
+  "graph": {
+   "r": 10.0
+  },
+  "seed": 1
+ },
+ "events": [
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t0"
+   ],
+   "removed": [
+    "t1"
+   ],
+   "source": "rule",
+   "remaining": 6,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t4"
+   ],
+   "removed": [
+    "t2"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Hybrid",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t3"
+   ],
+   "removed": [
+    "t5"
+   ],
+   "source": "rule",
+   "remaining": 2,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "simulate",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "t0",
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "t5"
+   ]
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "frequencies",
+   "round": 1,
+   "step": 1,
+   "tile": [
+    "t0",
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "t5"
+   ],
+   "frequencies": {
+    "t0": 0.99,
+    "t1": 0.01,
+    "t2": 0.26,
+    "t3": 0.01,
+    "t4": 0.74,
+    "t5": 0.99
+   },
+   "shots": 100
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "t1"
+   ],
+   "removed": [
+    "t0",
+    "t2"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "t4"
+   ],
+   "removed": [],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Atoms_Alone",
+   "kind": "pick",
+   "round": 1,
+   "step": 1,
+   "tile": null,
+   "picked": [
+    "t5"
+   ],
+   "removed": [
+    "t3"
+   ],
+   "source": "atoms",
+   "remaining": null,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t0"
+   ],
+   "removed": [
+    "t1"
+   ],
+   "source": "rule",
+   "remaining": 6,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t4"
+   ],
+   "removed": [
+    "t2"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Annealing_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t3"
+   ],
+   "removed": [
+    "t5"
+   ],
+   "source": "rule",
+   "remaining": 2,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t0"
+   ],
+   "removed": [
+    "t1"
+   ],
+   "source": "rule",
+   "remaining": 6,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t4"
+   ],
+   "removed": [
+    "t2"
+   ],
+   "source": "rule",
+   "remaining": 4,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  },
+  {
+   "type": "run",
+   "competitor": "Coin_Flip_Rules",
+   "kind": "pick",
+   "round": 1,
+   "step": 0,
+   "tile": null,
+   "picked": [
+    "t3"
+   ],
+   "removed": [
+    "t5"
+   ],
+   "source": "rule",
+   "remaining": 2,
+   "top_group": null,
+   "rank": null,
+   "frequency": null
+  }
+ ],
+ "result": {
+  "meta": {
+   "citation": "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5",
+   "label": "simulation"
+  },
+  "competitors": {
+   "Hybrid": {
+    "name": "Hybrid",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "t0",
+       "t4",
+       "t3"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t0"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t1"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t4"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t2"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t3"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t5"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 0,
+     "total_picks": 3,
+     "picks_per_round": [
+      3
+     ],
+     "picks_per_source": {
+      "rule": 3,
+      "atoms": 0,
+      "annealing": 0,
+      "coin flip": 0
+     },
+     "quantum_share": 0.0,
+     "atoms_not_needed": true,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 0,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "rules": 1.8199999885837315e-05,
+      "layout": 0.0,
+      "simulator": 0.0,
+      "annealing": 0.0,
+      "total": 3.1599999601894524e-05
+     }
+    }
+   },
+   "Atoms_Alone": {
+    "name": "Atoms_Alone",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "t1",
+       "t4",
+       "t5"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "atoms",
+      "action": "pick",
+      "points": [
+       "t1",
+       "t4",
+       "t5"
+      ]
+     }
+    ],
+    "stats": {
+     "quantum_picks": 3,
+     "total_picks": 3,
+     "picks_per_round": [
+      3
+     ],
+     "picks_per_source": {
+      "rule": 0,
+      "atoms": 3,
+      "annealing": 0,
+      "coin flip": 0
+     },
+     "quantum_share": 1.0,
+     "atoms_not_needed": false,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 1,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "simulator": 0.17692269999997734
+     },
+     "gaps": []
+    }
+   },
+   "Annealing_Rules": {
+    "name": "Annealing_Rules",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "t0",
+       "t4",
+       "t3"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t0"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t1"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t4"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t2"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t3"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t5"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 0,
+     "total_picks": 3,
+     "picks_per_round": [
+      3
+     ],
+     "picks_per_source": {
+      "rule": 3,
+      "atoms": 0,
+      "annealing": 0,
+      "coin flip": 0
+     },
+     "quantum_share": 0.0,
+     "atoms_not_needed": true,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 0,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "rules": 1.3799999578623101e-05,
+      "layout": 0.0,
+      "simulator": 0.0,
+      "annealing": 0.0,
+      "total": 2.4899999971239595e-05
+     }
+    }
+   },
+   "Coin_Flip_Rules": {
+    "name": "Coin_Flip_Rules",
+    "label": "simulation",
+    "rounds": [
+     {
+      "channel": 1,
+      "picks": [
+       "t0",
+       "t4",
+       "t3"
+      ]
+     }
+    ],
+    "decision_log": [
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t0"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t1"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t4"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t2"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "pick",
+      "points": [
+       "t3"
+      ],
+      "rule": "simplicial"
+     },
+     {
+      "round": 1,
+      "source": "rule",
+      "action": "remove",
+      "points": [
+       "t5"
+      ],
+      "rule": "simplicial"
+     }
+    ],
+    "stats": {
+     "quantum_picks": 0,
+     "total_picks": 3,
+     "picks_per_round": [
+      3
+     ],
+     "picks_per_source": {
+      "rule": 3,
+      "atoms": 0,
+      "annealing": 0,
+      "coin flip": 0
+     },
+     "quantum_share": 0.0,
+     "atoms_not_needed": true,
+     "splits": 0,
+     "skipped_tiles": 0,
+     "mismatches": 0,
+     "braket_calls": 0,
+     "cache_hits": 0,
+     "layout_fallbacks": 0,
+     "timings": {
+      "rules": 9.999999747378752e-06,
+      "layout": 0.0,
+      "simulator": 0.0,
+      "annealing": 0.0,
+      "total": 1.7999999727180693e-05
+     }
+    }
+   }
+  }
+ }
+}
