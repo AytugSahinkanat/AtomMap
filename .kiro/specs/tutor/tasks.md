@@ -70,7 +70,7 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
   - [x] 3.1 Add the types and the Hybrid run Facts
     - Create `web/src/tutor/facts.ts` with `FactsInput` and `Facts` from the design, and `deriveFacts(input)`
     - Derive `rulesFirst`, `groups`, `group`, `atomPick` and `opened` from the Hybrid events in arrival order (`allClash` from `edges`, `hits = round(frequency * shots)`)
-    - Fields with a missing source are left out, never defaulted; empty buffer or `{error}` entry gives only `label`, `mode`, `seed`
+    - Fields with a missing source are left out, never defaulted; empty buffer or `{error}` entry gives only `label` (when present), `mode`, `seed`
     - No import from `sentences.ts`
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.7, 4.8, 4.12, 4.14, 6.4_
 
@@ -92,39 +92,39 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - `facts.ts` imports nothing from `sentences.ts` (grep style check)
     - _Requirements: 4.1, 4.4, 4.8, 4.14_
 
-- [ ] 4. Sentences (`sentences.ts`)
-  - [ ] 4.1 Build the sentence table for Steps 1 to 5
+- [x] 4. Sentences (`sentences.ts`)
+  - [x] 4.1 Build the sentence table for Steps 1 to 5
     - Create `web/src/tutor/sentences.ts` with `SentenceDef`, `Step`, `buildSteps(facts, plan)`; each def lists its `needs` paths and runs only when all are defined
     - Step 1 wording for 0, 1 and 2 or more neighbours left, and the "no safe pick" wording for 0; Steps 2 and 3 with the "no clear favourite" case; Step 4 ("does not take the top Point", never "the atoms chose" or "decided"); Step 5
     - No arithmetic: every number is a `Facts` field. No DOM import
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.14_
 
-  - [ ] 4.2 Add Steps 6 to 8, the idle text and the non-Hybrid sentence
+  - [x] 4.2 Add Steps 6 to 8, the idle text and the non-Hybrid sentence
     - Step 6 one per Round (no channel in Place), Step 7 with the Result_Label, Step 8 with plain totals, "One run proves nothing." and "tie"; `atomsNotNeeded` sentence that skips Steps 2 to 5
     - Steps with no sentence are removed
     - `buildIdle()` with one or two sentences; the non-Hybrid plan returns only "This explanation covers the atoms + rules (hybrid) plan only."
     - _Requirements: 2.2, 2.6, 3.1, 3.2, 4.8, 4.9, 4.10, 4.11, 4.12, 4.13, 6.2_
 
-  - [ ] 4.3 Write the `Facts` generator and property test for numbers
+  - [x] 4.3 Write the `Facts` generator and property test for numbers
     - Create `web/src/tutor/generators.ts`: `fast-check` arbitrary for `Facts`, every field optional, ids with prefixes `ap` and `cafe`, worst case numbers included
     - **Property 1: Every number in a sentence is a fact of the run**
     - **Validates: Requirements 6.1, 6.5**
     - At least 100 runs; point ids and the fixed "5 GHz" removed before the numbers are read
     - Comment `Feature: tutor, Property 1: Every number in a sentence is a fact of the run`
 
-  - [ ] 4.4 Write property test for banned words
+  - [x] 4.4 Write property test for banned words
     - **Property 2: Banned words never appear**
     - **Validates: Requirements 4.6, 6.3, 6.7**
     - At least 100 runs, lower case compare against "faster", "speed", "wins", "winner", "beats", "best", "the atoms chose", "the atoms decided"
     - Comment `Feature: tutor, Property 2: Banned words never appear`
 
-  - [ ] 4.5 Write property test for missing facts
+  - [x] 4.5 Write property test for missing facts
     - **Property 3: A missing fact drops its sentence and nothing else**
     - **Validates: Requirements 2.6, 4.14, 6.8**
     - Remove one field, compare with the full build minus the sentences that list it in `needs`; no "undefined", "NaN" or "null"; Steps numbered 1 to M
     - At least 100 runs. Comment `Feature: tutor, Property 3: A missing fact drops its sentence and nothing else`
 
-  - [ ] 4.6 Write the recorded run checks for the sentences
+  - [x] 4.6 Write the recorded run checks for the sentences
     - In `web/src/tutor/sentences.recorded.test.ts`, skipped per missing file
     - Required: no banned word in any sentence of any recorded run; every Step at most 260 characters; `hero_seed1` shows Steps 1 to 8; `rules_only` and `place_rules_only` show no Steps 2 to 5 and say the atoms weren't needed; `sparse_seed1` shows its Quantum_Share
     - _Requirements: 4.8, 4.12, 6.3, 6.5, 6.7_

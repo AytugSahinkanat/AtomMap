@@ -38,7 +38,8 @@ export interface RoundFacts {
 }
 
 export interface Facts {
-  label: string;
+  /** Left out when the result has no label. Never defaulted. */
+  label?: string;
   mode: "channel_plan" | "place";
   seed: number;
   rulesFirst?: {
@@ -194,15 +195,24 @@ function deriveHybrid(input: FactsInput, ev: TutorEvent[], out: Facts): void {
   if (apIdx !== -1) {
     const p = ev[apIdx];
     const id = p.picked?.[0];
-    const fe = ev.find(
-      (e) =>
-        e.kind === "frequencies" &&
-        e.round === p.round &&
-        e.step === p.step &&
-        id !== undefined &&
-        e.frequencies !== undefined &&
-        id in e.frequencies,
-    );
+    // The latest frequencies event of this round that holds the id, at or
+    // before the pick. The frequency can come from the cache, so the event
+    // may be from an earlier step.
+    let fe: TutorEvent | undefined;
+    if (id !== undefined) {
+      for (let i = apIdx - 1; i >= 0; i--) {
+        const e = ev[i];
+        if (
+          e.kind === "frequencies" &&
+          e.round === p.round &&
+          e.frequencies !== undefined &&
+          id in e.frequencies
+        ) {
+          fe = e;
+          break;
+        }
+      }
+    }
     if (
       id !== undefined &&
       isNum(p.remaining) &&
@@ -298,9 +308,14 @@ export function deriveFacts(input: FactsInput): Facts {
   const metaLabel = input.result?.meta?.label;
   const hybridLabel = hybridResult && typeof hybridResult === "object" ? hybridResult.label : undefined;
   const label =
-    typeof metaLabel === "string" ? metaLabel : typeof hybridLabel === "string" ? hybridLabel : "simulation";
+    typeof metaLabel === "string" ? metaLabel : typeof hybridLabel === "string" ? hybridLabel : undefined;
 
-  const out: Facts = { label, mode: input.mode, seed: input.seed, rounds: [] };
+  const out: Facts = {
+    ...(label !== undefined ? { label } : {}),
+    mode: input.mode,
+    seed: input.seed,
+    rounds: [],
+  };
 
   const hybridFailed =
     hybridResult !== undefined && hybridResult !== null && typeof hybridResult === "object" && "error" in hybridResult;

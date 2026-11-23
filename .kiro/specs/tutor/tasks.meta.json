@@ -3,6 +3,10 @@
     "1.4 Write property test for the event fields": {
       "status": "passed",
       "lastRunTimestamp": 1795386102696
+    },
+    "4.5 Write property test for missing facts": {
+      "status": "passed",
+      "lastRunTimestamp": 1795440474968
     }
   },
   "executionHistory": {
@@ -112,6 +116,16 @@
         "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795438941518
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439260170
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439312666
       }
     ],
     "3.2 Add Rounds, result and comparison Facts": [
@@ -143,6 +157,85 @@
         "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795439114392
+      }
+    ],
+    "4.1 Build the sentence table for Steps 1 to 5": [
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439318606
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439399214
+      }
+    ],
+    "4.2 Add Steps 6 to 8, the idle text and the non-Hybrid sentence": [
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439399288
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439489685
+      }
+    ],
+    "4.3 Write the `Facts` generator and property test for numbers": [
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439489802
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439554653
+      }
+    ],
+    "4.4 Write property test for banned words": [
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439558094
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439634806
+      }
+    ],
+    "4.5 Write property test for missing facts": [
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439558179
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795440491861
+      }
+    ],
+    "4.6 Write the recorded run checks for the sentences": [
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795440491966
+      },
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795440619297
+      }
+    ],
+    "4. Sentences (`sentences.ts`)": [
+      {
+        "executionId": "0d805e07-10e8-4355-8a2b-236094e9c818",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795440619394
       }
     ]
   }

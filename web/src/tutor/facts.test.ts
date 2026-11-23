@@ -155,3 +155,36 @@ describe("Facts round trip through JSON", () => {
     });
   }
 });
+
+// Hand-built events for the label and atomPick rules (task 3.1 fixes).
+function hand(events: TutorEvent[], result: any = { competitors: {} }): Facts {
+  return deriveFacts({ mode: "channel_plan", seed: 1, ids: ["a", "b", "c"], edges: [], events, result });
+}
+const H = { competitor: "Hybrid" } as const;
+const pick = (step: number, extra: Partial<TutorEvent> = {}): TutorEvent =>
+  ({ ...H, kind: "pick", round: 1, step, picked: ["a"], removed: [], source: "atoms", remaining: 3, top_group: 2, rank: 1, frequency: 0.5, ...extra }) as TutorEvent;
+const freqs = (step: number, f: Record<string, number>, shots = 100): TutorEvent =>
+  ({ ...H, kind: "frequencies", round: 1, step, tile: Object.keys(f), frequencies: f, shots }) as TutorEvent;
+
+describe("Facts label", () => {
+  it("label present -> set", () => {
+    expect(hand([], { competitors: {}, meta: { label: "simulation" } }).label).toBe("simulation");
+  });
+  it("label absent -> key not present", () => {
+    expect("label" in hand([], { competitors: {} })).toBe(false);
+  });
+});
+
+describe("Facts atomPick frequencies event", () => {
+  it("uses a frequencies event from an earlier step than the pick", () => {
+    const f = hand([freqs(1, { a: 0.5, b: 0.1 }), pick(2)]);
+    expect(f.atomPick).toMatchObject({ id: "a", hits: 50, shots: 100 });
+  });
+  it("a later frequencies event of an earlier step overrides an older one", () => {
+    const f = hand([freqs(1, { a: 0.5 }, 100), freqs(2, { a: 0.5 }, 200), pick(3)]);
+    expect(f.atomPick).toMatchObject({ hits: 100, shots: 200 });
+  });
+  it("ignores a frequencies event after the pick or without the id", () => {
+    expect(hand([freqs(1, { b: 0.5 }), pick(2), freqs(2, { a: 0.5 })]).atomPick).toBeUndefined();
+  });
+});

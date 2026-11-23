@@ -73,7 +73,7 @@ interface FactsInput {
   result: { competitors: Record<EngineName, CompetitorResult | { error: string }> };
 }
 interface Facts {                      // numbers, ids, booleans only. Any field may be absent.
-  label: string; mode; seed: number;
+  label?: string; mode; seed: number;   // label is left out when the result has no label, never defaulted; sentences that need it drop out (task 4)
   rulesFirst?: { count: number; first?: string; firstNeighboursLeft?: number; ring: string[] };
   groups?: { channel: number; pointsLeft: number; count: number; smallest: number; biggest: number;
              shots: number; ring: string[] };
@@ -93,7 +93,7 @@ Derivations, all from Hybrid events in arrival order:
 - `rulesFirst.count`: `pick` events with source `rule` before the first `simulate` event, in any channel. `firstNeighboursLeft` is the length of `removed` of the first one (0 or 1 gives the "no other pick is lost" wording, 2 or more the "all clash with each other" wording). Its `ring` is the Point and its `removed` Points.
 - `groups`: the first `simulate` event's `(round, step)`. All `simulate` events with that pair are its groups. `pointsLeft` is `remaining` of the `pick` event of that step, `shots` is from the matching `frequencies` events. `ring` is the union of the group ids.
 - `group`: the biggest group of those, first in event order on a tie. `top` is its two highest `frequencies`, ties by id. `neverLit` counts frequency 0. `allClash` is true when every pair of its Points is in `edges`. `ring` is the group.
-- `atomPick`: the first `pick` event with a non-null `frequency`. `hits = round(frequency * shots)`, `pointsLeft = remaining`, `topGroup = top_group`.
+- `atomPick`: the first `pick` event with a non-null `frequency`. `shots` comes from the LATEST `frequencies` event of that Round that contains the picked id, at or before the pick in event order (the frequency can come from the cache, so that event may be from an earlier step); if none exists, `atomPick` is absent. `hits = round(frequency * shots)`, `pointsLeft = remaining`, `topGroup = top_group`.
 - `opened`: the run of `rule` picks that directly follow that pick in the same Round. Skipped (field absent) when the atoms ran but there is no `atomPick` (Requirements 4.8, 4.12).
 - `rounds[i]`: `available` is the number of distinct ids in the Round's `picked` and `removed` lists (valid because of Property 4). `byRule`, `byAtoms` (non-null `frequency`), `byClassic` (the rest) count the Round's picks. `ring` is the Round's picks. In Place there is one entry and no channel numbers are shown.
 - `result` and `compare` come from `stats` and the four `total_picks`. `quantumShare` uses the Scoreboard's number and its formatting function (`scoreboard-model.ts`).
@@ -221,7 +221,7 @@ Properties 1 to 3 hold for the pure sentence functions and use generated `Facts`
 | Case | Behaviour |
 |---|---|
 | A needed Fact is missing | That sentence is left out. A Step with no sentence is not shown (4.14) |
-| No events (empty buffer) or the Hybrid entry is `{error}` | `deriveFacts` returns only `label`, `mode`, `seed`. The strip shows the first line only, no Steps |
+| No events (empty buffer) or the Hybrid entry is `{error}` | `deriveFacts` returns only `label` (when present), `mode`, `seed`. The strip shows the first line only, no Steps |
 | Event without the new fields (older recorded run) | `rank`, `frequency` and `shots` are absent, so Steps 3 to 5 lose the sentences that need them |
 | Click on no Point within 12 px | Nothing, or the Why_Answer is left if one is shown |
 | Selected_Plan not Hybrid | One sentence, no Steps, no Why_Answer (3.2) |
