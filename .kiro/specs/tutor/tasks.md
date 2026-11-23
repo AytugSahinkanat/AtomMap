@@ -66,20 +66,20 @@ Task 2 writes the script. Tests that read a recorded file are skipped with a mes
     - Hypothesis in `engine/tests/`, fake Simulator, `pick` events of every Competitor except Atoms_Alone
     - Comment `Feature: tutor, Property 4: Every available Point ends its Round picked or removed`
 
-- [ ] 3. Facts (`facts.ts`)
-  - [ ] 3.1 Add the types and the Hybrid run Facts
+- [x] 3. Facts (`facts.ts`)
+  - [x] 3.1 Add the types and the Hybrid run Facts
     - Create `web/src/tutor/facts.ts` with `FactsInput` and `Facts` from the design, and `deriveFacts(input)`
     - Derive `rulesFirst`, `groups`, `group`, `atomPick` and `opened` from the Hybrid events in arrival order (`allClash` from `edges`, `hits = round(frequency * shots)`)
     - Fields with a missing source are left out, never defaulted; empty buffer or `{error}` entry gives only `label`, `mode`, `seed`
     - No import from `sentences.ts`
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.7, 4.8, 4.12, 4.14, 6.4_
 
-  - [ ] 3.2 Add Rounds, result and comparison Facts
+  - [x] 3.2 Add Rounds, result and comparison Facts
     - In `facts.ts`: `rounds` (available, picks, byRule, byAtoms, byClassic, ring; one entry without channel in Place), `result` (quantumShare from `scoreboard-model.ts`, fiveGhzOnly, splits, skippedTiles, atomsNotNeeded), `compare` (totals of the four Competitors, `tie`)
     - Facts stay plain JSON
     - _Requirements: 4.9, 4.10, 4.11, 4.13, 6.4_
 
-  - [ ] 3.3 Write tests of the Facts on the recorded runs
+  - [x] 3.3 Write tests of the Facts on the recorded runs
     - In `web/src/tutor/facts.test.ts`, skipped per missing file
     - Required checks: `hero_seed1` and `sparse_seed1` assert every constant listed below; `rules_only` and `place_rules_only` have no `groups`, `group`, `atomPick`, `opened` and `atomsNotNeeded` true; `place_rules_only` has one Round; `Facts` round trips through `JSON.stringify`
     - Hand-checked constants, taken by the user from their own native run before any tutor code existed. Write them in the test exactly as given. If a recording gives something else, the implementer must STOP and tell the user, and must NOT change the numbers. Picks per channel are written as picks (by rule, with help from the atoms, classical).

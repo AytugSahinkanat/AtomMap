@@ -26,4 +26,3 @@
 ## Backend
 
 - No backend for now.
-- Bedrock comes later through a small Lambda.

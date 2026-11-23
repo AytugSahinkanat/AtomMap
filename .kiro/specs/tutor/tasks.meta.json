@@ -101,6 +101,49 @@
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795436677911
       }
+    ],
+    "3.1 Add the types and the Hybrid run Facts": [
+      {
+        "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795438810399
+      },
+      {
+        "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795438941518
+      }
+    ],
+    "3.2 Add Rounds, result and comparison Facts": [
+      {
+        "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795438941889
+      },
+      {
+        "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439041719
+      }
+    ],
+    "3.3 Write tests of the Facts on the recorded runs": [
+      {
+        "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439041830
+      },
+      {
+        "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439114305
+      }
+    ],
+    "3. Facts (`facts.ts`)": [
+      {
+        "executionId": "8e206c01-4101-4f0d-b8c8-2573e51f7183",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795439114392
+      }
     ]
   }
 }
