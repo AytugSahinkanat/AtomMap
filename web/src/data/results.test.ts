@@ -82,6 +82,17 @@ describe('validateResults rejections', () => {
     }
   });
 
+  it('accepts the optional how-made fields and rejects them when they are not text', () => {
+    let j = clone();
+    Object.assign(j, { date: '2026-01-02', commit: 'abc dirty', chromium: '140.0.1', pyodide: '0.27.7' });
+    expect(validateResults(j).ok).toBe(true);
+    for (const key of ['date', 'commit', 'chromium', 'pyodide']) {
+      j = clone();
+      j[key] = 5;
+      expect(reasonOf(j)).toBe(`${key} must be text.`);
+    }
+  });
+
   it('rejects a bad status with a sentence naming the run and field', () => {
     const j = clone();
     j.runs[2].status = 'great';

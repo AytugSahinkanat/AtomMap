@@ -177,6 +177,7 @@ interface PlaceFixture {                                              // fixture
 interface ResultsFile {                                               // web/public/results.json (new)
   example: boolean;
   protocol: { text: string; settings: Record<string, unknown> };
+  date?: string; commit?: string; chromium?: string; pyodide?: string;   // how the runs were made, written by web/scripts/record-results.mjs; optional so the example file validates
   runs: RunRecord[];
 }
 interface RunRecord {
@@ -186,6 +187,9 @@ interface RunRecord {
   atoms_not_needed: boolean; splits: number; skipped_tiles: number;
   status: "ok" | "failed" | "bad"; reason?: string;
 }
+
+**How the runs were made.** The optional text fields `date` (UTC, YYYY-MM-DD), `commit` (the app commit, with " dirty" appended when the work tree had changes), `chromium` and `pyodide` (versions) are shown on the Results_Page as a small plain-text list under the heading "How these runs were made", only when present. `web/scripts/record-results.mjs` (`npm run record-results`) writes the file: 3 maps x seeds 1 to 10 = 30 runs in the built dist, in Chromium through Playwright, one worker, requests from the app's own `buildRequest`, every run recorded (ok, bad or failed, never retried or removed), written once at the end with a temp file and rename. No durations are recorded. In a run record, `splits`, `skipped_tiles` and `atoms_not_needed` are the Hybrid's. The pure parts are in `web/scripts/record-lib.mjs`, tested in `web/scripts/record-lib.test.ts`.
+
 The existing hero fixture has no walls, so a new `fixtures/wifi_hall_walls.json` holds them. The Engine tests keep using `wifi_hall_hero.json` unchanged.
 
 ## Place data

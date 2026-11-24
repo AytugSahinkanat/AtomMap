@@ -1,5 +1,5 @@
 import "./style.css";
-import { createClient } from "./client";
+import { createClient, type WorkerClient } from "./client";
 import { applyLoadProgress, onFinished, state, subscribe, update } from "./state";
 import { createLoadingScreen, plainError } from "./screens/loading";
 import { createMapScreen, type MapScreen } from "./screens/map";
@@ -19,9 +19,14 @@ subscribe((s) => {
 
 let mapScreen: MapScreen | null = null;
 
-// The worker starts loading as soon as it is created. The client is kept for the
-// Map_Screen (task 7.4), which will call client.start().
-export const client = createClient({
+// The map flow (worker, Pyodide, fixtures) starts the first time it is shown,
+// never on a fresh #/results (requirement 13.2). Once started it keeps running
+// in the background, so a run survives a trip to the results page and back.
+let client: WorkerClient | null = null;
+
+function startMapFlow(): void {
+  if (client) return;
+  client = createClient({
   onLoadProgress: (p) => applyLoadProgress(p),
   onRunEvent: () => mapScreen?.run.wake(),
   onCompetitorDone: (name) => mapScreen?.competitorDone(name),
@@ -29,7 +34,7 @@ export const client = createClient({
   onReady: () => {
     update({ screen: "map", loadPercent: 100 });
     mapScreen = createMapScreen({
-      start: (payload) => client.start(payload),
+      start: (payload) => client?.start(payload),
       onFinished,
     });
     // Only swap the screen in when the map flow is the one being shown.
@@ -46,7 +51,8 @@ export const client = createClient({
     update({ loadError: message });
     loading.setError(message);
   },
-});
+  });
+}
 
 // Hash route. `#/results` shows the Results_Page at once, without waiting for
 // the Worker. Anything else shows the map flow. The Worker, the loading state
@@ -73,6 +79,7 @@ async function route(moveFocus: boolean): Promise<void> {
     if (token === routeToken && moveFocus) focusHeading(container);
     return;
   }
+  startMapFlow();
   const el = mapScreen ? mapScreen.el : loading.el;
   show(el);
   if (moveFocus) focusHeading(el);

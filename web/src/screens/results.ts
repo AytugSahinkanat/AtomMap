@@ -28,6 +28,24 @@ export function formatShare(percent: number): string {
   return (Number.isInteger(p) ? String(p) : p.toFixed(1)) + '%';
 }
 
+/** A settings value as plain text: "1 to 10", "a, b, c", "key: value". No JSON. */
+export function formatSetting(v: unknown): string {
+  if (typeof v === 'string') return v;
+  if (Array.isArray(v)) {
+    const consecutive =
+      v.length >= 3 &&
+      v.every((x, i) => Number.isInteger(x) && (i === 0 || x === (v[i - 1] as number) + 1));
+    if (consecutive) return `${v[0]} to ${v[v.length - 1]}`;
+    return v.map(formatSetting).join(', ');
+  }
+  if (v !== null && typeof v === 'object') {
+    return Object.entries(v as Record<string, unknown>)
+      .map(([k, x]) => `${k}: ${formatSetting(x)}`)
+      .join(', ');
+  }
+  return String(v);
+}
+
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   text?: string,
@@ -65,7 +83,7 @@ function headers(): string[] {
     'Seed',
     'Map',
     ...CARD_ORDER.map((n) => `Points picked, ${CARD_LABELS[n]}`),
-    ...CARD_ORDER.map((n) => `Atom share, ${CARD_LABELS[n]}`),
+    ...CARD_ORDER.map((n) => `Quantum share, ${CARD_LABELS[n]}`),
     'Atoms not needed',
     'Splits',
     'Skipped tiles',
@@ -115,6 +133,24 @@ export async function showResults(
   );
 }
 
+/** "How these runs were made": date, commit, Chromium, Pyodide. null when the file has none of them. */
+export function renderHowMade(file: ResultsFile): HTMLElement | null {
+  const items: [string, string | undefined][] = [
+    ['Date (UTC)', file.date],
+    ['App commit', file.commit],
+    ['Chromium', file.chromium],
+    ['Pyodide', file.pyodide],
+  ];
+  const present = items.filter((i): i is [string, string] => i[1] !== undefined);
+  if (present.length === 0) return null;
+  const section = el('section', undefined, 'results-how');
+  section.append(el('h2', 'How these runs were made'));
+  const ul = el('ul', undefined, 'results-how-list');
+  for (const [k, v] of present) ul.append(el('li', `${k}: ${v}`));
+  section.append(ul);
+  return section;
+}
+
 export function renderResultsPage(file: ResultsFile): HTMLElement {
   const root = el('main', undefined, 'screen results');
   root.append(el('h1', 'What we measured'), backLink());
@@ -129,10 +165,13 @@ export function renderResultsPage(file: ResultsFile): HTMLElement {
   protocol.append(el('h2', 'Protocol'), el('p', file.protocol.text));
   const dl = el('dl', undefined, 'results-settings');
   for (const [k, v] of Object.entries(file.protocol.settings)) {
-    dl.append(el('dt', k), el('dd', typeof v === 'string' ? v : JSON.stringify(v)));
+    dl.append(el('dt', k), el('dd', formatSetting(v)));
   }
   protocol.append(dl);
   root.append(protocol);
+
+  const how = renderHowMade(file);
+  if (how) root.append(how);
 
   const wrap = el('div', undefined, 'results-scroll');
   wrap.tabIndex = 0;
@@ -143,7 +182,7 @@ export function renderResultsPage(file: ResultsFile): HTMLElement {
   table.append(
     el(
       'caption',
-      'One row per run, in file order. Atom share is the percent of picks that came from the atoms.',
+      'One row per run, in file order. Quantum share is the percent of picks that came from the atoms.',
     ),
   );
   const thead = el('thead');

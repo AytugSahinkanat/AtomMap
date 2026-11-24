@@ -182,6 +182,17 @@ describe("Results_Page render (real Chromium)", () => {
     expect(r.cite).toContain(CITATION);
   });
 
+  it("shows 'How these runs were made' only when the file has those fields", async (ctx) => {
+    const p = need(ctx);
+    const plain = await render(p, file(false, [run(1, "ok")]));
+    expect(plain.text).not.toContain("How these runs were made");
+    const f = { ...file(false, [run(1, "ok")]), date: "2026-01-02", commit: "abc123 dirty", chromium: "140.0.1", pyodide: "0.27.7" };
+    const r = await render(p, f);
+    const items = await p.evaluate(() => [...document.querySelectorAll(".results-how li")].map((x) => x.textContent));
+    expect(items).toEqual(["Date (UTC): 2026-01-02", "App commit: abc123 dirty", "Chromium: 140.0.1", "Pyodide: 0.27.7"]);
+    expect(r.text).not.toMatch(BANNED);
+  });
+
   it("labels every row 'simulation'", async (ctx) => {
     const p = need(ctx);
     const r = await render(p, file(false, [run(1, "ok"), run(2, "failed"), run(3, "bad")]));
@@ -201,6 +212,28 @@ describe("Results_Page render (real Chromium)", () => {
     expect(real.seeds).toEqual(EXAMPLE_FILE.runs.map((x: any) => String(x.seed)));
     expect(real.text).not.toMatch(BANNED);
     for (const cells of real.cellTexts) expect(cells[cells.length - 1]).toBe("simulation");
+  });
+});
+
+describe("Results_Page settings text (real Chromium)", () => {
+  it("shows lists and nested objects as plain text, no JSON", async (ctx) => {
+    const p = need(ctx);
+    const f = file(false, [run(1, "ok")]);
+    f.protocol.settings = {
+      seeds: [1, 2, 3, 4],
+      channels: [1, 6, 11],
+      pair: [1, 2],
+      names: ["a", "b"],
+      nested: { rounds: 3, range: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+      mode: "simulation",
+    } as any;
+    const dd = await p.evaluate((f) => {
+      const root: HTMLElement = (window as any).__r.renderResultsPage(f);
+      document.body.replaceChildren(root);
+      return [...document.querySelectorAll("dd")].map((d) => d.textContent);
+    }, f);
+    expect(dd).toEqual(["1 to 4", "1, 6, 11", "1, 2", "a, b", "rounds: 3, range: 1 to 10", "simulation"]);
+    for (const t of dd) expect(t).not.toMatch(/[\[\]{}"]/);
   });
 });
 

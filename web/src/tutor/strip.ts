@@ -4,7 +4,7 @@
 // sentences.ts. Text is set with textContent, never innerHTML.
 // "Why this point": showWhy and leaveWhy (task 6.3).
 
-import type { EngineName } from "../scoreboard-model";
+import { ONE_RUN_NOTE, type EngineName } from "../scoreboard-model";
 import { whyFacts, type Facts } from "./facts";
 import { buildSteps, buildWhy, NON_HYBRID_SENTENCE, type Step } from "./sentences";
 
@@ -84,6 +84,14 @@ export function createStrip(deps: StripDeps): Strip {
     const step = steps[index];
     const text = step.sentences.join(" ");
     body.textContent = text;
+    // After "One run proves nothing." the strip adds a real link to the results page.
+    if (step.sentences[step.sentences.length - 1] === ONE_RUN_NOTE) {
+      const link = document.createElement("a");
+      link.href = "#/results";
+      link.className = "results-link";
+      link.textContent = "See what we measured.";
+      body.append(" ", link);
+    }
     counter.textContent = `step ${index + 1} of ${steps.length}`;
     back.setAttribute("aria-disabled", String(index === 0));
     next.setAttribute("aria-disabled", String(index === steps.length - 1));

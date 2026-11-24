@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "node scripts/build-site.mjs",
     "smoke": "node scripts/smoke.mjs",
+    "record-results": "node scripts/record-results.mjs",
     "check": "tsc -p . --noEmit",
     "test": "vitest run"
   },

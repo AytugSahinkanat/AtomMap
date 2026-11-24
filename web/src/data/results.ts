@@ -21,6 +21,11 @@ export interface RunRecord {
 export interface ResultsFile {
   example: boolean;
   protocol: { text: string; settings: Record<string, unknown> };
+  /** How the runs were made. Optional, so the example file still validates. */
+  date?: string;
+  commit?: string;
+  chromium?: string;
+  pyodide?: string;
   runs: RunRecord[];
 }
 
@@ -77,6 +82,9 @@ export function validateResults(json: unknown): ValidateResult {
   if (!isRecord(protocol)) return bad('protocol must be an object.');
   if (typeof protocol.text !== 'string') return bad('protocol.text must be text.');
   if (!isRecord(protocol.settings)) return bad('protocol.settings must be an object.');
+  for (const key of ['date', 'commit', 'chromium', 'pyodide'] as const) {
+    if (json[key] !== undefined && typeof json[key] !== 'string') return bad(`${key} must be text.`);
+  }
   if (!Array.isArray(json.runs)) return bad('runs must be a list.');
   for (let i = 0; i < json.runs.length; i++) {
     const problem = checkRun(json.runs[i], i + 1);
