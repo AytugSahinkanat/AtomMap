@@ -265,46 +265,46 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Valid CSV, valid GeoJSON, bad columns, non-point features, empty file
     - _Requirements: 8.3_
 
-- [ ] 14. Smoke test
-  - [ ]* 14.1 Write the Playwright smoke test
+- [x] 14. Smoke test
+  - [x]* 14.1 Write the Playwright smoke test
     - Load the page, wait for the Map_Screen, run the Hero_Map, press skip, check four Competitor cards
     - Record requests and assert none go to a tile server or Overpass
     - _Requirements: 2.8, 6.6, 12.3_
 
-- [ ] 16. What we measured page
-  - [ ] 16.1 Add the results types, validator and loader
+- [x] 16. What we measured page
+  - [x] 16.1 Add the results types, validator and loader
     - Create `web/src/data/results.ts` with `ResultsFile` and `RunRecord` types from the design, the pure `validateResults(json)` returning `{ok:true, value}` or `{ok:false, reason}`, and `loadResults()` that fetches `./results.json`
     - The validator checks all field types, `status` in `ok|failed|bad`, `picks` and `quantum_share` holding the four Competitor names with numbers, counts as non-negative integers; the reason is a plain sentence naming the field, such as "run 3: status must be ok, failed or bad"
     - _Requirements: 13.2, 13.14, 13.15_
 
-  - [ ] 16.2 Add the example Results_File
+  - [x] 16.2 Add the example Results_File
     - Create `web/public/results.json` with `example: true`, protocol text and settings, a few runs, and one run with `status: "failed"` and a `reason`; include a run with a 0 Quantum_Share and `atoms_not_needed` true
     - _Requirements: 13.12, 13.8_
 
-  - [ ] 16.3 Render the Results_Page
+  - [x] 16.3 Render the Results_Page
     - Create `web/src/screens/results.ts`: example notice at the top only when `example` is true ("This is example data, not a measurement."), protocol text and settings, one `<table>` with a `<caption>` and `<th scope="col">` headers, then the citation "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5"
     - One row per Run_Record in file order with seed, map, picks per Competitor, Quantum_Share per Competitor (0% shown), `atoms_not_needed`, splits, skipped Tiles, status with reason, and the label "simulation"; failed and bad rows use the same row component as ok rows
     - No sorting, filtering, totals, averages, ranking or speed wording; text set with `textContent`
     - _Requirements: 13.3, 13.4, 13.5, 13.6, 13.7, 13.8, 13.9, 13.10, 13.11, 13.13_
 
-  - [ ] 16.4 Add the error state to the Results_Page
+  - [x] 16.4 Add the error state to the Results_Page
     - In `web/src/screens/results.ts`, call `loadResults` and `validateResults`; when the fetch fails, the JSON is invalid or validation fails, show the reason in plain words and no table
     - _Requirements: 13.14_
 
-  - [ ] 16.5 Add the `#/results` hash route
+  - [x] 16.5 Add the `#/results` hash route
     - In `web/src/main.ts` read `location.hash` at boot and on `hashchange`; `#/results` shows the Results_Page without waiting for the Worker, anything else shows the map flow
     - Add a link back to `#/` on the Results_Page
     - _Requirements: 13.1, 13.2_
 
-  - [ ] 16.6 Link to the Results_Page from the Map_Screen
+  - [x] 16.6 Link to the Results_Page from the Map_Screen
     - In `web/src/screens/map.ts`, add `<a href="#/results">What we measured</a>` with a visible label and focus ring
     - _Requirements: 13.1, 11.3_
 
-  - [ ]* 16.7 Write unit tests for the validator and the example file
+  - [x]* 16.7 Write unit tests for the validator and the example file
     - In `web/src/data/results.test.ts`: `validateResults` accepts the committed `web/public/results.json`; rejects wrong types, a bad `status` and missing fields, each with a reason
     - _Requirements: 13.12, 13.14, 13.15_
 
-  - [ ]* 16.8 Write unit tests for the Results_Page render
+  - [x]* 16.8 Write unit tests for the Results_Page render
     - In `web/src/screens/results.test.ts`: rows in file order, notice only when `example` is true, failed rows with the same markup as ok rows, 0% shares shown, caption and column headers present, no banned words (faster, speed, wins, winner, beats), error state shows a reason and no table
     - _Requirements: 13.4, 13.5, 13.7, 13.8, 13.9, 13.11, 13.13, 13.14_
 

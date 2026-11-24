@@ -3,6 +3,7 @@ import { createClient } from "./client";
 import { applyLoadProgress, onFinished, state, subscribe, update } from "./state";
 import { createLoadingScreen, plainError } from "./screens/loading";
 import { createMapScreen, type MapScreen } from "./screens/map";
+import { showResults } from "./screens/results";
 
 const root = document.getElementById("app") ?? document.body;
 
@@ -11,7 +12,6 @@ function show(el: HTMLElement): void {
 }
 
 const loading = createLoadingScreen();
-show(loading.el);
 
 subscribe((s) => {
   if (s.screen === "loading") loading.setProgress(s.loadPercent, s.loadStage);
@@ -32,7 +32,8 @@ export const client = createClient({
       start: (payload) => client.start(payload),
       onFinished,
     });
-    show(mapScreen.el);
+    // Only swap the screen in when the map flow is the one being shown.
+    if (!isResultsRoute()) show(mapScreen.el);
   },
   onError: (e) => {
     // Run errors go to the Run_Screen, with a back button.
@@ -46,3 +47,36 @@ export const client = createClient({
     loading.setError(message);
   },
 });
+
+// Hash route. `#/results` shows the Results_Page at once, without waiting for
+// the Worker. Anything else shows the map flow. The Worker, the loading state
+// and a finished run live outside the route, so going back loses nothing.
+function isResultsRoute(): boolean {
+  return location.hash === "#/results";
+}
+
+let routeToken = 0;
+
+function focusHeading(el: HTMLElement): void {
+  const h = el.querySelector<HTMLElement>("h1");
+  if (!h) return;
+  h.tabIndex = -1;
+  h.focus({ preventScroll: false });
+}
+
+async function route(moveFocus: boolean): Promise<void> {
+  const token = ++routeToken;
+  if (isResultsRoute()) {
+    const container = document.createElement("div");
+    show(container);
+    await showResults(container);
+    if (token === routeToken && moveFocus) focusHeading(container);
+    return;
+  }
+  const el = mapScreen ? mapScreen.el : loading.el;
+  show(el);
+  if (moveFocus) focusHeading(el);
+}
+
+void route(false);
+window.addEventListener("hashchange", () => void route(true));

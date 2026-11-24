@@ -182,7 +182,7 @@ interface ResultsFile {                                               // web/pub
 interface RunRecord {
   seed: number; map: string;
   picks: Record<EngineName, number>;               // per Competitor
-  quantum_share: Record<EngineName, number>;       // per Competitor, percent, 0 allowed
+  quantum_share: Record<EngineName, number>;       // per Competitor, percent number 0 to 100 (20 means 20%, not 0.2), 0 allowed
   atoms_not_needed: boolean; splits: number; skipped_tiles: number;
   status: "ok" | "failed" | "bad"; reason?: string;
 }

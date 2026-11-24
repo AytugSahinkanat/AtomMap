@@ -1,0 +1,56 @@
+{
+  "example": true,
+  "protocol": {
+    "text": "EXAMPLE DATA, NOT A MEASUREMENT. These round numbers only show how this page looks. They were not produced by any run. Real results replace this file after runs with settings fixed in advance. All results are simulation.",
+    "settings": {
+      "kind": "example",
+      "mode": "simulation",
+      "seeds": [1, 2, 3, 4],
+      "note": "placeholder values"
+    }
+  },
+  "runs": [
+    {
+      "seed": 1,
+      "map": "Wifi hall",
+      "picks": { "Atoms_Alone": 30, "Hybrid": 40, "Annealing_Rules": 40, "Coin_Flip_Rules": 30 },
+      "quantum_share": { "Atoms_Alone": 100, "Hybrid": 20, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 2,
+      "map": "Wifi hall, sparse control",
+      "picks": { "Atoms_Alone": 50, "Hybrid": 50, "Annealing_Rules": 50, "Coin_Flip_Rules": 50 },
+      "quantum_share": { "Atoms_Alone": 100, "Hybrid": 0, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
+      "atoms_not_needed": true,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 3,
+      "map": "Kadıköy, Istanbul",
+      "picks": { "Atoms_Alone": 30, "Hybrid": 50, "Annealing_Rules": 40, "Coin_Flip_Rules": 30 },
+      "quantum_share": { "Atoms_Alone": 100, "Hybrid": 10, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
+      "atoms_not_needed": false,
+      "splits": 10,
+      "skipped_tiles": 10,
+      "status": "bad",
+      "reason": "Example only: some tiles were skipped, so the atoms did not cover the whole map."
+    },
+    {
+      "seed": 4,
+      "map": "Wifi hall",
+      "picks": { "Atoms_Alone": 0, "Hybrid": 0, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
+      "quantum_share": { "Atoms_Alone": 0, "Hybrid": 0, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "failed",
+      "reason": "Example only: the run stopped before it finished, so there are no picks to show."
+    }
+  ]
+}

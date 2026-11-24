@@ -251,7 +251,12 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   wrap.className = "map-wrap";
   const staticCanvas = document.createElement("canvas");
   const dynamicCanvas = document.createElement("canvas");
-  wrap.append(staticCanvas, dynamicCanvas);
+  // Corner credit for the Kadikoy map, on screen whenever that map is (idle, run, finished). Not in the canvas.
+  const osmCredit = document.createElement("span");
+  osmCredit.className = "map-credit";
+  osmCredit.textContent = "© OpenStreetMap contributors";
+  osmCredit.hidden = true;
+  wrap.append(staticCanvas, dynamicCanvas, osmCredit);
   const staticLayer = new StaticLayer(staticCanvas);
   const dynamicLayer = new DynamicLayer(dynamicCanvas);
   const reducedQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
@@ -332,7 +337,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   const taglineText = document.createElement("p");
   taglineText.className = "muted tagline";
   taglineText.textContent = "two close atoms can't both light up, two close sites can't both be picked";
-  tagline.append(taglineText, placeSelector.info);
+  const resultsLink = document.createElement("a");
+  resultsLink.href = "#/results";
+  resultsLink.className = "results-link";
+  resultsLink.textContent = "What we measured";
+  tagline.append(taglineText, resultsLink, placeSelector.info);
 
   const toolbar = document.createElement("div");
   toolbar.className = "toolbar";
@@ -642,7 +651,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       noData.hidden = view.kind === "ready";
       noData.textContent = view.text;
       wrap.hidden = view.kind !== "ready";
+      osmCredit.hidden = view.kind !== "ready";
     } else {
+      osmCredit.hidden = true;
       noData.hidden = true;
       wrap.hidden = hero === null;
     }

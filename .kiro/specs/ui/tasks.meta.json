@@ -602,6 +602,128 @@
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795471046351
       }
+    ],
+    "16.1 Add the results types, validator and loader": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522456682
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522576918
+      }
+    ],
+    "14.1 Write the Playwright smoke test": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522456883
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522577051
+      }
+    ],
+    "14. Smoke test": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522577103
+      }
+    ],
+    "16.2 Add the example Results_File": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522577178
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522674342
+      }
+    ],
+    "16.3 Render the Results_Page": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522577514
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522674445
+      }
+    ],
+    "16.4 Add the error state to the Results_Page": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522674554
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522708249
+      }
+    ],
+    "16.5 Add the `#/results` hash route": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522708653
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522776895
+      }
+    ],
+    "16.6 Link to the Results_Page from the Map_Screen": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795522777113
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795523321721
+      }
+    ],
+    "16. What we measured page": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795523321901
+      }
+    ],
+    "16.7 Write unit tests for the validator and the example file": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795523322062
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795523401844
+      }
+    ],
+    "16.8 Write unit tests for the Results_Page render": [
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795523322194
+      },
+      {
+        "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795523402265
+      }
     ]
   }
 }

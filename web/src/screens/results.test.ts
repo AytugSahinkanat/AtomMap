@@ -1,0 +1,218 @@
+// Results_Page render tests (ui spec, task 16.8; requirement 13).
+//
+// No jsdom in this project. Like plan-selector.test.ts, the DOM runs in real
+// headless Chromium through Playwright, with a Vite dev server serving the
+// real modules. If Chromium cannot start, the tests skip with a message.
+
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { chromium, type Browser, type Page } from "playwright";
+import { createServer, type ViteDevServer } from "vite";
+import { CITATION } from "../scoreboard-model";
+
+const BANNED = /faster|speed|wins|winner|beats/i;
+
+let server: ViteDevServer | null = null;
+let browser: Browser | null = null;
+let page: Page | null = null;
+let startError = "";
+
+const HARNESS = `
+import * as R from '/src/screens/results.ts';
+import { validateResults } from '/src/data/results.ts';
+window.__r = { ...R, validateResults };
+window.__ready = true;
+`;
+
+beforeAll(async () => {
+  try {
+    server = await createServer({ logLevel: "silent", server: { port: 5291, strictPort: false, hmr: false } });
+    await server.listen();
+    const base = server.resolvedUrls?.local[0];
+    if (!base) throw new Error("no dev server url");
+    browser = await chromium.launch();
+    page = await browser.newPage();
+    await page.route(`${base}harness.html`, (route) =>
+      route.fulfill({ contentType: "text/html", body: "<!doctype html><html><body></body></html>" }),
+    );
+    await page.goto(`${base}harness.html`);
+    await page.addScriptTag({ type: "module", content: HARNESS });
+    await page.waitForFunction("window.__ready === true", undefined, { timeout: 30000 });
+  } catch (e) {
+    startError = String(e);
+    page = null;
+  }
+}, 90000);
+
+afterAll(async () => {
+  await browser?.close();
+  await server?.close();
+});
+
+type Ctx = { skip: (note?: string) => never };
+function need(ctx: Ctx): Page {
+  if (page === null) ctx.skip(`browser not available: ${startError}`);
+  return page!;
+}
+
+const shares = (n: number) => ({ Atoms_Alone: n, Hybrid: n, Annealing_Rules: n, Coin_Flip_Rules: n });
+function run(seed: number, status: "ok" | "failed" | "bad", extra: Record<string, unknown> = {}) {
+  return {
+    seed,
+    map: `map ${seed}`,
+    picks: shares(seed),
+    quantum_share: shares(0),
+    atoms_not_needed: true,
+    splits: 0,
+    skipped_tiles: 0,
+    status,
+    ...(status === "ok" ? {} : { reason: "something happened" }),
+    ...extra,
+  };
+}
+function file(example: boolean, runs: unknown[]) {
+  return { example, protocol: { text: "Fixed settings.", settings: { mode: "simulation", seeds: [1] } }, runs };
+}
+
+/** Render a file into the page and return a summary of the DOM. */
+async function render(p: Page, f: unknown) {
+  return p.evaluate((f) => {
+    const W = window as any;
+    const root: HTMLElement = W.__r.renderResultsPage(f);
+    document.body.replaceChildren(root);
+    const rows = [...document.querySelectorAll<HTMLTableRowElement>("tbody tr")];
+    return {
+      text: document.body.textContent ?? "",
+      notice: document.querySelector(".results-notice")?.textContent ?? null,
+      seeds: rows.map((r) => r.cells[0].textContent),
+      structure: rows.map((r) => ({
+        tag: r.tagName,
+        cls: r.className,
+        cells: [...r.cells].map((c) => c.tagName + "." + c.className),
+        n: r.cells.length,
+      })),
+      cellTexts: rows.map((r) => [...r.cells].map((c) => c.textContent as string)),
+      status: rows.map((r) => r.dataset.status),
+      caption: document.querySelector("table > caption")?.textContent ?? null,
+      ths: [...document.querySelectorAll("thead th")].map((t) => ({ scope: t.getAttribute("scope"), text: t.textContent })),
+      wrap: (() => {
+        const w = document.querySelector<HTMLElement>(".results-scroll");
+        return w ? { tab: w.tabIndex, label: w.getAttribute("aria-label"), role: w.getAttribute("role"), hasTable: !!w.querySelector("table") } : null;
+      })(),
+      cite: [...document.querySelectorAll("p")].map((x) => x.textContent),
+    };
+  }, f);
+}
+
+async function show(p: Page, mode: "fail" | "invalid" | "throw") {
+  return p.evaluate(async (mode) => {
+    const W = window as any;
+    const box = document.createElement("div");
+    document.body.replaceChildren(box);
+    const load =
+      mode === "fail"
+        ? async () => ({ ok: false, reason: "The results file is missing." })
+        : mode === "invalid"
+          ? async () => ({ ok: true, value: { example: true, runs: "nope" } })
+          : async () => {
+              throw new Error("network down");
+            };
+    await W.__r.showResults(box, load);
+    return {
+      tables: box.querySelectorAll("table").length,
+      error: box.querySelector(".results-error")?.textContent ?? null,
+      text: box.textContent ?? "",
+    };
+  }, mode);
+}
+
+describe("Results_Page render (real Chromium)", () => {
+  it("rows keep file order, no sorting", async (ctx) => {
+    const p = need(ctx);
+    const r = await render(p, file(false, [run(7, "ok"), run(2, "ok"), run(9, "ok"), run(1, "ok")]));
+    expect(r.seeds).toEqual(["7", "2", "9", "1"]);
+  });
+
+  it("shows the example notice only when example is true", async (ctx) => {
+    const p = need(ctx);
+    const yes = await render(p, file(true, [run(1, "ok")]));
+    expect(yes.notice).toBe("This is example data, not a measurement.");
+    const no = await render(p, file(false, [run(1, "ok")]));
+    expect(no.notice).toBeNull();
+    expect(no.text).not.toContain("example data");
+  });
+
+  it("failed and bad rows use the same markup as ok rows", async (ctx) => {
+    const p = need(ctx);
+    const r = await render(p, file(false, [run(1, "ok"), run(2, "failed"), run(3, "bad")]));
+    expect(r.status).toEqual(["ok", "failed", "bad"]);
+    expect(r.structure[1]).toEqual(r.structure[0]);
+    expect(r.structure[2]).toEqual(r.structure[0]);
+    expect(r.cellTexts[1].some((t) => t.includes("failed: something happened"))).toBe(true);
+    expect(r.cellTexts[2].some((t) => t.includes("bad: something happened"))).toBe(true);
+  });
+
+  it("shows 0% shares as 0%, and formats other shares", async (ctx) => {
+    const p = need(ctx);
+    const r = await render(
+      p,
+      file(false, [run(1, "ok"), run(2, "ok", { quantum_share: { Atoms_Alone: 100, Hybrid: 17.5, Annealing_Rules: 0, Coin_Flip_Rules: 0 } })]),
+    );
+    expect(r.cellTexts[0].filter((t) => t === "0%").length).toBe(4);
+    expect(r.cellTexts[1].slice(6, 10)).toEqual(["100%", "17.5%", "0%", "0%"]);
+  });
+
+  it("has a caption and th scope=col for every header", async (ctx) => {
+    const p = need(ctx);
+    const r = await render(p, file(false, [run(1, "ok")]));
+    expect(r.caption).toBeTruthy();
+    expect(r.ths.length).toBe(r.structure[0].n);
+    expect(r.ths.every((t) => t.scope === "col" && (t.text ?? "").length > 0)).toBe(true);
+  });
+
+  it("puts the table in a labelled, focusable scroll box", async (ctx) => {
+    const p = need(ctx);
+    const r = await render(p, file(false, [run(1, "ok")]));
+    expect(r.wrap).toEqual({ tab: 0, label: "Results table, scrolls sideways", role: "region", hasTable: true });
+  });
+
+  it("shows the citation text exactly", async (ctx) => {
+    const p = need(ctx);
+    const r = await render(p, file(false, [run(1, "ok")]));
+    expect(CITATION).toBe("Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5");
+    expect(r.cite).toContain(CITATION);
+  });
+
+  it("labels every row 'simulation'", async (ctx) => {
+    const p = need(ctx);
+    const r = await render(p, file(false, [run(1, "ok"), run(2, "failed"), run(3, "bad")]));
+    for (const cells of r.cellTexts) expect(cells[cells.length - 1]).toBe("simulation");
+  });
+
+  it("has no banned words, also for the committed example file", async (ctx) => {
+    const p = need(ctx);
+    const synthetic = await render(p, file(true, [run(1, "ok"), run(2, "failed"), run(3, "bad")]));
+    expect(synthetic.text).not.toMatch(BANNED);
+    // The committed file, served by the dev server from web/public.
+    const EXAMPLE_FILE = await p.evaluate(async () => (await fetch("/results.json")).json());
+    const valid = await p.evaluate((f) => (window as any).__r.validateResults(f), EXAMPLE_FILE);
+    expect(valid.ok).toBe(true);
+    const real = await render(p, EXAMPLE_FILE);
+    expect(real.notice).not.toBeNull();
+    expect(real.seeds).toEqual(EXAMPLE_FILE.runs.map((x: any) => String(x.seed)));
+    expect(real.text).not.toMatch(BANNED);
+    for (const cells of real.cellTexts) expect(cells[cells.length - 1]).toBe("simulation");
+  });
+});
+
+describe("Results_Page error state (real Chromium)", () => {
+  for (const mode of ["fail", "invalid", "throw"] as const) {
+    it(`shows a reason and no table when the load is: ${mode}`, async (ctx) => {
+      const p = need(ctx);
+      const s = await show(p, mode);
+      expect(s.tables).toBe(0);
+      expect(s.error).toMatch(/^We could not show the results\. \S+/);
+      expect(s.error!.length).toBeGreaterThan("We could not show the results. ".length);
+      expect(s.text).not.toMatch(BANNED);
+    });
+  }
+});
