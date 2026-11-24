@@ -4,7 +4,7 @@
 
 The UI is the web app people see. A visitor with no quantum background opens the link, sees a map, presses run, and watches atoms help pick points next to three other methods. The map comes first, theory second, in plain words. The UI code lives in `web/` and contains no algorithm logic. The Engine, Worker, Competitors, Decision_Log, Stats and progress events are defined in the engine spec (`.kiro/specs/engine/requirements.md`) and are not repeated here.
 
-The one piece of computation the UI owns is building the edge list from the Radio_Model in Channel_Plan mode, with walls counted or not. The UI passes that edge list, with r, to the Engine as the Engine's Conflict_Graph definition.
+The one piece of computation the UI owns is building the edge list: from the Radio_Model in Channel_Plan mode, with walls counted or not, and from straight-line distance for the Your_Map. The UI passes that edge list, with r, to the Engine as the Engine's Conflict_Graph definition.
 
 The UI is built with Vite and TypeScript without a large framework, as a static build that works on GitHub Pages. The UI depends on three small additions to the Engine's progress events (Requirement 10). The UI task list, written later, begins with an Engine task for them, with tests. The Engine spec is not edited by this spec.
 
@@ -35,7 +35,12 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 - **Progress_Event**: A message the Engine sends while a run is in progress, as in the engine spec (Requirement 9.9).
 - **Frequencies_Event**: A Progress_Event sent after each Simulator call, carrying the Tile identifier and the frequency of each Point of that Tile.
 - **atoms_not_needed**: The name of the Stats flag that the engine spec describes as "atoms were not needed on this map".
-- **Custom_Map**: A map uploaded by the visitor as CSV (columns id, x, y in metres) or GeoJSON points.
+- **Your_Map**: The third map choice. A set of Points that the visitor draws, pastes or uploads, run in one Round with Place mode rules (the Engine's `place` mode) and a straight-line conflict radius chosen by the visitor.
+- **Your_Map_Area**: The drawing area of the Your_Map, fixed at 90 m wide and 60 m high (about the size of the Hero_Map), with the origin at its lower left corner.
+- **Map_Editor**: The part of the Map_Screen where the visitor edits the Your_Map: click to add or remove a Point, a Clear button, an Add random points button and the r input.
+- **Your_R**: The Conflict_Radius r of the Your_Map in metres. Default 20 m, allowed 2 m to 200 m.
+- **Map_Text**: The text box and the file chooser through which the visitor gives the Your_Map as CSV (columns id, x, y in metres) or GeoJSON points.
+- **Point_Limit**: The largest number of Points a Your_Map may have. It is a measured number (Requirement 8.13), stored as one constant in `web/src/settings.ts` and written with its measurements in the design document.
 
 ## Requirements
 
@@ -146,17 +151,32 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 2. WHEN a run finishes, THE UI SHALL offer an export of the plan shown on the map as GeoJSON, with one point feature per Point and the same values as properties.
 3. THE UI SHALL include the Result_Label "simulation" and the Seed in both exports.
 
-### Requirement 8: Bring your own map (optional, lowest priority)
+### Requirement 8: Your map
 
-**User Story:** As a visitor, I want to upload my own points, so that I can try the method on my own map.
-
-This requirement is the first to be cut if time runs out.
+**User Story:** As a visitor, I want to draw or bring my own points and run the method on them, so that I can try it on a map I care about.
 
 #### Acceptance Criteria
 
-1. WHERE the Custom_Map feature is included, THE UI SHALL accept an uploaded CSV with the columns id, x and y in metres, or a GeoJSON file of points.
-2. WHERE the Custom_Map feature is included, THE UI SHALL let the visitor choose r in metres and run the Custom_Map with that r as the Conflict_Graph definition.
-3. WHERE the Custom_Map feature is included, IF an uploaded file cannot be read, THEN THE UI SHALL show the reason in plain words and keep the current map.
+1. THE Map_Screen SHALL offer "Your map (1 round)" as a third choice in the Mode group, next to "Channel plan (3 rounds)" and "Place (1 round)". The Your_Map runs in one Round and sends the Engine mode `place`.
+2. WHEN the visitor chooses the Your_Map, THE Map_Screen SHALL show the Your_Map_Area, empty at the start, drawn at its true proportions (90 m by 60 m), and the Map_Editor.
+3. WHEN the visitor clicks an empty spot of the Your_Map_Area, THE Map_Editor SHALL add a Point there, with its x and y in metres rounded to 0.1 m and the next free id of the form `p001`, `p002`.
+4. WHEN the visitor clicks an existing Point, THE Map_Editor SHALL remove that Point and no other.
+5. THE Map_Editor SHALL offer a "Clear" button that removes every Point, and an "Add random points" button that adds 10 Points at random places inside the Your_Map_Area.
+6. WHILE the visitor edits, THE Map_Screen SHALL draw the Points and every edge of the Conflict_Graph (every pair of Points closer than Your_R) as in Requirement 2.2, and SHALL redraw after every change.
+7. THE Map_Editor SHALL offer a number input for Your_R in metres, labelled in text, with the default 20 and the allowed range 2 to 200. IF the typed value is not a number in that range, THEN THE UI SHALL show a plain-words message, keep the last valid Your_R for the picture and SHALL NOT start a run.
+8. WHEN the visitor presses the run button on a Your_Map, THE UI SHALL build the request with `buildRequest` like the other maps and send the Engine the Points, the mode `place`, the Seed, Your_R and the edge list of exactly the pairs of Points with a distance strictly below Your_R, each pair once. The Engine is not changed.
+9. THE Map_Screen SHALL offer the Map_Text: a text box for pasted CSV and a file chooser that takes a CSV or a GeoJSON file, each with an apply action that works from the keyboard. Files are read in the browser and nothing is sent anywhere.
+10. THE UI SHALL read CSV text as follows: the first line names the columns and contains `id`, `x` and `y` (any order, other columns ignored), values are separated by commas, semicolons or tabs, `x` and `y` are numbers in metres written with a dot, and ids are non-empty and unique.
+11. THE UI SHALL read GeoJSON as a FeatureCollection, a single Feature or a bare Point geometry, in which every feature is a Point with `[longitude, latitude]`, and SHALL project the points to local metres with the equirectangular projection around the centroid of the points that `scripts/fetch_place.py` uses. The id of a Point is `properties.id` when it is a non-empty text or number, otherwise the next free `p001`-style id. The Points keep their longitude and latitude for the GeoJSON export.
+12. IF the Map_Text cannot be used, THEN THE UI SHALL show the reason in plain words next to the Map_Text, keep the current map exactly as it was (Points, Your_R and result) and change nothing else. The reasons cover at least: an unreadable or too large file (over 1 MB), text that is not CSV or GeoJSON, an empty file or no Points, a missing column, a value that is not a number (with its line), a duplicate id, a feature that is not a Point, and more Points than the Point_Limit. WHEN the Map_Text is good, THE UI SHALL replace the Points of the Your_Map with it, keep Your_R, and clear any earlier result.
+13. THE Point_Limit SHALL be the largest tested Point count for which the slowest measured run of all four Competitors stays under about 60 seconds on the development laptop in the built site, found by measuring dense and sparse random layouts at several sizes with settings fixed before the run (honesty rule 8). The design document SHALL record the settings, every measurement and the resulting limit, and the page SHALL show no time and make no speed claim.
+14. THE Map_Editor, the Add random points button and the Map_Text SHALL NOT take the Your_Map above the Point_Limit: they show a plain-words message that names the limit and leave the map as it was. IF a Your_Map above the Point_Limit is somehow present when the visitor presses run, THEN THE UI SHALL show the same kind of message and SHALL NOT start a run. A Your_Map with no Point cannot be run, and the run button says why in text.
+15. THE Map_Screen SHALL label the Your_Map "Your map, N points. Results are a simulation." with N the current number of Points, and the Scoreboard SHALL show the Quantum_Share, splits, skipped Tiles, the Result_Label and the citation exactly as for the other maps (Requirement 4).
+16. THE Tutor, the Plan_Selector and the export (Requirements 2.10, 2.11, 7 and 9) SHALL work on a finished Your_Map run as on the other maps. The Tutor's sentences about the map SHALL say "point" and SHALL NOT call the points cafes or access points. The export file name uses the map name `your-map`, and the GeoJSON geometry follows the rule of the design (`[lon, lat]` only when every Point has a longitude and a latitude).
+17. WHEN the visitor changes the Points or Your_R after a finished run, THE UI SHALL clear that result and the Tutor and show the editor state. WHILE a run is in progress, THE Map_Editor and the Map_Text SHALL be disabled.
+18. THE Your_Map SHALL NOT be part of the Results_Page: the Results_Page, the Results_File and `web/scripts/record-results.mjs` do not mention it.
+19. THE Map_Screen with the Your_Map SHALL fit a 1366 x 768 viewport (inner size) without vertical scrolling in every state (empty, with Points, with a Map_Text message, a run in progress, a finished run) and SHALL be usable at a 375 px wide viewport without horizontal scrolling and with every control reachable.
+20. THE Map_Editor and the Map_Text SHALL follow Requirement 11: every control reachable and operable by keyboard with a visible focus indicator and a text label, and the Map_Text is the keyboard way to make a Your_Map, so drawing with the pointer is never the only way.
 
 ### Requirement 9: Moved to the tutor spec
 
@@ -226,3 +246,5 @@ The script that fills the Results_File is a later spec. This spec covers the Res
 1. THE UI SHALL have unit tests for the wall edge builder, the walking edge builder and the Scoreboard numbers.
 2. THE UI tests SHALL allow the gap between the Engine blockade radius (about 19.95 m) and the Hero_Map_R of 20 m.
 3. THE UI SHALL have a Playwright smoke test that loads the page, runs the Hero_Map and checks that the Scoreboard shows four Competitors.
+4. THE UI SHALL have unit tests for the Map_Text parser (good CSV and GeoJSON files, bad columns, non-Point features, an empty file, too many Points), for the Map_Editor logic (add, remove, Clear, random) and for the Your_Map request (property test: the request edges are exactly the pairs closer than Your_R).
+5. THE UI SHALL have a Playwright check of Requirement 8.19 (1366 x 768 and 375 px) for the Your_Map.

@@ -39,7 +39,8 @@ esults.ts | One module per screen or panel (`results.ts` is the Results_Page) |
 | `render/static-layer.ts`, `dynamic-layer.ts`, `sprites.ts`, `a11y.ts` | Canvas drawing, glow sprites, accessible point list |
 | `render/playback.ts` | Event buffer, rAF loop, pure reducer from events to point states |
 | `edges/walls.ts`, `edges/straight.ts` | Edge builders owned by the UI |
-| `data/fixtures.ts`, `data/custom-map.ts` | Fixture loading (including the per-place loader) and Custom_Map parsing |
+| `data/fixtures.ts`, `data/custom-map.ts` | Fixture loading (including the per-place loader) and the Map_Text parser (CSV and GeoJSON) |
+| `your-map/editor.ts` | Pure Map_Editor logic: add, remove, Clear, random (no DOM) |
 | `scoreboard-model.ts`, `seed.ts`, `export.ts`, `settings.ts` | Pure functions: Scoreboard numbers, seed parsing, CSV/GeoJSON, default seed |
 
 Build: Vite with relative `base: './'` for GitHub Pages. Fixtures are imported with `?url` from `../../fixtures/` (Vite `server.fs.allow` for the repo root) and copied to the build output.
@@ -143,9 +144,81 @@ Walking edges come from the Street_Fixture of the selected place (see Place data
 
 `export.ts`, for the plan selected in the Plan_Selector. CSV header: `id,x,y,round,result_label,seed`; `round` is the channel, `5 GHz only` in Channel_Plan for unpicked Points, and `1` or `not picked` in Place. Fields with commas, quotes or newlines are quoted. GeoJSON: a FeatureCollection with top-level `result_label` and `seed`, one Point feature per Point with `id`, `x`, `y`, `round`, `result_label`, `seed` properties. Geometry is `[lon, lat]` for the place map (Kadıköy) and `[x, y]` in local metres for other maps (stated in a top-level `units` member). Files are made with `Blob` and an `<a download>`. The file name is `atommap-<map>-<plan>-seed<seed>.csv` or `.geojson`: `<map>` is the map name (`hero`, `kadikoy`) and `<plan>` is the card label, both lower case with letters and digits only and one `-` between words (for example `atommap-hero-atoms-rules-hybrid-seed1.csv`); a negative seed is written with `m` for the minus sign (`seedm5`). Pure functions build the CSV text, the GeoJSON object and the file name; only the download helper touches the DOM. The geometry is `[lon, lat]` when every point of the map carries `lon` and `lat` (the `PlaceFixture` points do), and `[x, y]` otherwise; `units` says which.
 
-### Custom map (optional, lowest priority)
+### Your map
 
-`data/custom-map.ts` parses CSV (`id,x,y` in metres) and GeoJSON Point features (projected to local metres with the same equirectangular projection as `fetch_place.py`). The visitor sets `r`; the request is `graph:{r}` with no edges. A read error shows the reason and keeps the current map.
+The third choice of the Mode group ("Your map (1 round)", value `your_map`). It is Place mode rules with straight-line distance: one Round, the visitor's own Points, the visitor's r. The Engine is not changed.
+
+**Request.** `MapChoice` gets a third variant and `buildRequest` stays the one place that builds every request:
+
+```ts
+| { mode: 'your_map'; points: readonly RequestPoint[]; r: number }
+// buildRequest -> { points, mode: 'place', seed, graph: { r, edges: buildStraightEdges(points, r) } }
+```
+
+The request carries the edge list explicitly, not r alone. The drawn edges and the sent edges are then the same list (one call of `buildStraightEdges`, pairs strictly closer than r, each once, sorted), and a test can check it. It gives the same graph as r alone, because the Engine uses the same rule when edges are omitted (`graph.py`). Everything else in the Engine works as for any other map: tiles of at most 10 atoms, the layout split, the four Competitors. The tutor, the Plan_Selector and the export read the same result shape.
+
+**Area and view.** The Your_Map_Area is 90 m by 60 m (`YOUR_MAP_AREA_M` in `settings.ts`), about the 84 m by 58 m of the Hero_Map. It is drawn as a thin dim frame in the static layer. `StaticScene` gets an optional `bounds` (min and max x and y). `fitView` uses `bounds` when it is given, instead of the extent of the Points, so an empty map still has a view. For the Your_Map the bounds are the area joined with the bounding box of the Points, so a pasted map larger than the area is fully visible and clicking still works. `render/static-layer.ts` also gets `toWorldX` and `toWorldY` (the inverse of `toScreenX` and `toScreenY`) to turn a click into metres. These are drawing helpers, not algorithm. `layout()` in `map.ts` takes its spans from `bounds` and must not call `Math.max` on an empty list.
+
+**Editor logic (pure, `your-map/editor.ts`).** No DOM, no randomness of its own.
+
+```ts
+interface YourPoint { id: string; x: number; y: number; lon?: number; lat?: number }
+interface EditorState { points: YourPoint[]; nextId: number }
+type EditResult = { state: EditorState; message: string | null };
+
+emptyMap(): EditorState                                   // points [], nextId 1
+addPoint(s, x, y, limit): EditResult                      // rounds to 0.1 m, rejects outside the area or at the limit
+removePoint(s, id): EditorState                           // only that id
+clearMap(s): EditorState                                  // also resets nextId to 1
+addRandom(s, n, rng: () => number, limit): EditResult     // adds min(n, limit - count) points, message when it added fewer
+replaceMap(points): EditorState                           // after a good Map_Text; nextId = 1 + largest p<number> id
+clickAt(s, x, y, hitId: string | null, limit): EditResult // hitId set: remove it; otherwise add at x, y
+```
+
+Ids are `p` plus the number zero padded to 3 digits (`p001`, then `p1000` after `p999`). `nextId` only grows between Clears, so an id is never reused for another Point inside one map, and `replaceMap` keeps generated ids clear of imported ones. The hit test is the existing `nearestPoint` in screen pixels (12 px), so the editor itself only sees an id or null. "Add random points" adds 10 (`RANDOM_BATCH`). The UI passes a `mulberry32` generator seeded with `RANDOM_SEED_BASE + presses` (constants in `settings.ts`), so the same presses give the same Points and tests can pin them.
+
+**r input.** A labelled `<input type="number" min="2" max="200" step="any">` with the default 20 (`YOUR_R_DEFAULT`, `YOUR_R_MIN`, `YOUR_R_MAX`). `parseR(text)` returns the number or the plain message "r must be a number from 2 to 200 metres." While the typed text is valid, the edges are redrawn with it. While it is not, the picture keeps the last valid r, the message shows and the run button refuses.
+
+**Map_Text panel.** While a Your_Map is chosen and no run has started, the column on the right of the map (where the Scoreboard opens during a run) holds a "Points as text" panel: a `<textarea>` labelled "Paste points as CSV: id,x,y in metres", a file input labelled "or choose a CSV or GeoJSON file", a "Use these points" button and a status line (`role="status"`, errors `role="alert"`). It is hidden when a run starts. Beside the map it adds no height to the page, because the map column is at least as tall as the panel (the panel has a fixed 6 row text box, the map is at least 240 px). At 60 rem or narrower it sits under the map in the single column. Choosing a file reads it into the text box and applies it. Applying is one button, so the whole path works with the keyboard and a screen reader (Requirement 8.20). Size check first: a file over 1 MB is refused before it is read. The kind is chosen by the file name (`.geojson`, `.json` or `.csv`), and for pasted text by the first character (`{` means GeoJSON, anything else CSV).
+
+**Parser (`data/custom-map.ts`).** `parseMapText(text, kind, limit)` returns `{ok:true, points}` or `{ok:false, reason}` and never throws.
+
+- CSV: a byte order mark and blank lines are ignored. The delimiter is the one of comma, semicolon and tab that appears most in the first line. Fields may be quoted in the usual way (a quoted field can hold the delimiter and doubled quotes), so a CSV exported by AtomMap (`id,x,y,round,result_label,seed`) can be read back. Columns are found by name (`id`, `x`, `y`, any case, any order, others ignored). `x` and `y` must be finite numbers with a dot and not beyond 1,000,000 m. Ids are trimmed, non-empty and unique.
+- GeoJSON: a FeatureCollection, a Feature or a bare Point geometry. Every feature must be a Point with finite `[lon, lat]`, longitude within ±180 and latitude within ±90. The origin is the mean latitude and longitude of the points (rounded to 6 decimals, as `centroid` in `fetch_place.py`), and `x = radians(lon - lon0) * cos(radians(lat0)) * R`, `y = radians(lat - lat0) * R` with R = 6371008.8 m, rounded to 0.1 m (the constants and rounding of `project` in `fetch_place.py`). The id is `properties.id` when it is a non-empty text or number, otherwise the next free `p001`-style id. The Points keep `lon` and `lat`.
+- Reasons, one plain sentence each, naming the line or feature number where there is one (examples): "The file is larger than 1 MB." "This is neither CSV nor GeoJSON." "There are no points in this text." "The first line must name the columns id, x and y. It has: name, lat." "Line 4: x is not a number ("12,5"). Write decimals with a dot." "The id p007 is used twice." "Feature 3 is a LineString, not a Point. Only points can be used." "There are 812 points. The limit is N."
+- A reason never changes the map. The caller keeps the old state and shows only the text.
+
+**Limit and messages.** `POINT_LIMIT` is one constant in `settings.ts`. `addPoint`, `addRandom`, `replaceMap` (through the parser) and the run guard in `startRun` all read it. The editor message at the limit is "The limit is N points. Remove some to add more." Add random points that only fits partly says how many it added. Pressing run on a map over the limit (not reachable through the editor, but checked) gives "This map has M points. The limit is N, so nothing was run." A map with no Point disables the run button, and a line of text next to it says "Add at least one point to run."
+
+**Label, tutor, export.** `rebuildScene` sets the label `Your map, N points. Results are a simulation.` and `a11y.setMapLabel("Your map", N, "your map")`. The Tutor's idle sentence for the Place mode says "Each dot is a cafe." (`tutor/sentences.ts`), which is wrong for a Your_Map. The Tutor gets a neutral variant: `buildIdle(mode, kind)` with `kind` `"your_map"` gives "Each dot is a point. A line joins two that are closer than r, so they can't both be picked." (no banned words, no cafe, no access point). No other Tutor sentence names cafes, so the Steps and the Why_Answers stay as they are. The tutor spec gets a one line note for this wording. Export: `map` is `your-map` (file name `atommap-your-map-<plan>-seed<seed>.csv`), `mode` is `place`, and the geometry is `[lon, lat]` only when every Point has both (a GeoJSON import), otherwise `[x, y]` with `units` saying local metres. The CSV `round` column is `1` or `not picked`, as in Place.
+
+**Editing after a run.** Any change of the Points or of a valid r after a finished run clears `state.result`, the finished flag, the Tutor and the Scoreboard column, and goes back to the editor view (the same as choosing another place does). During a run the toolbar editor controls, the canvas clicks and the Map_Text panel are disabled.
+
+**Not on the Results_Page.** `results.ts`, `results.json` and `record-results.mjs` know three maps and are not changed. The Your_Map has no Run_Record.
+
+**Layout at 1366 x 768 and 375.** The toolbar of the Your_Map holds the Mode group, the r input, "Clear", "Add random points", the Seed and Run. When the toolbar wraps to a second line, `layout()` already takes the map height from the room that is left (down to its 240 px floor), so the page height stays inside the viewport. The Playwright check (task 13.10) reads `document.scrollingElement.scrollHeight <= innerHeight` at 1366 x 768 in the states of Requirement 8.19, and at 375 px wide checks that `scrollWidth <= innerWidth` and that every control can be reached and clicked.
+
+#### Point limit: how it is measured
+
+The limit is measured, not guessed (Requirement 8.13). The script `web/scripts/measure-limit.mjs` (`npm run measure-limit`, run by hand, like `record-results`) works on the built `dist/` in Chromium through Playwright, one worker, with requests from the app's own `buildRequest`. The settings below are fixed here before the first run (honesty rule 8) and are not changed after seeing numbers.
+
+| Setting | Value |
+|---|---|
+| Sizes (Points) | 25, 50, 100, 150, 200, 300 |
+| Layouts | `dense`: r = 20 m. `mid`: r = 10 m. `sparse`: r = 5 m. Points uniform random in the 90 m x 60 m area, rounded to 0.1 m |
+| Layout seeds | 1, 2, 3 for each size and layout (so 54 runs) |
+| Run seed | 1 (`DEFAULT_SEED`) |
+| Warm-up | One run first, 20 points, `dense`, layout seed 1, not counted. It is the first call in a fresh page, which pays for compiling the Python code |
+| Measured time | From the click on Run to the moment all four Scoreboard cards are ready (skip pressed at once, so playback time is not counted). Page load and Pyodide start are not counted |
+| Per-run timeout | 300 s |
+| Stop rule | After a size in which any run took over 180 s, the larger sizes are not run and the table says so |
+| Computer | The development laptop. The doc names the CPU, memory, Chromium version and date |
+
+Sparse maps are in the plan on purpose: the project owner has seen "atoms alone" get slow on sparse maps, so the slowest case may not be the dense one. The `mid` layout is there in case the slowest case sits between the two. The table shows which layout is slowest at each size.
+
+Rule: the Point_Limit is the largest size S in the plan for which every run of S, and of every smaller size, finished with all four Competitors without an error and took 60 s or less. Slower or failed runs are in the table like the others, and nothing is dropped. The table lists, for every size and layout, the three times and the largest. The numbers size the limit on one laptop. They are not a speed comparison, they do not appear in the app and the app says nothing about speed (honesty rule 1).
+
+Result (filled in by task 13.9): _not measured yet_.
 
 ## Data Models
 
@@ -237,7 +310,7 @@ python scripts/fetch_place.py kadikoy 40.982,29.020,40.996,29.040
 
 *A property is a characteristic or behavior that should hold true across all valid executions of a system-essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
 
-Only the pure edge builder, the export serializer and the Engine's progress switch have universal properties. Rendering, animation, loading and layout are covered by example and smoke tests.
+Only the pure edge builders, the Your_Map request, the export serializer and the Engine's progress switch have universal properties. Rendering, animation, loading and layout are covered by example and smoke tests.
 
 ### Property 1: Turning walls on never adds an edge
 
@@ -257,6 +330,12 @@ Only the pure edge builder, the export serializer and the Engine's progress swit
 
 **Validates: Requirements 10.4**
 
+### Property 4: Your_Map request edges are exactly the pairs closer than r
+
+*For any* list of Points with distinct ids and any r in the allowed range, the `edges` that `buildRequest` puts in a Your_Map request are exactly the pairs of Points whose distance is strictly below r, each pair once, and no other pair.
+
+**Validates: Requirements 8.6, 8.8**
+
 ## Error Handling
 
 | Case | Behaviour |
@@ -267,7 +346,9 @@ Only the pure edge builder, the export serializer and the Engine's progress swit
 | Typed seed not an integer | Message, no run (4.13) |
 | Fixture fails to load or has the wrong shape | Message naming the file, that map not shown, the rest of the app still usable |
 | `results.json` missing, invalid JSON or wrong shape | Plain-words reason on the Results_Page, no table, no partial rows |
-| Custom map unreadable | Reason shown, current map kept (8.3) |
+| Map_Text unusable (unreadable, too large, not CSV or GeoJSON, empty, bad columns, bad number, duplicate id, non-Point feature, over the limit) | Plain-words reason next to the Map_Text, current map, r and result kept (8.12) |
+| Your_Map at the Point_Limit (click, Add random points) or over it at run | Plain message with the limit, map unchanged, no run (8.14) |
+| Typed r not a number from 2 to 200 | Message, last valid r drawn, no run (8.7) |
 | Worker `ready` never arrives | Loading_Screen stays on the last stage; the time targets are the engine spec's |
 
 ## Testing Strategy
@@ -275,7 +356,7 @@ Only the pure edge builder, the export serializer and the Engine's progress swit
 Property-based testing applies to the edge builder, the CSV serializer and the Engine emit switch. It does not apply to rendering, animation, layout, the results validator and render, or the `fetch_place.py` args handling, which use example, snapshot and smoke tests.
 
 **Property tests** (at least 100 iterations each; comment `Feature: ui, Property N: <title>`):
-- Properties 1 and 2: `vitest` with `fast-check` in `web/`, one test per property.
+- Properties 1, 2 and 4: `vitest` with `fast-check` in `web/`, one test per property.
 - Property 3: `hypothesis` in `engine/tests/`, with the fake Simulator and `OPENBLAS_NUM_THREADS=1`, one test.
 - Versions of `vitest`, `fast-check`, `playwright` and `vite` are pinned (tech rule).
 
@@ -286,7 +367,8 @@ Property-based testing applies to the edge builder, the CSV serializer and the E
 - `fetch_place.py` args and bbox handling, offline: a valid name and bbox parse; a wrong count of numbers, south >= north, west >= east, out-of-range values and a bad name exit with an error before any request; the under-20 abort writes no file (fetch function replaced by a stub).
 - Results: `validateResults` accepts the committed `web/public/results.json` and rejects wrong types, a bad `status` and missing fields with a reason; the render function gives rows in file order, shows the example notice only when `example` is true, renders failed rows with the same markup as ok rows, shows 0% shares, and has no banned words; the error state shows a reason and no table.
 - Scoreboard model: four cards, zero counts shown, `atoms_not_needed` text, ties, error entry, no banned words ("faster", "speed", "wins", "winner", "beats") in the rendered text.
-- Seed parsing, Plan_Selector (each of the four plans is drawn from the result, export follows the selection), export (GeoJSON shape), custom map parser errors, playback reducer (skip end state equals full playback end state).
+- Seed parsing, Plan_Selector (each of the four plans is drawn from the result, export follows the selection), export (GeoJSON shape), playback reducer (skip end state equals full playback end state).
+- Your_Map (Requirement 12.4): the Map_Text parser with good CSV (comma, semicolon, tab, quoted ids, an AtomMap export read back) and good GeoJSON (collection, single feature, bare geometry, projection equal to `fetch_place.py` on a few points), bad columns, a comma decimal, a duplicate id, non-Point features, an empty file and text, over the limit and over 1 MB; the editor logic (add, remove, Clear, random with a fixed generator, limit, ids never reused, `replaceMap` id counter); the request edges against a brute-force list (Property 4, `fast-check`, at least 100 runs, plus the boundary at exactly r); the label text; the Tutor idle sentence without "cafe" and "access point"; the export name and geometry of a Your_Map.
 
 **Smoke:** a Playwright test loads the page, waits for the Map_Screen, runs the Hero_Map, presses skip, and checks four Competitor cards. It also records requests and asserts none go to a tile server or Overpass (2.8, 6.6).
 
