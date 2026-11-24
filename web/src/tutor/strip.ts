@@ -19,6 +19,8 @@ export interface Strip {
   showIdle(label: string, text: string[]): void;
   /** After a run: the finished line first, then one Step at a time. */
   showFinished(firstLine: string, facts: Facts, plan: EngineName, focus: boolean): void;
+  /** After a run: the plan on the map changed. Hybrid shows the Steps from Step 1, any other plan the one sentence. */
+  setPlan(plan: EngineName): void;
   /** Explain one Point in place of the Step. Only while Steps are shown. */
   showWhy(id: string): void;
   /** Leave the Why_Answer and restore the Step and its ring. */
@@ -72,6 +74,7 @@ export function createStrip(deps: StripDeps): Strip {
   let index = 0;
   let currentFacts: Facts | null = null;
   let whyId: string | null = null;
+  let finishedLine: string | null = null;
 
   function ring(ids: string[]): void {
     deps.onRing(ids);
@@ -121,6 +124,7 @@ export function createStrip(deps: StripDeps): Strip {
     el,
 
     showIdle(label, text) {
+      finishedLine = null;
       whyId = null;
       showStepButtons(true);
       currentFacts = null;
@@ -138,6 +142,7 @@ export function createStrip(deps: StripDeps): Strip {
       whyId = null;
       showStepButtons(true);
       currentFacts = facts;
+      finishedLine = firstLine;
       el.hidden = false;
       first.textContent = firstLine;
       live.textContent = "";
@@ -162,6 +167,12 @@ export function createStrip(deps: StripDeps): Strip {
       if (focus) first.focus();
     },
 
+    setPlan(plan) {
+      if (currentFacts === null || finishedLine === null) return;
+      // Same as a fresh finished view: Step 1 and its ring for Hybrid, one sentence otherwise.
+      this.showFinished(finishedLine, currentFacts, plan, false);
+    },
+
     showWhy(id) {
       if (!currentFacts || steps.length === 0) return;
       const answer = buildWhy(whyFacts(currentFacts, id));
@@ -178,6 +189,7 @@ export function createStrip(deps: StripDeps): Strip {
     leaveWhy: leave,
 
     hide() {
+      finishedLine = null;
       whyId = null;
       showStepButtons(true);
       currentFacts = null;

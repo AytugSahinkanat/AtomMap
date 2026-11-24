@@ -43,9 +43,13 @@ export const ACCENT_COLOUR = '#7f77dd';
 
 /** Place_Mode presets. `name` is the file suffix, `file` is served from fixtures/. */
 export const PLACES = [
-  { label: 'Kadikoy', name: 'kadikoy', file: 'place_kadikoy.json' },
-  { label: 'NYC Midtown', name: 'midtown', file: 'place_midtown.json' },
+  { label: 'Kadıköy, Istanbul', name: 'kadikoy', file: 'place_kadikoy.json' },
 ] as const;
+
+/** Display name of a place ("Kadıköy, Istanbul"); the slug itself if unknown. File names keep the ASCII slug. */
+export function placeTitle(slug: string): string {
+  return PLACES.find((p) => p.name === slug)?.label ?? slug;
+}
 
 export type PlaceName = (typeof PLACES)[number]['name'];
 

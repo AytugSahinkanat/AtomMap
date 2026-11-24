@@ -12,7 +12,8 @@ export type LegendGlyph =
   | "square"
   | "hollow"
   | "filled"
-  | "outlined-lock";
+  | "outlined-lock"
+  | "dashed-ring";
 
 export interface LegendEntry {
   glyph: LegendGlyph;
@@ -23,7 +24,8 @@ export interface LegendEntry {
 
 export type LegendMode = "channel_plan" | "place";
 
-export function legendEntries(mode: LegendMode): LegendEntry[] {
+/** `uncovered`: the plan on the map is atoms alone, which also marks the points it left uncovered. */
+export function legendEntries(mode: LegendMode, uncovered = false): LegendEntry[] {
   const out: LegendEntry[] = [];
   if (mode === "channel_plan") {
     out.push(
@@ -33,7 +35,7 @@ export function legendEntries(mode: LegendMode): LegendEntry[] {
       {
         glyph: "hollow",
         colour: GREY_COLOUR,
-        text: "Hollow grey circle: 5 GHz only (picked in no round)",
+        text: "Hollow grey circle: 5 GHz only",
       },
     );
   } else {
@@ -51,9 +53,12 @@ export function legendEntries(mode: LegendMode): LegendEntry[] {
     {
       glyph: "outlined-lock",
       colour: TEXT_COLOUR,
-      text: "Outlined shape with a padlock: picked by a classical rule or method, not the atoms",
+      text: "Outlined shape, padlock: classical pick, not atoms",
     },
   );
+  if (uncovered) {
+    out.push({ glyph: "dashed-ring", colour: TEXT_COLOUR, text: "Dashed ring: gap left by atoms alone" });
+  }
   return out;
 }
 
@@ -91,6 +96,9 @@ export function glyphSvg(entry: LegendEntry): SVGSVGElement {
     case "filled":
       svg.append(svgEl("circle", { r: "5", ...filled }));
       break;
+    case "dashed-ring":
+      svg.append(svgEl("circle", { r: "3", fill: c, "fill-opacity": "0.5", stroke: "none" }), svgEl("circle", { r: "7", ...outline, "stroke-width": "1.5", "stroke-dasharray": "3 3" }));
+      break;
     case "outlined-lock":
       svg.append(
         svgEl("circle", { r: "4", cx: "-2", cy: "2", ...outline }),
@@ -104,14 +112,14 @@ export function glyphSvg(entry: LegendEntry): SVGSVGElement {
 }
 
 /** The legend element: a labelled list, each item has an icon and text. */
-export function renderLegend(mode: LegendMode): HTMLElement {
+export function renderLegend(mode: LegendMode, uncovered = false): HTMLElement {
   const box = document.createElement("section");
   box.className = "map-legend";
   box.setAttribute("aria-label", "Map legend");
   const title = document.createElement("h3");
   title.textContent = "Legend";
   const list = document.createElement("ul");
-  for (const entry of legendEntries(mode)) {
+  for (const entry of legendEntries(mode, uncovered)) {
     const li = document.createElement("li");
     const text = document.createElement("span");
     text.textContent = entry.text;

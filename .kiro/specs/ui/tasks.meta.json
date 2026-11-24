@@ -518,6 +518,90 @@
         "chatSessionId": "sess_a66c8142-7f58-4000-9e53-b3b7c9f70905",
         "timestamp": 1795290729190
       }
+    ],
+    "10.1 Add the Plan_Selector": [
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795467600678
+      },
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795468884800
+      },
+      {
+        "executionId": "2bee3cc8-e9c8-495c-a1ba-b55a691d4f7b",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795471691404
+      },
+      {
+        "executionId": "2bee3cc8-e9c8-495c-a1ba-b55a691d4f7b",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795473137253
+      }
+    ],
+    "10. Plan selector": [
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795468884940
+      }
+    ],
+    "10.2 Write unit tests for the Plan_Selector": [
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795468885069
+      },
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795469084741
+      }
+    ],
+    "11.1 Implement CSV and GeoJSON export": [
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795469085174
+      },
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795470370693
+      }
+    ],
+    "11.2 Write property test and unit tests for export": [
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795470370797
+      },
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795471045905
+      }
+    ],
+    "11.3 Wire the export buttons": [
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795470370862
+      },
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795471046296
+      }
+    ],
+    "11. Export": [
+      {
+        "executionId": "9decaedb-6994-4c38-a475-edfbc2e4e34a",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795471046351
+      }
     ]
   }
 }

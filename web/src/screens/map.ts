@@ -9,7 +9,7 @@ import { nearestPoint } from "../render/hit";
 import { createA11y, type A11yLayer } from "../render/a11y";
 import { DynamicLayer } from "../render/dynamic-layer";
 import { StaticLayer, toScreenX, toScreenY, type StaticScene } from "../render/static-layer";
-import { DEFAULT_SEED, PLACES, type PlaceName } from "../settings";
+import { DEFAULT_SEED, PLACES, placeTitle, type PlaceName } from "../settings";
 import { state, subscribe, update } from "../state";
 import { buildRequest, DEFAULT_PLACE, placeView, type MapChoice } from "./map-request";
 import { buffer, doneCompetitors } from "../client";
@@ -21,6 +21,8 @@ import { renderLegend } from "./legend";
 import { deriveFacts, type TutorEvent } from "../tutor/facts";
 import { buildIdle } from "../tutor/sentences";
 import { createStrip } from "../tutor/strip";
+import { downloadCsv, downloadGeoJson, type ExportInput } from "../export";
+import { CARD_LABELS, type EngineName } from "../scoreboard-model";
 
 interface PlaceSelector {
   /** The picker (radios only), for the toolbar. */
@@ -48,19 +50,11 @@ function createPlaceSelector(): PlaceSelector {
   error.setAttribute("role", "alert");
   error.hidden = true;
 
-  const inputs = new Map<PlaceName, HTMLInputElement>();
-  for (const place of PLACES) {
-    const label = document.createElement("label");
-    label.className = "place-option";
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = "place";
-    input.value = place.name;
-    input.addEventListener("change", () => void select(place.name));
-    inputs.set(place.name, input);
-    label.append(input, " ", place.label);
-    fieldset.append(label);
-  }
+  // One place only: show its name as text, no selector. The fieldset legend stays as the label.
+  const placeText = document.createElement("span");
+  placeText.className = "place-option";
+  placeText.textContent = PLACES[0].label;
+  fieldset.append(placeText);
   // Attribution, cafe count and fetch date of the loaded place (Task 6.7).
   const attribution = document.createElement("p");
   attribution.className = "muted place-attribution";
@@ -91,7 +85,6 @@ function createPlaceSelector(): PlaceSelector {
 
   function render(): void {
     renderAttribution();
-    for (const [name, input] of inputs) input.checked = state.placeName === name;
     status.textContent = state.placeLoading ? "Loading the map…" : "";
     error.hidden = state.placeError === null;
     error.textContent = state.placeError ?? "";
@@ -298,6 +291,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   }
   let labelText = "";
   let finishedShown = false;
+  /** The plan on the map after a finished run, and the result it is drawn from. */
+  let selectedPlan: EngineName = "Hybrid";
+  let finishedResult: unknown = null;
 
   // Why this point: click or tap on a Point after a finished run. A click on
   // no Point leaves the answer. leaveWhy does nothing when no answer is shown.
@@ -330,9 +326,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     refreshIdle();
   }
 
-  const tagline = document.createElement("p");
-  tagline.className = "muted tagline";
-  tagline.textContent = "two close atoms can't both light up, two close sites can't both be picked";
+  // One row: the tagline and, in Place mode, the OpenStreetMap attribution line (inline, no extra row).
+  const tagline = document.createElement("div");
+  tagline.className = "tagline-row";
+  const taglineText = document.createElement("p");
+  taglineText.className = "muted tagline";
+  taglineText.textContent = "two close atoms can't both light up, two close sites can't both be picked";
+  tagline.append(taglineText, placeSelector.info);
 
   const toolbar = document.createElement("div");
   toolbar.className = "toolbar";
@@ -349,7 +349,32 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     onRunAgain: (seed) => startRun(seed),
     onBack: () => showMap(true),
     announce: (m) => a11y.announce(m),
+    onSelectPlan: (plan) => showPlan(plan),
+    onExport: (kind, plan) => exportPlan(kind, plan),
   });
+
+  /** Download the plan selected now. Returns a plain message instead of throwing. */
+  function exportPlan(kind: "csv" | "geojson", plan: EngineName): string | null {
+    if (!finishedShown || finishedResult === null || scene === null) return "There is no finished run to export yet.";
+    const input: ExportInput = {
+      result: finishedResult,
+      plan,
+      mode,
+      map: mode === "place" ? (state.placeName ?? DEFAULT_PLACE) : "hero",
+      seed: runSeed,
+      points: scene.points.map((p) => {
+        const q = p as { id: string; x: number; y: number; lon?: number; lat?: number };
+        return { id: q.id, x: q.x, y: q.y, lon: q.lon, lat: q.lat };
+      }),
+    };
+    try {
+      if (kind === "csv") downloadCsv(input);
+      else downloadGeoJson(input);
+      return null;
+    } catch (e) {
+      return e instanceof Error ? e.message : "The export did not work.";
+    }
+  }
   const legendBox = document.createElement("div");
   legendBox.className = "map-legend-box";
   legendBox.hidden = true;
@@ -399,6 +424,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       runButton.disabled = choice === null;
       const competitors = (result as { competitors?: Record<string, unknown> } | null)?.competitors ?? {};
       scoreboard.finish(competitors);
+      selectedPlan = "Hybrid";
+      finishedResult = result;
       legendBox.replaceChildren(renderLegend(mode));
       legendBox.hidden = false;
       finishedShown = true;
@@ -427,7 +454,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     },
   });
 
-  el.append(h, tagline, toolbar, placeSelector.info, strip.el, message, noData, run.el, mapRow);
+  el.append(h, tagline, toolbar, strip.el, message, noData, run.el, mapRow);
 
   function showMap(fromBack = false): void {
     const restoreFocus =
@@ -435,6 +462,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     run.hide();
     running = false;
     finishedShown = false;
+    finishedResult = null;
+    selectedPlan = "Hybrid";
     scoreboard.hide();
     legendBox.hidden = true;
     toolbar.hidden = false;
@@ -480,8 +509,54 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       const edges = walking ? f.walking_edges : buildStraightEdges(f.points, f.r);
       scene = { points: f.points, edges, streets: f.streets };
       sceneKey = `place:${f.name}:${walking}`;
-      setLabel(`${f.name}, ${f.points.length} cafes. Results are a simulation.`);
+      setLabel(`${placeTitle(f.name)}, ${f.points.length} cafes. Results are a simulation.`);
     }
+  }
+
+  /** Draw one Competitor of the finished result on the layer: rounds, 5 GHz only, uncovered points. No animation. */
+  function paintPlan(plan: EngineName): void {
+    const comp = (finishedResult as { competitors?: Record<string, any> } | null)?.competitors?.[plan];
+    if (comp === undefined || comp === null || typeof comp !== "object" || "error" in comp) return;
+    // Who made each pick (atoms: filled shape; anything else: outlined with a padlock).
+    const source = new Map<string, string>();
+    for (const e of Array.isArray(comp.decision_log) ? comp.decision_log : []) {
+      if (e?.action !== "pick" || !Array.isArray(e.points)) continue;
+      for (const id of e.points) source.set(String(id), String(e.source));
+    }
+    dynamicLayer.reset();
+    dynamicLayer.setFinalView(true);
+    const picked = new Set<number>();
+    for (const r of Array.isArray(comp.rounds) ? comp.rounds : []) {
+      const channel = typeof r?.channel === "number" ? r.channel : 1;
+      for (const id of Array.isArray(r?.picks) ? r.picks : []) {
+        const i = indexById.get(String(id));
+        if (i === undefined) continue;
+        picked.add(i);
+        const src = source.get(String(id));
+        if (src === "atoms") dynamicLayer.lock(i, channel, false, false);
+        else dynamicLayer.lock(i, channel, true, false, src !== undefined && src !== "rule");
+      }
+    }
+    for (let i = 0; i < (scene?.points.length ?? 0); i++) if (!picked.has(i)) dynamicLayer.setFiveGhzOnly(i);
+    const gaps = Array.isArray(comp.stats?.gaps) ? comp.stats.gaps : [];
+    dynamicLayer.setGaps(gaps.map((id: unknown) => indexById.get(String(id)) ?? -1));
+    dynamicLayer.finishTweens();
+    dynamicLayer.draw();
+  }
+
+  /** The visitor chose a plan on the scoreboard: redraw the map, no new run. */
+  function showPlan(plan: EngineName): void {
+    if (!finishedShown || plan === selectedPlan) return;
+    selectedPlan = plan;
+    if (plan === "Hybrid") {
+      run.redrawFinal();
+      dynamicLayer.draw();
+    } else {
+      paintPlan(plan);
+    }
+    legendBox.replaceChildren(renderLegend(mode, plan === "Atoms_Alone"));
+    strip.setPlan(plan); // the Tutor: Steps for Hybrid, one sentence otherwise
+    a11y.announce(`The map shows the plan: ${CARD_LABELS[plan]}.`);
   }
 
   function layout(): void {
@@ -516,6 +591,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       a11y.setPoints(screen);
       dynamicLayer.draw(true);
       run.resync(); // the final map survives a new size (finished panel opens)
+      if (finishedShown && selectedPlan !== "Hybrid") paintPlan(selectedPlan); // resync drew the Hybrid map
       applyRing(); // setPoints and resync may have cleared the Tutor ring
       dynamicLayer.draw();
     }
@@ -554,7 +630,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     } else if (scene === null || key !== sceneKey) {
       rebuildScene();
       a11y.setMapLabel(
-        mode === "channel_plan" ? "Wifi hall" : (state.placeFixture?.name ?? "Place"),
+        mode === "channel_plan" ? "Wifi hall" : (state.placeFixture ? placeTitle(state.placeFixture.name) : "Place"),
         scene?.points.length ?? 0,
         mode === "channel_plan" ? "channel plan" : "place",
       );
@@ -600,6 +676,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     seedInput.value = String(seedValue);
     hybridEnd = null;
     finishedShown = false;
+    finishedResult = null;
+    selectedPlan = "Hybrid";
     runEdges = scene.edges.map((e): [string, string] => [e[0], e[1]]);
     strip.hide();
     legendBox.hidden = true;

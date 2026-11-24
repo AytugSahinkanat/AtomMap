@@ -1,10 +1,9 @@
 """Build a Place fixture (cafes + walking edges on real streets).
 
-Run by hand, once per place (a bbox that starts with a minus sign needs `--`
+Run by hand for the one place (a bbox that starts with a minus sign needs `--`
 before it, for example `fetch_place.py name -- -33.9,18.4,-33.8,18.5`):
 
     python scripts/fetch_place.py kadikoy 40.982,29.020,40.996,29.040
-    python scripts/fetch_place.py midtown 40.750,-73.995,40.762,-73.975
 
 One Overpass request, then the pure functions below, then one JSON file.
 Standard library only. The fetch function is a parameter of `run`, so tests
@@ -36,10 +35,12 @@ _EPS = 1e-9
 # a quality bar: any count of 20 or more is accepted and stored as it is.
 MIN_CAFES = 20
 
-OVERPASS_ENDPOINT = "https://overpass-api.de/api/interpreter"
+OVERPASS_ENDPOINT = "https://lz4.overpass-api.de/api/interpreter"
 # Tried in this order in every round. --endpoint forces a single one.
+# overpass.openstreetmap.fr is left out on purpose: it answers 403 (white-listed use only).
 OVERPASS_ENDPOINTS = (
     OVERPASS_ENDPOINT,
+    "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
 )
 # Seconds to wait after a failed round 1, 2 (no wait after the last round).
@@ -350,8 +351,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--endpoint",
         default=None,
-        help="use only this Overpass endpoint URL (default: overpass-api.de, "
-        "then overpass.kumi.systems)",
+        help="use only this Overpass endpoint URL (default: lz4.overpass-api.de, "
+        "then overpass-api.de, then overpass.kumi.systems)",
     )
     args = parser.parse_args(argv)
     if args.endpoint is not None and not re.match(r"^https?://\S+$", args.endpoint):

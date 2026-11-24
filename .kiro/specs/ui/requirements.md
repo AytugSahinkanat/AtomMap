@@ -25,9 +25,9 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 - **Hero_Map_R**: The Conflict_Radius r of 20 m, stored in the Hero_Map fixture.
 - **Rule_Pick**: A pick whose Decision_Log source is "rule".
 - **Tie**: Two or more Competitors with the same total pick count.
-- **Place_Preset**: A Place mode preset with the cafe Points of one place (the real count stored in its Street_Fixture), a 150 m walking rule and the street data of that place. There are two: "Kadikoy" and "NYC Midtown".
+- **Place_Preset**: A Place mode preset with the cafe Points of one place (the real count stored in its Street_Fixture), a 150 m walking rule and the street data of that place. There is one: "Kadıköy, Istanbul" (file slug `kadikoy`).
 - **Street_Fixture**: A committed file, one per place, with the street lines and the precomputed walking edges of that place, produced by the Street_Build_Script from OpenStreetMap data (Overpass). It also stores the real cafe count and the fetch date.
-- **Street_Build_Script**: `scripts/fetch_place.py`. It takes a place name and a bounding box (south,west,north,east), fetches the data once and writes the Street_Fixture of that place. Bounding boxes: kadikoy 40.982,29.020,40.996,29.040; midtown 40.750,-73.995,40.762,-73.975.
+- **Street_Build_Script**: `scripts/fetch_place.py`. It takes a place name and a bounding box (south,west,north,east), fetches the data once and writes the Street_Fixture of that place. Bounding boxes: kadikoy 40.982,29.020,40.996,29.040.
 - **Results_Page**: The "what we measured" page of the UI.
 - **Results_File**: The committed file `results.json` that the Results_Page reads.
 - **Run_Record**: One entry in the Results_File describing one run.
@@ -65,8 +65,8 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 7. THE Map_Screen SHALL offer a run button.
 8. THE Map_Screen SHALL draw the Points, edges, Walls and streets from the UI's own data as SVG or canvas, without requesting tiles from a tile server.
 9. WHILE a run is in progress, THE Map_Screen SHALL show the picks of the "atoms + rules (hybrid)" Competitor.
-10. WHEN a run finishes, THE Map_Screen SHALL show a Plan_Selector with the four Competitors, with "atoms + rules (hybrid)" selected.
-11. WHEN the visitor selects a Competitor in the Plan_Selector, THE Map_Screen SHALL show the picks of that Competitor, including the Points it left uncovered.
+10. WHEN a run finishes, THE Scoreboard cards SHALL work as the Plan_Selector (one radio per card title, in a radio group labelled "plan on the map"), with "atoms + rules (hybrid)" selected, the selected card marked by an accent border and the text "on the map", and no extra row of controls. While the run is in progress the radios SHALL be disabled, and the radio of a Competitor whose entry is an error SHALL be disabled with the reason shown as text.
+11. WHEN the visitor selects a Competitor in the Plan_Selector, THE Map_Screen SHALL show the picks of that Competitor without a new run, including the Points it left uncovered, and THE Tutor SHALL be given the selected plan (tutor Requirement 3).
 
 ### Requirement 3: Run screen
 
@@ -120,18 +120,18 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 
 ### Requirement 6: Place on real cafe maps
 
-**User Story:** As a visitor, I want to place things on a real street map of Kadikoy or NYC Midtown, so that the 150 m rule means walking, not flying.
+**User Story:** As a visitor, I want to place things on a real street map of Kadıköy, Istanbul, so that the 150 m rule means walking, not flying.
 
 #### Acceptance Criteria
 
-1. THE Map_Screen SHALL offer both Place_Presets in Place mode, each with 1 Round, a preset selector and a toggle labelled "walking / straight line".
+1. THE Map_Screen SHALL offer the Place_Preset in Place mode, with 1 Round, its display name "Kadıköy, Istanbul" shown as plain text (no selector, the map label reads "Kadıköy, Istanbul, N cafes" with N from the Street_Fixture) and a toggle labelled "walking / straight line".
 2. WHILE the walking toggle is selected, THE UI SHALL pass the Engine the walking edges from the Street_Fixture, with r of 150 m.
 3. WHILE the straight line toggle is selected, THE UI SHALL pass the Engine r of 150 m alone as the Conflict_Graph definition.
 4. THE Map_Screen SHALL draw the streets of the Street_Fixture as thin lines under the Points.
-5. THE Map_Screen SHALL show the attribution "© OpenStreetMap contributors" with a link to the ODbL licence for both Place_Presets.
+5. THE Map_Screen SHALL show the attribution "© OpenStreetMap contributors" with a link to the ODbL licence for the Place_Preset.
 6. THE UI SHALL read the Street_Fixture from a committed file and make zero requests to Overpass or any other street data service at runtime.
 7. THE Map_Screen SHALL show the real cafe count and the fetch date stored in the Street_Fixture of the selected Place_Preset.
-8. IF the Street_Build_Script finds fewer than 20 cafes for a place, THEN THE Street_Build_Script SHALL abort without writing the Street_Fixture of that place. The minimum only catches a broken or empty download and is not a quality bar; Midtown had about 150 cafes in tests.
+8. IF the Street_Build_Script finds fewer than 20 cafes for a place, THEN THE Street_Build_Script SHALL abort without writing the Street_Fixture of that place. The minimum only catches a broken or empty download and is not a quality bar.
 9. THE Street_Build_Script SHALL write one Street_Fixture per place, containing the real cafe count and the fetch date of that fetch.
 10. THE UI SHALL show the Points and edges that come out of each fetch as they are, without tuning or filtering them to change a result.
 11. WHEN a run finishes in Place mode, THE Scoreboard SHALL show the atoms_not_needed text of Requirement 4.3 for any Competitor whose Stats have atoms_not_needed set, on either Place_Preset.

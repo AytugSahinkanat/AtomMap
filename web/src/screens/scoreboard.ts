@@ -7,6 +7,7 @@
 import {
   CITATION,
   ONE_RUN_NOTE,
+  type EngineName,
   TIE_TEXT,
   buildCards,
   type Card,
@@ -105,13 +106,25 @@ function renderCard(view: CardView): HTMLElement {
   const art = document.createElement("article");
   art.className = "score-card";
   art.dataset.state = view.state;
-  art.setAttribute("aria-label", view.title);
+  // The card is a plain wrapper: the radio inside must belong to the radiogroup.
+  art.setAttribute("role", "none");
   if (view.state === "pending") art.setAttribute("aria-busy", "true");
 
-  art.append(el("h3", "", view.title));
+  // The card title is the Plan_Selector radio (ui design, Plan_Selector). Its
+  // state (checked, disabled, tab stop) is set by the scoreboard view.
+  const radio = el("div", "score-title", view.title);
+  radio.setAttribute("role", "radio");
+  radio.setAttribute("aria-checked", "false");
+  radio.setAttribute("aria-disabled", "true");
+  radio.tabIndex = -1;
+  radio.dataset.plan = view.key;
+  art.append(radio);
 
   if (view.message !== null) {
-    art.append(el("p", "muted score-message", view.message));
+    const msg = el("p", "muted score-message", view.message);
+    msg.id = `plan-msg-${view.key}`;
+    radio.setAttribute("aria-describedby", msg.id);
+    art.append(msg);
     return art;
   }
 
@@ -124,6 +137,10 @@ function renderCard(view: CardView): HTMLElement {
     }
     art.append(p);
   }
+  // Text tag for the plan on the map: not colour alone, and no "winner" wording.
+  const tag = el("span", "plan-tag", PLAN_TAG_TEXT);
+  tag.hidden = true;
+  art.append(tag);
 
   if (view.share) {
     const track = el("div", "bar share-bar");
@@ -151,7 +168,17 @@ function renderCard(view: CardView): HTMLElement {
   }
   return art;
 }
+export type ExportKind = "csv" | "geojson";
+export const EXPORT_CSV_LABEL = "Download CSV";
+export const EXPORT_GEOJSON_LABEL = "Download GeoJSON";
+export const PLAN_TAG_TEXT = "on the map";
+export const PLAN_GROUP_LABEL = "plan on the map";
+
 export interface ScoreboardDeps {
+  /** The visitor chose the plan shown on the map (after the result is in). */
+  onSelectPlan?(plan: EngineName): void;
+  /** Export the plan selected now. Returns a plain message when nothing could be exported, else null. */
+  onExport?(kind: ExportKind, plan: EngineName): string | null;
   /** Start a new run with this valid seed on the same map and settings. */
   onRunAgain(seed: number): void;
   /** Back to the map controls. */
@@ -168,6 +195,8 @@ export interface ScoreboardView {
   update(partial: PartialResults): void;
   /** The run is fully finished (result in, playback done). Enables the controls. */
   finish(partial: PartialResults): void;
+  /** The plan on the map: Hybrid at the start of each run. */
+  readonly selectedPlan: EngineName;
   /** True when focus sits on a control that `begin` disables (seed input, run again). */
   holdsRunFocus(): boolean;
   /** The run stopped with an error: panel hidden, nothing partial stays. */
@@ -186,6 +215,8 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   seedLine.className = "muted num score-seed";
   const cardsBox = document.createElement("div");
   cardsBox.className = "score-cards";
+  cardsBox.setAttribute("role", "radiogroup");
+  cardsBox.setAttribute("aria-label", PLAN_GROUP_LABEL);
 
   const note = document.createElement("p");
   note.className = "score-note-one";
@@ -213,7 +244,13 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   message.className = "error";
   message.setAttribute("role", "alert");
   message.hidden = true;
-  form.append(seedLabel, again, back, message);
+  const csvButton = document.createElement("button");
+  csvButton.type = "button";
+  csvButton.textContent = EXPORT_CSV_LABEL;
+  const geoButton = document.createElement("button");
+  geoButton.type = "button";
+  geoButton.textContent = EXPORT_GEOJSON_LABEL;
+  form.append(seedLabel, again, back, csvButton, geoButton, message);
 
   el.append(title, seedLine, cardsBox, note, cite, form);
 
@@ -222,11 +259,85 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   let views: CardView[] = [];
   let nodes: HTMLElement[] = [];
 
+  // ---- Plan_Selector: the card titles are the radios ----
+  let selected: EngineName = "Hybrid";
+  let planEnabled = false;
+
+  function radios(): HTMLElement[] {
+    return [...cardsBox.querySelectorAll<HTMLElement>('[role="radio"]')];
+  }
+  function usable(r: HTMLElement): boolean {
+    return planEnabled && r.closest("[data-state]")?.getAttribute("data-state") === "ready";
+  }
+
+  /** Apply checked, disabled, tab stop, border and tag to the current cards. */
+  function syncPlan(): void {
+    const all = radios();
+    const stopRadio = all.find((r) => usable(r) && r.dataset.plan === selected) ?? all.find(usable);
+    for (const r of all) {
+      const card = r.closest<HTMLElement>("[data-state]");
+      const isSel = r.dataset.plan === selected;
+      const ok = usable(r);
+      r.setAttribute("aria-checked", String(isSel));
+      r.setAttribute("aria-disabled", String(!ok));
+      r.tabIndex = r === stopRadio ? 0 : -1;
+      if (card) {
+        card.dataset.selected = String(isSel && card.dataset.state === "ready");
+        const tag = card.querySelector<HTMLElement>(".plan-tag");
+        if (tag) tag.hidden = !(isSel && card.dataset.state === "ready");
+      }
+    }
+  }
+
+  function choose(r: HTMLElement, focus: boolean): void {
+    if (!usable(r)) return;
+    const plan = r.dataset.plan as EngineName;
+    if (focus) r.focus();
+    if (plan === selected) return;
+    selected = plan;
+    syncPlan();
+    deps.onSelectPlan?.(plan);
+  }
+
+  cardsBox.addEventListener("click", (e) => {
+    const r = (e.target as HTMLElement).closest<HTMLElement>('[role="radio"]');
+    if (r) choose(r, true);
+  });
+  cardsBox.addEventListener("keydown", (e) => {
+    const r = (e.target as HTMLElement).closest<HTMLElement>('[role="radio"]');
+    if (!r) return;
+    if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
+      e.preventDefault();
+      choose(r, false);
+      return;
+    }
+    const delta = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+    if (delta === 0) return;
+    e.preventDefault();
+    const list = radios().filter(usable);
+    const at = list.indexOf(r);
+    if (list.length === 0 || at < 0) return;
+    choose(list[(at + delta + list.length) % list.length], true);
+  });
+
   function setControls(enabled: boolean): void {
     seedInput.disabled = !enabled;
     again.disabled = !enabled;
     back.disabled = !enabled;
+    csvButton.disabled = !enabled;
+    geoButton.disabled = !enabled;
   }
+
+  function exportNow(kind: ExportKind): void {
+    const button = kind === "csv" ? csvButton : geoButton;
+    if (button.disabled || !deps.onExport) return;
+    // The plan is read now, at click time.
+    const problem = deps.onExport(kind, selected);
+    message.textContent = problem ?? "";
+    message.hidden = problem === null;
+  }
+  csvButton.addEventListener("click", () => exportNow("csv"));
+  geoButton.addEventListener("click", () => exportNow("geojson"));
 
   function render(partial: PartialResults): void {
     const cards = buildCards(partial);
@@ -249,6 +360,7 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
       });
     }
     views = next;
+    syncPlan();
     for (const c of cards) {
       if (c.state !== "pending" && !shown.has(c.key)) {
         shown.add(c.key);
@@ -281,6 +393,8 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
       shown = new Set();
       views = [];
       nodes = [];
+      selected = "Hybrid";
+      planEnabled = false;
       seedLine.textContent = `Seed of this run: ${seed}`;
       seedInput.value = String(nextSeed(seed));
       message.hidden = true;
@@ -292,15 +406,21 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
       render(partial);
     },
     finish(partial) {
+      planEnabled = true;
       render(partial);
       setControls(true);
+    },
+    get selectedPlan() {
+      return selected;
     },
     holdsRunFocus() {
       return document.activeElement === again || document.activeElement === seedInput;
     },
     hide() {
       el.hidden = true;
+      planEnabled = false;
       setControls(false);
+      syncPlan();
     },
   };
 }

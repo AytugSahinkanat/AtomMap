@@ -57,6 +57,7 @@ export class DynamicLayer {
   private tile: number[] | null = null;
   private focus = -1;
   private ring: number[] = [];
+  private gaps: number[] = [];
   private reducedMotion = false;
   private finalView = false;
   private dirty = true;
@@ -101,6 +102,7 @@ export class DynamicLayer {
     this.tile = null;
     this.focus = -1;
     this.ring = [];
+    this.gaps = [];
     this.dirty = true;
   }
 
@@ -125,6 +127,15 @@ export class DynamicLayer {
     this.channel.fill(0);
     this.classical.fill(0);
     this.tile = null;
+    this.gaps = [];
+    this.dirty = true;
+  }
+
+  /** Points a plan left uncovered (atoms alone): dashed ring, no animation. An empty list clears it. */
+  setGaps(indices: readonly number[]): void {
+    const next = indices.filter((i) => Number.isInteger(i) && i >= 0 && i < this.n);
+    if (next.length === 0 && this.gaps.length === 0) return;
+    this.gaps = next;
     this.dirty = true;
   }
 
@@ -254,6 +265,18 @@ export class DynamicLayer {
     }
 
     for (let i = 0; i < this.n; i++) this.drawPoint(ctx, i);
+
+    if (this.gaps.length) {
+      ctx.strokeStyle = TEXT_COLOUR;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 3]);
+      for (const i of this.gaps) {
+        ctx.beginPath();
+        ctx.arc(this.pos[2 * i], this.pos[2 * i + 1], POINT_R + 5, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+    }
 
     if (this.ring.length) {
       ctx.strokeStyle = ACCENT_COLOUR;

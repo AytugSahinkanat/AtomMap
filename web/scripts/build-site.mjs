@@ -75,6 +75,6 @@ copy(join(repo, "fixtures"), "fixtures", (src) => statSync(src).isDirectory() ||
 
 const fx = readdirSync(join(dist, "fixtures"));
 console.log(`\nfixtures in dist: ${fx.join(", ") || "(none)"}`);
-for (const need of ["place_kadikoy.json", "place_midtown.json"]) {
+for (const need of ["place_kadikoy.json"]) {
   if (!fx.includes(need)) console.warn(`WARNING: fixtures/${need} does not exist yet (made by scripts/fetch_place.py, task 6)`);
 }

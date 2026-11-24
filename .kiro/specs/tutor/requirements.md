@@ -69,7 +69,7 @@ This is the first task of this spec. Recomputing Rank from the current events wa
 
 #### Acceptance Criteria
 
-1. WHILE the Selected_Plan is the Hybrid_Plan, THE Tutor SHALL show the Steps of Requirement 4. Until the Plan_Selector of the ui spec (task 10) exists, the Selected_Plan is always the Hybrid_Plan.
+1. WHILE the Selected_Plan is the Hybrid_Plan, THE Tutor SHALL show the Steps of Requirement 4. The Tutor follows the Selected_Plan: when the user selects another plan in the Plan_Selector, the Tutor switches to the sentence of criterion 2, and when the user selects the Hybrid_Plan again, the Tutor shows the Steps again.
 2. WHILE the Selected_Plan is not the Hybrid_Plan, THE Tutor SHALL show a sentence saying that the explanation covers the "atoms + rules (hybrid)" plan only, together with the first line of the finished run.
 
 ### Requirement 4: Steps after a run

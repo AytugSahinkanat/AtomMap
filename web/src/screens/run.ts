@@ -56,6 +56,8 @@ export interface RunView {
   error(e: ErrorPayload): void;
   /** Redraw the final state after the map was laid out again (new size). */
   resync(): void;
+  /** After a finished run: draw the run's own final map again (the Hybrid plan), no animation. */
+  redrawFinal(): void;
   /** Leave the run view, stop playback. */
   hide(): void;
   readonly active: boolean;
@@ -350,6 +352,13 @@ export function createRunView(deps: RunDeps): RunView {
       if (map === null || (el.hidden && !finished)) return;
       const st = currentState();
       if (st !== null) sync(st, 0, true);
+    },
+    redrawFinal() {
+      if (map === null || !finished) return;
+      const st = currentState();
+      if (st === null) return;
+      map.layer.reset(); // another plan may have been drawn: start from a clean layer
+      sync(st, 0, true);
     },
     get cursor() {
       return currentCursor();

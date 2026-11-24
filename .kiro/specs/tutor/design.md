@@ -9,7 +9,7 @@ Design decisions:
 - **No arithmetic in `sentences.ts`.** Every number a sentence shows is a field of `Facts`, including derived ones such as "34 of 100 tries" (`hits` and `shots`). The number rule (Requirement 6.1) is then checkable by looking at the fields.
 - **A sentence needs named facts.** Each sentence declares the `Facts` fields it needs. If one is missing, the sentence is not built (Requirement 4.14). A Step with no sentence left is not shown and not counted.
 - **The Engine sends what the Tutor needs.** Rank was wrong for 3 of 15 picks when recomputed from the events (Requirement 1), so the Engine sends it.
-- **Hybrid only.** The Steps explain the "atoms + rules (hybrid)" plan. For any other Selected_Plan the strip shows one sentence saying so (Requirement 3). Until the Plan_Selector exists (ui task 10), the plan passed to the strip is always Hybrid. The non-Hybrid branch is built and tested, but the UI cannot reach it yet.
+- **Hybrid only.** The Steps explain the "atoms + rules (hybrid)" plan. For any other Selected_Plan the strip shows one sentence saying so (Requirement 3). The strip follows the Selected_Plan: the plan passed to it is the one chosen in the Plan_Selector, and choosing Hybrid again shows the Steps again.
 
 Sources for the method are in the engine design (Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5). The Tutor adds no new method and no new numbers.
 

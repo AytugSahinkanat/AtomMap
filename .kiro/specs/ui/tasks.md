@@ -4,11 +4,10 @@
 
 The UI is built in `web/` (Vite and TypeScript, pinned versions, static build). Task 1 comes first: it adds three progress event changes to the Engine and updates the engine spec, because the Run_Screen needs them. Engine tests run natively only. The UI holds no MIS algorithm.
 
-Dependency on the user: `scripts/fetch_place.py` is run by hand by the user, once per place, who commits `fixtures/place_kadikoy.json` and `fixtures/place_midtown.json`:
+Dependency on the user: `scripts/fetch_place.py` is run by hand by the user, for the one place, who commits `fixtures/place_kadikoy.json`:
 
 ```
 python scripts/fetch_place.py kadikoy 40.982,29.020,40.996,29.040
-python scripts/fetch_place.py midtown 40.750,-73.995,40.762,-73.975
 ```
 
 Task 6 writes and tests the script offline (no Overpass calls in tests). There is no sample fixture and no invented data: tests that read a place file are skipped with a message naming the missing file until the user has produced it. Task 16 adds the "what we measured" page with a small example `web/public/results.json` marked as an example.
@@ -117,7 +116,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
 
   - [x] 6.2 Add arguments, fetch and write step to the script
     - `parse_args`: `name` (lowercase letters, digits, underscore) and `bbox` as `south,west,north,east`; check four numbers, south < north, west < east, latitude within ±90, longitude within ±180; exit with a plain message before any network call
-    - One Overpass request limited to the bbox for cafes (`nwr`, `out center`) and walkable ways; constants for endpoint, filters, limit 150 and minimum 20 (only catches a broken or empty download, not a quality bar; Midtown had about 150 cafes in tests)
+    - One Overpass request limited to the bbox for cafes (`nwr`, `out center`) and walkable ways; constants for endpoint, filters, limit 150 and minimum 20 (only catches a broken or empty download, not a quality bar)
     - Store `name`, `bbox`, `source` (attribution, licence, licence_url, endpoint, query, `osm_data_timestamp`, `fetched_at`, script, args) and `counts` including the real cafe count and `max_snap_m`
     - If fewer than 20 cafes for that place, print the place name and the count and exit with an error without writing that place's file; one place failing does not touch the other file
     - Flag `--out`, default `fixtures/place_<name>.json`; compact JSON; no tuning or filtering of the fetched result
@@ -131,22 +130,22 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - _Requirements: 6.2, 6.8, 6.9, 12.1_
 
   - [x] 6.4 Add the PlaceFixture loader with per-place caching
-    - Add the `PLACES` constant (Kadikoy, NYC Midtown: label, name, file) to `web/src/settings.ts`
+    - Add the `PLACES` constant (Kadıköy only: label `Kadıköy, Istanbul`, name `kadikoy`, file) and a `placeTitle(slug)` helper to `web/src/settings.ts`
     - Create `web/src/data/fixtures.ts`: load and validate the hero and walls fixtures; `loadPlace(name)` fetches `place_<name>.json` from the same origin the first time that place is selected, validates the `PlaceFixture` shape, and caches it per place
-    - A missing or malformed file gives an error naming that file; the other place stays usable
+    - A missing or malformed file gives an error naming that file; the app stays usable
     - No sample fixture and no fallback data; the app never requests Overpass or any tile server
     - Dependency on the user: the real files come from running `scripts/fetch_place.py` by hand, as in the Overview
     - _Requirements: 6.4, 6.6, 6.7, 2.8_
 
   - [ ]* 6.5 Write fixture tests
-    - For each of `fixtures/place_kadikoy.json` and `fixtures/place_midtown.json`: at least 20 points, `counts.points` equals the number of points, `fetched_at` present, edge ids exist, each walking edge within 150 m straight, `source` present, `streets` non-empty
+    - For `fixtures/place_kadikoy.json`: at least 20 points, `counts.points` equals the number of points, `fetched_at` present, edge ids exist, each walking edge within 150 m straight, `source` present, `streets` non-empty
     - If a file is absent, its test is skipped with a message naming the file
     - Loader tests with a stubbed fetch: caching per place, switching places, missing file and wrong shape give an error naming the file
     - _Requirements: 6.7, 6.9, 12.1_
 
   - [x] 6.6 Add the preset selector to the Map_Screen
-    - In `web/src/screens/map.ts`, show the two presets ("Kadikoy", "NYC Midtown") as a keyboard-operable selector in Place mode, labels from `PLACES`
-    - Selecting a place calls `loadPlace`, shows the cached or newly loaded map and clears the previous result; on a load error show the message naming the file and keep the other place usable
+    - In `web/src/screens/map.ts`, show the single place name "Kadıköy, Istanbul" as plain text in Place mode (no selector; the "Place" label stays for accessibility), taken from `PLACES`; the map label reads "Kadıköy, Istanbul, N cafes" with N from the fixture
+    - Selecting a place calls `loadPlace`, shows the cached or newly loaded map and clears the previous result; on a load error show the message naming the file and keep the app usable
     - _Requirements: 6.1, 6.4, 11.3_
 
   - [x] 6.7 Show attribution, cafe count and fetch date
@@ -214,32 +213,35 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Create `web/src/screens/scoreboard.ts`: one shared card component with equal visual weight and no winner styling, seed, the note "One run proves nothing.", the citation "Schuetz et al., Phys. Rev. Research 8, 033296 (2026), doi:10.1103/nh3b-1wv5", a typed seed input, and the "run again with another seed" button
     - _Requirements: 4.1, 4.6, 4.7, 4.9, 4.10, 4.11, 4.12, 4.13_
 
-- [ ] 10. Plan selector
-  - [ ] 10.1 Add the Plan_Selector
-    - Four buttons as a keyboard-operable radio group, shown after `result`, `Hybrid` selected at the start of each run
-    - Selection redraws the dynamic layer from `result.competitors[selectedPlan]` without a new run or animation, including Points left uncovered; Round colours come from `rounds` and `five_ghz_only`
-    - A competitor entry `{error}` has its button disabled with the reason as text; the selected plan name is shown above the map
+- [x] 10. Plan selector
+  - [x] 10.1 Add the Plan_Selector
+    - No separate row of buttons (the page is exactly 768 px tall at 1366x768): the Scoreboard cards are the Plan_Selector. Card container `role="radiogroup"` labelled "plan on the map", one `role="radio"` per card title with `aria-checked` and a roving tabindex, arrow keys move and select (wrapping), Space and Enter select; the Details toggle stays its own control
+    - Works only after `result`; radios are disabled while cards are pending; `Hybrid` is selected at the start of each run
+    - The selected card has an accent border and the text tag "on the map" (no winner wording); the tag adds no height
+    - Selection redraws the dynamic layer from `result.competitors[selectedPlan]` without a new run or animation; Round colours come from `rounds` and `five_ghz_only`; Atoms alone also marks the Points in `stats.gaps` with a legend entry
+    - A competitor entry `{error}` has its radio disabled and the reason stays as text
+    - The Tutor strip gets the plan through `setPlan(plan)`: non-Hybrid shows the one sentence of tutor Requirement 3.2, no Steps, no ring, no Why_Answer; Hybrid shows the Steps again
     - _Requirements: 2.3, 2.4, 2.5, 2.10, 2.11_
 
-  - [ ]* 10.2 Write unit tests for the Plan_Selector
+  - [x]* 10.2 Write unit tests for the Plan_Selector
     - Each of the four plans is drawn from the result; disabled button for an error entry
     - _Requirements: 2.11, 12.1_
 
-- [ ] 11. Export
-  - [ ] 11.1 Implement CSV and GeoJSON export
+- [x] 11. Export
+  - [x] 11.1 Implement CSV and GeoJSON export
     - Create `web/src/export.ts` for the selected plan: CSV header `id,x,y,round,result_label,seed` with quoting of commas, quotes and newlines; GeoJSON FeatureCollection with top-level `result_label`, `seed` and `units`, geometry `[lon, lat]` for Kadikoy and `[x, y]` for other maps
     - `round` is the channel, `5 GHz only` for unpicked Points in Channel_Plan, and `1` or `not picked` in Place
     - Files made with `Blob` and `<a download>`
     - _Requirements: 7.1, 7.2, 7.3_
 
-  - [ ]* 11.2 Write property test and unit tests for export
+  - [x]* 11.2 Write property test and unit tests for export
     - **Property 2: CSV export round trip**
     - **Validates: Requirements 7.1, 7.3**
     - `fast-check`, at least 100 runs, ids with commas, quotes and newlines; every row carries "simulation" and the seed
     - Unit tests for the GeoJSON shape and that export follows the selected plan
     - Comment `Feature: ui, Property 2: CSV export round trip`
 
-  - [ ] 11.3 Wire the export buttons
+  - [x] 11.3 Wire the export buttons
     - Add CSV and GeoJSON buttons to the finished-run view, reading the Plan_Selector selection
     - _Requirements: 7.1, 7.2_
 
@@ -313,7 +315,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
 
 - Tasks marked with `*` are optional and can be skipped for a faster MVP. Task 13 (custom map) is the first thing to cut.
 - Engine tests run natively only (`OPENBLAS_NUM_THREADS=1`). Do not upgrade Pyodide.
-- The real `fixtures/place_kadikoy.json` and `fixtures/place_midtown.json` are produced by the user running `scripts/fetch_place.py` by hand (commands in the Overview). No test or task calls Overpass, and no sample data is used.
+- The real `fixtures/place_kadikoy.json` is produced by the user running `scripts/fetch_place.py` by hand (commands in the Overview). No test or task calls Overpass, and no sample data is used.
 - Task 16 is placed after task 15 to keep existing numbering; the final checkpoint is now task 17.
 - Pin every dependency version. Nothing is fetched from PyPI at runtime.
 - The UI holds no MIS algorithm. Small map helpers (edge builders) are allowed in `web/`.
