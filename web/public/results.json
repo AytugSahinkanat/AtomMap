@@ -1,20 +1,258 @@
 {
-  "example": true,
+  "example": false,
   "protocol": {
-    "text": "EXAMPLE DATA, NOT A MEASUREMENT. These round numbers only show how this page looks. They were not produced by any run. Real results replace this file after runs with settings fixed in advance. All results are simulation.",
+    "text": "Fixed before any run. Where: the built site, in Chromium driven by Playwright, with the same worker.js and Pyodide a visitor gets. One worker, runs one after the other. Maps, in this order: Wifi hall (walls off), Wifi hall, sparse control (walls off), and Kadıköy, Istanbul (walking distance). Seeds 1 to 10 for each map, 30 runs in total, in that order. The order of the runs in this file is the order they were made. Settings: the app defaults and all four competitors in one request. Shots, steps, tile size and top group share are read from the engine source. Each request is built by the app's own request builder, so it is what the page sends. The sparse hall is not in the page, so its request is built the same way from its fixture file. Every run is in this file. A run that errors, or runs longer than 10 minutes, is marked failed with the reason. A competitor that returns an error also makes the run failed. Nothing is retried, removed or replaced. If a run goes over 10 minutes the worker is stopped and a new one is started for the next run. Each result is checked before it is written: every round has only known point ids, no two picked points of a round share an edge of the request, and no point is picked in two rounds. A run that fails a check is marked bad, with the competitor and the check named. Picks are the total picks over all rounds. Quantum share is the percent of picks that came from the atoms, with one decimal. The columns atoms not needed, splits and skipped tiles are the hybrid's. No durations are recorded. All results are simulation.",
     "settings": {
-      "kind": "example",
-      "mode": "simulation",
-      "seeds": [1, 2, 3, 4],
-      "note": "placeholder values"
+      "shots": 100,
+      "steps": 400,
+      "tile_size": 10,
+      "top_group_share": 0.4,
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "maps": {
+        "Wifi hall": "walls off",
+        "Wifi hall, sparse control": "walls off",
+        "Kadıköy, Istanbul": "walking distance"
+      },
+      "competitors": [
+        "Atoms_Alone",
+        "Hybrid",
+        "Annealing_Rules",
+        "Coin_Flip_Rules"
+      ],
+      "app_settings": "defaults"
     }
   },
+  "date": "2026-11-24",
+  "commit": "981596145d8d067ac498e852aaf8317ed8784190",
+  "chromium": "159.0.8154.6",
+  "pyodide": "0.27.7",
   "runs": [
     {
       "seed": 1,
       "map": "Wifi hall",
-      "picks": { "Atoms_Alone": 30, "Hybrid": 40, "Annealing_Rules": 40, "Coin_Flip_Rules": 30 },
-      "quantum_share": { "Atoms_Alone": 100, "Hybrid": 20, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
+      "picks": {
+        "Atoms_Alone": 25,
+        "Hybrid": 31,
+        "Annealing_Rules": 35,
+        "Coin_Flip_Rules": 33
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 19.4,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 13,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 2,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 28,
+        "Hybrid": 34,
+        "Annealing_Rules": 34,
+        "Coin_Flip_Rules": 32
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 14.7,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 4,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 3,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 28,
+        "Hybrid": 33,
+        "Annealing_Rules": 34,
+        "Coin_Flip_Rules": 32
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 15.2,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 10,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 4,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 29,
+        "Hybrid": 34,
+        "Annealing_Rules": 34,
+        "Coin_Flip_Rules": 33
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 11.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 9,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 5,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 28,
+        "Hybrid": 35,
+        "Annealing_Rules": 33,
+        "Coin_Flip_Rules": 32
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 8.6,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 5,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 6,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 28,
+        "Hybrid": 34,
+        "Annealing_Rules": 35,
+        "Coin_Flip_Rules": 33
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 8.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 5,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 7,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 27,
+        "Hybrid": 34,
+        "Annealing_Rules": 36,
+        "Coin_Flip_Rules": 30
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 17.6,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 8,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 8,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 27,
+        "Hybrid": 35,
+        "Annealing_Rules": 35,
+        "Coin_Flip_Rules": 33
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 20,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 8,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 9,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 25,
+        "Hybrid": 34,
+        "Annealing_Rules": 34,
+        "Coin_Flip_Rules": 33
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 20.6,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 10,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 10,
+      "map": "Wifi hall",
+      "picks": {
+        "Atoms_Alone": 26,
+        "Hybrid": 34,
+        "Annealing_Rules": 35,
+        "Coin_Flip_Rules": 32
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 11.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 9,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 1,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 45,
+        "Hybrid": 51,
+        "Annealing_Rules": 52,
+        "Coin_Flip_Rules": 52
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.9,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
       "atoms_not_needed": false,
       "splits": 0,
       "skipped_tiles": 0,
@@ -23,34 +261,382 @@
     {
       "seed": 2,
       "map": "Wifi hall, sparse control",
-      "picks": { "Atoms_Alone": 50, "Hybrid": 50, "Annealing_Rules": 50, "Coin_Flip_Rules": 50 },
-      "quantum_share": { "Atoms_Alone": 100, "Hybrid": 0, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
-      "atoms_not_needed": true,
+      "picks": {
+        "Atoms_Alone": 44,
+        "Hybrid": 52,
+        "Annealing_Rules": 49,
+        "Coin_Flip_Rules": 50
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
       "splits": 0,
       "skipped_tiles": 0,
       "status": "ok"
     },
     {
       "seed": 3,
-      "map": "Kadıköy, Istanbul",
-      "picks": { "Atoms_Alone": 30, "Hybrid": 50, "Annealing_Rules": 40, "Coin_Flip_Rules": 30 },
-      "quantum_share": { "Atoms_Alone": 100, "Hybrid": 10, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
-      "atoms_not_needed": false,
-      "splits": 10,
-      "skipped_tiles": 10,
-      "status": "bad",
-      "reason": "Example only: some tiles were skipped, so the atoms did not cover the whole map."
-    },
-    {
-      "seed": 4,
-      "map": "Wifi hall",
-      "picks": { "Atoms_Alone": 0, "Hybrid": 0, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
-      "quantum_share": { "Atoms_Alone": 0, "Hybrid": 0, "Annealing_Rules": 0, "Coin_Flip_Rules": 0 },
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 41,
+        "Hybrid": 51,
+        "Annealing_Rules": 52,
+        "Coin_Flip_Rules": 52
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.9,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
       "atoms_not_needed": false,
       "splits": 0,
       "skipped_tiles": 0,
-      "status": "failed",
-      "reason": "Example only: the run stopped before it finished, so there are no picks to show."
+      "status": "ok"
+    },
+    {
+      "seed": 4,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 41,
+        "Hybrid": 51,
+        "Annealing_Rules": 49,
+        "Coin_Flip_Rules": 51
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.9,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 5,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 45,
+        "Hybrid": 52,
+        "Annealing_Rules": 51,
+        "Coin_Flip_Rules": 49
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 6,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 44,
+        "Hybrid": 51,
+        "Annealing_Rules": 51,
+        "Coin_Flip_Rules": 49
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.9,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 7,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 45,
+        "Hybrid": 52,
+        "Annealing_Rules": 50,
+        "Coin_Flip_Rules": 51
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 8,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 44,
+        "Hybrid": 49,
+        "Annealing_Rules": 52,
+        "Coin_Flip_Rules": 51
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 6.1,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 9,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 42,
+        "Hybrid": 52,
+        "Annealing_Rules": 52,
+        "Coin_Flip_Rules": 52
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 10,
+      "map": "Wifi hall, sparse control",
+      "picks": {
+        "Atoms_Alone": 41,
+        "Hybrid": 51,
+        "Annealing_Rules": 52,
+        "Coin_Flip_Rules": 52
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 3.9,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 0,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 1,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 63,
+        "Hybrid": 75,
+        "Annealing_Rules": 75,
+        "Coin_Flip_Rules": 74
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 4,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 6,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 2,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 64,
+        "Hybrid": 74,
+        "Annealing_Rules": 74,
+        "Coin_Flip_Rules": 74
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 5.4,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 6,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 3,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 63,
+        "Hybrid": 75,
+        "Annealing_Rules": 76,
+        "Coin_Flip_Rules": 73
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 6.7,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 6,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 4,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 62,
+        "Hybrid": 75,
+        "Annealing_Rules": 75,
+        "Coin_Flip_Rules": 72
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 5.3,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 7,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 5,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 64,
+        "Hybrid": 74,
+        "Annealing_Rules": 76,
+        "Coin_Flip_Rules": 74
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 5.4,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 6,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 6,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 64,
+        "Hybrid": 72,
+        "Annealing_Rules": 76,
+        "Coin_Flip_Rules": 74
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 9.7,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 6,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 7,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 64,
+        "Hybrid": 71,
+        "Annealing_Rules": 76,
+        "Coin_Flip_Rules": 73
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 8.5,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 8,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 8,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 63,
+        "Hybrid": 73,
+        "Annealing_Rules": 74,
+        "Coin_Flip_Rules": 72
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 8.2,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 7,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 9,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 63,
+        "Hybrid": 74,
+        "Annealing_Rules": 73,
+        "Coin_Flip_Rules": 75
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 6.8,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 7,
+      "skipped_tiles": 0,
+      "status": "ok"
+    },
+    {
+      "seed": 10,
+      "map": "Kadıköy, Istanbul",
+      "picks": {
+        "Atoms_Alone": 64,
+        "Hybrid": 75,
+        "Annealing_Rules": 75,
+        "Coin_Flip_Rules": 75
+      },
+      "quantum_share": {
+        "Atoms_Alone": 100,
+        "Hybrid": 6.7,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      },
+      "atoms_not_needed": false,
+      "splits": 7,
+      "skipped_tiles": 0,
+      "status": "ok"
     }
   ]
 }
