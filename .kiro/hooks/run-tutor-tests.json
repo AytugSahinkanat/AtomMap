@@ -1,0 +1,17 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run tutor tests on save",
+      "description": "After a save of a file under web/src/tutor, run the tutor vitest suite and log the run to .kiro/hooks/hook-runs.log.",
+      "trigger": "PostFileSave",
+      "matcher": "web[/\\\\]src[/\\\\]tutor[/\\\\]",
+      "action": {
+        "type": "command",
+        "command": "engine\\.venv\\Scripts\\python.exe scripts\\hook_tests.py tutor"
+      },
+      "timeout": 180,
+      "enabled": true
+    }
+  ]
+}

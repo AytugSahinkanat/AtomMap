@@ -184,7 +184,7 @@ This requirement is the first to be cut if time runs out.
 #### Acceptance Criteria
 
 1. THE UI SHALL run the Engine only in the Worker, so that the UI thread stays responsive during a run.
-2. WHILE the screen is narrow, THE UI SHALL show its content in one column.
+2. WHILE the viewport is 60rem (960 px at the default font size) wide or narrower, THE UI SHALL show its content in one column on the Map_Screen, the Scoreboard and the Results_Page.
 3. THE UI SHALL make every control reachable and operable by keyboard, with a visible focus indicator.
 4. THE UI SHALL give every control and map element a text label for screen readers.
 5. THE UI SHALL give each channel colour (1, 6, 11) and the "5 GHz only" state its own shape as well as its colour.

@@ -8,3 +8,4 @@ worker/dist/
 web/pyodide/
 web/engine/
 pyodide/
+.kiro/hooks/hook-runs.log

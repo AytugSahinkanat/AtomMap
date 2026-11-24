@@ -712,6 +712,16 @@
         "executionId": "a8cac891-696b-4539-bc87-a121c014988a",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795524333687
+      },
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795528410191
+      },
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795529599546
       }
     ],
     "16. What we measured page": [
@@ -731,6 +741,16 @@
         "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795523401844
+      },
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795528410259
+      },
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795529599640
       }
     ],
     "16.8 Write unit tests for the Results_Page render": [
@@ -743,6 +763,37 @@
         "executionId": "753518e7-1415-42ca-a7a7-b09d0cf34b1d",
         "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
         "timestamp": 1795523402265
+      }
+    ],
+    "12.1 Add the responsive layout": [
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795529606363
+      },
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795529820152
+      }
+    ],
+    "12. Responsive layout": [
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795529820204
+      }
+    ],
+    "17. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795529820315
+      },
+      {
+        "executionId": "b1c1c754-6d82-4f14-a7cc-8a5b455d9d67",
+        "chatSessionId": "sess_fa8888aa-bce2-4cc1-94c3-cd97a281fbb0",
+        "timestamp": 1795529932044
       }
     ]
   }

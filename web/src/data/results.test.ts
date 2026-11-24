@@ -1,12 +1,15 @@
 import { describe, expect, it } from 'vitest';
 // The raw text of the committed file, read from disk at test time.
 import committedText from '../../public/results.json?raw';
+// A fixed example file (example true, 4 runs), kept as a test fixture.
+import exampleText from '../../test-data/results.example.json?raw';
 import { validateResults, type ResultsFile } from './results';
 
 const committed: unknown = JSON.parse(committedText);
+const example: unknown = JSON.parse(exampleText);
 
 function clone(): any {
-  return JSON.parse(JSON.stringify(committed));
+  return JSON.parse(JSON.stringify(example));
 }
 
 function reasonOf(json: unknown): string {
@@ -15,40 +18,74 @@ function reasonOf(json: unknown): string {
   return r.reason;
 }
 
-describe('validateResults on the committed results.json', () => {
-  it('accepts it', () => {
-    expect(validateResults(committed).ok).toBe(true);
-  });
+function keysOf(v: unknown, out: string[] = []): string[] {
+  if (Array.isArray(v)) v.forEach((x) => keysOf(x, out));
+  else if (v && typeof v === 'object') {
+    for (const [k, x] of Object.entries(v)) {
+      out.push(k);
+      keysOf(x, out);
+    }
+  }
+  return out;
+}
 
-  it('is marked as example data', () => {
+describe('the committed results.json (any honest measurement)', () => {
+  it('validates and is not example data', () => {
     const r = validateResults(committed);
+    if (!r.ok) throw new Error(r.reason);
+    expect(r.value.example).toBe(false);
+  });
+  it('has 30 runs in protocol order', () => {
+    const v = committed as ResultsFile;
+    const expected: [string, number][] = [];
+    for (const m of ['Wifi hall', 'Wifi hall, sparse control', 'Kadıköy, Istanbul']) {
+      for (let s = 1; s <= 10; s++) expected.push([m, s]);
+    }
+    expect(v.runs.map((x) => [x.map, x.seed])).toEqual(expected);
+  });
+  it('says splits, skipped tiles and atoms not needed are the hybrid\'s', () => {
+    const v = committed as ResultsFile;
+    expect(v.protocol.text).toMatch(/atoms not needed, splits and skipped tiles are the hybrid's/);
+  });
+  it('has no keys named like time, duration or seconds', () => {
+    for (const k of keysOf(committed)) {
+      const tokens = k.toLowerCase().split(/[^a-z]+/);
+      for (const bad of ['time', 'times', 'duration', 'seconds', 'secs', 'sec', 'ms', 'millis']) {
+        expect(tokens, k).not.toContain(bad);
+      }
+    }
+  });
+});
+
+describe('validateResults on the example fixture', () => {
+  it('accepts it', () => {
+    expect(validateResults(example).ok).toBe(true);
+  });
+  it('is marked as example data', () => {
+    const r = validateResults(example);
     if (!r.ok) throw new Error(r.reason);
     expect(r.value.example).toBe(true);
   });
-
   it('has a failed run with a reason', () => {
-    const v = committed as ResultsFile;
+    const v = example as ResultsFile;
     const failed = v.runs.filter((x) => x.status === 'failed');
     expect(failed.length).toBeGreaterThan(0);
     for (const f of failed) expect((f.reason ?? '').length).toBeGreaterThan(0);
   });
-
   it('has a run with 0 quantum share and atoms_not_needed true', () => {
-    const v = committed as ResultsFile;
+    const v = example as ResultsFile;
     expect(
       v.runs.some((x) => x.atoms_not_needed && x.quantum_share.Hybrid === 0),
     ).toBe(true);
   });
-
   it('names the three maps', () => {
-    const v = committed as ResultsFile;
+    const v = example as ResultsFile;
     const names = new Set(v.runs.map((x) => x.map));
     for (const n of ['Wifi hall', 'Wifi hall, sparse control', 'Kadıköy, Istanbul']) {
       expect(names.has(n)).toBe(true);
     }
   });
 });
-
 describe('validateResults rejections', () => {
   it('rejects non-objects', () => {
     for (const v of [null, 5, 'x', [], undefined]) {

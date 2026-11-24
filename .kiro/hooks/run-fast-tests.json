@@ -3,12 +3,15 @@
   "hooks": [
     {
       "name": "Run fast engine tests on save",
+      "description": "After a save of an engine Python file, run the fast pytest suite (not slow) and log the run to .kiro/hooks/hook-runs.log.",
       "trigger": "PostFileSave",
-      "matcher": "engine[/\\\\].*\\.py$",
+      "matcher": "^(?!.*(?:\\.venv|\\.hypothesis|__pycache__)[/\\\\]).*engine[/\\\\].*\\.py$",
       "action": {
         "type": "command",
-        "command": "Set-Location engine; $env:OPENBLAS_NUM_THREADS=\"1\"; .venv\\Scripts\\python.exe -m pytest -q -m \"not slow\""
-      }
+        "command": "engine\\.venv\\Scripts\\python.exe scripts\\hook_tests.py engine"
+      },
+      "timeout": 400,
+      "enabled": true
     }
   ]
 }

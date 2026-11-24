@@ -7,7 +7,12 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { chromium, type Browser, type Page } from "playwright";
 import { createServer, type ViteDevServer } from "vite";
-import { CITATION } from "../scoreboard-model";
+import { CARD_LABELS, CITATION } from "../scoreboard-model";
+import committedText from "../../public/results.json?raw";
+import exampleText from "../../test-data/results.example.json?raw";
+
+const COMMITTED_FILE: any = JSON.parse(committedText);
+const EXAMPLE_FILE: any = JSON.parse(exampleText);
 
 const BANNED = /faster|speed|wins|winner|beats/i;
 
@@ -199,22 +204,40 @@ describe("Results_Page render (real Chromium)", () => {
     for (const cells of r.cellTexts) expect(cells[cells.length - 1]).toBe("simulation");
   });
 
-  it("has no banned words, also for the committed example file", async (ctx) => {
+  it("has no banned words, also for the example fixture", async (ctx) => {
     const p = need(ctx);
     const synthetic = await render(p, file(true, [run(1, "ok"), run(2, "failed"), run(3, "bad")]));
     expect(synthetic.text).not.toMatch(BANNED);
-    // The committed file, served by the dev server from web/public.
-    const EXAMPLE_FILE = await p.evaluate(async () => (await fetch("/results.json")).json());
     const valid = await p.evaluate((f) => (window as any).__r.validateResults(f), EXAMPLE_FILE);
     expect(valid.ok).toBe(true);
-    const real = await render(p, EXAMPLE_FILE);
-    expect(real.notice).not.toBeNull();
-    expect(real.seeds).toEqual(EXAMPLE_FILE.runs.map((x: any) => String(x.seed)));
-    expect(real.text).not.toMatch(BANNED);
-    for (const cells of real.cellTexts) expect(cells[cells.length - 1]).toBe("simulation");
+    const ex = await render(p, EXAMPLE_FILE);
+    expect(ex.notice).toBe("This is example data, not a measurement.");
+    expect(ex.seeds).toEqual(EXAMPLE_FILE.runs.map((x: any) => String(x.seed)));
+    expect(ex.text).not.toMatch(BANNED);
+    for (const cells of ex.cellTexts) expect(cells[cells.length - 1]).toBe("simulation");
   });
 });
 
+describe("Results_Page on the committed results.json (real Chromium)", () => {
+  it("shows no example notice and no banned words", async (ctx) => {
+    const p = need(ctx);
+    const valid = await p.evaluate((f) => (window as any).__r.validateResults(f), COMMITTED_FILE);
+    expect(valid.ok).toBe(true);
+    expect(COMMITTED_FILE.example).toBe(false);
+    const real = await render(p, COMMITTED_FILE);
+    expect(real.notice).toBeNull();
+    expect(real.text).not.toContain("example data");
+    expect(real.text).not.toMatch(BANNED);
+    expect(real.seeds).toEqual(COMMITTED_FILE.runs.map((x: any) => String(x.seed)));
+    expect(real.seeds.length).toBe(30);
+    for (const cells of real.cellTexts) expect(cells[cells.length - 1]).toBe("simulation");
+  });
+  it("shows the protocol text about the hybrid's columns", async (ctx) => {
+    const p = need(ctx);
+    const real = await render(p, COMMITTED_FILE);
+    expect(real.text).toContain("atoms not needed, splits and skipped tiles are the hybrid's");
+  });
+});
 describe("Results_Page settings text (real Chromium)", () => {
   it("shows lists and nested objects as plain text, no JSON", async (ctx) => {
     const p = need(ctx);
@@ -237,6 +260,45 @@ describe("Results_Page settings text (real Chromium)", () => {
   });
 });
 
+describe("Results_Page friendly settings (real Chromium)", () => {
+  it("uses plain keys, percents and card names for the real settings", async (ctx) => {
+    const p = need(ctx);
+    const f = file(false, [run(1, "ok")]);
+    f.protocol.settings = {
+      shots: 100,
+      tile_size: 10,
+      top_group_share: 0.4,
+      seeds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      maps: { "Wifi hall": "walls off", "Kadıköy, Istanbul": "walking distance" },
+      competitors: ["Atoms_Alone", "Hybrid", "Annealing_Rules", "Coin_Flip_Rules"],
+      app_settings: "defaults",
+      Hybrid: "Coin_Flip_Rules",
+      other_share: 7,
+    } as any;
+    const out = await p.evaluate((f) => {
+      const root: HTMLElement = (window as any).__r.renderResultsPage(f);
+      document.body.replaceChildren(root);
+      return {
+        dt: [...document.querySelectorAll("dt")].map((d) => d.textContent),
+        dd: [...document.querySelectorAll("dd")].map((d) => d.textContent),
+        th: [...document.querySelectorAll("thead th")].map((t) => t.textContent as string),
+        text: document.querySelector(".results-settings")!.textContent as string,
+      };
+    }, f);
+    const names = [CARD_LABELS.Atoms_Alone, CARD_LABELS.Hybrid, CARD_LABELS.Annealing_Rules, CARD_LABELS.Coin_Flip_Rules];
+    expect(out.dt).toEqual([
+      "shots", "tile size", "top group share", "seeds", "maps", "competitors", "app settings", CARD_LABELS.Hybrid, "other share",
+    ]);
+    expect(out.dd).toEqual([
+      "100", "10", "40%", "1 to 10", "Wifi hall: walls off, Kadıköy, Istanbul: walking distance",
+      names.join(", "), "defaults", CARD_LABELS.Coin_Flip_Rules, "7",
+    ]);
+    expect(out.text).not.toMatch(/_/);
+    for (const n of names) {
+      expect(out.th.some((t) => t.endsWith(n))).toBe(true);
+    }
+  });
+});
 describe("Results_Page error state (real Chromium)", () => {
   for (const mode of ["fail", "invalid", "throw"] as const) {
     it(`shows a reason and no table when the load is: ${mode}`, async (ctx) => {

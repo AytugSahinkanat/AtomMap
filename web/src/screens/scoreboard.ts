@@ -221,6 +221,11 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   const note = document.createElement("p");
   note.className = "score-note-one";
   note.textContent = ONE_RUN_NOTE;
+  const noteLink = document.createElement("a");
+  noteLink.href = "#/results";
+  noteLink.className = "results-link";
+  noteLink.textContent = "See what we measured.";
+  note.append(" ", noteLink);
   const cite = document.createElement("p");
   cite.className = "muted score-cite";
   cite.textContent = CITATION;

@@ -245,8 +245,8 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Add CSV and GeoJSON buttons to the finished-run view, reading the Plan_Selector selection
     - _Requirements: 7.1, 7.2_
 
-- [ ] 12. Responsive layout
-  - [ ] 12.1 Add the responsive layout
+- [x] 12. Responsive layout
+  - [x] 12.1 Add the responsive layout
     - The empty Tutor_Panel is moved to the tutor spec (`.kiro/specs/tutor/`) and is no longer built here
     - One column below the CSS breakpoint
     - Visible focus ring (accent `#7f77dd`), visible labels on every control, AA text contrast from the steering palette, English text only
@@ -308,7 +308,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - In `web/src/screens/results.test.ts`: rows in file order, notice only when `example` is true, failed rows with the same markup as ok rows, 0% shares shown, caption and column headers present, no banned words (faster, speed, wins, winner, beats), error state shows a reason and no table
     - _Requirements: 13.4, 13.5, 13.7, 13.8, 13.9, 13.11, 13.13, 13.14_
 
-- [ ] 17. Final checkpoint - Ensure all tests pass
+- [x] 17. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes

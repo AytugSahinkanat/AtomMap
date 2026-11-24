@@ -9,7 +9,7 @@ import {
   type RunRecord,
   type ValidateResult,
 } from '../data/results';
-import { CARD_LABELS, CARD_ORDER, CITATION } from '../scoreboard-model';
+import { CARD_LABELS, CARD_ORDER, CITATION, formatPercent, type EngineName } from '../scoreboard-model';
 
 export const EXAMPLE_NOTICE = 'This is example data, not a measurement.';
 export const RESULT_LABEL = 'simulation';
@@ -28,19 +28,32 @@ export function formatShare(percent: number): string {
   return (Number.isInteger(p) ? String(p) : p.toFixed(1)) + '%';
 }
 
+/** Plan name as on the cards when `s` is an engine name, else null. */
+function planName(s: string): string | null {
+  return Object.prototype.hasOwnProperty.call(CARD_LABELS, s) ? CARD_LABELS[s as EngineName] : null;
+}
+
+/** A settings key as plain words: "tile_size" becomes "tile size". Engine names show as card names. */
+export function formatSettingKey(k: string): string {
+  return planName(k) ?? k.replace(/_/g, ' ').toLowerCase();
+}
+
 /** A settings value as plain text: "1 to 10", "a, b, c", "key: value". No JSON. */
-export function formatSetting(v: unknown): string {
-  if (typeof v === 'string') return v;
+export function formatSetting(v: unknown, key?: string): string {
+  if (typeof v === 'string') return planName(v) ?? v.replace(/_/g, ' ');
+  if (typeof v === 'number' && key !== undefined && /share$/i.test(key) && v >= 0 && v <= 1) {
+    return formatPercent(v);
+  }
   if (Array.isArray(v)) {
     const consecutive =
       v.length >= 3 &&
       v.every((x, i) => Number.isInteger(x) && (i === 0 || x === (v[i - 1] as number) + 1));
     if (consecutive) return `${v[0]} to ${v[v.length - 1]}`;
-    return v.map(formatSetting).join(', ');
+    return v.map((x) => formatSetting(x)).join(', ');
   }
   if (v !== null && typeof v === 'object') {
     return Object.entries(v as Record<string, unknown>)
-      .map(([k, x]) => `${k}: ${formatSetting(x)}`)
+      .map(([k, x]) => `${planName(k) ?? k.replace(/_/g, ' ')}: ${formatSetting(x, k)}`)
       .join(', ');
   }
   return String(v);
@@ -165,7 +178,7 @@ export function renderResultsPage(file: ResultsFile): HTMLElement {
   protocol.append(el('h2', 'Protocol'), el('p', file.protocol.text));
   const dl = el('dl', undefined, 'results-settings');
   for (const [k, v] of Object.entries(file.protocol.settings)) {
-    dl.append(el('dt', k), el('dd', formatSetting(v)));
+    dl.append(el('dt', formatSettingKey(k)), el('dd', formatSetting(v, k)));
   }
   protocol.append(dl);
   root.append(protocol);
