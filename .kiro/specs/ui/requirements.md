@@ -215,6 +215,7 @@ The script that fills the Results_File is a later spec. This spec covers the Res
 13. WHILE the `example` field of the Results_File is true, THE Results_Page SHALL show a visible notice at the top that the data is an example and not a measurement.
 14. IF the Results_File cannot be read or does not match the shape of criterion 15, THEN THE Results_Page SHALL show the reason in plain words and no table.
 15. THE Results_File SHALL be a JSON object with the fields `example` (boolean), `protocol` (text and a settings object), and `runs` (a list of Run_Records), where each Run_Record has `seed`, `map`, `picks` (per Competitor), `quantum_share` (per Competitor), `atoms_not_needed`, `splits`, `skipped_tiles` and `status` ("ok", "failed" or "bad", with an optional reason text).
+16. THE Results_Page SHALL show, under the results table and before the citation, one plain paragraph that says the numbers come from the browser build and reports how often a desktop Python run of the same 30 requests matched (17 of 30 runs; the hybrid's numbers differed slightly in the others, annealing and coin flip matched in all 30), whether or not the Results_File is an example.
 
 ### Requirement 12: UI tests
 

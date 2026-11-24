@@ -46,7 +46,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Hypothesis, fake Simulator, at least 100 examples: `api.run(req, emit=None)` text equals `api.run(req, emit=collector)` text
     - Comment `Feature: ui, Property 3: Progress events do not change the result`
 
-- [ ] 2. Checkpoint - Ensure all tests pass
+- [x] 2. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 3. Web   project setup

@@ -14,6 +14,8 @@ import { CARD_LABELS, CARD_ORDER, CITATION, formatPercent, type EngineName } fro
 export const EXAMPLE_NOTICE = 'This is example data, not a measurement.';
 export const RESULT_LABEL = 'simulation';
 export const BACK_LABEL = 'Back to the map';
+export const REPRODUCIBILITY_NOTE =
+  "These numbers come from the browser build. The same seed gives the same row in this app. A desktop Python run of the same 30 requests matched in 17 of 30 runs; in the others the hybrid's numbers differed slightly, because of floating point details in the simulation and the atom layout. Annealing and coin flip matched in all 30.";
 
 /** Link back to the map flow, shown in every Results_Page state. */
 function backLink(): HTMLAnchorElement {
@@ -212,6 +214,7 @@ export function renderResultsPage(file: ResultsFile): HTMLElement {
   wrap.append(table);
   root.append(wrap);
 
+  root.append(el('p', REPRODUCIBILITY_NOTE, 'results-repro'));
   root.append(el('p', CITATION, 'muted results-cite'));
   return root;
 }

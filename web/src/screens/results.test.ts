@@ -311,3 +311,43 @@ describe("Results_Page error state (real Chromium)", () => {
     });
   }
 });
+
+describe("Results_Page reproducibility note (real Chromium)", () => {
+  const NOTE =
+    "These numbers come from the browser build. The same seed gives the same row in this app. A desktop Python run of the same 30 requests matched in 17 of 30 runs; in the others the hybrid's numbers differed slightly, because of floating point details in the simulation and the atom layout. Annealing and coin flip matched in all 30.";
+
+  it("shows the note once, after the table and before the citation, with exact text", async (ctx) => {
+    const p = need(ctx);
+    for (const example of [false, true]) {
+      await render(p, file(example, [run(1, "ok")]));
+      const r = await p.evaluate(() => {
+        const ps = [...document.querySelectorAll("main > *")];
+        const idx = (pred: (e: Element) => boolean) => ps.findIndex(pred);
+        const notes = ps.filter((e) => e.classList.contains("results-repro"));
+        return {
+          count: notes.length,
+          text: notes[0]?.textContent ?? null,
+          tag: notes[0]?.tagName ?? null,
+          table: idx((e) => !!e.querySelector("table")),
+          note: idx((e) => e.classList.contains("results-repro")),
+          cite: idx((e) => e.classList.contains("results-cite")),
+        };
+      });
+      expect(r.count).toBe(1);
+      expect(r.tag).toBe("P");
+      expect(r.text).toBe(NOTE);
+      expect(r.table).toBeGreaterThanOrEqual(0);
+      expect(r.note).toBeGreaterThan(r.table);
+      expect(r.cite).toBeGreaterThan(r.note);
+    }
+    const c = await p.evaluate(() => (window as any).__r.REPRODUCIBILITY_NOTE);
+    expect(c).toBe(NOTE);
+    expect(NOTE).not.toMatch(BANNED);
+  });
+
+  it("is absent in the loading and error states", async (ctx) => {
+    const p = need(ctx);
+    const s = await show(p, "fail");
+    expect(s.text).not.toContain("These numbers come from the browser build");
+  });
+});
