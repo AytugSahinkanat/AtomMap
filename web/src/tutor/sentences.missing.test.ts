@@ -50,15 +50,8 @@ const STEP_KEY: Record<number, string> = { 1: "rules-first", 2: "groups", 3: "gr
 
 const BAD = /undefined|NaN|null/;
 
-describe("tutor sentences: missing facts", () => {
-  // Feature: tutor, Property 3: A missing fact drops its sentence and nothing else
-  // **Validates: Requirements 2.6, 4.14, 6.8**
-  it("a missing fact drops its sentence and nothing else", () => {
-    fc.assert(
-      fc.property(arbFacts, fc.nat(), (facts, pick) => {
-        const paths = removablePaths(facts);
-        fc.pre(paths.length > 0);
-        const path = paths[pick % paths.length];
+/** Property 3 for one Facts and one removed path. Throws on the first difference. */
+function checkRemoval(facts: Facts, path: string): void {
         const reduced = without(facts, path);
 
         const fullSteps = buildSteps(facts, "Hybrid");
@@ -104,10 +97,47 @@ describe("tutor sentences: missing facts", () => {
         facts.rounds.forEach((_, i) => expectFor(`round-${i + 1}`, roundDefs(i), 6));
         expectFor("result", RESULT_AND_COMPARE, 7);
         expectFor("compare", RESULT_AND_COMPARE, 8);
+}
+
+/**
+ * The exhaustive form checks every path of each example, so it gets its own time limit.
+ * 200 runs, measured: about 2.5 s here, and it caught the old Step 2 bug
+ * (the "All N points" wording read rulesFirst) with 20 of 20 random seeds. At 50 runs, 11 of 20.
+ */
+const EXHAUSTIVE_RUNS = 200;
+const EXHAUSTIVE_TIMEOUT_MS = 60_000;
+
+describe("tutor sentences: missing facts", () => {
+  // Feature: tutor, Property 3: A missing fact drops its sentence and nothing else
+  // **Validates: Requirements 2.6, 4.14, 6.8**
+  it("a missing fact drops its sentence and nothing else", () => {
+    fc.assert(
+      fc.property(arbFacts, fc.nat(), (facts, pick) => {
+        const paths = removablePaths(facts);
+        fc.pre(paths.length > 0);
+        const path = paths[pick % paths.length];
+        checkRemoval(facts, path);
       }),
       { numRuns: 300 },
     );
   });
+
+  // Feature: tutor, Property 3: A missing fact drops its sentence and nothing else (every fact in turn)
+  // **Validates: Requirements 2.6, 4.14, 6.8**
+  it(
+    "a missing fact drops its sentence and nothing else, for every fact of each example in turn",
+    () => {
+      fc.assert(
+        fc.property(arbFacts, (facts) => {
+          const paths = removablePaths(facts);
+          fc.pre(paths.length > 0);
+          for (const path of paths) checkRemoval(facts, path);
+        }),
+        { numRuns: EXHAUSTIVE_RUNS },
+      );
+    },
+    EXHAUSTIVE_TIMEOUT_MS,
+  );
 });
 
 describe("tutor sentences: missing facts in a Why_Answer", () => {
@@ -116,14 +146,8 @@ describe("tutor sentences: missing facts in a Why_Answer", () => {
     ...w.rounds.flatMap((r, i) => Object.keys(r).map((k) => `rounds.${i}.${k}`)),
   ];
 
-  // Feature: tutor, Property 3: A missing fact drops its sentence and nothing else
-  // **Validates: Requirements 2.6, 4.14, 6.8**
-  it("a missing WhyFacts field drops its sentence and nothing else", () => {
-    fc.assert(
-      fc.property(arbWhy, fc.nat(), (why, pick) => {
-        const paths = whyPaths(why);
-        fc.pre(paths.length > 0);
-        const path = paths[pick % paths.length];
+  /** Property 3 for one WhyFacts and one removed path. Throws on the first difference. */
+  const checkWhyRemoval = (why: WhyFacts, path: string): void => {
         const reduced = without(why as unknown as Facts, path) as unknown as WhyFacts;
 
         const got = buildWhy(reduced).sentences;
@@ -140,10 +164,38 @@ describe("tutor sentences: missing facts in a Why_Answer", () => {
           .map((d) => d.make(d.absent ? reduced : why));
         expect(reducedDefs.length).toBe(whyDefs(why).length);
         expect(got, `removing "${path}"`).toEqual(expected);
+  };
+
+  // Feature: tutor, Property 3: A missing fact drops its sentence and nothing else
+  // **Validates: Requirements 2.6, 4.14, 6.8**
+  it("a missing WhyFacts field drops its sentence and nothing else", () => {
+    fc.assert(
+      fc.property(arbWhy, fc.nat(), (why, pick) => {
+        const paths = whyPaths(why);
+        fc.pre(paths.length > 0);
+        const path = paths[pick % paths.length];
+        checkWhyRemoval(why, path);
       }),
       { numRuns: 300 },
     );
   });
+
+  // Feature: tutor, Property 3: A missing fact drops its sentence and nothing else (every field in turn)
+  // **Validates: Requirements 2.6, 4.14, 6.8**
+  it(
+    "a missing WhyFacts field drops its sentence and nothing else, for every field of each example in turn",
+    () => {
+      fc.assert(
+        fc.property(arbWhy, (why) => {
+          const paths = whyPaths(why);
+          fc.pre(paths.length > 0);
+          for (const path of paths) checkWhyRemoval(why, path);
+        }),
+        { numRuns: EXHAUSTIVE_RUNS },
+      );
+    },
+    EXHAUSTIVE_TIMEOUT_MS,
+  );
 
   it("the no-record sentence is built exactly when clashes and rounds are both empty", () => {
     const base = { id: "ap01", mode: "channel_plan" as const, ring: ["ap01"] };
