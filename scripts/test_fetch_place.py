@@ -357,9 +357,10 @@ def test_bike_share_fixture(tmp_path):
     assert "nwr[\"amenity\"=\"bicycle_rental\"]" in queries[0]
     assert list(fx) == [
         "name", "mode", "kind", "story", "r", "bbox", "origin", "points", "streets",
-        "walking_edges", "source", "counts",
+        "walking_edges", "names", "source", "counts",
     ]
     assert "merge" not in fx
+    assert fx["names"]["names_changed"] == 0  # these test stations have no prefix
     assert fx["kind"] == "bike_share" and fx["r"] == 305
     assert fx["story"] == (
         "Keep as many bike-share stations as possible while no two are closer than "
@@ -488,3 +489,173 @@ def test_the_story_lines_say_what_the_rule_is():
     assert fp.KINDS["bike_share"]["r"] == 305 and "1,000 ft" in fp.KINDS["bike_share"]["story"]
     assert 244 == round(800 * 0.3048) and 305 == round(1000 * 0.3048)
     assert fp.KINDS["cafe"]["r"] == 150 and fp.KINDS["cafe"]["story"] is None
+
+
+# ---------------------------------------------------------------- merge: the same crossing in the other order
+
+
+def test_stop_name_key_sorts_the_streets_and_changes_nothing_else():
+    assert fp.stop_name_key("Mission Street & 16th Street") == fp.stop_name_key("16th Street & Mission Street")
+    assert fp.stop_name_key(" Mission Street &16th Street ") == "16th Street & Mission Street"
+    assert fp.stop_name_key("A & B & C") == fp.stop_name_key("C & A & B")
+    # Case and spelling are compared as written.
+    assert fp.stop_name_key("Mission St & 16th St") != fp.stop_name_key("16th Street & Mission Street")
+    assert fp.stop_name_key("mission street & 16th street") != fp.stop_name_key("16th Street & Mission Street")
+    # A name without "&", or with an empty side, is only trimmed.
+    assert fp.stop_name_key("  Civic Center  ") == "Civic Center"
+    assert fp.stop_name_key("Mission Street & ") == "Mission Street &"
+
+
+def test_the_same_crossing_in_the_other_order_within_40_m_is_one_point():
+    a = stop(11, 37.765, -122.4195, "Mission Street & 16th Street")
+    b = stop(12, 37.765 + metres_north(20), -122.4195, "16th Street & Mission Street")
+    points, info = fp.merge_stops([a, b])
+    assert len(points) == 1 and points[0]["osm_ids"] == [11, 12]
+    assert points[0]["lat"] == round((a["lat"] + b["lat"]) / 2, 7)
+    assert info["stops_merged"] == 1 and "other order" in info["rule"]
+
+
+def test_the_same_crossing_in_the_other_order_farther_than_40_m_stays_two_points():
+    a = stop(11, 37.765, -122.4195, "Mission Street & 16th Street")
+    b = stop(12, 37.765 + metres_north(45), -122.4195, "16th Street & Mission Street")
+    assert len(fp.merge_stops([a, b])[0]) == 2
+
+
+def test_four_corners_of_one_crossing_with_both_orders_and_the_40_m_rule():
+    # Four stops of one crossing, two in each order, two pairs 50 m apart: every stop in a group must be
+    # within 40 m of every other, so the result is two points, each with one name of each order.
+    lat, lon = 37.765, -122.4195
+    n = "Mission Street & 16th Street"
+    s = "16th Street & Mission Street"
+    stops = [
+        stop(1, lat, lon, n),
+        stop(2, lat + metres_north(10), lon, s),
+        stop(3, lat + metres_north(50), lon, n),
+        stop(4, lat + metres_north(60), lon, s),
+    ]
+    points, info = fp.merge_stops(stops)
+    assert sorted(p["osm_ids"] for p in points) == [[1, 2], [3, 4]]
+    assert info["merged_points"] == 2 and info["stops_merged"] == 2
+
+
+def test_the_merged_point_keeps_the_name_written_most_often_then_the_smallest_osm_id():
+    lat, lon = 37.765, -122.4195
+    n = "Mission Street & 18th Street"
+    s = "18th Street & Mission Street"
+    two_to_one = [stop(9, lat, lon, s), stop(3, lat + metres_north(5), lon, n), stop(5, lat + metres_north(10), lon, n)]
+    assert fp.merge_stops(two_to_one)[0][0]["name"] == n
+    tie = [stop(9, lat, lon, n), stop(3, lat + metres_north(5), lon, s)]
+    assert fp.merge_stops(tie)[0][0]["name"] == s  # osm id 3 is the smallest
+
+
+def test_the_swapped_merge_does_not_depend_on_the_order_of_the_input():
+    rng = random.Random(11)
+    stops = []
+    for k in range(24):
+        a, b = f"{k // 4} Street", "Mission Street"
+        name = f"{a} & {b}" if k % 2 else f"{b} & {a}"
+        stops.append(stop(500 + k, 37.76 + metres_north(90 * (k // 4) + 12 * (k % 4)), -122.41, name))
+    expected = fp.merge_stops(stops)
+    for _ in range(5):
+        shuffled = stops[:]
+        rng.shuffle(shuffled)
+        assert fp.merge_stops(shuffled) == expected
+
+
+# ---------------------------------------------------------------- bike-share: no operator or brand in the names
+
+# A made-up operator for the tests, so no real brand is written here.
+FAKE_BRAND = "Pedal Co"
+
+
+def station(osm_id: int, name: str | None, words: list[str] | None = None) -> dict:
+    s = {"type": "node", "id": osm_id, "lat": LAT0, "lon": LON0}
+    if name is not None:
+        s["name"] = name
+    if words:
+        s["brand_words"] = words
+    return s
+
+
+def test_the_prefix_that_is_the_stations_brand_tag_is_removed():
+    points, info = fp.strip_brand_prefixes([station(1, f"{FAKE_BRAND} - St Marks Pl & 1 Ave", [FAKE_BRAND])])
+    assert points == [{"type": "node", "id": 1, "lat": LAT0, "lon": LON0, "name": "St Marks Pl & 1 Ave"}]
+    assert info["names_changed"] == 1
+    assert FAKE_BRAND not in json.dumps(info)
+
+
+def test_any_case_and_the_other_separators_work():
+    for name in (f"{FAKE_BRAND.upper()} - A St", f"{FAKE_BRAND} – A St", f"{FAKE_BRAND} — A St", f"{FAKE_BRAND}: A St"):
+        assert fp.strip_brand_prefixes([station(1, name, [FAKE_BRAND])])[0][0]["name"] == "A St"
+
+
+def test_a_prefix_shared_by_at_least_half_of_the_stations_is_removed_without_tags():
+    names = [f"{FAKE_BRAND} - {k} Ave & Spring St" for k in range(6)] + ["Union Sq", "Broadway & Bleecker St"]
+    points, info = fp.strip_brand_prefixes([station(k, n) for k, n in enumerate(names)])
+    assert [p["name"] for p in points] == [f"{k} Ave & Spring St" for k in range(6)] + ["Union Sq", "Broadway & Bleecker St"]
+    assert info["names_changed"] == 6
+
+
+def test_a_dash_that_is_part_of_one_place_name_stays():
+    names = ["Pier 40 - Hudson River Park", "Broadway & Bleecker St", "6 Ave & Broome St", "W 4 St & 7 Ave S"]
+    points, info = fp.strip_brand_prefixes([station(k, n) for k, n in enumerate(names)])
+    assert [p["name"] for p in points] == names and info["names_changed"] == 0
+
+
+def test_brand_words_never_reach_the_points_and_unnamed_stations_are_kept():
+    points, _ = fp.strip_brand_prefixes([station(1, None, [FAKE_BRAND]), station(2, "A St", ["Other Op"])])
+    assert all("brand_words" not in p for p in points)
+    assert points[0] == {"type": "node", "id": 1, "lat": LAT0, "lon": LON0}
+
+
+def test_a_brand_word_left_in_a_name_stops_the_script():
+    with pytest.raises(ValueError, match="station node/2 still has an operator or brand word"):
+        fp.strip_brand_prefixes([station(1, f"{FAKE_BRAND} - A St", [FAKE_BRAND]), station(2, f"B St at {FAKE_BRAND} hub", [FAKE_BRAND])])
+
+
+def test_parse_overpass_reads_the_brand_tags_for_bike_share_only():
+    tags = {"amenity": "bicycle_rental", "name": f"{FAKE_BRAND} - A St", "brand": FAKE_BRAND, "operator": "Pedal Co LLC", "network": " "}
+    resp = response([{"type": "node", "id": 1, "lat": LAT0, "lon": LON0, "tags": tags},
+                     {"type": "node", "id": 2, "lat": LAT0, "lon": LON0, "tags": {"amenity": "cafe", "name": "C", "brand": "X"}}])
+    bike = fp.parse_overpass(resp, "bike_share")[0]
+    assert bike[0]["brand_words"] == [FAKE_BRAND, "Pedal Co LLC"]
+    assert "brand_words" not in fp.parse_overpass(resp, "cafe")[0][0]
+
+
+def branded_station_elements(count: int = 25) -> list[dict]:
+    out = []
+    for e in station_elements(count):
+        e = json.loads(json.dumps(e))
+        e["tags"]["name"] = f"{FAKE_BRAND} - " + e["tags"]["name"]
+        e["tags"]["brand"] = FAKE_BRAND
+        e["tags"]["operator"] = f"{FAKE_BRAND} Holdings"
+        out.append(e)
+    return out
+
+
+def test_bike_share_fixture_has_no_brand_anywhere(tmp_path):
+    code, fx, _ = run_script(["--kind", "bike_share"], street_elements(25) + branded_station_elements(25), tmp_path)
+    assert code == 0
+    text = json.dumps(fx, ensure_ascii=False)
+    assert FAKE_BRAND.casefold() not in text.casefold()
+    assert "brand_words" not in text
+    assert fx["names"]["names_changed"] == 25
+    assert sorted(p["name"] for p in fx["points"])[:2] == ["Station 0", "Station 1"]
+
+
+def test_bike_share_with_a_brand_left_in_a_name_writes_no_file(tmp_path, capsys):
+    elements = street_elements(25) + branded_station_elements(25)
+    elements[-1]["tags"]["name"] = f"Corner by the {FAKE_BRAND} depot"
+    code, fx, _ = run_script(["--kind", "bike_share"], elements, tmp_path)
+    assert code == 1 and fx is None
+    assert "still has an operator or brand word" in capsys.readouterr().err
+
+
+def test_the_committed_us_fixtures_have_no_brand_names():
+    for name in ("place_nyc_bike_share.json", "place_sf_bus_stops.json"):
+        path = REPO / "fixtures" / name
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        found = BRANDS.findall(text)
+        assert not found, f"{name} still contains a brand name; rerun scripts/fetch_place.py for it"

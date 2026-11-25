@@ -176,16 +176,49 @@ def _geo_dist_m(a: dict, b: dict) -> float:
     return math.hypot(dx, dy)
 
 
+def _group_name(members: list[dict]) -> str:
+    """The name written most often in a group; on a tie the one of the smallest OSM id."""
+    counts: dict[str, int] = {}
+    first_id: dict[str, int] = {}
+    for m in sorted(members, key=lambda m: m["id"]):
+        name = (m.get("name") or "").strip()
+        if not name:
+            continue
+        counts[name] = counts.get(name, 0) + 1
+        first_id.setdefault(name, m["id"])
+    if not counts:
+        return ""
+    return min(counts, key=lambda n: (-counts[n], first_id[n]))
+
+
+def stop_name_key(name: str) -> str:
+    """The key two stop names must share to be merged.
+
+    The name is split at "&" into its streets, each trimmed, and the streets are
+    sorted, so "Mission Street & 16th Street" and "16th Street & Mission Street"
+    are the same crossing. Nothing else is changed: case, spelling and
+    abbreviations are compared as written. A name without "&" is only trimmed.
+    """
+    parts = [p.strip() for p in name.split("&")]
+    if len(parts) > 1 and all(parts):
+        return " & ".join(sorted(parts))
+    return name.strip()
+
+
 def merge_stops(
     stops: list[dict], radius: float = MERGE_RADIUS_M
 ) -> tuple[list[dict], dict]:
-    """Merge bus stops that share a name and lie within `radius` metres.
+    """Merge bus stops that name the same place and lie within `radius` metres.
 
-    Stops on both sides of a street are two directions of one stop. A group is
-    merged only when every stop in it is within `radius` of every other (so a
-    chain of stops cannot drift into one point). The merged point sits at the
-    middle: the mean latitude and longitude. A stop with no name is never merged.
-    The name is compared as written, after trimming spaces.
+    Stops on both sides of a street are two directions of one stop. Two stops
+    name the same place when their `stop_name_key` is equal: the same name, or
+    the same crossing with the streets in the other order. A group is merged
+    only when every stop in it is within `radius` of every other (so a chain of
+    stops cannot drift into one point). The merged point sits at the middle:
+    the mean latitude and longitude. A stop with no name is never merged.
+
+    The merged point keeps the name written most often in its group (on a tie,
+    the name of the stop with the smallest OSM id).
 
     Each stop is a dict with type, id, lat, lon and optional name. Returns
     (points, info). Points are dicts with type "node", id (the smallest merged
@@ -197,7 +230,7 @@ def merge_stops(
     for s in sorted(stops, key=lambda s: (s["type"], s["id"])):
         name = (s.get("name") or "").strip()
         if name:
-            by_name.setdefault(name, []).append(s)
+            by_name.setdefault(stop_name_key(name), []).append(s)
         else:
             clusters.append([s])
     for name in sorted(by_name):
@@ -225,7 +258,7 @@ def merge_stops(
             lat = round(sum(m["lat"] for m in members) / len(members), 7)
             lon = round(sum(m["lon"] for m in members) / len(members), 7)
         point = {"type": "node", "id": ids[0], "lat": lat, "lon": lon, "osm_ids": ids}
-        name = (members[0].get("name") or "").strip()
+        name = _group_name(members)
         if name:
             point["name"] = name
         points.append(point)
@@ -234,8 +267,9 @@ def merge_stops(
     info = {
         "radius_m": int(radius),
         "rule": (
-            "stops with the same name, all within 40 m of each other, "
-            "merged into one point at the mean of their latitude and longitude"
+            "stops with the same name, or the same two streets in the other order, "
+            "all within 40 m of each other, merged into one point at the mean of "
+            "their latitude and longitude"
         ),
         "osm_stops": len(stops),
         "merged_points": merged_points,
@@ -545,6 +579,87 @@ def fetch_overpass(query: str, endpoint: str = OVERPASS_ENDPOINT) -> dict:
         return json.loads(response.read().decode("utf-8"))
 
 
+# --- bike-share: no operator or brand in the station names ----------------
+
+# OSM tags that name the operator or the brand of a station.
+BRAND_TAGS = ("brand", "brand:en", "operator", "operator:en", "network", "network:en")
+# What can stand between a prefix and the station name: "X - Name", "X – Name", "X: Name".
+_PREFIX_SEPARATORS = (" - ", " – ", " — ", ": ")
+
+
+def _split_prefix(name: str) -> tuple[str, str] | None:
+    """("X", "Name") for "X - Name" (first separator), else None."""
+    best = None
+    for sep in _PREFIX_SEPARATORS:
+        i = name.find(sep)
+        if i > 0 and (best is None or i < best[0]):
+            best = (i, sep)
+    if best is None:
+        return None
+    i, sep = best
+    head, rest = name[:i].strip(), name[i + len(sep):].strip()
+    return (head, rest) if head and rest else None
+
+
+def strip_brand_prefixes(points: list[dict]) -> tuple[list[dict], dict]:
+    """Take the operator or brand prefix out of the station names.
+
+    A name "X - Name" (or with an en dash, an em dash or a colon) becomes "Name"
+    when X is the station's brand, operator or network tag (any case), or when
+    the same X starts at least half of the named stations (at least 2): a
+    prefix that most stations share is the network, not part of the place.
+
+    Then a check: when a brand, operator or network word, or a shared prefix,
+    is still in any name (as a whole word, any case), ValueError is raised, so
+    no file is written. Nothing else in the names is changed.
+
+    Returns new point dicts without the "brand_words" key, and info for the
+    fixture: the rule as text and how many names were changed. The prefix
+    itself is not returned.
+    """
+    named = [p for p in points if p.get("name")]
+    heads: dict[str, int] = {}
+    for p in named:
+        split = _split_prefix(p["name"])
+        if split:
+            key = split[0].casefold()
+            heads[key] = heads.get(key, 0) + 1
+    shared = {h for h, c in heads.items() if c >= 2 and c * 2 >= len(named)}
+
+    out: list[dict] = []
+    changed = 0
+    for p in points:
+        q = {k: v for k, v in p.items() if k != "brand_words"}
+        words = {w.casefold() for w in p.get("brand_words", [])}
+        if q.get("name"):
+            split = _split_prefix(q["name"])
+            if split and (split[0].casefold() in words or split[0].casefold() in shared):
+                q["name"] = split[1]
+                changed += 1
+        out.append(q)
+
+    banned = set(shared)
+    for p in points:
+        banned.update(w.casefold() for w in p.get("brand_words", []) if len(w) >= 3)
+    for q in out:
+        name = q.get("name") or ""
+        for word in sorted(banned):
+            if re.search(r"(?<!\w)" + re.escape(word) + r"(?!\w)", name, re.IGNORECASE):
+                raise ValueError(
+                    f"station {q['type']}/{q['id']} still has an operator or brand word in its name "
+                    "after the prefix was removed; no file written"
+                )
+    info = {
+        "rule": (
+            "the operator or brand prefix before the station name (\"X - Name\") is removed "
+            "when X is the station's brand, operator or network tag, or starts at least half "
+            "of the station names"
+        ),
+        "names_changed": changed,
+    }
+    return out, info
+
+
 def _wanted(kind: str, el: dict, tags: dict) -> bool:
     """True when this element is a point of the kind."""
     if kind == "cafe":
@@ -589,6 +704,12 @@ def parse_overpass(
             cafe = {"type": el["type"], "id": el["id"], "lat": lat, "lon": lon}
             if tags.get("name"):
                 cafe["name"] = tags["name"]
+            if kind == "bike_share":
+                # Only used to take the operator's name out of the station names.
+                # It is never written into the fixture (build_place copies named keys only).
+                words = sorted({tags[k].strip() for k in BRAND_TAGS if (tags.get(k) or "").strip()})
+                if words:
+                    cafe["brand_words"] = words
             cafes.append(cafe)
         elif el["type"] == "way" and "nodes" in el and "highway" in tags:
             ways.append(list(el["nodes"]))
@@ -649,6 +770,13 @@ def run(
     merge = None
     if kind == "bus_stop":
         points, merge = merge_stops(points)
+    names = None
+    if kind == "bike_share":
+        try:
+            points, names = strip_brand_prefixes(points)
+        except ValueError as err:
+            print(f"{args.name}: {err}", file=sys.stderr)
+            return 1
 
     if len(points) < MIN_POINTS:
         extra = ""
@@ -686,6 +814,8 @@ def run(
     )
     if merge is not None:
         fixture["merge"] = merge
+    if names is not None:
+        fixture["names"] = names
     fixture["source"] = {
         "attribution": ATTRIBUTION,
         "licence": LICENCE,

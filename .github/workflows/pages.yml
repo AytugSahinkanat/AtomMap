@@ -118,6 +118,10 @@ jobs:
           OPENBLAS_NUM_THREADS: "1"
         run: pytest -m "not slow"
 
+      # Offline tests of the map data script (fake Overpass fetch, no network).
+      - name: Map data script tests (scripts/test_fetch_place.py)
+        run: pytest scripts/test_fetch_place.py -q
+
   deploy:
     needs: [build, engine-tests]
     runs-on: ubuntu-24.04
