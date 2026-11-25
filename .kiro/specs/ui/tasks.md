@@ -152,6 +152,11 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - In `web/src/screens/map.ts`, for the selected place show "© OpenStreetMap contributors" with the ODbL link (`source.licence_url`), the real cafe count (`counts.points`) and the fetch date (`source.fetched_at`), all read from that place's file
     - _Requirements: 6.5, 6.7_
 
+- [x] 6A. Place kinds, data only (the app does not load them yet)
+  - `scripts/fetch_place.py --kind cafe|bus_stop|bike_share` with the selectors, rules (244 m and 305 m), stories, the bus stop merge (same name, all within 40 m, one point at the middle, `osm_ids` kept) and the `merge` counts, as in the design ("Kinds of points" and "Bus stop merge"). The default kind `cafe` writes the same file as before (checked byte for byte on a hand-made response)
+  - Offline tests in `scripts/test_fetch_place.py` with a fake fetch: the three queries (the cafe query equals the one stored in `fixtures/place_kadikoy.json`), the filters, the merge (distance, names, chains, order), the walking edges at 244 m and 305 m, the under-20 abort, the arguments and the absence of brand names
+  - The two fixtures are made by hand by the project owner (`sf_bus_stops`, `nyc_bike_share`); a map joins the app only if seeds 1, 2 and 3 each finish all four plans in 60 s or less in the built site
+
 - [x] 7. Map screen
   - [x] 7.1 Draw the static canvas layer
     - Create `web/src/render/static-layer.ts`: streets, walls (concrete and drywall distinct) and conflict edges, one batched path per style; redraw only on map, toggle, size or pixel ratio change

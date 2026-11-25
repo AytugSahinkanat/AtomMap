@@ -52,6 +52,12 @@ export interface Facts {
     /** Channel of the Round, Channel_Plan only. */
     channel?: number;
     pointsLeft: number;
+    /**
+     * True when the rules made no pick before the atoms ran, so every point was still open.
+     * Step 2 reads it for "All N points" or "The other N points". It is a fact of its own, so a
+     * missing rulesFirst fact never changes Step 2.
+     */
+    allOpen: boolean;
     count: number;
     smallest: number;
     biggest: number;
@@ -186,6 +192,7 @@ function deriveHybrid(input: FactsInput, ev: TutorEvent[], out: Facts): void {
       out.groups = {
         ...(channelPlan ? { channel: round } : {}),
         pointsLeft: stepPick.remaining as number,
+        allOpen: rulePicks.length === 0,
         count: sims.length,
         smallest: Math.min(...sizes),
         biggest: Math.max(...sizes),

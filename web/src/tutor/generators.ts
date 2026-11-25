@@ -55,13 +55,14 @@ const arbGroups = fc.record(
   {
     channel: fc.constantFrom(1, 6, 11),
     pointsLeft: arbCount,
+    allOpen: fc.boolean(),
     count: arbCount,
     smallest: arbCount,
     biggest: arbCount,
     shots: arbCount,
     ring: arbIds(8),
   },
-  { requiredKeys: ["pointsLeft", "count", "smallest", "biggest", "shots", "ring"] },
+  { requiredKeys: ["pointsLeft", "allOpen", "count", "smallest", "biggest", "shots", "ring"] },
 );
 
 const arbGroup = fc.record(

@@ -315,6 +315,18 @@ python scripts/fetch_place.py kadikoy 40.982,29.020,40.996,29.040
 7. If the cafe count is below 20, the script prints the place name and the count and exits with an error without writing that place's file. Any count of 20 or more is accepted and stored as the real count. With one place there is nothing else to touch: a failure writes no file.
 8. Write compact JSON (no indentation) with `bbox`, `source`, `counts` (including the real cafe count) and the fetch date.
 
+**Kinds of points (data only, the app does not load them yet).** `--kind cafe|bus_stop|bike_share` (default `cafe`) says what the points are. The streets, the snap and the walking edges are the same for every kind. Only the first Overpass selector, the id prefix, the rule `r` and the story change:
+
+| Kind | Selector | Ids | `r` (also the walking limit) | Extra |
+|---|---|---|---|---|
+| `cafe` | `nwr["amenity"="cafe"]` | `cafe000` | 150 m | none: the fixture keeps the shape it always had (no `kind`, no `story`) |
+| `bus_stop` | `node["highway"="bus_stop"]` | `stop000` | 244 m (800 ft) | stops merged, `kind`, `story`, `merge` |
+| `bike_share` | `nwr["amenity"="bicycle_rental"]` | `station000` | 305 m (1,000 ft) | `kind`, `story` |
+
+The fixtures of the two new kinds add `kind` and `story` after `mode`. The story lines are fixed in the script: bus stops "Keep as many bus stops as possible while no two are closer than 800 ft, the low end of San Francisco's stop spacing policy (800 to 1,360 ft)."; bike-share "Keep as many bike-share stations as possible while no two are closer than 1,000 ft, the station spacing NACTO recommends." The walking edges of a kind use the kind's `r` as the walking limit, so the rule of the fixture and its walking graph are the same distance, as for the cafes (150 m). No brand names are written anywhere by the script or in these texts. The names of the maps in the app are "San Francisco bus stops (Mission)" and "New York bike-share stations (Greenwich Village)".
+
+**Bus stop merge.** Stops on both sides of a street are two directions of one stop. Stops with the same name (compared as written, spaces trimmed) that are all within 40 m of each other are merged into one point at the mean of their latitude and longitude. A group is merged only when every stop in it is within 40 m of every other, so a chain of stops cannot drift into one point. A stop with no name is never merged. The result does not depend on the order of the input. Each point keeps `osm_ids`, the sorted list of the OSM ids it was made from, and its id number follows the smallest of them. The fixture gets `merge`: `radius_m` (40), the `rule` as text, `osm_stops` (nodes found), `merged_points` (points made from two or more stops) and `stops_merged` (`osm_stops` minus the number of points). The minimum of 20 points is checked after the merge.
+
 **Walking vs straight line.** Walking distance is never shorter than the straight line, so every walking edge is also a pair within 150 m straight. That is checked on each committed file.
 
 **No sample fixture.** The design uses none. Tests that read a committed place file run once the user has produced it. Until then they are skipped with a message naming the missing file, not replaced by invented data (honesty rule 8). Script logic is tested with tiny hand-made inputs (see Testing Strategy).

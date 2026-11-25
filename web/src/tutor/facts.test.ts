@@ -80,9 +80,11 @@ for (const name of ["hero_seed1", "sparse_seed1"] as const) {
     });
     it_("groups", () => {
       const g = factsOf(name).groups!;
-      const { ring, ...rest } = g;
+      const { ring, allOpen, ...rest } = g;
       expect(rest).toEqual(e.groups);
       expect(ring.length).toBeGreaterThan(0);
+      // allOpen is "no rule pick before the atoms", which the hand-checked rulesFirst.count already says.
+      expect(allOpen).toBe(e.rulesFirst.count === 0);
     });
     it_("group", () => {
       const { ring, allClash, ...rest } = factsOf(name).group!;

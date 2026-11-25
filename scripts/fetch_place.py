@@ -1,16 +1,28 @@
-"""Build a Place fixture (cafes + walking edges on real streets).
+"""Build a Place fixture (points + walking edges on real streets).
 
-Run by hand for the one place (a bbox that starts with a minus sign needs `--`
+Run by hand for each place (a bbox that starts with a minus sign needs `--`
 before it, for example `fetch_place.py name -- -33.9,18.4,-33.8,18.5`):
 
     python scripts/fetch_place.py kadikoy 40.982,29.020,40.996,29.040
+
+`--kind` chooses what the points are (default `cafe`, which is the Kadikoy
+fixture and writes exactly the file it always did):
+
+    cafe         amenity=cafe (nodes, ways, relations). Walking rule 150 m.
+    bus_stop     nodes with highway=bus_stop. Stops that share a name and lie
+                 within 40 m of each other (the two sides of one street) are
+                 merged into one point at their middle. Rule 244 m (800 ft).
+    bike_share   amenity=bicycle_rental. Rule 305 m (1,000 ft).
+
+    python scripts/fetch_place.py sf_bus_stops 37.755,-122.425,37.770,-122.405 --kind bus_stop
+    python scripts/fetch_place.py nyc_bike_share 40.720,-74.005,40.735,-73.985 --kind bike_share
 
 One Overpass request, then the pure functions below, then one JSON file.
 Standard library only. The fetch function is a parameter of `run`, so tests
 can replace it and never touch the network.
 
-Coordinates: local metres, x east and y north of the cafe centroid, rounded
-to 0.1 m (equirectangular projection).
+Coordinates: local metres, x east and y north of the centroid of the points,
+rounded to 0.1 m (equirectangular projection).
 """
 
 from __future__ import annotations
@@ -31,9 +43,15 @@ EARTH_RADIUS_M = 6371008.8
 WALK_LIMIT_M = 150.0
 _EPS = 1e-9
 
-# Minimum cafe count. It only catches a broken or empty download. It is not
-# a quality bar: any count of 20 or more is accepted and stored as it is.
-MIN_CAFES = 20
+# Minimum point count (after merging bus stops). It only catches a broken or
+# empty download. It is not a quality bar: any count of 20 or more is accepted
+# and stored as it is.
+MIN_POINTS = 20
+MIN_CAFES = MIN_POINTS  # the old name
+
+# Bus stops: stops with the same name that are all within this many metres of
+# each other are one stop (two directions of one street), merged at their middle.
+MERGE_RADIUS_M = 40.0
 
 OVERPASS_ENDPOINT = "https://lz4.overpass-api.de/api/interpreter"
 # Tried in this order in every round. --endpoint forces a single one.
@@ -53,6 +71,43 @@ WALKABLE_FILTER = (
     '["highway"]["highway"!~"^(motorway|motorway_link)$"]'
     '["foot"!="no"]["access"!="private"]'
 )
+
+# What the points are. `statement` is the Overpass selector (without the bbox),
+# `r` the rule in metres (also the walking limit of the edges), `prefix` the id
+# prefix. `story` is one line for the app, written into the fixture of the
+# kinds that have one. The cafe kind has none: its fixture keeps its old shape.
+KINDS = {
+    "cafe": {
+        "statement": f"nwr{CAFE_FILTER}",
+        "r": 150,
+        "prefix": "cafe",
+        "singular": "cafe",
+        "noun": "cafes",
+        "story": None,
+    },
+    "bus_stop": {
+        "statement": 'node["highway"="bus_stop"]',
+        "r": 244,
+        "prefix": "stop",
+        "singular": "bus stop",
+        "noun": "bus stops",
+        "story": (
+            "Keep as many bus stops as possible while no two are closer than 800 ft, "
+            "the low end of San Francisco's stop spacing policy (800 to 1,360 ft)."
+        ),
+    },
+    "bike_share": {
+        "statement": 'nwr["amenity"="bicycle_rental"]',
+        "r": 305,
+        "prefix": "station",
+        "singular": "bike-share station",
+        "noun": "bike-share stations",
+        "story": (
+            "Keep as many bike-share stations as possible while no two are closer than "
+            "1,000 ft, the station spacing NACTO recommends."
+        ),
+    },
+}
 SCRIPT_PATH = "scripts/fetch_place.py"
 ATTRIBUTION = "© OpenStreetMap contributors"
 LICENCE = "ODbL 1.0"
@@ -85,22 +140,108 @@ def project(lat: float, lon: float, origin: tuple[float, float]) -> tuple[float,
     return round_m(x), round_m(y)
 
 
-# --- cafes ----------------------------------------------------------------
+# --- points ---------------------------------------------------------------
 
-def assign_cafe_ids(cafes: list[dict]) -> list[dict]:
-    """Sort cafes by (OSM type, OSM id) and give them ids cafe000, cafe001, ...
+def assign_point_ids(points: list[dict], prefix: str = "cafe") -> list[dict]:
+    """Sort points by (OSM type, OSM id) and give them ids prefix000, prefix001, ...
 
-    Each cafe is a dict with keys type, id, lat, lon and optional name.
-    Returns new dicts with an added "cafe_id". The input is not modified.
+    Each point is a dict with keys type, id, lat, lon and optional name.
+    Returns new dicts with an added "point_id". The input is not modified.
     """
-    ordered = sorted(cafes, key=lambda c: (c["type"], c["id"]))
+    ordered = sorted(points, key=lambda c: (c["type"], c["id"]))
     width = max(3, len(str(max(len(ordered) - 1, 0))))
     out = []
-    for i, cafe in enumerate(ordered):
-        item = dict(cafe)
-        item["cafe_id"] = f"cafe{i:0{width}d}"
+    for i, point in enumerate(ordered):
+        item = dict(point)
+        item["point_id"] = f"{prefix}{i:0{width}d}"
         out.append(item)
     return out
+
+
+def assign_cafe_ids(cafes: list[dict]) -> list[dict]:
+    """The cafe case of assign_point_ids: ids cafe000, cafe001, ... under "cafe_id"."""
+    out = assign_point_ids(cafes, "cafe")
+    for item in out:
+        item["cafe_id"] = item.pop("point_id")
+    return out
+
+
+# --- bus stops: merge the two sides of a street ---------------------------
+
+def _geo_dist_m(a: dict, b: dict) -> float:
+    """Distance in metres between two lat/lon dicts (equirectangular, fine at 40 m)."""
+    lat = math.radians((a["lat"] + b["lat"]) / 2)
+    dx = math.radians(b["lon"] - a["lon"]) * math.cos(lat) * EARTH_RADIUS_M
+    dy = math.radians(b["lat"] - a["lat"]) * EARTH_RADIUS_M
+    return math.hypot(dx, dy)
+
+
+def merge_stops(
+    stops: list[dict], radius: float = MERGE_RADIUS_M
+) -> tuple[list[dict], dict]:
+    """Merge bus stops that share a name and lie within `radius` metres.
+
+    Stops on both sides of a street are two directions of one stop. A group is
+    merged only when every stop in it is within `radius` of every other (so a
+    chain of stops cannot drift into one point). The merged point sits at the
+    middle: the mean latitude and longitude. A stop with no name is never merged.
+    The name is compared as written, after trimming spaces.
+
+    Each stop is a dict with type, id, lat, lon and optional name. Returns
+    (points, info). Points are dicts with type "node", id (the smallest merged
+    OSM id), lat, lon, optional name and "osm_ids" (every merged OSM id, sorted).
+    The result does not depend on the order of the input.
+    """
+    by_name: dict[str, list[dict]] = {}
+    clusters: list[list[dict]] = []
+    for s in sorted(stops, key=lambda s: (s["type"], s["id"])):
+        name = (s.get("name") or "").strip()
+        if name:
+            by_name.setdefault(name, []).append(s)
+        else:
+            clusters.append([s])
+    for name in sorted(by_name):
+        groups = [[s] for s in by_name[name]]
+        while True:
+            best = None  # (largest distance inside the merged group, i, j)
+            for i in range(len(groups)):
+                for j in range(i + 1, len(groups)):
+                    d = max(_geo_dist_m(a, b) for a in groups[i] for b in groups[j])
+                    if d <= radius and (best is None or d < best[0] - 1e-9):
+                        best = (d, i, j)
+            if best is None:
+                break
+            _, i, j = best
+            groups[i] = groups[i] + groups[j]
+            del groups[j]
+        clusters.extend(groups)
+
+    points = []
+    for members in clusters:
+        ids = sorted(m["id"] for m in members)
+        if len(members) == 1:
+            lat, lon = members[0]["lat"], members[0]["lon"]
+        else:
+            lat = round(sum(m["lat"] for m in members) / len(members), 7)
+            lon = round(sum(m["lon"] for m in members) / len(members), 7)
+        point = {"type": "node", "id": ids[0], "lat": lat, "lon": lon, "osm_ids": ids}
+        name = (members[0].get("name") or "").strip()
+        if name:
+            point["name"] = name
+        points.append(point)
+    points.sort(key=lambda p: p["id"])
+    merged_points = sum(1 for p in points if len(p["osm_ids"]) > 1)
+    info = {
+        "radius_m": int(radius),
+        "rule": (
+            "stops with the same name, all within 40 m of each other, "
+            "merged into one point at the mean of their latitude and longitude"
+        ),
+        "osm_stops": len(stops),
+        "merged_points": merged_points,
+        "stops_merged": len(stops) - len(points),
+    }
+    return points, info
 
 
 # --- street graph ---------------------------------------------------------
@@ -262,17 +403,20 @@ def build_place(
     nodes: dict,
     ways: list[list],
     limit: float = WALK_LIMIT_M,
+    prefix: str = "cafe",
 ) -> dict:
     """Compute the data part of a PlaceFixture from raw OSM-shaped input.
 
-    cafes: dicts with type, id, lat, lon and optional name.
+    cafes: the points (cafes, merged bus stops or stations): dicts with type,
+    id, lat, lon, optional name and optional osm_ids (kept in the point).
     nodes: OSM node id -> (lat, lon). ways: lists of OSM node ids.
+    limit: the walking limit in metres. prefix: the id prefix.
     Returns a dict with origin, points, streets, walking_edges and
     max_snap_m. Metadata (bbox, source, counts, dates) is added by the caller.
     """
     if not cafes:
-        raise ValueError("no cafes")
-    cafes = assign_cafe_ids(cafes)
+        raise ValueError("no points")
+    cafes = assign_point_ids(cafes, prefix)
     origin = centroid([(c["lat"], c["lon"]) for c in cafes])
     node_xy = {n: project(lat, lon, origin) for n, (lat, lon) in nodes.items()}
 
@@ -283,9 +427,11 @@ def build_place(
 
     points = []
     for c, (x, y) in zip(cafes, cafe_xy):
-        pt = {"id": c["cafe_id"], "x": x, "y": y, "lat": c["lat"], "lon": c["lon"]}
+        pt = {"id": c["point_id"], "x": x, "y": y, "lat": c["lat"], "lon": c["lon"]}
         if c.get("name"):
             pt["name"] = c["name"]
+        if c.get("osm_ids"):
+            pt["osm_ids"] = list(c["osm_ids"])
         points.append(pt)
     ids = [p["id"] for p in points]
     return {
@@ -333,15 +479,21 @@ def _parse_bbox(text: str) -> dict:
 def parse_args(argv: list[str]) -> argparse.Namespace:
     """Parse and validate arguments. Exits with a plain message on bad input.
 
-    Runs before any network call. Result: name, bbox (dict), out (Path).
+    Runs before any network call. Result: name, bbox (dict), kind, out (Path).
     """
     parser = argparse.ArgumentParser(
         prog="fetch_place.py",
-        description="Fetch cafes and streets from OpenStreetMap (Overpass) "
-        "and write a Place fixture.",
+        description="Fetch points (cafes, bus stops or bike-share stations) and streets "
+        "from OpenStreetMap (Overpass) and write a Place fixture.",
     )
     parser.add_argument("name", type=_parse_name, help="place name, e.g. kadikoy")
     parser.add_argument("bbox", type=_parse_bbox, help="south,west,north,east")
+    parser.add_argument(
+        "--kind",
+        choices=sorted(KINDS),
+        default="cafe",
+        help="what the points are (default: cafe)",
+    )
     parser.add_argument(
         "--out",
         type=Path,
@@ -364,12 +516,15 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 # --- Overpass -------------------------------------------------------------
 
-def build_query(bbox: dict) -> str:
-    """The exact Overpass query text. It is stored in the fixture."""
+def build_query(bbox: dict, kind: str = "cafe") -> str:
+    """The exact Overpass query text. It is stored in the fixture.
+
+    Only the first selector depends on the kind. The walkable ways are the same.
+    """
     box = f"({bbox['south']},{bbox['west']},{bbox['north']},{bbox['east']})"
     return (
         f"[out:json][timeout:{OVERPASS_TIMEOUT_S}];\n"
-        f"nwr{CAFE_FILTER}{box};\n"
+        f"{KINDS[kind]['statement']}{box};\n"
         "out center;\n"
         f"way{WALKABLE_FILTER}{box};\n"
         "out body;\n"
@@ -390,10 +545,24 @@ def fetch_overpass(query: str, endpoint: str = OVERPASS_ENDPOINT) -> dict:
         return json.loads(response.read().decode("utf-8"))
 
 
-def parse_overpass(response: dict) -> tuple[list[dict], dict, list[list], str]:
-    """Split an Overpass response into (cafes, nodes, ways, osm_data_timestamp).
+def _wanted(kind: str, el: dict, tags: dict) -> bool:
+    """True when this element is a point of the kind."""
+    if kind == "cafe":
+        return tags.get("amenity") == "cafe"
+    if kind == "bus_stop":
+        return el["type"] == "node" and tags.get("highway") == "bus_stop"
+    if kind == "bike_share":
+        return tags.get("amenity") == "bicycle_rental"
+    raise ValueError(f"unknown kind {kind!r}")
 
-    cafes: dicts with type, id, lat, lon, optional name. nodes: id -> (lat, lon).
+
+def parse_overpass(
+    response: dict, kind: str = "cafe"
+) -> tuple[list[dict], dict, list[list], str]:
+    """Split an Overpass response into (points, nodes, ways, osm_data_timestamp).
+
+    points: the elements of the kind, as dicts with type, id, lat, lon, optional
+    name (for bus stops, before the merge). nodes: id -> (lat, lon).
     ways: lists of node ids, one per walkable way. Nothing is filtered or tuned.
     """
     try:
@@ -408,13 +577,15 @@ def parse_overpass(response: dict) -> tuple[list[dict], dict, list[list], str]:
         tags = el.get("tags") or {}
         if el["type"] == "node" and "lat" in el and "lon" in el:
             nodes[el["id"]] = (el["lat"], el["lon"])
-        if tags.get("amenity") == "cafe":
+        if _wanted(kind, el, tags):
             if "lat" in el and "lon" in el:
                 lat, lon = el["lat"], el["lon"]
             elif "center" in el:
                 lat, lon = el["center"]["lat"], el["center"]["lon"]
             else:
-                raise ValueError(f"cafe {el['type']}/{el['id']} has no coordinates")
+                raise ValueError(
+                    f"{KINDS[kind]['singular']} {el['type']}/{el['id']} has no coordinates"
+                )
             cafe = {"type": el["type"], "id": el["id"], "lat": lat, "lon": lon}
             if tags.get("name"):
                 cafe["name"] = tags["name"]
@@ -464,64 +635,85 @@ def run(
     fetch(query, endpoint) -> dict can be replaced for offline tests.
     """
     args = parse_args(argv)  # exits before any network call on bad input
-    query = build_query(args.bbox)
+    kind = args.kind
+    spec = KINDS[kind]
+    query = build_query(args.bbox, kind)
     try:
         endpoints = (args.endpoint,) if args.endpoint else OVERPASS_ENDPOINTS
         response, endpoint_used = fetch_with_retries(query, endpoints, fetch, sleep)
-        cafes, nodes, ways, timestamp = parse_overpass(response)
+        points, nodes, ways, timestamp = parse_overpass(response, kind)
     except (OSError, ValueError) as err:
         print(f"{args.name}: download failed: {err}", file=sys.stderr)
         return 1
 
-    if len(cafes) < MIN_CAFES:
+    merge = None
+    if kind == "bus_stop":
+        points, merge = merge_stops(points)
+
+    if len(points) < MIN_POINTS:
+        extra = ""
+        if merge is not None:
+            extra = f" (after merging {merge['osm_stops']} OSM stops)"
         print(
-            f"{args.name}: only {len(cafes)} cafes found, need at least {MIN_CAFES}. "
-            "No file written.",
+            f"{args.name}: only {len(points)} {spec['noun']} found{extra}, "
+            f"need at least {MIN_POINTS}. No file written.",
             file=sys.stderr,
         )
         return 1
 
+    limit = float(spec["r"])
     try:
-        place = build_place(cafes, nodes, ways)
+        place = build_place(points, nodes, ways, limit, spec["prefix"])
     except ValueError as err:
         print(f"{args.name}: could not build the place: {err}", file=sys.stderr)
         return 1
 
-    fixture = {
-        "name": args.name,
-        "mode": "place",
-        "r": int(WALK_LIMIT_M),
-        "bbox": args.bbox,
-        "origin": place["origin"],
-        "points": place["points"],
-        "streets": place["streets"],
-        "walking_edges": place["walking_edges"],
-        "source": {
-            "attribution": ATTRIBUTION,
-            "licence": LICENCE,
-            "licence_url": LICENCE_URL,
-            "overpass_endpoint": endpoint_used,
-            "query": query,
-            "osm_data_timestamp": timestamp,
-            "fetched_at": (today or datetime.datetime.now(datetime.timezone.utc).date()).isoformat(),
-            "script": SCRIPT_PATH,
-            "script_args": list(argv),
-        },
-        "counts": {
-            "points": len(place["points"]),
-            "street_polylines": len(place["streets"]),
-            "walking_edges": len(place["walking_edges"]),
-            "max_snap_m": place["max_snap_m"],
-        },
+    # The cafe fixture keeps the shape it always had. The other kinds say what
+    # they are and tell their story.
+    fixture: dict = {"name": args.name, "mode": "place"}
+    if spec["story"] is not None:
+        fixture["kind"] = kind
+        fixture["story"] = spec["story"]
+    fixture.update(
+        {
+            "r": int(limit),
+            "bbox": args.bbox,
+            "origin": place["origin"],
+            "points": place["points"],
+            "streets": place["streets"],
+            "walking_edges": place["walking_edges"],
+        }
+    )
+    if merge is not None:
+        fixture["merge"] = merge
+    fixture["source"] = {
+        "attribution": ATTRIBUTION,
+        "licence": LICENCE,
+        "licence_url": LICENCE_URL,
+        "overpass_endpoint": endpoint_used,
+        "query": query,
+        "osm_data_timestamp": timestamp,
+        "fetched_at": (today or datetime.datetime.now(datetime.timezone.utc).date()).isoformat(),
+        "script": SCRIPT_PATH,
+        "script_args": list(argv),
+    }
+    fixture["counts"] = {
+        "points": len(place["points"]),
+        "street_polylines": len(place["streets"]),
+        "walking_edges": len(place["walking_edges"]),
+        "max_snap_m": place["max_snap_m"],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(fixture, ensure_ascii=False, separators=(",", ":")) + "\n",
         encoding="utf-8",
     )
+    merged = ""
+    if merge is not None:
+        merged = f", {merge['stops_merged']} stops merged into {merge['merged_points']} points"
     print(
-        f"{args.name}: wrote {args.out} ({fixture['counts']['points']} cafes, "
-        f"{fixture['counts']['walking_edges']} walking edges)"
+        f"{args.name}: wrote {args.out} ({fixture['counts']['points']} {spec['noun']}, "
+        f"{fixture['counts']['walking_edges']} walking edges{merged})"
     )
     return 0
 

@@ -36,10 +36,12 @@ const noun = (v: number | undefined, one: string, many: string): string => (v ==
 
 /**
  * The opening of Step 2. "All N points" when the rules made no pick before the atoms ran, so every point
- * was still open. "The other N points" when the rules had already picked some. Both numbers are Facts fields.
+ * was still open. "The other N points" when the rules had already picked some. It reads only the facts that
+ * the Step 2 sentences list in `needs` (groups.pointsLeft and groups.allOpen), so no other missing fact can
+ * change it.
  */
 function tangled(f: Facts): string {
-  const lead = f.rulesFirst?.count === 0 ? "All" : "The other";
+  const lead = f.groups!.allOpen ? "All" : "The other";
   return `${lead} ${n(f.groups!.pointsLeft)} points were too tangled for the rules.`;
 }
 
@@ -89,28 +91,28 @@ export const SENTENCES: SentenceDef[] = [
   // Step 2: groups
   {
     step: 2,
-    needs: ["groups.channel", "groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
+    needs: ["groups.channel", "groups.pointsLeft", "groups.allOpen", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "channel_plan" && f.groups!.smallest !== f.groups!.biggest,
     make: (f) =>
       `${tangled(f)} On channel ${n(f.groups!.channel)} they were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.smallest)} to ${n(f.groups!.biggest)} points, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
   },
   {
     step: 2,
-    needs: ["groups.channel", "groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
+    needs: ["groups.channel", "groups.pointsLeft", "groups.allOpen", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "channel_plan" && f.groups!.smallest === f.groups!.biggest,
     make: (f) =>
       `${tangled(f)} On channel ${n(f.groups!.channel)} they were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.biggest)} ${noun(f.groups!.biggest, "point", "points")}, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
   },
   {
     step: 2,
-    needs: ["groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
+    needs: ["groups.pointsLeft", "groups.allOpen", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "place" && f.groups!.smallest !== f.groups!.biggest,
     make: (f) =>
       `${tangled(f)} They were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.smallest)} to ${n(f.groups!.biggest)} points, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
   },
   {
     step: 2,
-    needs: ["groups.pointsLeft", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
+    needs: ["groups.pointsLeft", "groups.allOpen", "groups.count", "groups.smallest", "groups.biggest", "groups.shots"],
     when: (f) => f.mode === "place" && f.groups!.smallest === f.groups!.biggest,
     make: (f) =>
       `${tangled(f)} They were cut into ${n(f.groups!.count)} small ${noun(f.groups!.count, "group", "groups")} of ${n(f.groups!.biggest)} ${noun(f.groups!.biggest, "point", "points")}, and each group ran on the atoms ${n(f.groups!.shots)} times.`,
