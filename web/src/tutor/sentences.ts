@@ -365,11 +365,15 @@ export function buildWhy(why: WhyFacts): Step {
 export const NON_HYBRID_SENTENCE = "This explanation covers the atoms + rules (hybrid) plan only.";
 
 /** Idle text shown before a run is finished: two sentences, no numbers. */
-export function buildIdle(mode: Facts["mode"]): string[] {
+export function buildIdle(mode: Facts["mode"], kind?: "your_map"): string[] {
+  const first =
+    kind === "your_map"
+      ? "Each dot is a point. A line joins two that are closer than r, so they can't both be picked."
+      : mode === "channel_plan"
+        ? "Each dot is a wifi access point. A line joins two that are too close to share a channel."
+        : "Each dot is a cafe. A line joins two that are too close to both be picked.";
   return [
-    mode === "channel_plan"
-      ? "Each dot is a wifi access point. A line joins two that are too close to share a channel."
-      : "Each dot is a cafe. A line joins two that are too close to both be picked.",
+    first,
     "Press Run to see how the atoms and the rules build the plan, step by step.",
   ];
 }

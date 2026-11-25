@@ -8,8 +8,34 @@ import type { Wall } from "../edges/walls";
 import { nearestPoint } from "../render/hit";
 import { createA11y, type A11yLayer } from "../render/a11y";
 import { DynamicLayer } from "../render/dynamic-layer";
-import { StaticLayer, toScreenX, toScreenY, type StaticScene } from "../render/static-layer";
-import { DEFAULT_SEED, PLACES, placeTitle, type PlaceName } from "../settings";
+import { StaticLayer, toScreenX, toScreenY, toWorldX, toWorldY, type StaticScene } from "../render/static-layer";
+import {
+  DEFAULT_SEED,
+  MAX_TEXT_BYTES,
+  PLACES,
+  POINT_LIMIT,
+  RANDOM_BATCH,
+  YOUR_MAP_AREA_M,
+  YOUR_R_DEFAULT,
+  YOUR_R_MAX,
+  YOUR_R_MIN,
+  placeTitle,
+  type PlaceName,
+} from "../settings";
+import { detectKind, parseMapText, tooLargeReason } from "../data/custom-map";
+import {
+  addRandom,
+  clearMap,
+  clickAt,
+  emptyMap,
+  parseR,
+  randomFor,
+  replaceMap,
+  R_MESSAGE,
+  type EditResult,
+  type EditorState,
+} from "../your-map/editor";
+import { yourMapLabel } from "../your-map/label";
 import { state, subscribe, update } from "../state";
 import { buildRequest, DEFAULT_PLACE, placeView, type MapChoice } from "./map-request";
 import { buffer, doneCompetitors } from "../client";
@@ -135,7 +161,14 @@ export interface MapScreen {
   competitorDone(competitor: string): void;
 }
 
-type Mode = "channel_plan" | "place";
+type Mode = "channel_plan" | "place" | "your_map";
+
+/** The Engine, the Scoreboard, the legend and the Tutor know two modes. Your map runs as Place. */
+function engineModeOf(m: Mode): "channel_plan" | "place" {
+  return m === "channel_plan" ? "channel_plan" : "place";
+}
+
+export const YOUR_MAP_HINT = "Click to add or remove points.";
 
 function radioGroup(
   legendText: string,
@@ -192,6 +225,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     [
       { value: "channel_plan", label: "Channel plan (3 rounds)" },
       { value: "place", label: "Place (1 round)" },
+      { value: "your_map", label: "Your map (1 round)" },
     ],
     mode,
     (v) => {
@@ -227,6 +261,42 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   );
   const placeSelector = createPlaceSelector();
 
+  // ---- Your map: editor controls (ui requirement 8) ----
+  /** The points of Your map. Made the first time it is chosen, then kept. */
+  let yourState: EditorState | null = null;
+  /** Bumped on every edit, so the scene key changes and the map is redrawn. */
+  let yourVersion = 0;
+  /** The last valid r, used for the picture and the run. */
+  let yourR = YOUR_R_DEFAULT;
+  let yourRInvalid = false;
+  let randomPresses = 0;
+  /** Message for the corner of the map (an editor refusal or the r message). */
+  let yourNote: string | null = null;
+
+  const yourGroup = document.createElement("fieldset");
+  yourGroup.className = "place-selector your-group";
+  yourGroup.hidden = true;
+  const yourLegend = document.createElement("legend");
+  yourLegend.textContent = "Your map";
+  const rLabel = document.createElement("label");
+  rLabel.className = "seed-label";
+  rLabel.textContent = "r (metres) ";
+  const rInput = document.createElement("input");
+  rInput.type = "number";
+  rInput.min = String(YOUR_R_MIN);
+  rInput.max = String(YOUR_R_MAX);
+  rInput.step = "any";
+  rInput.inputMode = "decimal";
+  rInput.value = String(YOUR_R_DEFAULT);
+  rLabel.append(rInput);
+  const clearButton = document.createElement("button");
+  clearButton.type = "button";
+  clearButton.textContent = "Clear";
+  const randomButton = document.createElement("button");
+  randomButton.type = "button";
+  randomButton.textContent = "Add random points";
+  yourGroup.append(yourLegend, rLabel, clearButton, randomButton);
+
   const seedLabel = document.createElement("label");
   seedLabel.className = "seed-label";
   seedLabel.textContent = "Seed ";
@@ -239,6 +309,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   const runButton = document.createElement("button");
   runButton.type = "button";
   runButton.textContent = "Run";
+
+  const runHint = document.createElement("span");
+  runHint.className = "muted run-hint";
+  runHint.textContent = "Add at least one point to run.";
+  runHint.hidden = true;
 
   const message = document.createElement("p");
   message.className = "error";
@@ -256,7 +331,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   osmCredit.className = "map-credit";
   osmCredit.textContent = "© OpenStreetMap contributors";
   osmCredit.hidden = true;
-  wrap.append(staticCanvas, dynamicCanvas, osmCredit);
+  // Your map: the hint (or the latest editor message) in the top left corner, so it adds no height.
+  const mapHint = document.createElement("span");
+  mapHint.className = "map-hint";
+  mapHint.setAttribute("role", "status");
+  mapHint.textContent = YOUR_MAP_HINT;
+  mapHint.hidden = true;
+  wrap.append(staticCanvas, dynamicCanvas, osmCredit, mapHint);
   const staticLayer = new StaticLayer(staticCanvas);
   const dynamicLayer = new DynamicLayer(dynamicCanvas);
   const reducedQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
@@ -303,6 +384,18 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   // Why this point: click or tap on a Point after a finished run. A click on
   // no Point leaves the answer. leaveWhy does nothing when no answer is shown.
   dynamicCanvas.addEventListener("pointerdown", (e) => {
+    // Your map, in the editor state: a click on a Point removes it, a click on an empty spot adds one.
+    if (mode === "your_map" && editorOpen()) {
+      if (yourState === null || scene === null) return;
+      const box = dynamicCanvas.getBoundingClientRect();
+      const px = e.clientX - box.left;
+      const py = e.clientY - box.top;
+      const hit = nearestPoint(pointXY, px, py, 12);
+      const hitId = hit >= 0 ? (scene.points[hit]?.id ?? null) : null;
+      const view = staticLayer.view;
+      applyEdit(clickAt(yourState, toWorldX(view, px), toWorldY(view, py), hitId, POINT_LIMIT));
+      return;
+    }
     if (!finishedShown) return;
     const r = dynamicCanvas.getBoundingClientRect();
     const i = nearestPoint(pointXY, e.clientX - r.left, e.clientY - r.top, 12);
@@ -323,7 +416,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function refreshIdle(): void {
     if (running || finishedShown) return;
     if (labelText === "") strip.hide();
-    else strip.showIdle(labelText, buildIdle(mode));
+    else strip.showIdle(labelText, buildIdle(engineModeOf(mode), mode === "your_map" ? "your_map" : undefined));
     layout(); // the strip height changed, so the room left for the map did too
   }
   function setLabel(text: string): void {
@@ -345,7 +438,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
 
   const toolbar = document.createElement("div");
   toolbar.className = "toolbar";
-  toolbar.append(modeGroup.el, wallsGroup.el, distanceGroup.el, placeSelector.el, seedLabel, runButton);
+  toolbar.append(modeGroup.el, wallsGroup.el, distanceGroup.el, placeSelector.el, yourGroup, seedLabel, runButton, runHint);
 
   const noData = document.createElement("p");
   noData.className = "error no-data";
@@ -368,8 +461,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     const input: ExportInput = {
       result: finishedResult,
       plan,
-      mode,
-      map: mode === "place" ? (state.placeName ?? DEFAULT_PLACE) : "hero",
+      mode: engineModeOf(mode),
+      map: mode === "your_map" ? "your-map" : mode === "place" ? (state.placeName ?? DEFAULT_PLACE) : "hero",
       seed: runSeed,
       points: scene.points.map((p) => {
         const q = p as { id: string; x: number; y: number; lon?: number; lat?: number };
@@ -435,13 +528,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       scoreboard.finish(competitors);
       selectedPlan = "Hybrid";
       finishedResult = result;
-      legendBox.replaceChildren(renderLegend(mode));
+      legendBox.replaceChildren(renderLegend(engineModeOf(mode)));
       legendBox.hidden = false;
       finishedShown = true;
+      updateYourUi();
       strip.showFinished(
         "The run is finished. These results are a simulation.",
         deriveFacts({
-          mode,
+          mode: engineModeOf(mode),
           seed: runSeed,
           ids: scene?.points.map((p) => p.id) ?? [],
           edges: runEdges,
@@ -477,6 +571,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     legendBox.hidden = true;
     toolbar.hidden = false;
     tagline.hidden = false;
+    updateYourUi();
     update({ screen: "map" });
     refreshIdle();
     layout();
@@ -495,15 +590,182 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   let lastW = 0;
 
   function showMessage(text: string | null): void {
+    const changed = message.hidden !== (text === null);
     message.hidden = text === null;
     message.textContent = text ?? "";
+    // The message row changes the room left for the map, so the page stays inside the viewport.
+    if (changed) layout();
+  }
+
+  // ---- Your map: state, editing and the Map_Text ----
+  function ensureYourState(): EditorState {
+    // The first choice in a visit starts with 10 fixed points, so Run works at once. Clear leaves it empty.
+    if (yourState === null) yourState = addRandom(emptyMap(), RANDOM_BATCH, randomFor(0), POINT_LIMIT).state;
+    return yourState;
+  }
+
+  /** The drawing area joined with the bounding box of the points (a pasted map can be larger than the area). */
+  function yourBounds(pts: readonly { x: number; y: number }[]): { minX: number; minY: number; maxX: number; maxY: number } {
+    const b: { minX: number; minY: number; maxX: number; maxY: number } = {
+      minX: 0,
+      minY: 0,
+      maxX: YOUR_MAP_AREA_M.width,
+      maxY: YOUR_MAP_AREA_M.height,
+    };
+    for (const p of pts) {
+      b.minX = Math.min(b.minX, p.x);
+      b.maxX = Math.max(b.maxX, p.x);
+      b.minY = Math.min(b.minY, p.y);
+      b.maxY = Math.max(b.maxY, p.y);
+    }
+    return b;
+  }
+
+  const yourKey = (): string => `your:${yourVersion}`;
+
+  /** The editor takes clicks only when no run is shown. */
+  function editorOpen(): boolean {
+    return mode === "your_map" && !running && !finishedShown && !run.active;
+  }
+
+  /** One edit of the points: keep the new state, show its message, redraw. */
+  function applyEdit(r: EditResult): void {
+    if (r.state !== yourState) {
+      yourState = r.state;
+      yourVersion++;
+    }
+    yourNote = yourRInvalid ? R_MESSAGE : r.message;
+    render();
+  }
+
+  function setTextStatus(text: string, isError: boolean): void {
+    textStatus.textContent = text;
+    textStatus.classList.toggle("is-error", isError);
+  }
+
+  /** Use the text of the box or a file. A bad text changes nothing but the message. */
+  function applyMapText(text: string, fileName?: string): void {
+    const parsed = parseMapText(text, detectKind(text, fileName), POINT_LIMIT);
+    if (!parsed.ok) {
+      setTextStatus(parsed.reason, true);
+      return;
+    }
+    yourState = replaceMap(parsed.points);
+    yourVersion++;
+    yourNote = yourRInvalid ? R_MESSAGE : null;
+    const n = parsed.points.length;
+    setTextStatus(`Loaded ${n} ${n === 1 ? "point" : "points"}.`, false);
+    render();
+  }
+
+  // The Map_Text panel sits in the column on the right of the map, where the Scoreboard opens during a run.
+  const textPanel = document.createElement("section");
+  textPanel.className = "maptext-panel";
+  textPanel.setAttribute("aria-label", "Points as text");
+  textPanel.hidden = true;
+  const textTitle = document.createElement("h2");
+  textTitle.textContent = "Points as text";
+  const textArea = document.createElement("textarea");
+  textArea.id = "maptext-box";
+  textArea.rows = 6;
+  textArea.spellcheck = false;
+  textArea.placeholder = "id,x,y\na,10,20\nb,35.5,12";
+  const textAreaLabel = document.createElement("label");
+  textAreaLabel.htmlFor = textArea.id;
+  textAreaLabel.textContent = "Paste points as CSV: id,x,y in metres";
+  const fileLabel = document.createElement("label");
+  fileLabel.className = "maptext-file";
+  fileLabel.textContent = "or choose a CSV or GeoJSON file ";
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".csv,.geojson,.json,text/csv,application/geo+json,application/json";
+  fileLabel.append(fileInput);
+  const useButton = document.createElement("button");
+  useButton.type = "button";
+  useButton.textContent = "Use these points";
+  const textStatus = document.createElement("p");
+  textStatus.className = "maptext-status";
+  textStatus.setAttribute("role", "status");
+  textPanel.append(textTitle, textAreaLabel, textArea, fileLabel, useButton, textStatus);
+  scoreboard.el.before(textPanel);
+
+  useButton.addEventListener("click", () => applyMapText(textArea.value));
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files?.[0];
+    if (!file) return;
+    if (file.size > MAX_TEXT_BYTES) {
+      setTextStatus(tooLargeReason().replace("The text", "The file"), true);
+      fileInput.value = "";
+      return;
+    }
+    file.text().then(
+      (text) => {
+        textArea.value = text;
+        applyMapText(text, file.name);
+        fileInput.value = ""; // so the same file can be chosen again
+      },
+      () => {
+        setTextStatus("The file could not be read.", true);
+        fileInput.value = "";
+      },
+    );
+  });
+
+  clearButton.addEventListener("click", () => {
+    if (yourState === null || !editorOpen()) return;
+    applyEdit({ state: clearMap(yourState), message: null });
+  });
+  randomButton.addEventListener("click", () => {
+    if (yourState === null || !editorOpen()) return;
+    randomPresses++;
+    applyEdit(addRandom(yourState, RANDOM_BATCH, randomFor(randomPresses), POINT_LIMIT));
+  });
+  rInput.addEventListener("input", () => {
+    const r = parseR(rInput.value);
+    if (r.ok) {
+      yourR = r.value;
+      yourRInvalid = false;
+      yourNote = null;
+      yourVersion++; // the edges change
+    } else {
+      yourRInvalid = true;
+      yourNote = r.error;
+    }
+    if (mode === "your_map") render();
+  });
+
+  /** Show or hide the parts that belong to Your map only. */
+  function updateYourUi(): void {
+    const yours = mode === "your_map";
+    if (yours) ensureYourState();
+    const open = editorOpen();
+    yourGroup.hidden = !yours;
+    for (const b of [clearButton, randomButton, rInput, useButton, fileInput, textArea]) b.disabled = !open;
+    textPanel.hidden = !(yours && open);
+    mapHint.hidden = !(yours && open);
+    mapHint.textContent = yourNote ?? YOUR_MAP_HINT;
+    mapHint.classList.toggle("is-error", yourNote !== null);
+    runHint.hidden = !(yours && open && (yourState?.points.length ?? 0) === 0);
   }
 
   function rebuildScene(): void {
     scene = null;
     choice = null;
     sceneKey = "";
-    if (mode === "channel_plan") {
+    if (mode === "your_map") {
+      const pts = ensureYourState().points;
+      choice = { mode, points: pts, r: yourR };
+      // The request builds this same edge list, so what is drawn is what is sent.
+      const edges = buildStraightEdges(pts, yourR);
+      scene = {
+        points: pts,
+        edges,
+        bounds: yourBounds(pts),
+        frame: { width: YOUR_MAP_AREA_M.width, height: YOUR_MAP_AREA_M.height },
+      };
+      sceneKey = yourKey();
+      setLabel(yourMapLabel(pts.length));
+    } else if (mode === "channel_plan") {
       if (hero === null) return;
       const edgesChoice: MapChoice = { mode, points: hero.points, walls, wallsOn, r: hero.graph.r };
       choice = edgesChoice;
@@ -563,7 +825,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     } else {
       paintPlan(plan);
     }
-    legendBox.replaceChildren(renderLegend(mode, plan === "Atoms_Alone"));
+    legendBox.replaceChildren(renderLegend(engineModeOf(mode), plan === "Atoms_Alone"));
     strip.setPlan(plan); // the Tutor: Steps for Hybrid, one sentence otherwise
     a11y.announce(`The map shows the plan: ${CARD_LABELS[plan]}.`);
   }
@@ -571,10 +833,12 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function layout(): void {
     if (scene === null) return;
     const width = Math.max(240, Math.round(wrap.clientWidth || 640));
+    // Your map fits its bounds (the area and the points), so an empty map still has a size.
+    const b = scene.bounds;
     const xs = scene.points.map((p) => p.x);
     const ys = scene.points.map((p) => p.y);
-    const spanX = Math.max(...xs) - Math.min(...xs) || 1;
-    const spanY = Math.max(...ys) - Math.min(...ys) || 1;
+    const spanX = (b ? b.maxX - b.minX : Math.max(...xs) - Math.min(...xs)) || 1;
+    const spanY = (b ? b.maxY - b.minY : Math.max(...ys) - Math.min(...ys)) || 1;
     // Keep the map and the toolbar on one laptop screen (about 1366x768).
     // Space below the map's top edge, minus a small bottom margin. Falls back to a fixed offset before the first paint.
     const top = wrap.hidden ? 0 : wrap.getBoundingClientRect().top;
@@ -612,6 +876,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     distanceGroup.el.hidden = mode !== "place";
     placeSelector.el.hidden = mode !== "place";
     placeSelector.info.hidden = mode !== "place";
+    updateYourUi();
 
     // Place mode opens on Kadikoy. Nothing loaded and nothing loading: try once per visit.
     if (mode === "place" && state.placeFixture === null && !state.placeLoading && !placeRequested) {
@@ -629,8 +894,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     // Place errors are shown by the selector itself.
     showMessage(mode === "channel_plan" ? next : null);
 
-    const key = mode === "channel_plan" ? `channel:${wallsOn}` : `place:${state.placeFixture?.name}:${walking}`;
-    const ready = mode === "channel_plan" ? hero !== null : state.placeFixture !== null;
+    const key =
+      mode === "your_map"
+        ? yourKey()
+        : mode === "channel_plan"
+          ? `channel:${wallsOn}`
+          : `place:${state.placeFixture?.name}:${walking}`;
+    const ready = mode === "your_map" ? true : mode === "channel_plan" ? hero !== null : state.placeFixture !== null;
     if (!ready) {
       scene = null;
       choice = null;
@@ -639,9 +909,15 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     } else if (scene === null || key !== sceneKey) {
       rebuildScene();
       a11y.setMapLabel(
-        mode === "channel_plan" ? "Wifi hall" : (state.placeFixture ? placeTitle(state.placeFixture.name) : "Place"),
+        mode === "your_map"
+          ? "Your map"
+          : mode === "channel_plan"
+            ? "Wifi hall"
+            : state.placeFixture
+              ? placeTitle(state.placeFixture.name)
+              : "Place",
         scene?.points.length ?? 0,
-        mode === "channel_plan" ? "channel plan" : "place",
+        mode === "your_map" ? "your map" : mode === "channel_plan" ? "channel plan" : "place",
       );
       lastW = 0; // force the dynamic layer to take the new points
     }
@@ -655,9 +931,10 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     } else {
       osmCredit.hidden = true;
       noData.hidden = true;
-      wrap.hidden = hero === null;
+      wrap.hidden = mode === "your_map" ? false : hero === null;
     }
-    runButton.disabled = choice === null || running;
+    const yourEmpty = mode === "your_map" && (yourState?.points.length ?? 0) === 0;
+    runButton.disabled = choice === null || running || yourEmpty || (mode === "your_map" && yourRInvalid);
     layout();
   }
 
@@ -674,6 +951,22 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function startRun(seedValue: number): void {
     if (run.active || running) return;
     if (choice === null || scene === null) return;
+    // Your map: three plain refusals, none of them starts a run.
+    if (mode === "your_map") {
+      const n = scene.points.length;
+      const refusal =
+        yourRInvalid
+          ? `${R_MESSAGE} No run was started.`
+          : n === 0
+            ? "Add at least one point to run."
+            : n > POINT_LIMIT
+              ? `This map has ${n} points. The limit is ${POINT_LIMIT}, so nothing was run.`
+              : null;
+      if (refusal !== null) {
+        showMessage(refusal);
+        return;
+      }
+    }
     showMessage(null);
     // Run and Run again get hidden or disabled below. Remember if focus was on them.
     const hadFocus = document.activeElement === runButton || scoreboard.holdsRunFocus();
@@ -682,6 +975,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     toolbar.hidden = true;
     tagline.hidden = true;
     running = true;
+    updateYourUi();
     runButton.disabled = true;
     runSeed = seedValue;
     seedInput.value = String(seedValue);
@@ -695,7 +989,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     update({ screen: "run", result: null });
     // The panel opens now, all cards "Computing…". Opening it narrows the map,
     // so lay the map out before the first event arrives.
-    scoreboard.begin(runSeed, mode);
+    scoreboard.begin(runSeed, engineModeOf(mode));
     run.begin({ layer: dynamicLayer, ids, announce: (m) => a11y.announce(m) });
     layout(); // after the run bar is shown, so the map height accounts for it
     if (hadFocus) run.focusSkip();

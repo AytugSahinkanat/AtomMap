@@ -3,6 +3,7 @@
 
 import { PLACE_R_M } from '../settings';
 import { buildWallEdges } from '../edges/walls';
+import { buildStraightEdges } from '../edges/straight';
 import type { Wall } from '../edges/walls';
 
 export interface RequestPoint {
@@ -39,6 +40,13 @@ export type MapChoice =
       points: readonly RequestPoint[];
       walkingEdges: readonly Edge[];
       walking: boolean;
+    }
+  | {
+      /** Your map: the visitor's own points, one round, straight-line distance (ui requirement 8). */
+      mode: 'your_map';
+      points: readonly RequestPoint[];
+      /** The visitor's r in metres. */
+      r: number;
     };
 
 /** What the Place mode shows: a map only when a valid place is loaded. */
@@ -69,6 +77,11 @@ export function buildRequest(choice: MapChoice, seed: number): StartPayload {
   if (choice.mode === 'channel_plan') {
     const edges = buildWallEdges(choice.points, choice.walls, choice.wallsOn, choice.r);
     return { points, mode: 'channel_plan', seed, graph: { r: choice.r, edges } };
+  }
+  if (choice.mode === 'your_map') {
+    // The engine's mode is place. The edge list is sent, so the drawn and the sent edges are the same list.
+    const edges = buildStraightEdges(choice.points, choice.r);
+    return { points, mode: 'place', seed, graph: { r: choice.r, edges } };
   }
   if (choice.walking) {
     const edges = choice.walkingEdges.map((e): Edge => [e[0], e[1]]);

@@ -158,7 +158,7 @@ Out of scope: the AI tutor itself, real hardware, accounts, a backend, a map til
 #### Acceptance Criteria
 
 1. THE Map_Screen SHALL offer "Your map (1 round)" as a third choice in the Mode group, next to "Channel plan (3 rounds)" and "Place (1 round)". The Your_Map runs in one Round and sends the Engine mode `place`.
-2. WHEN the visitor chooses the Your_Map, THE Map_Screen SHALL show the Your_Map_Area, empty at the start, drawn at its true proportions (90 m by 60 m), and the Map_Editor.
+2. WHEN the visitor chooses the Your_Map for the first time in a visit, THE Map_Screen SHALL show the Your_Map_Area, drawn at its true proportions (90 m by 60 m), with the Map_Editor and a starting map of 10 Points made by the fixed generator of the design (the same 10 Points every time), so that a run works at once, and the short hint "Click to add or remove points." on the map. Choosing another map and coming back keeps the Points the visitor has. "Clear" still empties the map.
 3. WHEN the visitor clicks an empty spot of the Your_Map_Area, THE Map_Editor SHALL add a Point there, with its x and y in metres rounded to 0.1 m and the next free id of the form `p001`, `p002`.
 4. WHEN the visitor clicks an existing Point, THE Map_Editor SHALL remove that Point and no other.
 5. THE Map_Editor SHALL offer a "Clear" button that removes every Point, and an "Add random points" button that adds 10 Points at random places inside the Your_Map_Area.

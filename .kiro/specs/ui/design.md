@@ -148,6 +148,8 @@ Walking edges come from the Street_Fixture of the selected place (see Place data
 
 The third choice of the Mode group ("Your map (1 round)", value `your_map`). It is Place mode rules with straight-line distance: one Round, the visitor's own Points, the visitor's r. The Engine is not changed.
 
+**Starting map and hint.** The first time the Your_Map is chosen in a visit, the editor starts with `addRandom(emptyMap(), RANDOM_BATCH, mulberry32(RANDOM_SEED_BASE), POINT_LIMIT)`: 10 Points, always the same ones. Presses of "Add random points" use `RANDOM_SEED_BASE + n` for press number n (1, 2, ...), so they never repeat the starting Points. Later choices of the Your_Map keep the Points as the visitor left them, and "Clear" leaves the map empty (it is not refilled). The hint "Click to add or remove points." is a small text in the corner of the map frame, like the OpenStreetMap credit of the Place map, so it adds no height. It shows while the Your_Map is chosen and no run is in progress or finished.
+
 **Request.** `MapChoice` gets a third variant and `buildRequest` stays the one place that builds every request:
 
 ```ts
@@ -196,20 +198,20 @@ Ids are `p` plus the number zero padded to 3 digits (`p001`, then `p1000` after 
 
 **Not on the Results_Page.** `results.ts`, `results.json` and `record-results.mjs` know three maps and are not changed. The Your_Map has no Run_Record.
 
-**Layout at 1366 x 768 and 375.** The toolbar of the Your_Map holds the Mode group, the r input, "Clear", "Add random points", the Seed and Run. When the toolbar wraps to a second line, `layout()` already takes the map height from the room that is left (down to its 240 px floor), so the page height stays inside the viewport. The Playwright check (task 13.10) reads `document.scrollingElement.scrollHeight <= innerHeight` at 1366 x 768 in the states of Requirement 8.19, and at 375 px wide checks that `scrollWidth <= innerWidth` and that every control can be reached and clicked.
+**Layout at 1366 x 768 and 375.** The toolbar of the Your_Map holds the Mode group, the r input, "Clear", "Add random points", the Seed and Run. When the toolbar wraps to a second line, `layout()` already takes the map height from the room that is left (down to its 240 px floor), so the page height stays inside the viewport. The Playwright check (task 13.10) reads `document.scrollingElement.scrollHeight <= innerHeight` at 1366 x 768 in the states of Requirement 8.19 (starting map, empty after Clear, with a message, run in progress, finished run), and at 375 px wide checks that `scrollWidth <= innerWidth` and that every control can be reached and clicked.
 
 #### Point limit: how it is measured
 
-The limit is measured, not guessed (Requirement 8.13). The script `web/scripts/measure-limit.mjs` (`npm run measure-limit`, run by hand, like `record-results`) works on the built `dist/` in Chromium through Playwright, one worker, with requests from the app's own `buildRequest`. The settings below are fixed here before the first run (honesty rule 8) and are not changed after seeing numbers.
+The limit is measured, not guessed (Requirement 8.13). The script `web/scripts/measure-limit.mjs` (`npm run measure-limit`, run by hand, like `record-results`) works on the built `dist/` in Chromium through Playwright, one worker, with requests from the app's own `buildRequest`. Its settings and the limit rule are in `web/scripts/measure-lib.mjs` (tested in `measure-lib.test.ts`). It writes `web/scripts/limit-measurements.json` once at the end, and prints the table below. The settings below are fixed here before the first run (honesty rule 8) and are not changed after seeing numbers.
 
 | Setting | Value |
 |---|---|
 | Sizes (Points) | 25, 50, 100, 150, 200, 300 |
-| Layouts | `dense`: r = 20 m. `mid`: r = 10 m. `sparse`: r = 5 m. Points uniform random in the 90 m x 60 m area, rounded to 0.1 m |
-| Layout seeds | 1, 2, 3 for each size and layout (so 54 runs) |
+| Layouts | `dense`: r = 20 m. `mid`: r = 10 m. `sparse`: r = 5 m. Points uniform random in the 90 m x 60 m area, rounded to 0.1 m. For one layout seed the three layouts use the same points and differ only in r |
+| Layout seeds | 1, 2, 3 for each size and layout (so 54 runs). The points of size n are the first n points drawn by `mulberry32(layout seed)`, so a smaller size is the start of a larger one |
 | Run seed | 1 (`DEFAULT_SEED`) |
 | Warm-up | One run first, 20 points, `dense`, layout seed 1, not counted. It is the first call in a fresh page, which pays for compiling the Python code |
-| Measured time | From the click on Run to the moment all four Scoreboard cards are ready (skip pressed at once, so playback time is not counted). Page load and Pyodide start are not counted |
+| Measured time | From sending the request to the Worker until the result with all four Competitors is back (the same path as the Run button, without playback). Page load and Pyodide start are not counted |
 | Per-run timeout | 300 s |
 | Stop rule | After a size in which any run took over 180 s, the larger sizes are not run and the table says so |
 | Computer | The development laptop. The doc names the CPU, memory, Chromium version and date |

@@ -12,6 +12,7 @@ export const STATIC_COLOURS = {
   edge: 'rgba(143, 140, 184, 0.22)',
   concrete: '#e8e6f5', // text colour, thick and solid
   drywall: '#8f8cb8', // muted colour, thin and dotted
+  frame: 'rgba(143, 140, 184, 0.55)', // the drawing area of Your map, thin and dim
 } as const;
 
 export interface StaticPoint {
@@ -30,6 +31,12 @@ export interface StaticScene {
   walls?: readonly Wall[];
   /** Place only. Polylines in metres. */
   streets?: readonly (readonly (readonly [number, number])[])[];
+  /**
+   * Your map only. The view fits these bounds instead of the Points, so an empty map still has a view.
+   * rame draws the drawing area (from 0, 0 to width, height) as a thin rectangle.
+   */
+  bounds?: { minX: number; minY: number; maxX: number; maxY: number };
+  frame?: { width: number; height: number };
 }
 
 /** World to screen mapping, in CSS pixels. */
@@ -55,10 +62,15 @@ export function fitView(scene: StaticScene, width: number, height: number): View
     if (y < minY) minY = y;
     if (y > maxY) maxY = y;
   };
-  for (const p of scene.points) grow(p.x, p.y);
-  for (const w of scene.walls ?? []) {
-    grow(w.x1, w.y1);
-    grow(w.x2, w.y2);
+  if (scene.bounds) {
+    grow(scene.bounds.minX, scene.bounds.minY);
+    grow(scene.bounds.maxX, scene.bounds.maxY);
+  } else {
+    for (const p of scene.points) grow(p.x, p.y);
+    for (const w of scene.walls ?? []) {
+      grow(w.x1, w.y1);
+      grow(w.x2, w.y2);
+    }
   }
   if (!Number.isFinite(minX)) {
     return { scale: 1, offsetX: 0, offsetY: 0, height };
@@ -80,6 +92,9 @@ export function fitView(scene: StaticScene, width: number, height: number): View
 
 export const toScreenX = (v: View, x: number): number => v.offsetX + x * v.scale;
 export const toScreenY = (v: View, y: number): number => v.height - (v.offsetY + y * v.scale);
+/** The inverse of toScreenX and toScreenY: a click position in CSS pixels to metres. */
+export const toWorldX = (v: View, sx: number): number => (sx - v.offsetX) / v.scale;
+export const toWorldY = (v: View, sy: number): number => (v.height - sy - v.offsetY) / v.scale;
 
 /** Number of stroke() calls made by the last draw, per style. Used by tests. */
 export interface DrawStats {
@@ -87,6 +102,7 @@ export interface DrawStats {
   edges: number;
   concrete: number;
   drywall: number;
+  frame: number;
 }
 
 /**
@@ -100,10 +116,25 @@ export function drawStaticScene(
   width: number,
   height: number,
 ): DrawStats {
-  const stats: DrawStats = { streets: 0, edges: 0, concrete: 0, drywall: 0 };
+  const stats: DrawStats = { streets: 0, edges: 0, concrete: 0, drywall: 0, frame: 0 };
   ctx.clearRect(0, 0, width, height);
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
+
+  // Your map: the drawing area as a thin frame, under everything else.
+  if (scene.frame) {
+    const x0 = toScreenX(view, 0);
+    const y0 = toScreenY(view, 0);
+    const x1 = toScreenX(view, scene.frame.width);
+    const y1 = toScreenY(view, scene.frame.height);
+    ctx.beginPath();
+    ctx.rect(Math.min(x0, x1), Math.min(y0, y1), Math.abs(x1 - x0), Math.abs(y1 - y0));
+    ctx.setLineDash([]);
+    ctx.strokeStyle = STATIC_COLOURS.frame;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    stats.frame = 1;
+  }
 
   // Streets, under everything else.
   const streets = scene.streets ?? [];

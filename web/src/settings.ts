@@ -56,5 +56,31 @@ export type PlaceName = (typeof PLACES)[number]['name'];
 /** Walking rule for Place_Mode, in metres. */
 export const PLACE_R_M = 150;
 
+// Your map (ui spec, requirement 8). All values are decided before running (honesty rule 8).
+
+/** The drawing area of Your map, in metres (about the size of the wifi hall). Origin at the lower left. */
+export const YOUR_MAP_AREA_M = { width: 90, height: 60 } as const;
+
+/** Conflict radius of Your map: default and allowed range, in metres. */
+export const YOUR_R_DEFAULT = 20;
+export const YOUR_R_MIN = 2;
+export const YOUR_R_MAX = 200;
+
+/** Points added by one press of "Add random points", and by the starting map. */
+export const RANDOM_BATCH = 10;
+
+/** The starting map uses this seed. Press number n of "Add random points" uses RANDOM_SEED_BASE + n. */
+export const RANDOM_SEED_BASE = 20260;
+
+/** Largest text or file the "Points as text" box accepts. */
+export const MAX_TEXT_BYTES = 1_000_000;
+
+/**
+ * Largest number of points in Your map.
+ * PROVISIONAL: 300 is the largest size of the measurement plan (ui design, "Point limit: how it is measured"),
+ * set only so that the measurement can run. Task 13.9 replaces it with the measured value.
+ */
+export const POINT_LIMIT = 300;
+
 /** Folder the fixtures are served from, relative to the page (same origin). */
 export const FIXTURES_DIR = 'fixtures/';
