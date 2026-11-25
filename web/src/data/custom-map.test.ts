@@ -80,8 +80,10 @@ describe("CSV: bad files give a reason and no points", () => {
 });
 
 describe("GeoJSON: good files", () => {
-  // Expected metres were computed with project() and centroid() of scripts/fetch_place.py:
-  // centroid (41.004, 29.008); (41.0, 29.0) -> (-671.3, -444.8); (41.01, 29.02) -> (1007.0, 667.2); (41.002, 29.004) -> (-335.7, -222.4)
+  // Expected numbers were computed with centroid() and project() of scripts/fetch_place.py, then centred by hand:
+  // points (lat, lon) (41.0, 29.0), (41.0003, 29.0004), (41.0005, 29.0002) -> centroid (41.000267, 29.0002)
+  // -> metres (-16.8, -29.7), (16.8, 3.7), (0.0, 25.9). The box is x -16.8..16.8 and y -29.7..25.9,
+  // so the shift to the middle of the 90 m x 60 m area (45, 30) is dx = 45.0 and dy = 31.9.
   const pt = (lon: number, lat: number, props: object | null = {}) => ({
     type: "Feature",
     geometry: { type: "Point", coordinates: [lon, lat] },
@@ -89,33 +91,68 @@ describe("GeoJSON: good files", () => {
   });
   const collection = {
     type: "FeatureCollection",
-    features: [pt(29.0, 41.0, { id: "west" }), pt(29.02, 41.01, null), pt(29.004, 41.002, { id: 7 })],
+    features: [pt(29.0, 41.0, { id: "west" }), pt(29.0004, 41.0003, null), pt(29.0002, 41.0005, { id: 7 })],
   };
 
-  it("projects like fetch_place.py and keeps lon and lat", () => {
+  it("projects like fetch_place.py, centres the points in the drawing area and keeps lon and lat", () => {
     const pts = good(JSON.stringify(collection), "geojson");
     expect(pts).toEqual([
-      { id: "west", x: -671.3, y: -444.8, lon: 29.0, lat: 41.0 },
-      { id: "p001", x: 1007.0, y: 667.2, lon: 29.02, lat: 41.01 },
-      { id: "7", x: -335.7, y: -222.4, lon: 29.004, lat: 41.002 },
+      { id: "west", x: 28.2, y: 2.2, lon: 29.0, lat: 41.0 },
+      { id: "p001", x: 61.8, y: 35.6, lon: 29.0004, lat: 41.0003 },
+      { id: "7", x: 45.0, y: 57.8, lon: 29.0002, lat: 41.0005 },
     ]);
   });
-  it("reads a single Feature and a bare Point", () => {
+  it("puts the middle of the bounding box at the middle of the area (45, 30) and keeps every distance", () => {
+    const pts = good(JSON.stringify(collection), "geojson");
+    const xs = pts.map((p) => p.x);
+    const ys = pts.map((p) => p.y);
+    expect((Math.min(...xs) + Math.max(...xs)) / 2).toBeCloseTo(45, 1);
+    expect((Math.min(...ys) + Math.max(...ys)) / 2).toBeCloseTo(30, 1);
+    for (const p of pts) {
+      expect(p.x).toBeGreaterThanOrEqual(0);
+      expect(p.x).toBeLessThanOrEqual(90);
+      expect(p.y).toBeGreaterThanOrEqual(0);
+      expect(p.y).toBeLessThanOrEqual(60);
+    }
+    // Distances before the shift (from projectLatLon around the same origin) equal the distances after it.
+    const origin = {
+      lat: Math.round(((41.0 + 41.0003 + 41.0005) / 3) * 1e6) / 1e6, // the centroid, rounded to 6 decimals like fetch_place.py
+      lon: Math.round(((29.0 + 29.0004 + 29.0002) / 3) * 1e6) / 1e6,
+    };
+    const raw = pts.map((p) => projectLatLon(p.lat!, p.lon!, origin.lat, origin.lon));
+    for (let i = 0; i < pts.length; i++)
+      for (let j = i + 1; j < pts.length; j++) {
+        const before = Math.hypot(raw[i].x - raw[j].x, raw[i].y - raw[j].y);
+        const after = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+        expect(after).toBeCloseTo(before, 6); // every point moved by the same multiple of 0.1 m
+      }
+  });
+  it("a set larger than the area is centred too and keeps its distances (it sticks out on all sides)", () => {
+    const big = { type: "FeatureCollection", features: [pt(29.0, 41.0, { id: "a" }), pt(29.02, 41.01, { id: "b" })] };
+    const [a, b] = good(JSON.stringify(big), "geojson");
+    expect((a.x + b.x) / 2).toBeCloseTo(45, 1);
+    expect((a.y + b.y) / 2).toBeCloseTo(30, 1);
+    expect(b.x - a.x).toBeCloseTo(1678.3, 0); // 1007.0 - (-671.3), the projection of fetch_place.py
+    expect(b.y - a.y).toBeCloseTo(1112.0, 0); // 667.2 - (-444.8)
+  });
+  it("reads a single Feature and a bare Point, a lone point lands in the middle of the area", () => {
     const f = pt(29, 41, { id: "solo" });
-    expect(good(JSON.stringify(f), "geojson")).toEqual([{ id: "solo", x: 0, y: 0, lon: 29, lat: 41 }]);
+    expect(good(JSON.stringify(f), "geojson")).toEqual([{ id: "solo", x: 45, y: 30, lon: 29, lat: 41 }]);
     expect(good(JSON.stringify({ type: "Point", coordinates: [29, 41] }), "geojson")).toEqual([
-      { id: "p001", x: 0, y: 0, lon: 29, lat: 41 },
+      { id: "p001", x: 45, y: 30, lon: 29, lat: 41 },
     ]);
   });
   it("makes generated ids that skip the ids already used", () => {
     const c = { type: "FeatureCollection", features: [pt(29, 41, { id: "p001" }), pt(29.1, 41), pt(29.2, 41)] };
     expect(good(JSON.stringify(c), "geojson").map((p) => p.id)).toEqual(["p001", "p002", "p003"]);
   });
-  it("projectLatLon matches the script for a point at the origin", () => {
+  it("projectLatLon (before centring) matches the script for a point at the origin", () => {
     expect(projectLatLon(41, 29, 41, 29)).toEqual({ x: 0, y: 0 });
   });
+  it("CSV in metres is not moved", () => {
+    expect(good("id,x,y\na,1000,-50")).toEqual([{ id: "a", x: 1000, y: -50 }]);
+  });
 });
-
 describe("GeoJSON: bad files give a reason and no points", () => {
   const f = (geometry: unknown) => ({ type: "Feature", geometry, properties: {} });
   const col = (...features: unknown[]) => JSON.stringify({ type: "FeatureCollection", features });

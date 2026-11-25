@@ -1,7 +1,14 @@
 // Your map: the pure editor logic (ui spec, requirement 8). No DOM, no randomness of its own.
 // The random generator is an argument, so tests can pin it.
 
-import { RANDOM_SEED_BASE, YOUR_MAP_AREA_M, YOUR_R_MAX, YOUR_R_MIN } from "../settings";
+import {
+  RANDOM_SEED_BASE,
+  START_RING_POINTS,
+  START_RING_RADIUS_M,
+  YOUR_MAP_AREA_M,
+  YOUR_R_MAX,
+  YOUR_R_MIN,
+} from "../settings";
 
 export interface YourPoint {
   id: string;
@@ -137,7 +144,26 @@ export function mulberry32(seed: number): () => number {
   };
 }
 
-/** Generator for press number n of "Add random points" (n = 0 is the starting map). */
+/**
+ * The starting map: START_RING_POINTS points evenly spaced on a circle of START_RING_RADIUS_M around the middle of
+ * the area, first point on the right, going anticlockwise. Always the same points. Rounded to 0.1 m.
+ */
+export function startingRing(): EditorState {
+  const cx = YOUR_MAP_AREA_M.width / 2;
+  const cy = YOUR_MAP_AREA_M.height / 2;
+  const points: YourPoint[] = [];
+  for (let k = 0; k < START_RING_POINTS; k++) {
+    const a = (2 * Math.PI * k) / START_RING_POINTS;
+    points.push({
+      id: formatId(k + 1),
+      x: round1(cx + START_RING_RADIUS_M * Math.cos(a)),
+      y: round1(cy + START_RING_RADIUS_M * Math.sin(a)),
+    });
+  }
+  return { points, nextId: START_RING_POINTS + 1 };
+}
+
+/** Generator for press number n of "Add random points" (n = 1, 2, ...). */
 export function randomFor(press: number): () => number {
   return mulberry32(RANDOM_SEED_BASE + press);
 }

@@ -148,7 +148,7 @@ Walking edges come from the Street_Fixture of the selected place (see Place data
 
 The third choice of the Mode group ("Your map (1 round)", value `your_map`). It is Place mode rules with straight-line distance: one Round, the visitor's own Points, the visitor's r. The Engine is not changed.
 
-**Starting map and hint.** The first time the Your_Map is chosen in a visit, the editor starts with `addRandom(emptyMap(), RANDOM_BATCH, mulberry32(RANDOM_SEED_BASE), POINT_LIMIT)`: 10 Points, always the same ones. Presses of "Add random points" use `RANDOM_SEED_BASE + n` for press number n (1, 2, ...), so they never repeat the starting Points. Later choices of the Your_Map keep the Points as the visitor left them, and "Clear" leaves the map empty (it is not refilled). The hint "Click to add or remove points." is a small text in the corner of the map frame, like the OpenStreetMap credit of the Place map, so it adds no height. It shows while the Your_Map is chosen and no run is in progress or finished.
+**Starting map and hint.** The first time the Your_Map is chosen in a visit, the editor starts with `startingRing()`: 8 Points evenly spaced on a circle of radius 15 m (`START_RING_RADIUS_M`) around the middle of the area (45 m, 30 m), the first on the right, going anticlockwise, ids `p001` to `p008`, rounded to 0.1 m. Neighbours on the ring are 11.5 m apart and the next ones 21.2 m, so with the default r of 20 m every Point has exactly two neighbours and those two do not touch each other. The Engine's rules find no safe pick on such a graph, so the first run on the starting map shows the atoms working. A test checks the ring property. Presses of "Add random points" use `RANDOM_SEED_BASE + n` for press number n (1, 2, ...). Later choices of the Your_Map keep the Points as the visitor left them, and "Clear" leaves the map empty (it is not refilled). The hint "Click to add or remove points." is a small text in the corner of the map frame, like the OpenStreetMap credit of the Place map, so it adds no height. It shows while the Your_Map is chosen and no run is in progress or finished.
 
 **Request.** `MapChoice` gets a third variant and `buildRequest` stays the one place that builds every request:
 
@@ -159,7 +159,7 @@ The third choice of the Mode group ("Your map (1 round)", value `your_map`). It 
 
 The request carries the edge list explicitly, not r alone. The drawn edges and the sent edges are then the same list (one call of `buildStraightEdges`, pairs strictly closer than r, each once, sorted), and a test can check it. It gives the same graph as r alone, because the Engine uses the same rule when edges are omitted (`graph.py`). Everything else in the Engine works as for any other map: tiles of at most 10 atoms, the layout split, the four Competitors. The tutor, the Plan_Selector and the export read the same result shape.
 
-**Area and view.** The Your_Map_Area is 90 m by 60 m (`YOUR_MAP_AREA_M` in `settings.ts`), about the 84 m by 58 m of the Hero_Map. It is drawn as a thin dim frame in the static layer. `StaticScene` gets an optional `bounds` (min and max x and y). `fitView` uses `bounds` when it is given, instead of the extent of the Points, so an empty map still has a view. For the Your_Map the bounds are the area joined with the bounding box of the Points, so a pasted map larger than the area is fully visible and clicking still works. `render/static-layer.ts` also gets `toWorldX` and `toWorldY` (the inverse of `toScreenX` and `toScreenY`) to turn a click into metres. These are drawing helpers, not algorithm. `layout()` in `map.ts` takes its spans from `bounds` and must not call `Math.max` on an empty list.
+**Area and view.** The Your_Map_Area is 90 m by 60 m (`YOUR_MAP_AREA_M` in `settings.ts`), about the 84 m by 58 m of the Hero_Map. It is drawn as a thin dim frame in the static layer. `StaticScene` gets an optional `bounds` (min and max x and y) and an optional `edgesStrong`. With `edgesStrong` (set for the Your_Map) the conflict lines are drawn 1 px wide at an alpha of 0.55, instead of 0.5 px at 0.22, so that a visitor who is drawing can see the graph. They stay thinner and dimmer than the points and picks, which are drawn solid on top. `fitView` uses `bounds` when it is given, instead of the extent of the Points, so an empty map still has a view. For the Your_Map the bounds are the area joined with the bounding box of the Points, so a pasted map larger than the area is fully visible and clicking still works. `render/static-layer.ts` also gets `toWorldX` and `toWorldY` (the inverse of `toScreenX` and `toScreenY`) to turn a click into metres. These are drawing helpers, not algorithm. `layout()` in `map.ts` takes its spans from `bounds` and must not call `Math.max` on an empty list.
 
 **Editor logic (pure, `your-map/editor.ts`).** No DOM, no randomness of its own.
 
@@ -186,7 +186,7 @@ Ids are `p` plus the number zero padded to 3 digits (`p001`, then `p1000` after 
 **Parser (`data/custom-map.ts`).** `parseMapText(text, kind, limit)` returns `{ok:true, points}` or `{ok:false, reason}` and never throws.
 
 - CSV: a byte order mark and blank lines are ignored. The delimiter is the one of comma, semicolon and tab that appears most in the first line. Fields may be quoted in the usual way (a quoted field can hold the delimiter and doubled quotes), so a CSV exported by AtomMap (`id,x,y,round,result_label,seed`) can be read back. Columns are found by name (`id`, `x`, `y`, any case, any order, others ignored). `x` and `y` must be finite numbers with a dot and not beyond 1,000,000 m. Ids are trimmed, non-empty and unique.
-- GeoJSON: a FeatureCollection, a Feature or a bare Point geometry. Every feature must be a Point with finite `[lon, lat]`, longitude within ±180 and latitude within ±90. The origin is the mean latitude and longitude of the points (rounded to 6 decimals, as `centroid` in `fetch_place.py`), and `x = radians(lon - lon0) * cos(radians(lat0)) * R`, `y = radians(lat - lat0) * R` with R = 6371008.8 m, rounded to 0.1 m (the constants and rounding of `project` in `fetch_place.py`). The id is `properties.id` when it is a non-empty text or number, otherwise the next free `p001`-style id. The Points keep `lon` and `lat`.
+- GeoJSON: a FeatureCollection, a Feature or a bare Point geometry. Every feature must be a Point with finite `[lon, lat]`, longitude within ±180 and latitude within ±90. The origin is the mean latitude and longitude of the points (rounded to 6 decimals, as `centroid` in `fetch_place.py`), and `x = radians(lon - lon0) * cos(radians(lat0)) * R`, `y = radians(lat - lat0) * R` with R = 6371008.8 m, rounded to 0.1 m (the constants and rounding of `project` in `fetch_place.py`). That projection puts the points around (0, 0), outside the drawing area, so the whole set is then moved by one amount (dx, dy), a multiple of 0.1 m, that puts the middle of its bounding box at the middle of the area (45 m, 30 m). Every point moves by the same amount, so no distance changes (a test checks it). A set larger than the area is centred too, and the view grows to show it. `lon` and `lat` are kept as they were. The id is `properties.id` when it is a non-empty text or number, otherwise the next free `p001`-style id. The Points keep `lon` and `lat`.
 - Reasons, one plain sentence each, naming the line or feature number where there is one (examples): "The file is larger than 1 MB." "This is neither CSV nor GeoJSON." "There are no points in this text." "The first line must name the columns id, x and y. It has: name, lat." "Line 4: x is not a number ("12,5"). Write decimals with a dot." "The id p007 is used twice." "Feature 3 is a LineString, not a Point. Only points can be used." "There are 812 points. The limit is N."
 - A reason never changes the map. The caller keeps the old state and shows only the text.
 
@@ -220,7 +220,33 @@ Sparse maps are in the plan on purpose: the project owner has seen "atoms alone"
 
 Rule: the Point_Limit is the largest size S in the plan for which every run of S, and of every smaller size, finished with all four Competitors without an error and took 60 s or less. Slower or failed runs are in the table like the others, and nothing is dropped. The table lists, for every size and layout, the three times and the largest. The numbers size the limit on one laptop. They are not a speed comparison, they do not appear in the app and the app says nothing about speed (honesty rule 1).
 
-Result (filled in by task 13.9): _not measured yet_.
+#### Point limit: result
+
+**Limit: 100 points** (`POINT_LIMIT` in `settings.ts`).
+
+The measurement was made by the project owner with `npm run measure-limit` on commit `29a3de2` (clean work tree), on 2026-11-25. The settings are those of the table above, unchanged. The raw numbers are committed as the record in `web/scripts/limit-measurements.json`, with the settings, the commit and the machine.
+
+| Item | Value |
+|---|---|
+| Computer | Intel Core i7-12650H (12th Gen), 16 logical CPUs, 16 GB memory, Windows 10.0.26200 |
+| Browser and runtime | Chromium 159.0.8154.6, Pyodide 0.27.7 |
+| Runs | 54 counted runs, all 54 finished with all four Competitors and no error, no skipped Tiles. The warm-up run (20 points, dense) took 3.9 s and is not counted |
+| Time | Seconds from sending the request to the Worker until the result is back, per layout seed 1 / 2 / 3 |
+
+| Points | dense (r 20 m) | mid (r 10 m) | sparse (r 5 m) | Slowest |
+|---|---|---|---|---|
+| 25 | 3.8 / 3.3 / 3.4 | 3.8 / 4.3 / 4.1 | 4.3 / 4.9 / 4.8 | 4.9 (sparse) |
+| 50 | 10.9 / 14.1 / 14.1 | 7.4 / 5.2 / 6.6 | 8.7 / 8.0 / 3.5 | 14.1 (dense) |
+| 100 | 14.2 / 14.2 / 12.5 | 5.1 / 4.8 / 5.7 | 5.3 / 5.5 / 5.9 | 14.2 (dense) |
+| 150 | 34.2 / 21.4 / 20.9 | 12.8 / 7.3 / 14.0 | 31.4 / **60.5** / **110.9** | 110.9 (sparse) |
+| 200 | **82.0** / **91.8** / **78.3** | **70.7** / 48.7 / 53.3 | 28.3 / 28.4 / 26.4 | 91.8 (dense) |
+| 300 | **135.4** / **133.5** / **83.4** | 43.1 / 46.8 / 48.1 | 26.9 / 45.9 / 21.7 | 135.4 (dense) |
+
+Bold: runs that took more than 60 s.
+
+**Rule result.** Up to 100 points the slowest run took 14.2 s. At 150 points two sparse runs took 60.5 s (0.5 s over) and 110.9 s, so 150 does not qualify and the rule gives 100 (`computeLimit` on the file gives 100, checked). The sparse layout decided it, so measuring it was needed: at 150 points the dense layout (slowest 34.2 s) would have passed alone. At 200 and 300 points the dense runs are the slowest, and 7 of the 18 runs took more than 60 s. The time does not rise in step with the number of points or edges. The sparse layouts at 150 points had 153, 139 and 148 edges for layout seeds 1, 2 and 3 (the 60.5 s run had 139 and the 110.9 s run 148), fewer than at 100 points with the dense layout (824 to 862), so the number of edges alone does not explain the time, and this document does not claim a cause.
+
+**What this is not.** It is a sizing on one laptop, with one run per cell, so a repeat run can differ (the 60.5 s run is close to the line). It is not a speed comparison of the methods and no time appears in the app (honesty rule 1). A visitor on a slower machine may wait longer than 60 s at the limit.
 
 ## Data Models
 

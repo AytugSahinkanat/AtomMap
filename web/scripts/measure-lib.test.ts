@@ -1,5 +1,7 @@
 // Tests for the pure parts of the point limit measurement (task 13.9). Nothing is measured here.
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { POINT_LIMIT } from "../src/settings";
 // @ts-expect-error plain .mjs without types
 import * as lib from "./measure-lib.mjs";
 
@@ -58,5 +60,18 @@ describe("formatTable", () => {
     const table = lib.formatTable(runs, [25, 50]);
     expect(table).toContain("| 25 | 3.0 | 4.0 | 301.0 (timeout) | 301.0 (sparse) |");
     expect(table).toContain("| 50 | not run | not run | not run | not run |");
+  });
+});
+
+describe("the committed measurement", () => {
+  const file = JSON.parse(readFileSync(new URL("./limit-measurements.json", import.meta.url), "utf8"));
+  it("has the 54 runs of the plan, all counted, with the settings of the plan", () => {
+    expect(file.runs).toHaveLength(54);
+    expect(file.settings.sizes).toEqual(lib.SIZES);
+    expect(file.settings.limit_seconds).toBe(lib.LIMIT_SECONDS);
+  });
+  it("gives the limit that the file says, and POINT_LIMIT in settings.ts is that limit", () => {
+    expect(lib.computeLimit(file.runs)).toBe(file.limit_by_rule);
+    expect(POINT_LIMIT).toBe(file.limit_by_rule);
   });
 });

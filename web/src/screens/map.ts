@@ -27,11 +27,11 @@ import {
   addRandom,
   clearMap,
   clickAt,
-  emptyMap,
   parseR,
   randomFor,
   replaceMap,
   R_MESSAGE,
+  startingRing,
   type EditResult,
   type EditorState,
 } from "../your-map/editor";
@@ -599,8 +599,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
 
   // ---- Your map: state, editing and the Map_Text ----
   function ensureYourState(): EditorState {
-    // The first choice in a visit starts with 10 fixed points, so Run works at once. Clear leaves it empty.
-    if (yourState === null) yourState = addRandom(emptyMap(), RANDOM_BATCH, randomFor(0), POINT_LIMIT).state;
+    // The first choice in a visit starts with a ring of 8 points, so Run works at once and the atoms are needed.
+    // Clear leaves the map empty.
+    if (yourState === null) yourState = startingRing();
     return yourState;
   }
 
@@ -761,6 +762,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         points: pts,
         edges,
         bounds: yourBounds(pts),
+        edgesStrong: true,
         frame: { width: YOUR_MAP_AREA_M.width, height: YOUR_MAP_AREA_M.height },
       };
       sceneKey = yourKey();

@@ -252,9 +252,9 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Visible focus ring (accent `#7f77dd`), visible labels on every control, AA text contrast from the steering palette, English text only
     - _Requirements: 11.2, 11.3, 11.4, 11.6, 11.7_
 
-- [ ] 13. Your map (draw, paste or upload your own points)
+- [x] 13. Your map (draw, paste or upload your own points)
   - [x] 13.1 Add the constants and the pure editor logic
-    - In `web/src/settings.ts`: `YOUR_MAP_AREA_M` (90 x 60), `YOUR_R_DEFAULT` 20, `YOUR_R_MIN` 2, `YOUR_R_MAX` 200, `RANDOM_BATCH` 10, `RANDOM_SEED_BASE`, `MAX_TEXT_BYTES` 1,000,000, and `POINT_LIMIT`. `POINT_LIMIT` starts at 300, the largest size of the measurement plan, only so that the measurement can run. Task 13.9 replaces it with the measured value and removes this note
+    - In `web/src/settings.ts`: `YOUR_MAP_AREA_M` (90 x 60), `YOUR_R_DEFAULT` 20, `YOUR_R_MIN` 2, `YOUR_R_MAX` 200, `RANDOM_BATCH` 10, `RANDOM_SEED_BASE`, `MAX_TEXT_BYTES` 1,000,000, and `POINT_LIMIT` (started at 300 so that the measurement could run, then set to the measured 100 in task 13.9), `START_RING_POINTS` 8 and `START_RING_RADIUS_M` 15
     - Create `web/src/your-map/editor.ts` as in the design: `emptyMap`, `addPoint`, `removePoint`, `clearMap`, `addRandom`, `replaceMap`, `clickAt`, `parseR`. No DOM; the random generator is an argument
     - _Requirements: 8.3, 8.4, 8.5, 8.7, 8.14_
 
@@ -283,7 +283,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Comment `Feature: ui, Property 4: Your_Map request edges are exactly the pairs closer than r`
 
   - [x] 13.7 Wire the Your map into the Map_Screen
-    - Third radio "Your map (1 round)" in the Mode group; the first choice in a visit starts with the 10 fixed Points and the hint "Click to add or remove points." in the corner of the map (design: Starting map and hint); `StaticScene.bounds`, the frame and `toWorldX` and `toWorldY` in `render/static-layer.ts`; `layout()` takes its spans from `bounds` and works with no Point
+    - Third radio "Your map (1 round)" in the Mode group; the first choice in a visit starts with the ring of 8 Points (`startingRing`, radius 15 m, tested: with r 20 every Point has exactly 2 neighbours and those two do not touch) and the hint "Click to add or remove points." in the corner of the map (design: Starting map and hint); `StaticScene.bounds`, the frame and `toWorldX` and `toWorldY` in `render/static-layer.ts`; `layout()` takes its spans from `bounds` and works with no Point
     - Canvas click: hit test with `nearestPoint`, then `clickAt`; scene and edges rebuilt after every edit; r input, "Clear" and "Add random points" in the toolbar; the Map_Text panel in the right column (text box, file input, "Use these points", status and error lines), hidden during a run; editor controls disabled during a run
     - Messages as in the design; a bad Map_Text or r changes nothing else; a good Map_Text replaces the Points and keeps r; any edit after a finished run clears the result and the Tutor; run guard for no Point and over the limit
     - Label `Your map, N points. Results are a simulation.`; map `aria-label`; the Results_Page, `results.json` and `record-results.mjs` are not touched
@@ -295,19 +295,26 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     - Tests: the idle sentence for `your_map` has no banned word, no "cafe" and no "access point"; the Place and Channel_Plan idle sentences are unchanged; the export file name and geometry for a drawn map and for a GeoJSON import; a finished Your_Map result gives four cards and the Plan_Selector draws each plan (use a hand-made result, no Worker)
     - _Requirements: 8.15, 8.16, 12.4_
 
-  - [ ] 13.9 Measure the Point_Limit and record it
+  - [x] 13.12 Fixes after the first review in the browser
+    - Starting map: a ring of 8 Points (radius 15 m), so the rules find no safe pick and the atoms go first; test: with r 20 every Point has exactly 2 neighbours and those two do not touch; the hint stays, Clear still empties it
+    - Tutor Step 2 says "All N points were too tangled for the rules." when the rules made no pick before the atoms ran (`rulesFirst.count` is 0), "The other N points ..." otherwise; wording tests in `sentences.allpoints.test.ts`; note in the tutor design
+    - GeoJSON import: after the projection the whole set is moved by one amount so that its bounding box is centred in the 90 x 60 m area; distances do not change; CSV in metres is not moved; tests
+    - Your map draws the conflict lines a bit stronger (`StaticScene.edgesStrong`), still weaker than the picks
+    - _Requirements: 8.2, 8.6, 8.11, 8.16, 12.4_
+
+  - [x] 13.9 Measure the Point_Limit and record it
     - Write `web/scripts/measure-limit.mjs` (`npm run measure-limit`) with the settings of the design table, fixed before the first run, using the app's own `buildRequest` as `record-results.mjs` does. Write the raw numbers to `web/scripts/limit-measurements.json` and print a Markdown table
-    - Script written and tested with `--dry-run`; the real measurement is still to do. Run it by hand on the built site (the user runs it; it takes a long time). Do not drop, retry or pick runs
+    - Done. The user ran it on commit `29a3de2`: all 54 runs finished, the rule gives 100 points, `POINT_LIMIT` is 100, the numbers are in the design ("Point limit: result") and in `web/scripts/limit-measurements.json` (kept in the repository as the record). A test checks that `POINT_LIMIT` equals the limit of that file. No run was dropped, retried or picked
     - Put the settings actually used, the computer, the Chromium version, the date, every measured time and the resulting limit into the "Result" paragraph of the design document, and set `POINT_LIMIT` in `settings.ts` to that value
     - If the measurement shows the rule gives a limit below 25, stop and ask the user before changing the plan
     - _Requirements: 8.13, 8.14_
 
-  - [ ] 13.10 Check the layout at 1366 x 768 and at 375
+  - [x] 13.10 Check the layout at 1366 x 768 and at 375
     - Playwright script `web/scripts/layout-check.mjs` (`npm run layout-check`, built dist, no new dependency): at 1366 x 768 check `document.scrollingElement.scrollHeight <= innerHeight` in these Your_Map states: the starting map; empty after Clear; 20 Points; a Map_Text error message; a run in progress; a finished run with the Tutor. At 375 x 667 check `scrollWidth <= innerWidth` in the same states and that the toolbar controls, Map_Text controls and run button can be clicked
     - Fix any overflow in `style.css` and `map.ts` found this way; do not change the Tutor strip height or the Scoreboard
     - _Requirements: 8.19, 12.5_
 
-  - [ ] 13.11 Checkpoint - Ensure all tests pass
+  - [x] 13.11 Checkpoint - Ensure all tests pass
     - `npm test`, `npm run check`, `npm run build`, `npm run smoke -- --no-build`, `npm run layout-check`; the Hero_Map and Kadıköy still give the same totals as `results.json` (one run each, same seed)
     - Ask the user if questions arise
 
@@ -385,7 +392,7 @@ Task 6 writes and tests the script offline (no Overpass calls in tests). There i
     { "id": 10, "tasks": ["14.1"] },
     { "id": 11, "tasks": ["13.1", "13.2"] },
     { "id": 12, "tasks": ["13.3", "13.4", "13.5"] },
-    { "id": 13, "tasks": ["13.6", "13.7", "13.8"] },
+    { "id": 13, "tasks": ["13.6", "13.7", "13.8", "13.12"] },
     { "id": 14, "tasks": ["13.9", "13.10"] },
     { "id": 15, "tasks": ["13.11"] }
   ]

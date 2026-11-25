@@ -10,6 +10,8 @@ import type { Wall } from '../edges/walls';
 export const STATIC_COLOURS = {
   street: 'rgba(143, 140, 184, 0.28)', // muted text colour, dim
   edge: 'rgba(143, 140, 184, 0.22)',
+  // Your map: the visitor is drawing the graph, so the lines must be easy to see. Still weaker than the picks.
+  edgeDrawing: 'rgba(143, 140, 184, 0.55)',
   concrete: '#e8e6f5', // text colour, thick and solid
   drywall: '#8f8cb8', // muted colour, thin and dotted
   frame: 'rgba(143, 140, 184, 0.55)', // the drawing area of Your map, thin and dim
@@ -36,6 +38,8 @@ export interface StaticScene {
    * rame draws the drawing area (from 0, 0 to width, height) as a thin rectangle.
    */
   bounds?: { minX: number; minY: number; maxX: number; maxY: number };
+  /** Your map: draw the conflict lines a bit stronger (they are the graph the visitor is building). */
+  edgesStrong?: boolean;
   frame?: { width: number; height: number };
 }
 
@@ -167,8 +171,8 @@ export function drawStaticScene(
       ctx.lineTo(toScreenX(view, pb.x), toScreenY(view, pb.y));
     }
     ctx.setLineDash([]);
-    ctx.strokeStyle = STATIC_COLOURS.edge;
-    ctx.lineWidth = 0.5;
+    ctx.strokeStyle = scene.edgesStrong ? STATIC_COLOURS.edgeDrawing : STATIC_COLOURS.edge;
+    ctx.lineWidth = scene.edgesStrong ? 1 : 0.5;
     ctx.stroke();
     stats.edges = 1;
   }

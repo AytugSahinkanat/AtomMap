@@ -1,6 +1,7 @@
 // Tests for the Your map editor logic (ui requirement 8.3 to 8.7, task 13.5).
 import { describe, expect, it } from "vitest";
-import { RANDOM_BATCH, YOUR_MAP_AREA_M } from "../settings";
+import { buildStraightEdges } from "../edges/straight";
+import { RANDOM_BATCH, START_RING_POINTS, START_RING_RADIUS_M, YOUR_MAP_AREA_M, YOUR_R_DEFAULT } from "../settings";
 import {
   addPoint,
   addRandom,
@@ -14,6 +15,7 @@ import {
   randomFor,
   removePoint,
   replaceMap,
+  startingRing,
 } from "./editor";
 
 const LIMIT = 300;
@@ -94,12 +96,12 @@ describe("random", () => {
     }
     expect(a.state.points.map((p) => p.id)).toEqual(Array.from({ length: 10 }, (_, i) => formatId(i + 1)));
   });
-  it("different presses give different points; the starting map is press 0", () => {
-    const start = addRandom(emptyMap(), 10, randomFor(0), LIMIT).state.points;
-    const again = addRandom(emptyMap(), 10, randomFor(0), LIMIT).state.points;
-    const press1 = addRandom(emptyMap(), 10, randomFor(1), LIMIT).state.points;
-    expect(again).toEqual(start);
-    expect(press1).not.toEqual(start);
+  it("the same press gives the same points, different presses give different points", () => {
+    const one = addRandom(emptyMap(), 10, randomFor(1), LIMIT).state.points;
+    const again = addRandom(emptyMap(), 10, randomFor(1), LIMIT).state.points;
+    const two = addRandom(emptyMap(), 10, randomFor(2), LIMIT).state.points;
+    expect(again).toEqual(one);
+    expect(two).not.toEqual(one);
   });
   it("adds fewer near the limit and says how many", () => {
     let s = emptyMap();
@@ -167,5 +169,55 @@ describe("parseR", () => {
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.error).toBe("r must be a number from 2 to 200 metres.");
     }
+  });
+});
+
+describe("starting map", () => {
+  const ring = startingRing();
+  const edges = buildStraightEdges(ring.points, YOUR_R_DEFAULT);
+  const neighbours = (id: string): string[] =>
+    edges.flatMap(([a, b]) => (a === id ? [b] : b === id ? [a] : []));
+  const touch = (a: string, b: string): boolean => edges.some(([x, y]) => (x === a && y === b) || (x === b && y === a));
+
+  it("is 8 points on a circle of radius 15 m around the middle of the area, inside the area", () => {
+    expect(ring.points).toHaveLength(START_RING_POINTS);
+    expect(START_RING_POINTS).toBe(8);
+    expect(START_RING_RADIUS_M).toBe(15);
+    expect(YOUR_R_DEFAULT).toBe(20);
+    for (const p of ring.points) {
+      const d = Math.hypot(p.x - YOUR_MAP_AREA_M.width / 2, p.y - YOUR_MAP_AREA_M.height / 2);
+      expect(Math.abs(d - 15)).toBeLessThanOrEqual(0.08); // the 0.1 m rounding of x and y
+      expect(p.x).toBeGreaterThanOrEqual(0);
+      expect(p.x).toBeLessThanOrEqual(YOUR_MAP_AREA_M.width);
+      expect(p.y).toBeGreaterThanOrEqual(0);
+      expect(p.y).toBeLessThanOrEqual(YOUR_MAP_AREA_M.height);
+    }
+  });
+
+  it("with r 20 it is a ring: every point has exactly 2 neighbours, and those two do not touch each other", () => {
+    expect(edges).toHaveLength(START_RING_POINTS); // a ring of 8 has 8 edges
+    for (const p of ring.points) {
+      const n = neighbours(p.id);
+      expect(n, p.id).toHaveLength(2);
+      expect(touch(n[0], n[1]), `${p.id}: ${n.join(" and ")}`).toBe(false);
+    }
+  });
+
+  it("the neighbours are the next points around the circle", () => {
+    const ids = ring.points.map((p) => p.id);
+    ids.forEach((id, k) => {
+      const next = ids[(k + 1) % ids.length];
+      expect(touch(id, next), `${id} and ${next}`).toBe(true);
+    });
+  });
+
+  it("is always the same, has ids p001 to p008, and the next added point is p009", () => {
+    expect(startingRing()).toEqual(ring);
+    expect(ring.points.map((p) => p.id)).toEqual(["p001", "p002", "p003", "p004", "p005", "p006", "p007", "p008"]);
+    expect(addPoint(ring, 1, 1, LIMIT).state.points[8].id).toBe("p009");
+  });
+
+  it("Clear empties it", () => {
+    expect(clearMap(ring).points).toEqual([]);
   });
 });

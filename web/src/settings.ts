@@ -66,21 +66,29 @@ export const YOUR_R_DEFAULT = 20;
 export const YOUR_R_MIN = 2;
 export const YOUR_R_MAX = 200;
 
-/** Points added by one press of "Add random points", and by the starting map. */
+/** Points added by one press of "Add random points". */
 export const RANDOM_BATCH = 10;
 
-/** The starting map uses this seed. Press number n of "Add random points" uses RANDOM_SEED_BASE + n. */
+/** Press number n (1, 2, ...) of "Add random points" uses the generator RANDOM_SEED_BASE + n. */
 export const RANDOM_SEED_BASE = 20260;
+
+/**
+ * The starting map: a ring of 8 points on a circle of radius 15 m around the middle of the area.
+ * With r = 20 m each point touches only its two neighbours on the ring (11.5 m away), not the next ones (21.2 m).
+ * The rules find no safe pick on a ring, so the atoms go first on the very first run.
+ */
+export const START_RING_POINTS = 8;
+export const START_RING_RADIUS_M = 15;
 
 /** Largest text or file the "Points as text" box accepts. */
 export const MAX_TEXT_BYTES = 1_000_000;
 
 /**
- * Largest number of points in Your map.
- * PROVISIONAL: 300 is the largest size of the measurement plan (ui design, "Point limit: how it is measured"),
- * set only so that the measurement can run. Task 13.9 replaces it with the measured value.
+ * Largest number of points in Your map. Measured, not guessed: the largest size of the measurement plan for which
+ * every run, of that size and of all smaller sizes, finished in 60 s or less on the development laptop.
+ * The numbers are in web/scripts/limit-measurements.json and in the ui design ("Point limit: result").
  */
-export const POINT_LIMIT = 300;
+export const POINT_LIMIT = 100;
 
 /** Folder the fixtures are served from, relative to the page (same origin). */
 export const FIXTURES_DIR = 'fixtures/';

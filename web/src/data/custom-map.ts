@@ -2,7 +2,7 @@
 // CSV with the columns id, x, y in metres, or GeoJSON points. Pure functions, no DOM, never throw.
 // A failure returns one plain-words reason and no points, so the caller keeps the current map.
 
-import { MAX_TEXT_BYTES } from "../settings";
+import { MAX_TEXT_BYTES, YOUR_MAP_AREA_M } from "../settings";
 import { formatId, type YourPoint } from "../your-map/editor";
 
 export type MapTextKind = "csv" | "geojson";
@@ -252,8 +252,17 @@ function parseGeoJson(text: string, limit: number): ParseResult {
   const lat0 = round(read.reduce((s, r) => s + r.lat, 0) / read.length, 6);
   const lon0 = round(read.reduce((s, r) => s + r.lon, 0) / read.length, 6);
 
+  // Project, then move the whole set so that the middle of its bounding box is the middle of the drawing
+  // area. Every point moves by the same amount (a multiple of 0.1 m), so no distance changes. A set that is
+  // larger than the area is centred too, and sticks out on all sides.
+  const projected = read.map((r) => projectLatLon(r.lat, r.lon, lat0, lon0));
+  const xs = projected.map((p) => p.x);
+  const ys = projected.map((p) => p.y);
+  const dx = round(YOUR_MAP_AREA_M.width / 2 - (Math.min(...xs) + Math.max(...xs)) / 2, 1);
+  const dy = round(YOUR_MAP_AREA_M.height / 2 - (Math.min(...ys) + Math.max(...ys)) / 2, 1);
+
   let next = 1;
-  const points: YourPoint[] = read.map((r) => {
+  const points: YourPoint[] = read.map((r, i) => {
     let id = r.id;
     if (id === null) {
       while (seen.has(formatId(next))) next++;
@@ -261,8 +270,7 @@ function parseGeoJson(text: string, limit: number): ParseResult {
       seen.add(id);
       next++;
     }
-    const { x, y } = projectLatLon(r.lat, r.lon, lat0, lon0);
-    return { id, x, y, lon: r.lon, lat: r.lat };
+    return { id, x: round(projected[i].x + dx, 1), y: round(projected[i].y + dy, 1), lon: r.lon, lat: r.lat };
   });
   return { ok: true, points, kind: "geojson" };
 }
