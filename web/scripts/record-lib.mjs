@@ -222,3 +222,44 @@ export function assembleFile({ settings, runs, date, commit, chromium, pyodide }
     runs,
   };
 }
+
+/**
+ * `--check` (experience spec, Requirement 17): compare new records with the committed ones,
+ * in order. Returns one plain line per difference; an empty list means every run reproduced.
+ * Compared: seed, map, picks, quantum share, atoms not needed, splits, skipped tiles, status and
+ * reason. Nothing is rounded beyond what the record already holds.
+ */
+export function compareRecords(committed, fresh) {
+  const out = [];
+  if (committed.length !== fresh.length) {
+    out.push(`the file has ${committed.length} runs, the check made ${fresh.length}`);
+  }
+  const n = Math.min(committed.length, fresh.length);
+  const fields = ["seed", "map", "atoms_not_needed", "splits", "skipped_tiles", "status", "reason"];
+  for (let i = 0; i < n; i++) {
+    const a = committed[i];
+    const b = fresh[i];
+    const where = `run ${i + 1} (${a.map}, seed ${a.seed})`;
+    for (const f of fields) {
+      if (JSON.stringify(a[f]) !== JSON.stringify(b[f])) {
+        out.push(`${where}: ${f} was ${JSON.stringify(a[f])}, now ${JSON.stringify(b[f])}`);
+      }
+    }
+    for (const group of ["picks", "quantum_share"]) {
+      for (const name of COMPETITORS) {
+        const x = a[group]?.[name];
+        const y = b[group]?.[name];
+        if (x !== y) out.push(`${where}: ${group} of ${name} was ${x}, now ${y}`);
+      }
+    }
+  }
+  return out;
+}
+
+/** The measured runs never carry lab settings. Returns a plain reason, or null when the request is fine. */
+export function settingsProblem(request) {
+  if (request && Object.prototype.hasOwnProperty.call(request, "settings")) {
+    return "the request has lab settings; measured runs must use the defaults (no settings)";
+  }
+  return null;
+}

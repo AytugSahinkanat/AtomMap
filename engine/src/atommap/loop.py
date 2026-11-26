@@ -99,8 +99,9 @@ class RoundResult:
         return sum(1 for s in self.steps if s.atom_informed)
 
 
-def top_group_size(n: int) -> int:
-    return max(1, round(TOP_SHARE * n))
+def top_group_size(n: int, share: float = TOP_SHARE) -> int:
+    """Size of the Top_Group among n remaining Points. `share` is TOP_SHARE unless a lab run sets it."""
+    return max(1, round(share * n))
 
 
 def _rank(freqs: dict[str, float], ids: Iterable[str]) -> list[str]:
@@ -119,6 +120,7 @@ def run_round(
     simulator: Optional[Simulator] = None,
     cache: Optional[FrequencyCache] = None,
     emit: Optional[Callable[[dict], None]] = None,
+    top_share: float = TOP_SHARE,
 ) -> RoundResult:
     """Run one Round on `available` (not modified) and return the RoundResult.
 
@@ -210,6 +212,10 @@ def run_round(
                               "tile": list(part.ids),
                               "frequencies": dict(part_freqs),
                               "shots": cache.last_shots})
+                        # The repaired shots the frequencies above came from.
+                        emit({"kind": "shots", "round": round, "step": step,
+                              "tile": list(part.ids),
+                              "kept": [list(k) for k in cache.last_kept]})
                 if cache.misses > m0:
                     fresh.extend(part.ids)
         except SimulatorFailure:
@@ -250,7 +256,7 @@ def run_round(
 
         step += 1
         remaining = len(avail)
-        k = top_group_size(remaining)
+        k = top_group_size(remaining, top_share)
         skipped_now = 0
         skipped_ids: set[str] = set()
         real_ids.clear()

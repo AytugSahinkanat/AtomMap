@@ -36,14 +36,19 @@ def test_events_for_every_competitor_have_valid_fields():
     for e in events:
         assert isinstance(e, dict) and e["type"] == "run"
         assert all(k in e for k in REQUIRED)
-        assert e["kind"] in ("simulate", "frequencies", "pick")
+        assert e["kind"] in ("simulate", "frequencies", "shots", "pick")
         assert e["round"] in (1, 6, 11)
         assert isinstance(e["step"], int) and e["step"] >= 0
-        if e["kind"] in ("simulate", "frequencies"):
+        if e["kind"] in ("simulate", "frequencies", "shots"):
             assert e["tile"] and set(e["tile"]) <= ids
             if e["kind"] == "frequencies":
                 assert set(e["frequencies"]) == set(e["tile"])
                 assert all(0 <= v <= 1 for v in e["frequencies"].values())
+            if e["kind"] == "shots":
+                n = len(e["tile"])
+                assert isinstance(e["kept"], list)
+                for kept in e["kept"]:
+                    assert kept == sorted(set(kept)) and all(0 <= i < n for i in kept)
         else:
             assert e["tile"] is None and len(e["picked"]) == 1
             assert set(e["picked"]) <= ids

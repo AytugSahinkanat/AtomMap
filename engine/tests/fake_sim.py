@@ -35,15 +35,17 @@ class FakeSimulator:
         self.excite_probability = excite_probability
         self.calls = 0  # every run_tile call, including ones that raise
         self.seeds_seen: list[int] = []
+        self.shots_seen: list[int] = []  # the shots asked for, per call
 
     def run_tile(
-        self, positions_um: list[tuple[float, float]], seed: int
+        self, positions_um: list[tuple[float, float]], seed: int, shots: int = SHOTS
     ) -> list[list[int]]:
         self.calls += 1
         self.seeds_seen.append(seed)
+        self.shots_seen.append(shots)
         if seed in self.fail_seeds:
             raise FakeSimulatorError(f"fake simulator failure for tile seed {seed}")
         rng = np.random.default_rng(seed)
-        excited = rng.random((SHOTS, len(positions_um))) < self.excite_probability
+        excited = rng.random((shots, len(positions_um))) < self.excite_probability
         # 0 = excited (picked), 1 = ground
         return [[0 if e else 1 for e in row] for row in excited]

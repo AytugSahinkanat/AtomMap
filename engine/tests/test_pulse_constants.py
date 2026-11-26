@@ -24,11 +24,13 @@ def test_constants_cannot_be_overridden_through_inputs():
     assert list(inspect.signature(physics.blockade_radius_m).parameters) == []
     assert list(inspect.signature(pulse_series).parameters) == []
     assert list(inspect.signature(build_program).parameters) == ["positions_um"]
-    assert list(inspect.signature(BraketSimulator.run_tile).parameters) == [
-        "self",
-        "positions_um",
-        "seed",
-    ]
+    # The shots are the one thing a request may change, and only through lab settings
+    # (engine Requirement 5.3, experience spec Requirement 17). Their default is the
+    # measured 100. Steps, C6, omega and the pulse have no input at all.
+    params = inspect.signature(BraketSimulator.run_tile).parameters
+    assert list(params) == ["self", "positions_um", "seed", "shots"]
+    assert params["shots"].default == simulator.SHOTS == 100
+    assert params["shots"].kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
 
 
 def test_blockade_radius_formula_and_repeatability():

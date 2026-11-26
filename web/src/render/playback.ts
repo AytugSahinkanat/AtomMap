@@ -16,10 +16,12 @@ export const PointStatus = {
 /** Engine run event. Superset of client.ts RunEvent (adds `frequencies` and `removed`). */
 export interface PlaybackEvent {
   type: 'run';
-  kind: 'simulate' | 'pick' | 'frequencies' | string;
+  kind: 'simulate' | 'pick' | 'frequencies' | 'shots' | string;
   competitor: string;
   round: number;
   step: number;
+  /** `shots` events only: per shot, the indexes into `tile` of the Points kept after repair. */
+  kept?: number[][];
   tile?: string[] | null;
   picked?: string[];
   source?: string;
@@ -227,9 +229,12 @@ export function createPlayer(deps: PlayerDeps): Player {
     if (cursor > deps.buffer.length) cursor = 0;
 
     // Other competitors' events are applied at once and never use pacing budget.
+    // So are `shots` events: the map does not draw them yet (experience spec, task 9), and
+    // they must not slow down the pacing of the events it does draw.
+    const free = (ev: PlaybackEvent): boolean => ev.competitor !== 'Hybrid' || ev.kind === 'shots';
     const drainOthers = (): void => {
       let to = cursor;
-      while (to < deps.buffer.length && deps.buffer[to].competitor !== 'Hybrid') to++;
+      while (to < deps.buffer.length && free(deps.buffer[to])) to++;
       if (to > cursor) applyRange(to);
     };
     drainOthers();

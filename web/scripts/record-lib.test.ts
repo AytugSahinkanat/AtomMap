@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error plain JS module without types
 import * as lib from './record-lib.mjs';
@@ -156,5 +157,51 @@ describe('assembleFile', () => {
     expect(file.runs.length).toBe(2);
     expect(JSON.stringify({ runs: file.runs, settings: file.protocol.settings })).not.toMatch(/duration|elapsed|_ms|seconds/i);
     expect(validateResults(file).ok).toBe(true);
+  });
+});
+
+describe('compareRecords (--check)', () => {
+  const rec = (seed: number, hybrid: number, share = 19.4) => ({
+    seed,
+    map: 'Wifi hall',
+    picks: { Atoms_Alone: 25, Hybrid: hybrid, Annealing_Rules: 35, Coin_Flip_Rules: 33 },
+    quantum_share: { Atoms_Alone: 100, Hybrid: share, Annealing_Rules: 0, Coin_Flip_Rules: 0 },
+    atoms_not_needed: false,
+    splits: 13,
+    skipped_tiles: 0,
+    status: 'ok',
+  });
+
+  it('is empty when every run is the same', () => {
+    expect(lib.compareRecords([rec(1, 31), rec(2, 30)], [rec(1, 31), rec(2, 30)])).toEqual([]);
+  });
+
+  it('names the run, the field and both values of every difference', () => {
+    expect(lib.compareRecords([rec(1, 31)], [rec(1, 32, 18.8)])).toEqual([
+      'run 1 (Wifi hall, seed 1): picks of Hybrid was 31, now 32',
+      'run 1 (Wifi hall, seed 1): quantum_share of Hybrid was 19.4, now 18.8',
+    ]);
+    const failed = { ...rec(1, 31), status: 'failed', reason: 'timeout' };
+    expect(lib.compareRecords([rec(1, 31)], [failed])).toEqual([
+      'run 1 (Wifi hall, seed 1): status was "ok", now "failed"',
+      'run 1 (Wifi hall, seed 1): reason was undefined, now "timeout"',
+    ]);
+  });
+
+  it('reports a different number of runs', () => {
+    expect(lib.compareRecords([rec(1, 31), rec(2, 30)], [rec(1, 31)])[0]).toBe('the file has 2 runs, the check made 1');
+  });
+
+  it('the committed results.json compares equal with itself', () => {
+    const file = JSON.parse(readFileSync(new URL('../public/results.json', import.meta.url), 'utf8'));
+    expect(lib.compareRecords(file.runs, structuredClone(file.runs))).toEqual([]);
+  });
+});
+
+describe('settingsProblem', () => {
+  it('refuses a request with lab settings, even the defaults', () => {
+    expect(lib.settingsProblem({ seed: 1, settings: { shots: 100, top_share: 0.4 } })).toMatch(/lab settings/);
+    expect(lib.settingsProblem({ seed: 1, settings: {} })).toMatch(/lab settings/);
+    expect(lib.settingsProblem({ seed: 1 })).toBeNull();
   });
 });

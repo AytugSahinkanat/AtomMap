@@ -17,7 +17,7 @@ from typing import Callable, Optional
 from .atoms_alone import AtomsAloneResult, run_atoms_alone
 from .graph import ConflictGraph, build_graph
 from .log import DecisionLog
-from .loop import RoundResult, run_round
+from .loop import TOP_SHARE, RoundResult, run_round
 from .model import CompetitorResult, Request, Result
 from .rounds import channels_for, drive_rounds
 from .simulator import FrequencyCache, Simulator
@@ -50,6 +50,21 @@ class _EmitError(Exception):
         self.original = original
 
 
+class _ShotsSimulator:
+    """Asks the inner Simulator for `shots` shots on every call (lab settings only).
+
+    Used only when the request has `settings`. Without it the Competitors get
+    the Simulator itself, and every call stays the two-argument call it was.
+    """
+
+    def __init__(self, inner: Simulator, shots: int) -> None:
+        self._inner = inner
+        self._shots = shots
+
+    def run_tile(self, positions_um, seed):
+        return self._inner.run_tile(positions_um, seed, shots=self._shots)
+
+
 def _bind(name: str, on_event: Optional[Callable[[dict], None]]):
     """Add `"type": "run"` and the competitor name to every event."""
     if on_event is None:
@@ -80,6 +95,10 @@ def run_competitor(
     if name not in COMPETITORS:
         raise ValueError(f"Unknown competitor {name!r}")
     emit = _bind(name, on_event)
+    # Lab settings (experience spec, Requirement 17). Absent: the measured defaults, old path.
+    top_share = TOP_SHARE if request.settings is None else request.settings.top_share
+    if request.settings is not None and simulator is not None:
+        simulator = _ShotsSimulator(simulator, request.settings.shots)
     points = tuple(request.points)
     graph: ConflictGraph = build_graph(request)
     ids = [p.id for p in points]
@@ -112,6 +131,7 @@ def run_competitor(
             res = run_round(
                 graph, points, request.r, avail, log, channel,
                 request.seed, prov, simulator, cache, emit,
+                top_share=top_share,
             )
             return list(res.picks), res
 

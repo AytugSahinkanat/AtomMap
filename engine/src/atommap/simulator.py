@@ -31,6 +31,7 @@ __all__ = [
     "build_program",
     "repair_shot",
     "part_frequencies",
+    "part_shots",
     "FrequencyCache",
 ]
 
@@ -47,6 +48,10 @@ class Simulator(Protocol):
     the Tile seed (see `tile_seed`). Returns one entry per shot; each shot is
     the post-sequence in Tile order, where 0 means the atom is excited (the
     point is picked).
+
+    A simulator used for lab settings also takes a keyword `shots` (default
+    SHOTS). The Engine passes it only when the request has `settings`, so a
+    simulator without it still works for every other run.
     """
 
     def run_tile(
@@ -92,16 +97,42 @@ def part_frequencies(
     """
     if layout.fixed_frequency is not None:
         return {pid: layout.fixed_frequency for pid in layout.ids}
+    return part_shots(simulator, layout, edges, seed)[0]
+
+
+def part_shots(
+    simulator: Simulator,
+    layout: ScaledLayout,
+    edges: Iterable[tuple[str, str]],
+    seed: int,
+) -> tuple[dict[str, float], list[list[int]]]:
+    """Frequencies of a laid-out part and the repaired shots they come from.
+
+    Returns (frequencies, kept): `kept` has one list per shot, in Simulator
+    order, with the indexes into `layout.ids` of the Points kept after repair,
+    in ascending order. The frequency of a Point is the share of those lists
+    that contain its index. This is the same loop and the same rng calls as
+    before the shots were returned, so the frequencies do not change.
+
+    A single-Point part returns its fixed frequency and no shots, without
+    calling the simulator.
+    """
+    if layout.fixed_frequency is not None:
+        return {pid: layout.fixed_frequency for pid in layout.ids}, []
     tseed = tile_seed(seed, layout.ids)
     shots = simulator.run_tile(list(layout.positions_um), tseed)
     rng = random.Random(tseed)
+    index = {pid: i for i, pid in enumerate(layout.ids)}
     counts = {pid: 0 for pid in layout.ids}
+    kept_lists: list[list[int]] = []
     for shot in shots:
         picked = [pid for pid, v in zip(layout.ids, shot) if v == 0]
-        for pid in repair_shot(picked, edges, rng):
+        kept = repair_shot(picked, edges, rng)
+        for pid in kept:
             counts[pid] += 1
+        kept_lists.append(sorted(index[pid] for pid in kept))
     n = len(shots)
-    return {pid: (c / n if n else 0.0) for pid, c in counts.items()}
+    return {pid: (c / n if n else 0.0) for pid, c in counts.items()}, kept_lists
 
 
 class _CountingSimulator:
@@ -138,6 +169,8 @@ class FrequencyCache:
         self.misses = 0
         self.simulator_calls = 0
         self.last_shots = 0  # shots of the latest real Simulator call (not cache hits)
+        # Repaired shots of the latest real Simulator call, as index lists (see part_shots).
+        self.last_kept: list[list[int]] = []
 
     def __len__(self) -> int:
         return len(self._entries)
@@ -160,14 +193,22 @@ class FrequencyCache:
         edges: Iterable[tuple[str, str]],
         seed: int,
     ) -> dict[str, float]:
-        """Cached `part_frequencies` for one laid-out part."""
+        """Cached `part_frequencies` for one laid-out part.
+
+        On a real Simulator call, `last_kept` gets the repaired shots of that
+        call. The cache keeps the frequencies only.
+        """
         edge_list = list(edges)
-        return self.get_or_compute(
-            layout.ids,
-            lambda: part_frequencies(
+
+        def compute() -> dict[str, float]:
+            freqs, kept = part_shots(
                 _CountingSimulator(simulator, self), layout, edge_list, seed
-            ),
-        )
+            )
+            if layout.fixed_frequency is None:
+                self.last_kept = kept
+            return freqs
+
+        return self.get_or_compute(layout.ids, compute)
 
     def invalidate(self, removed_ids: Iterable[str]) -> int:
         """Drop every entry whose key contains a removed id. Returns how many were dropped."""
@@ -242,14 +283,14 @@ class BraketSimulator:
     """The real Amazon Braket local AHS simulator."""
 
     def run_tile(
-        self, positions_um: list[tuple[float, float]], seed: int
+        self, positions_um: list[tuple[float, float]], seed: int, shots: int = SHOTS
     ) -> list[list[int]]:
         from braket.devices import LocalSimulator
 
         program = build_program(positions_um)
         np.random.seed(seed % (2**32))  # right before the call (Requirement 5.4)
         task = LocalSimulator("braket_ahs").run(
-            program, shots=SHOTS, steps=STEPS, blockade_radius=blockade_radius_m()
+            program, shots=shots, steps=STEPS, blockade_radius=blockade_radius_m()
         )
         result = task.result()
         return [[int(v) for v in m.post_sequence] for m in result.measurements]

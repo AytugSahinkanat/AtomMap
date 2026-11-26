@@ -29,6 +29,24 @@ class Point:
     y: float  # metres
 
 
+# Lab_Settings (experience spec, Requirement 17). The defaults are the measured
+# defaults: SHOTS in simulator.py and TOP_SHARE in loop.py. They are repeated here
+# (and checked against those modules by a test) so that model.py imports nothing heavy.
+DEFAULT_SHOTS = 100
+DEFAULT_TOP_SHARE = 0.4
+SHOTS_RANGE = (10, 200)
+TOP_SHARE_RANGE = (0.1, 1.0)
+SETTINGS_KEYS = ("shots", "top_share")
+
+
+@dataclass(frozen=True)
+class Settings:
+    """Optional lab settings of one run. Absent from the request means the measured defaults."""
+
+    shots: int = DEFAULT_SHOTS
+    top_share: float = DEFAULT_TOP_SHARE
+
+
 @dataclass(frozen=True)
 class Request:
     points: tuple[Point, ...]
@@ -37,6 +55,7 @@ class Request:
     edges: Optional[tuple[tuple[str, str], ...]]  # None means "build from r alone"
     seed: int
     competitors: Optional[tuple[str, ...]] = None  # None means all four
+    settings: Optional[Settings] = None  # None means no `settings` in the request
 
 
 @dataclass
@@ -265,6 +284,10 @@ def validate_request(raw: Any) -> Request:
         # keep the canonical order, drop duplicates
         competitors = tuple(n for n in COMPETITOR_NAMES if n in names)
 
+    lab: Optional[Settings] = None
+    if "settings" in raw:
+        lab = _validate_settings(raw["settings"])
+
     return Request(
         points=tuple(Point(str(p["id"]), float(p["x"]), float(p["y"])) for p in points),
         mode=mode,
@@ -272,4 +295,40 @@ def validate_request(raw: Any) -> Request:
         edges=edges,
         seed=seed,
         competitors=competitors,
+        settings=lab,
     )
+
+
+def _validate_settings(raw: Any) -> Settings:
+    """Check the optional `settings` object. Plain messages that name the key and the allowed values."""
+    allowed = ", ".join(SETTINGS_KEYS)
+    if not isinstance(raw, dict):
+        raise ValidationError(
+            "invalid_settings",
+            f"settings must be an object with the keys {allowed}, got {raw!r}",
+            ["settings"],
+        )
+    unknown = [str(k) for k in raw if k not in SETTINGS_KEYS]
+    if unknown:
+        raise ValidationError(
+            "invalid_settings",
+            f"settings has an unknown key: {', '.join(unknown)}. Allowed keys: {allowed}",
+            [f"settings.{k}" for k in unknown],
+        )
+    shots = raw.get("shots", DEFAULT_SHOTS)
+    lo, hi = SHOTS_RANGE
+    if isinstance(shots, bool) or not isinstance(shots, int) or not lo <= shots <= hi:
+        raise ValidationError(
+            "invalid_settings",
+            f"settings.shots must be an integer from {lo} to {hi}, got {shots!r}",
+            ["settings.shots"],
+        )
+    share = raw.get("top_share", DEFAULT_TOP_SHARE)
+    lo_s, hi_s = TOP_SHARE_RANGE
+    if not _is_number(share) or not lo_s <= float(share) <= hi_s:
+        raise ValidationError(
+            "invalid_settings",
+            f"settings.top_share must be a number from {lo_s} to {hi_s}, got {share!r}",
+            ["settings.top_share"],
+        )
+    return Settings(shots=shots, top_share=float(share))

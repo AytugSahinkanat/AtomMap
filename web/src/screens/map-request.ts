@@ -71,8 +71,22 @@ export function placeView(s: {
 /** The place to load when Place mode opens: the current one, else Kadikoy. */
 export const DEFAULT_PLACE = 'kadikoy' as const;
 
-/** The start payload sent to the worker. Points carry only id, x, y. */
-export function buildRequest(choice: MapChoice, seed: number): StartPayload {
+/**
+ * Lab_Settings (experience spec, Requirement 17). Only the Lab passes them. Every measured run
+ * and every normal run sends none, which means the measured defaults (100 shots, top group 40%).
+ */
+export interface LabSettings {
+  shots?: number;
+  top_share?: number;
+}
+
+/** The start payload sent to the worker. Points carry only id, x, y. `settings` is added only when given. */
+export function buildRequest(choice: MapChoice, seed: number, settings?: LabSettings): StartPayload {
+  const base = buildBaseRequest(choice, seed);
+  return settings === undefined ? base : { ...base, settings: { ...settings } };
+}
+
+function buildBaseRequest(choice: MapChoice, seed: number): StartPayload {
   const points = choice.points.map((p) => ({ id: p.id, x: p.x, y: p.y }));
   if (choice.mode === 'channel_plan') {
     const edges = buildWallEdges(choice.points, choice.walls, choice.wallsOn, choice.r);

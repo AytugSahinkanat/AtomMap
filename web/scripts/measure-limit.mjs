@@ -215,6 +215,10 @@ async function restartWorker(after) {
 /** One run. Returns the record of the run. A timeout or error is a failed run, kept in the table. */
 async function measure({ size, layout, r, layoutSeed }) {
   const request = requestFor(size, layoutSeed, r);
+  // Measured runs always use the defaults (experience spec, Requirement 17.6).
+  if (Object.prototype.hasOwnProperty.call(request, "settings")) {
+    await stop("A measurement request has lab settings; measured runs must use the defaults. Nothing was written.");
+  }
   let out;
   let restart = false;
   try {

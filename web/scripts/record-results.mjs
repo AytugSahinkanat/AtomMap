@@ -3,6 +3,10 @@
 //   npm run record-results                  build dist, run the 30 runs, write results.json at the end
 //   npm run record-results -- --no-build    reuse an existing dist/
 //   npm run record-results -- --dry-run     ONE run (Wifi hall, seed 1), print record and checks, write NOTHING
+//   npm run record-results -- --check       the 30 runs again, compared with results.json, write NOTHING
+//                                           (exit 0 when every run reproduces, 1 with one line per difference)
+//
+// Measured runs always use the defaults: a request with lab settings is refused (experience spec, Req. 17.6).
 //
 // The protocol is fixed in record-lib.mjs (PROTOCOL_TEXT). Summary: built dist, Chromium
 // through Playwright, one worker, 30 runs one after the other (3 maps x seeds 1 to 10), app
@@ -27,6 +31,8 @@ import {
   commitLabel,
   planRuns,
   readPyNumber,
+  compareRecords,
+  settingsProblem,
 } from "./record-lib.mjs";
 
 const web = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -34,6 +40,22 @@ const repo = resolve(web, "..");
 const dist = join(web, "dist");
 const outFile = join(web, "public", "results.json");
 const DRY = process.argv.includes("--dry-run");
+const CHECK = process.argv.includes("--check");
+if (DRY && CHECK) {
+  console.error("Use --dry-run or --check, not both.");
+  process.exit(1);
+}
+// --check compares with the committed file, so read it first: a missing or broken file stops here.
+let committed = null;
+if (CHECK) {
+  try {
+    committed = JSON.parse(readFileSync(outFile, "utf8"));
+    if (!Array.isArray(committed.runs)) throw new Error("it has no runs list");
+  } catch (e) {
+    console.error(`--check needs web/public/results.json (${e.message}). Nothing was run.`);
+    process.exit(1);
+  }
+}
 const RUN_LIMIT_MS = 10 * 60 * 1000;
 const LOAD_LIMIT_MS = 5 * 60 * 1000;
 
@@ -223,6 +245,8 @@ const date = new Date().toISOString().slice(0, 10);
 
 for (const [i, { map, seed }] of plan.entries()) {
   const request = buildRequest(CHOICES[map], seed);
+  const lab = settingsProblem(request);
+  if (lab) await stop(`The request for ${map}, seed ${seed}: ${lab}. Nothing was written.`);
   if (!Array.isArray(request.graph.edges)) await stop(`The request for ${map} has no edge list. Nothing was written.`);
   let outcome;
   let restart = false;
@@ -252,7 +276,20 @@ for (const [i, { map, seed }] of plan.entries()) {
   }
 }
 
-// ---- 9. write once, atomically ----
+// ---- 9. --check: compare, write nothing ----
+if (CHECK) {
+  await cleanup();
+  const diffs = compareRecords(committed.runs, runs);
+  if (diffs.length === 0) {
+    console.log(`\nCHECK PASSED: all ${runs.length} runs reproduce web/public/results.json exactly. Nothing was written.`);
+    process.exit(0);
+  }
+  console.log(`\nCHECK FAILED: ${diffs.length} difference(s) from web/public/results.json. Nothing was written.`);
+  for (const d of diffs) console.log(`  ${d}`);
+  process.exit(1);
+}
+
+// ---- 10. write once, atomically ----
 if (DRY) {
   await cleanup();
   console.log("\nDRY RUN: nothing was written (web/public/results.json is untouched).");

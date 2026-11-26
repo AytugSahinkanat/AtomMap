@@ -69,16 +69,25 @@ def _shot_frequencies(
     shots: list[list[int]],
     edges: list[tuple[str, str]],
     tseed: int,
-) -> dict[str, float]:
-    """Share of repaired shots containing each Point (events only, own rng)."""
+) -> tuple[dict[str, float], list[list[int]]]:
+    """Share of repaired shots containing each Point, and those repaired shots.
+
+    Events only, with its own rng, so it never changes the result. The second
+    value has one list per shot with the indexes into `layout.ids` of the kept
+    Points, ascending: the frequencies are the shares of those lists.
+    """
     rng = random.Random(tseed)
+    index = {pid: i for i, pid in enumerate(layout.ids)}
     counts = {pid: 0 for pid in layout.ids}
+    kept_lists: list[list[int]] = []
     for shot in shots:
         picked = [pid for pid, v in zip(layout.ids, shot) if v == 0]
-        for pid in repair_shot(picked, edges, rng):
+        kept = repair_shot(picked, edges, rng)
+        for pid in kept:
             counts[pid] += 1
+        kept_lists.append(sorted(index[pid] for pid in kept))
     n = len(shots)
-    return {pid: (c / n if n else 0.0) for pid, c in counts.items()}
+    return {pid: (c / n if n else 0.0) for pid, c in counts.items()}, kept_lists
 
 
 def run_atoms_alone(
@@ -98,7 +107,8 @@ def run_atoms_alone(
     `emit` gets events without a competitor field: "simulate" before each
     Simulator call (step = part number in the Round, tile = part ids), a
     "frequencies" event after each successful call (share of repaired shots
-    per Point) and one
+    per Point), right after it a "shots" event with those repaired shots
+    (`kept`: per shot, the indexes into `tile` of the kept Points) and one
     "pick" per kept Point after its part (tile None, source "atoms"), with
     `removed`: its neighbours not already removed by an earlier pick.
     """
@@ -151,10 +161,13 @@ def run_atoms_alone(
                 continue
             timings.append(time.perf_counter() - t0)
             if emit is not None:
+                freqs, kept_lists = _shot_frequencies(part, shots, sub, tseed)
                 emit({"kind": "frequencies", "round": round, "step": n_parts,
                       "tile": list(part.ids),
-                      "frequencies": _shot_frequencies(part, shots, sub, tseed),
+                      "frequencies": freqs,
                       "shots": len(shots)})
+                emit({"kind": "shots", "round": round, "step": n_parts,
+                      "tile": list(part.ids), "kept": kept_lists})
             candidates = _best_shot(part, shots, sub, tseed)
             new: list[str] = []
             for pid in candidates:

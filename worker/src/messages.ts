@@ -15,6 +15,8 @@ interface StartPayload {
   mode: string;
   graph: { r: number; edges?: [string, string][] };
   seed: number;
+  // Lab only (experience spec, Requirement 17). Absent means the measured defaults.
+  settings?: { shots?: number; top_share?: number };
 }
 
 interface ProgressLoadPayload {
@@ -27,7 +29,7 @@ interface ProgressLoadPayload {
 // loading progress has "stage" instead.
 interface ProgressRunPayload {
   type: "run";
-  kind: "simulate" | "pick" | "frequencies";
+  kind: "simulate" | "pick" | "frequencies" | "shots";
   competitor: string;
   round: number;
   step: number;
@@ -36,6 +38,9 @@ interface ProgressRunPayload {
   source?: string; // pick only: "atoms" | "annealing" | "coin flip" | "rule"
   removed?: string[]; // pick only: neighbours removed by the pick
   frequencies?: Record<string, number>; // frequencies only: id -> how often picked in the shots (0..1)
+  // shots only: one list per shot, in Simulator order, with the indexes into `tile` of the
+  // Points kept after repair. The share of lists that contain an index is that Point's frequency.
+  kept?: number[][];
 }
 
 // Sent as soon as one Competitor has finished, before the final "result".

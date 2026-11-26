@@ -8,9 +8,10 @@
 Progress (Req. 9.9, 9.10): `emit(event)` gets plain dicts (not JSON text), in run
 order. The switch is `run(request_json, emit=None)`; with `emit=None` no events
 are sent, and the result text is identical with and without `emit`.
-Event kinds: `simulate`, `frequencies`, `pick` (rule picks use source "rule").
-Every `pick` carries `removed` (neighbour ids removed by it, [] when none), and
-a `frequencies` event follows each `simulate` event.
+Event kinds: `simulate`, `frequencies`, `shots`, `pick` (rule picks use source
+"rule"). Every `pick` carries `removed` (neighbour ids removed by it, [] when
+none), a `frequencies` event follows each `simulate` event, and a `shots` event
+follows each `frequencies` event.
 
   {"type": "run", "kind": "simulate", "competitor": name, "round": 1|6|11,
    "step": int, "tile": [point ids]}
@@ -21,6 +22,13 @@ a `frequencies` event follows each `simulate` event.
    "step": int, "tile": [point ids], "frequencies": {id: 0..1}, "shots": int}
       after each real Simulator call (same conditions as `simulate`);
       `shots` is the number of shots the Simulator returned.
+  {"type": "run", "kind": "shots", "competitor": name, "round": ...,
+   "step": int, "tile": [point ids], "kept": [[index, ...], ...]}
+      right after each `frequencies` event; one list per shot, in Simulator
+      order, with the indexes into `tile` of the Points kept after repair.
+      These are the shots the frequencies were computed from: the share of
+      lists that contain a Point's index is its frequency. No extra random
+      draw is made for this event.
   {"type": "run", "kind": "pick", "competitor": name, "round": ..., "step": int,
    "tile": null, "picked": [id], "removed": [ids],
    "source": "atoms"|"annealing"|"coin flip"|"rule",
