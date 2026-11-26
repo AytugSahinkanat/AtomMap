@@ -46,6 +46,8 @@ export interface RunView {
   el: HTMLElement;
   /** A run starts: call before the worker start message. Resets playback. */
   begin(map: RunMapHandle): void;
+  /** The worker is still finishing a run that was stopped; this run starts right after it. */
+  setWaiting(on: boolean): void;
   /** Move focus to the Skip to the end button (after a run began). */
   focusSkip(): void;
   /** Run progress events arrived. */
@@ -77,7 +79,11 @@ function speedLabel(v: number): string {
   return `${v} steps per second`;
 }
 
+/** Shown while the worker finishes a stopped run before this one can start. */
+export const WAITING_NOTE = "Finishing the run you stopped first. Your run starts right after it.";
+
 export function createRunView(deps: RunDeps): RunView {
+  let waitingNote: string | null = null;
   const el = document.createElement("section");
   el.className = "run-view";
   el.hidden = true;
@@ -179,7 +185,7 @@ export function createRunView(deps: RunDeps): RunView {
 
     deps.onProgress?.(currentCursor());
     if (finished) return; // the final map stays as it is, the finished text stays
-    status.textContent = state.statusLine || "Starting the run…";
+    status.textContent = state.statusLine || waitingNote || "Starting the run…";
     if (state.round !== null && state.round !== lastRound) {
       lastRound = state.round;
       map.announce(`Round ${state.round}.`);
@@ -276,7 +282,12 @@ export function createRunView(deps: RunDeps): RunView {
     get active() {
       return active;
     },
+    setWaiting(on) {
+      waitingNote = on ? WAITING_NOTE : null;
+      if (on && !finished) status.textContent = WAITING_NOTE;
+    },
     begin(m) {
+      waitingNote = null;
       player?.stop();
       map = m;
       resultIn = false;

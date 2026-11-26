@@ -71,40 +71,41 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
     - `buildRequest(choice, seed, settings?)` adds `settings` only when given; `record-results.mjs` and `measure-limit.mjs` stop with a message for a request with `settings`; `record-results.mjs --check` makes the 30 runs and compares with `results.json` without writing
     - _Requirements: 17.6_
 
-- [ ] 4. Checkpoint - Ensure all tests pass
+- [x] 4. Checkpoint - Ensure all tests pass
   - Engine tests with `OPENBLAS_NUM_THREADS=1`, `npm test`, `npm run check`, `npm run build`, `npm run smoke -- --no-build`
   - The owner runs `npm run record-results -- --check` now, so a moved number shows up before any UI work; ask the user if questions arise.
 
-- [ ] 5. Steering update
+- [x] 5. Steering update
   - In `.kiro/steering/design.md`: motion may be rich when it shows real data, never decoration or made-up data, reduced motion always works; the new transition timings; the lab look (darker background, faint grid); the Lab may use the system monospace stack
   - _Requirements: 20.1, 20.2_
 
-- [ ] 6. Scenes, routes and transitions
-  - [ ] 6.1 Implement the router
+- [x] 6. Scenes, routes and transitions
+  - [x] 6.1 Implement the router
     - `scenes/router.ts`: `parseRoute`, `formatRoute`, the slugs; `#/results` stays the Results_Page
     - _Requirements: 1.2, 1.4, 1.6_
-  - [ ] 6.3 Implement the stage and the transitions
+  - [x] 6.3 Implement the stage and the transitions
     - `scenes/stage.ts` and `scenes/transitions.ts`: exit (260 ms, scale 0.98, blur), staggered enter (460 ms, 60 ms apart, 14 px), the input lock with the 1.2 s guard, reduced motion switches at once; focus to the Scene heading and a polite announcement
     - _Requirements: 1.1, 1.3, 1.8, 4.1, 4.2, 4.4, 4.5, 4.6_
-  - [ ] 6.4 Split the map screen into the shared map view and Scene panels
-    - Move the canvases, the a11y list and `layout()` from `screens/map.ts` to `scenes/map-view.ts`; the toolbar parts become the panels of Scenes 2 to 4; the Scene_Steps on Scenes 2 to 4 only; back during a run stops it
+  - [x] 6.4 Split the map screen into the shared map view and Scene panels
+    - Done in `screens/map.ts` itself (see the design, Components): the map element is made once and the panels of Scenes 2 to 4 sit around it; the toolbar became the Map_Scene side panel; the Scene_Steps on Scenes 2 to 4 only; back during a run stops it (the client drops the stopped run's messages and holds the next run until the worker has finished the dropped one)
     - _Requirements: 1.5, 1.7, 3.1, 8.1_
-  - [ ] 6.5 Wire the routes into `main.ts` and load the simulator in the background
+  - [x] 6.5 Wire the routes into `main.ts` and load the simulator in the background
     - Show the Choose_Scene at once and start the Worker at the same moment; no Loading_Screen in the normal flow; `state.ready`; the run button shows the percent and the stage sentence and stays disabled until ready; the hint "Try it by hand while the simulator gets ready."; the plain-words error on a loading failure with cards and Hand_Pick still working; one polite announcement when ready
     - Stale run or results routes, and a run route before ready, go to the Map_Scene
     - _Requirements: 1.3, 1.4, 23.1, 23.2, 23.3, 23.4, 23.5, 23.6_
 
-- [ ] 7. Choose a map and read the map
-  - [ ] 7.1 Build the map list and the Card_Previews
-    - `scenes/maps.ts` and `scenes/card-preview.ts`: the six maps, edges and Points only, fixtures cached, "Loading the map…" until loaded
+- [x] 7. Choose a map and read the map
+  - [x] 7.1 Build the map list and the Card_Previews
+    - `scenes/maps.ts` and `scenes/card-preview.ts`: edges and Points only, fixtures cached, "Loading the map…" until loaded
+    - Listed now: the wifi hall, Kadıköy cafés and Your map. The two US maps are listed with their Map_Check (task 11.2) and "Today's map" with the Daily_Map (task 10.2); unknown or not yet listed slugs go to the Choose_Scene
     - _Requirements: 2.2, 2.3_
-  - [ ] 7.2 Build the Choose_Scene and the Map_Cards
+  - [x] 7.2 Build the Choose_Scene and the Map_Cards
     - Title, question line, the card grid (3 × 2 at 1366 px, one column at 375 px), Card_Chips that redraw the preview and carry over, one button per card body, labels with the point count
     - _Requirements: 2.1, 2.4, 2.5, 2.6_
-  - [ ] 7.3 Add the Container_Transform from the card to the map box
+  - [x] 7.3 Add the Container_Transform from the card to the map box
     - FLIP copy of the preview, 520 ms, then the real map; reduced motion switches at once
     - _Requirements: 4.3, 4.5_
-  - [ ] 7.4 Build the Map_Scene panel
+  - [x] 7.4 Build the Map_Scene panel
     - Label line, distance toggle, the three How_To_Read items with inline icons, no Tutor idle text, attribution and source for place maps
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
@@ -113,6 +114,7 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
     - `hand-pick.ts`: `handPickStats(ids, edges, picked)`
     - _Requirements: 9.3, 9.7_
   - [ ] 8.3 Wire the Hand_Pick into the Map_Scene
+    - Change `LOADING_HINT` in `screens/map.ts` to "Try it by hand while the simulator gets ready." (Requirement 23.3); until hand-picking exists it says "Look around while the simulator gets ready."
     - Click and Enter or Space pick and unpick; picked and clash marks with shape as well as colour; the readout and the hint; "Clear my picks"; one Hand_Pick per map and distance setting; the "Edit points / Pick points" toggle on Your_Map
     - _Requirements: 9.1, 9.2, 9.4, 9.5, 9.6, 21.4_
   - [ ] 8.4 Show the You_Line on the Results_Scene
@@ -180,7 +182,7 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
 - [ ] 13. Checkpoint - Ensure all tests pass
   - All tests, `npm run build`, `npm run smoke -- --no-build`, `npm run layout-check -- --no-build`; ask the user if questions arise.
 
-- [ ] 14. The lab (last, first to cut)
+- [ ] 14. The lab (after the main flow, stays in; cuts only inside it)
   - [ ] 14.1 Draw the icons and the lab entrance
     - `lab/icons.ts` (flask, sliders, test tubes, gauge, hand drawn inline SVG); `lab/entrance.ts` (about 1 s, no bounce); reduced motion switches at once
     - _Requirements: 15.2, 15.4, 15.7, 15.8_

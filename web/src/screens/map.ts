@@ -1,4 +1,7 @@
-// Map_Screen: Hero_Map in Channel_Plan, a place map in Place, the toggle, the seed and the run button.
+// The shared map of Scenes 2 to 4 (experience spec): Map_Scene, Run_Scene and Results_Scene.
+// One map element (canvases, accessible Point list) is made once and stays; the scenes only
+// change what sits next to it: the side panel on the Map_Scene, the run bar and the Scoreboard
+// on the Run_Scene, and the Tutor, the Scoreboard and the legend on the Results_Scene.
 // It draws with the static, dynamic and a11y layers and sends the run request to the worker.
 // It holds no MIS logic.
 
@@ -49,6 +52,51 @@ import { buildIdle } from "../tutor/sentences";
 import { createStrip } from "../tutor/strip";
 import { downloadCsv, downloadGeoJson, type ExportInput } from "../export";
 import { CARD_LABELS, type EngineName } from "../scoreboard-model";
+import { stageSentence } from "./loading";
+import { getChips, mapEntry, setChips, setYourPointsSource } from "../scenes/maps";
+import type { MapSlug } from "../scenes/router";
+
+/** The scenes this map belongs to. */
+export type FlowScene = "map" | "run" | "results";
+
+export const HOW_TO_READ = [
+  "A dot is a place you could pick.",
+  "A line means the two are too close, so only one of the two can be picked.",
+  "Run it and watch the atoms.",
+] as const;
+
+/** Shown while the simulator loads (experience spec, Requirement 23.3). Task 8 adds picking by hand. */
+export const LOADING_HINT = "Look around while the simulator gets ready.";
+export const READY_ANNOUNCEMENT = "The simulator is ready.";
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+/** Small line icons for the How_To_Read items, drawn in the palette (inline SVG). */
+function howToIcon(kind: 0 | 1 | 2): SVGSVGElement {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "22");
+  svg.setAttribute("height", "22");
+  svg.setAttribute("aria-hidden", "true");
+  svg.classList.add("how-icon");
+  const add = (tag: string, attrs: Record<string, string>) => {
+    const n = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+    svg.append(n);
+  };
+  if (kind === 0) {
+    add("circle", { cx: "12", cy: "12", r: "4.5", fill: "#8f8cb8" });
+  } else if (kind === 1) {
+    add("line", { x1: "6", y1: "15", x2: "18", y2: "9", stroke: "#8f8cb8", "stroke-width": "1.5" });
+    add("circle", { cx: "6", cy: "15", r: "3.2", fill: "#8f8cb8" });
+    add("circle", { cx: "18", cy: "9", r: "3.2", fill: "none", stroke: "#8f8cb8", "stroke-width": "1.5" });
+  } else {
+    add("circle", { cx: "12", cy: "12", r: "3", fill: "#5dcaa5" });
+    add("ellipse", { cx: "12", cy: "12", rx: "9", ry: "3.6", fill: "none", stroke: "#5dcaa5", "stroke-width": "1.2" });
+    add("ellipse", { cx: "12", cy: "12", rx: "9", ry: "3.6", fill: "none", stroke: "#7f77dd", "stroke-width": "1.2", transform: "rotate(60 12 12)" });
+  }
+  return svg;
+}
 
 interface PlaceSelector {
   /** The picker (radios only), for the toolbar. */
@@ -146,9 +194,15 @@ function createPlaceSelector(): PlaceSelector {
 
 export interface MapScreenDeps {
   /** Send a run request to the worker. */
-  start(payload: StartPayload): void;
+  start(payload: StartPayload): boolean | void;
   /** The Run_Screen finished with a result (state transition to the scoreboard). */
   onFinished(result: unknown): void;
+  /** Drop the run in the worker: its messages are ignored (the back button during a run). */
+  cancel?(): void;
+  /** Called right before the scene changes, while the old parts are still on screen. */
+  sceneWillChange?(from: FlowScene, to: FlowScene): void;
+  /** Called right after the scene changed. */
+  sceneDidChange?(to: FlowScene): void;
 }
 
 export interface MapScreen {
@@ -159,6 +213,22 @@ export interface MapScreen {
   showMap(): void;
   /** One Competitor finished (client `onCompetitorDone`). Fills in its card. */
   competitorDone(competitor: string): void;
+  /** Show this map on the Map_Scene, with its chips from the Choose_Scene. No transition of its own. */
+  select(slug: MapSlug): void;
+  /** The map shown now. */
+  readonly slug: MapSlug;
+  /** The scene shown now. */
+  readonly scene: FlowScene;
+  /** The back button during a run: drop the run and show the Map_Scene. */
+  stopRun(): void;
+  /** The heading of the scene shown now (focus goes there when a scene opens). */
+  heading(): HTMLElement;
+  /** The parts of a scene that come in (and go out) when the scene changes. The map stays. */
+  parts(scene: FlowScene): HTMLElement[];
+  /** The map box, the target of the container transform. */
+  readonly mapBox: HTMLElement;
+  /** Lay the map out again (after it was put into the page). */
+  relayout(): void;
 }
 
 type Mode = "channel_plan" | "place" | "your_map";
@@ -209,9 +279,14 @@ function radioGroup(
 export function createMapScreen(deps: MapScreenDeps): MapScreen {
   let running = false;
   const el = document.createElement("main");
-  el.className = "screen map";
-  const h = document.createElement("h1");
-  h.textContent = "AtomMap";
+  el.className = "screen map scene mapflow";
+  /** The scene shown now. */
+  let sceneNow: FlowScene = "map";
+  let currentSlug: MapSlug = "hall";
+  // The heading of the Run_Scene and the Results_Scene. The Map_Scene has its own, in the side panel.
+  const flowHeading = document.createElement("h1");
+  flowHeading.className = "visually-hidden";
+  flowHeading.tabIndex = -1;
 
   // ---- controls ----
   let mode: Mode = "channel_plan";
@@ -219,30 +294,18 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   let walking = true;
   let placeRequested = false;
 
-  const modeGroup = radioGroup(
-    "Mode",
-    "mode",
-    [
-      { value: "channel_plan", label: "Channel plan (3 rounds)" },
-      { value: "place", label: "Place (1 round)" },
-      { value: "your_map", label: "Your map (1 round)" },
-    ],
-    mode,
-    (v) => {
-      mode = v as Mode;
-      onMapOrToggleChanged();
-    },
-  );
+  // The distance setting of the map. The same choice as the card's chips on the Choose_Scene.
   const wallsGroup = radioGroup(
     "Walls",
     "walls",
     [
-      { value: "on", label: "Walls on" },
       { value: "off", label: "Walls off" },
+      { value: "on", label: "Walls on" },
     ],
     "off",
     (v) => {
       wallsOn = v === "on";
+      setChips("hall", { walls: wallsOn });
       onMapOrToggleChanged();
     },
   );
@@ -256,6 +319,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     "walking",
     (v) => {
       walking = v === "walking";
+      setChips(currentSlug, { walking });
       onMapOrToggleChanged();
     },
   );
@@ -314,6 +378,31 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   runHint.className = "muted run-hint";
   runHint.textContent = "Add at least one point to run.";
   runHint.hidden = true;
+
+  // Loading in the background (experience spec, Requirement 23): the run button waits for the
+  // simulator and shows how far it is. Everything else on the scene works meanwhile.
+  const loadBox = document.createElement("div");
+  loadBox.className = "run-loading";
+  const loadBar = document.createElement("div");
+  loadBar.className = "bar run-loading-bar";
+  loadBar.setAttribute("role", "progressbar");
+  loadBar.setAttribute("aria-label", "Simulator loading");
+  loadBar.setAttribute("aria-valuemin", "0");
+  loadBar.setAttribute("aria-valuemax", "100");
+  const loadFill = document.createElement("div");
+  loadFill.className = "bar-fill";
+  loadBar.append(loadFill);
+  const loadStageLine = document.createElement("p");
+  loadStageLine.className = "muted run-loading-stage";
+  const loadHint = document.createElement("p");
+  loadHint.className = "run-loading-hint";
+  loadHint.textContent = LOADING_HINT;
+  const loadErrorLine = document.createElement("p");
+  loadErrorLine.className = "error run-loading-error";
+  loadErrorLine.setAttribute("role", "alert");
+  loadErrorLine.hidden = true;
+  loadBox.append(loadBar, loadStageLine, loadHint, loadErrorLine);
+  let announcedReady = false;
 
   const message = document.createElement("p");
   message.className = "error";
@@ -413,32 +502,45 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   /** Request edges of the run on screen, for the Facts. */
   let runEdges: [string, string][] = [];
 
+  // The Map_Scene shows no Tutor paragraph (experience spec, Requirement 3.3): the map's label
+  // sits in the side panel, and the Tutor appears on the Results_Scene.
   function refreshIdle(): void {
     if (running || finishedShown) return;
-    if (labelText === "") strip.hide();
-    else strip.showIdle(labelText, buildIdle(engineModeOf(mode), mode === "your_map" ? "your_map" : undefined));
-    layout(); // the strip height changed, so the room left for the map did too
+    strip.hide();
+    layout();
   }
   function setLabel(text: string): void {
     labelText = text;
+    labelLine.textContent = text;
     refreshIdle();
   }
 
-  // One row: the tagline and, in Place mode, the OpenStreetMap attribution line (inline, no extra row).
-  const tagline = document.createElement("div");
-  tagline.className = "tagline-row";
-  const taglineText = document.createElement("p");
-  taglineText.className = "muted tagline";
-  taglineText.textContent = "two close atoms can't both light up, two close sites can't both be picked";
-  const resultsLink = document.createElement("a");
-  resultsLink.href = "#/results";
-  resultsLink.className = "results-link";
-  resultsLink.textContent = "What we measured";
-  tagline.append(taglineText, resultsLink, placeSelector.info);
-
-  const toolbar = document.createElement("div");
-  toolbar.className = "toolbar";
-  toolbar.append(modeGroup.el, wallsGroup.el, distanceGroup.el, placeSelector.el, yourGroup, seedLabel, runButton, runHint);
+  // ---- side panel of the Map_Scene ----
+  const side = document.createElement("aside");
+  side.className = "map-side";
+  side.setAttribute("aria-label", "Map settings and run");
+  const sideTitle = document.createElement("h1");
+  sideTitle.className = "map-side-title";
+  sideTitle.tabIndex = -1;
+  const labelLine = document.createElement("p");
+  labelLine.className = "map-label";
+  const chipRow = document.createElement("div");
+  chipRow.className = "map-side-chips";
+  chipRow.append(wallsGroup.el, distanceGroup.el, yourGroup);
+  const howTo = document.createElement("ul");
+  howTo.className = "how-to";
+  howTo.setAttribute("aria-label", "How to read the map");
+  HOW_TO_READ.forEach((text, i) => {
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.textContent = text;
+    li.append(howToIcon(i as 0 | 1 | 2), span);
+    howTo.append(li);
+  });
+  const runRow = document.createElement("div");
+  runRow.className = "run-row";
+  runRow.append(seedLabel, runButton, runHint);
+  side.append(sideTitle, labelLine, chipRow, placeSelector.info, howTo, runRow, loadBox);
 
   const noData = document.createElement("p");
   noData.className = "error no-data";
@@ -494,7 +596,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   scoreboard.el.querySelector('.score-cards')?.after(legendBox);
   const mapRow = document.createElement("div");
   mapRow.className = "map-row";
-  mapRow.append(mapCol, scoreboard.el);
+  mapRow.append(mapCol, side, scoreboard.el);
 
   /** Seed and mode of the run on screen (for the scoreboard). */
   let runSeed = DEFAULT_SEED;
@@ -521,9 +623,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   const run = createRunView({
     buffer,
     reducedMotion: () => reducedQuery?.matches ?? false,
-    onFinished: (result, hadFocus) => {
+    onFinished: (result) => {
+      deps.sceneWillChange?.(sceneNow, "results");
       running = false;
-      runButton.disabled = choice === null;
       const competitors = (result as { competitors?: Record<string, unknown> } | null)?.competitors ?? {};
       scoreboard.finish(competitors);
       selectedPlan = "Hybrid";
@@ -543,25 +645,40 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
           result: { competitors, meta: (result as { meta?: Record<string, unknown> } | null)?.meta },
         }),
         "Hybrid",
-        hadFocus,
+        false, // the scene change moves the focus to the Results_Scene heading
       );
+      sceneNow = "results";
+      setFlowHeading();
+      updateRunButton();
       layout(); // the run bar collapsed: use the room for the map; the final state is redrawn by resync()
       deps.onFinished(result);
+      deps.sceneDidChange?.("results");
     },
     onProgress: () => refreshScoreboard(),
     onBack: () => showMap(true),
     onStopped: () => {
+      // A run error: the Run_Scene stays, with the message and its back button.
       running = false;
-      runButton.disabled = choice === null;
+      updateRunButton();
       scoreboard.hide();
     },
   });
 
-  el.append(h, tagline, toolbar, strip.el, message, noData, run.el, mapRow);
+  function setFlowHeading(): void {
+    const title = mapEntry(currentSlug)?.title ?? "Map";
+    flowHeading.textContent = sceneNow === "results" ? `Results: ${title}` : `Run: ${title}`;
+    flowHeading.hidden = sceneNow === "map";
+  }
 
-  function showMap(fromBack = false): void {
-    const restoreFocus =
-      fromBack || focusInside(run.el, document.activeElement) || focusInside(scoreboard.el, document.activeElement);
+  el.append(flowHeading, strip.el, message, noData, run.el, mapRow);
+
+  /**
+   * Back to the Map_Scene. `silent`: the map itself changes (select), and the stage animates the
+   * whole switch, so no scene change of its own is reported.
+   */
+  function showMap(_fromBack = false, silent = false): void {
+    const from = sceneNow;
+    if (!silent && from !== "map") deps.sceneWillChange?.(from, "map");
     run.hide();
     running = false;
     finishedShown = false;
@@ -569,13 +686,15 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     selectedPlan = "Hybrid";
     scoreboard.hide();
     legendBox.hidden = true;
-    toolbar.hidden = false;
-    tagline.hidden = false;
+    side.hidden = false;
+    sceneNow = "map";
+    setFlowHeading();
     updateYourUi();
     update({ screen: "map" });
     refreshIdle();
+    updateRunButton();
     layout();
-    if (restoreFocus && !runButton.disabled) runButton.focus();
+    if (!silent && from !== "map") deps.sceneDidChange?.("map");
   }
 
   // ---- data and scene ----
@@ -660,15 +779,15 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   }
 
   // The Map_Text panel sits in the column on the right of the map, where the Scoreboard opens during a run.
-  const textPanel = document.createElement("section");
+  // Folded by default so the Map_Scene fits one laptop screen; the summary is a keyboard control.
+  const textPanel = document.createElement("details");
   textPanel.className = "maptext-panel";
-  textPanel.setAttribute("aria-label", "Points as text");
   textPanel.hidden = true;
-  const textTitle = document.createElement("h2");
-  textTitle.textContent = "Points as text";
+  const textTitle = document.createElement("summary");
+  textTitle.textContent = "Points as text (CSV or GeoJSON)";
   const textArea = document.createElement("textarea");
   textArea.id = "maptext-box";
-  textArea.rows = 6;
+  textArea.rows = 4;
   textArea.spellcheck = false;
   textArea.placeholder = "id,x,y\na,10,20\nb,35.5,12";
   const textAreaLabel = document.createElement("label");
@@ -688,7 +807,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   textStatus.className = "maptext-status";
   textStatus.setAttribute("role", "status");
   textPanel.append(textTitle, textAreaLabel, textArea, fileLabel, useButton, textStatus);
-  scoreboard.el.before(textPanel);
+  // Your map: the Map_Text panel is part of the Map_Scene side panel.
+  side.append(textPanel);
 
   useButton.addEventListener("click", () => applyMapText(textArea.value));
   fileInput.addEventListener("change", () => {
@@ -728,6 +848,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       yourRInvalid = false;
       yourNote = null;
       yourVersion++; // the edges change
+      setChips("your-map", { r: yourR });
     } else {
       yourRInvalid = true;
       yourNote = r.error;
@@ -873,10 +994,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   }
 
   function render(): void {
-    modeGroup.setValue(mode);
     wallsGroup.el.hidden = mode !== "channel_plan";
     distanceGroup.el.hidden = mode !== "place";
-    placeSelector.el.hidden = mode !== "place";
     placeSelector.info.hidden = mode !== "place";
     updateYourUi();
 
@@ -935,24 +1054,51 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       noData.hidden = true;
       wrap.hidden = mode === "your_map" ? false : hero === null;
     }
-    const yourEmpty = mode === "your_map" && (yourState?.points.length ?? 0) === 0;
-    runButton.disabled = choice === null || running || yourEmpty || (mode === "your_map" && yourRInvalid);
+    updateRunButton();
     layout();
+  }
+
+  /** The run button and the loading status next to it (experience spec, Requirement 23). */
+  function updateRunButton(): void {
+    const yourEmpty = mode === "your_map" && (yourState?.points.length ?? 0) === 0;
+    const ready = state.ready;
+    const failed = !ready && state.loadError !== null;
+    runButton.disabled = !ready || choice === null || running || yourEmpty || (mode === "your_map" && yourRInvalid);
+    const pct = Math.round(Math.min(100, Math.max(0, state.loadPercent)));
+    runButton.textContent = ready
+      ? "Run"
+      : failed
+        ? "The simulator could not load"
+        : `Getting the simulator ready… ${pct}%`;
+    loadBox.hidden = ready;
+    loadBar.hidden = failed;
+    loadFill.style.width = `${pct}%`;
+    loadBar.setAttribute("aria-valuenow", String(pct));
+    loadStageLine.hidden = failed;
+    loadStageLine.textContent = stageSentence(state.loadStage);
+    loadHint.hidden = failed;
+    loadErrorLine.hidden = !failed;
+    loadErrorLine.textContent = state.loadError ?? "";
+    if (ready && !announcedReady) {
+      announcedReady = true;
+      a11y.announce(READY_ANNOUNCEMENT);
+    }
   }
 
   function onMapOrToggleChanged(): void {
     render();
   }
 
-  // Place selection (and its loading) updates the shared state.
+  // Place selection (and its loading) updates the shared state, and so does the simulator loading.
   subscribe(() => {
     if (mode === "place") render();
+    else updateRunButton();
   });
 
   // ---- run ----
   function startRun(seedValue: number): void {
     if (run.active || running) return;
-    if (choice === null || scene === null) return;
+    if (choice === null || scene === null || !state.ready) return;
     // Your map: three plain refusals, none of them starts a run.
     if (mode === "your_map") {
       const n = scene.points.length;
@@ -969,14 +1115,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         return;
       }
     }
+    deps.sceneWillChange?.(sceneNow, "run");
     showMessage(null);
-    // Run and Run again get hidden or disabled below. Remember if focus was on them.
-    const hadFocus = document.activeElement === runButton || scoreboard.holdsRunFocus();
     const ids = scene.points.map((p) => p.id);
     dynamicLayer.setFocus(-1);
-    toolbar.hidden = true;
-    tagline.hidden = true;
+    side.hidden = true;
     running = true;
+    sceneNow = "run";
+    setFlowHeading();
     updateYourUi();
     runButton.disabled = true;
     runSeed = seedValue;
@@ -994,8 +1140,46 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     scoreboard.begin(runSeed, engineModeOf(mode));
     run.begin({ layer: dynamicLayer, ids, announce: (m) => a11y.announce(m) });
     layout(); // after the run bar is shown, so the map height accounts for it
-    if (hadFocus) run.focusSkip();
-    deps.start(buildRequest(choice, seedValue));
+    if (deps.start(buildRequest(choice, seedValue)) === true) run.setWaiting(true);
+    deps.sceneDidChange?.("run");
+  }
+
+  // ---- the scenes ----
+  setYourPointsSource(() => ensureYourState().points);
+
+  function select(slug: MapSlug): void {
+    const entry = mapEntry(slug);
+    if (!entry) return;
+    if (running) deps.cancel?.();
+    currentSlug = slug;
+    const c = getChips(slug);
+    if (slug === "hall") {
+      mode = "channel_plan";
+      wallsOn = c.walls;
+      wallsGroup.setValue(wallsOn ? "on" : "off");
+    } else if (slug === "your-map") {
+      mode = "your_map";
+      if (c.r !== yourR) {
+        yourR = c.r;
+        yourRInvalid = false;
+        yourNote = null;
+        yourVersion++; // new edges
+      }
+      if (!yourRInvalid) rInput.value = String(yourR);
+    } else {
+      mode = "place";
+      walking = c.walking;
+      distanceGroup.setValue(walking ? "walking" : "straight");
+    }
+    sideTitle.textContent = entry.title;
+    showMap(false, true);
+    render();
+  }
+
+  function parts(s: FlowScene): HTMLElement[] {
+    if (s === "map") return [sideTitle, labelLine, chipRow, placeSelector.info, howTo, runRow, loadBox, textPanel];
+    if (s === "run") return [run.el, scoreboard.el];
+    return [run.el, scoreboard.el, strip.el, under];
   }
 
   runButton.addEventListener("click", () => {
@@ -1048,6 +1232,25 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       if (!running) return;
       if (competitor === "Hybrid") hybridEnd = buffer.length;
       refreshScoreboard();
+    },
+    select,
+    get slug() {
+      return currentSlug;
+    },
+    get scene() {
+      return sceneNow;
+    },
+    stopRun() {
+      if (sceneNow !== "run") return;
+      if (running) deps.cancel?.();
+      showMap(true);
+    },
+    heading: () => (sceneNow === "map" ? sideTitle : flowHeading),
+    parts,
+    mapBox: wrap,
+    relayout() {
+      lastW = 0;
+      layout();
     },
   };
 }

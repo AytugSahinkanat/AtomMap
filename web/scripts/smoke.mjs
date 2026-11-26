@@ -84,12 +84,17 @@ try {
   page.on("pageerror", (e) => problems.push(`page error: ${e.message}`));
 
   await page.goto(origin + "/", { timeout: 30_000 });
-  console.log(`smoke: page loaded at ${secs()}, waiting for the Map_Screen (Pyodide may take a while)`);
+  // The Choose_Scene comes up at once; the simulator loads in the background (experience spec, Req. 23).
+  await page.getByRole("heading", { name: "Choose a map" }).waitFor({ state: "visible", timeout: 30_000 });
+  console.log(`smoke: Choose_Scene visible at ${secs()}`);
+
+  await page.getByRole("button", { name: /^Open Wifi hall/ }).click({ timeout: 30_000 });
+  await page.locator("main.mapflow").waitFor({ state: "visible", timeout: 30_000 });
+  console.log(`smoke: Map_Scene of the wifi hall at ${secs()}, waiting for the simulator (Pyodide may take a while)`);
 
   const run = page.getByRole("button", { name: "Run", exact: true });
-  await page.locator("main.screen.map").waitFor({ state: "visible", timeout: LOAD });
   await run.waitFor({ state: "visible", timeout: LOAD });
-  console.log(`smoke: Map_Screen visible at ${secs()}`);
+  console.log(`smoke: simulator ready at ${secs()}`);
 
   await run.click({ timeout: LOAD });
   console.log(`smoke: Run pressed at ${secs()}`);

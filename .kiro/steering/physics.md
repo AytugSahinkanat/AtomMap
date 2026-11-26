@@ -23,7 +23,7 @@ Settings for the Rydberg atom simulation. Only loaded when working on engine fil
 ## Simulator
 
 - steps = 400
-- shots = 100
+- shots = 100 (the measured default). Only a lab run may set 10 to 200 through settings.shots; measured runs never do.
 - Seed numpy before every run.
 
 ## Layout

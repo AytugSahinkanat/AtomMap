@@ -76,11 +76,10 @@ const VIEWPORTS = [
 
 /** The controls of Your map that must be reachable. Each is [label, locator factory]. */
 const controls = (page) => [
-  ["mode: Your map", page.getByRole("radio", { name: "Your map (1 round)" })],
   ["r input", page.getByLabel("r (metres)")],
   ["Clear", page.getByRole("button", { name: "Clear" })],
   ["Add random points", page.getByRole("button", { name: "Add random points" })],
-  ["Seed", page.locator(`.toolbar input[inputmode="numeric"]`)],
+  ["Seed", page.locator(`.run-row input[inputmode="numeric"]`)],
   ["Run", page.getByRole("button", { name: "Run", exact: true })],
   ["Points as text box", page.locator("#maptext-box")],
   ["Use these points", page.getByRole("button", { name: "Use these points" })],
@@ -132,8 +131,14 @@ try {
     const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
     page.on("pageerror", (e) => problems.push(`${vp.name}: page error: ${e.message}`));
     await page.goto(origin + "/", { timeout: 30_000 });
-    await page.locator("main.screen.map").waitFor({ state: "visible", timeout: LOAD });
-    await page.getByRole("radio", { name: "Your map (1 round)" }).check();
+    // The scene flow (experience spec): the Choose_Scene, then the Your map card.
+    await page.getByRole("heading", { name: "Choose a map" }).waitFor({ state: "visible", timeout: LOAD });
+    await page.getByRole("button", { name: /^Open Your map/ }).click();
+    await page.locator("main.mapflow").waitFor({ state: "visible", timeout: LOAD });
+    // The Points as text panel is folded by default; open it so its controls are checked too.
+    await page.locator(".maptext-panel summary").click();
+    // Runs need the simulator: wait for the enabled Run button before the first check.
+    await page.getByRole("button", { name: "Run", exact: true }).waitFor({ state: "visible", timeout: LOAD });
     const clear = page.getByRole("button", { name: "Clear" });
     const random = page.getByRole("button", { name: "Add random points" });
     const useText = page.getByRole("button", { name: "Use these points" });

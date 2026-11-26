@@ -42,12 +42,11 @@ New or changed files in `web/src/`:
 | Path | Purpose |
 |---|---|
 | `scenes/router.ts` | `parseRoute(hash)`, `formatRoute(route)`, route types. Pure |
-| `scenes/stage.ts`, `scenes/transitions.ts` | Mounting Scenes, the exit and enter animations, the Container_Transform, the input lock |
+| `scenes/stage.ts`, `scenes/transitions.ts` | The app bar with the Scene_Steps, mounting Scenes, the exit and enter animations, the Container_Transform, the input lock |
 | `scenes/choose.ts` | The Choose_Scene and its Map_Cards |
 | `scenes/card-preview.ts` | Draws a small preview of a map's Points and edges |
-| `scenes/map-scene.ts`, `run-scene.ts`, `results-scene.ts` | The side panels of Scenes 2 to 4 |
-| `scenes/map-view.ts` | The shared map element, taken out of `screens/map.ts` |
-| `scenes/maps.ts` | The list of maps: slug, name, kind, loader, default chips |
+| `scenes/maps.ts` | The list of maps (name, title, chip kind, preview loader) and the chip state shared by the cards and the Map_Scene |
+| `screens/map.ts` | The shared map of Scenes 2 to 4 and their panels: the side panel of the Map_Scene, the run bar and Scoreboard of the Run_Scene, the Tutor, Scoreboard and legend of the Results_Scene |
 | `hand-pick.ts` | Valid_Picks, Clashes and Free_Points. Pure |
 | `run-number.ts` | Random Run_Numbers, the Daily_Seed. Pure apart from `crypto.getRandomValues` |
 | `daily/daily-map.ts` | Builds the Daily_Map from a Daily_Seed. Pure |
@@ -58,7 +57,7 @@ New or changed files in `web/src/`:
 | `data/map-checks.json` | The committed Map_Checks of the US_Maps |
 | `lab/lab.ts`, `lab/entrance.ts`, `lab/history.ts`, `lab/experiments.ts`, `lab/icons.ts` | The Lab |
 
-`screens/map.ts` is split: its canvas and a11y parts move to `scenes/map-view.ts`, its toolbar parts to the Scene panels. `screens/map-request.ts` keeps `buildRequest` as the only place that builds requests, with one new optional argument for Lab_Settings.
+`screens/map.ts` stays one module (built in task 6.4): it already owned the canvases, the a11y list, `layout()`, the run and the Scoreboard, all closely tied. It now makes its map element once and arranges the panels of Scenes 2 to 4 around it, reports each scene change before and after it (`sceneWillChange`, `sceneDidChange`), and offers `select(slug)`, `stopRun()`, `heading()` and `parts(scene)` to the stage. Its old toolbar moved into the Map_Scene side panel; the mode radios are gone (the Choose_Scene chooses the map). `screens/map-request.ts` keeps `buildRequest` as the only place that builds requests, with one new optional argument for Lab_Settings.
 
 ## Components and Interfaces
 
@@ -88,7 +87,11 @@ Slugs: `hall`, `kadikoy`, `sf-bus`, `nyc-bike`, `your-map`, `today`. An unknown 
 | Enter | each element with `data-enter` in document order: opacity 0 to 1 and translateY 14 px to 0, 460 ms, delay 60 ms × index, `cubic-bezier(0.22, 1, 0.36, 1)` (ease-out, no overshoot) |
 | Container_Transform | FLIP: measure the Card_Preview box and the map box, place a fixed-position copy of the preview over the card, animate its left, top, width and height to the map box in 520 ms with the same ease-out, then show the real map and remove the copy |
 
-While any animation runs, `stage.locked` is true, a transparent overlay takes pointer events, and the keydown handler of the Stage ignores Enter, Space and the run shortcuts. The lock ends when every animation's `finished` promise settles, or after 1.2 s as a guard. With `prefers-reduced-motion: reduce`, `transitions.ts` skips all animations and swaps at once. Every animation uses `fill: "none"` and ends at the element's CSS state, so the final layout equals the layout without motion (Requirement 4.6).
+While any animation runs, `stage.locked` is true, a transparent overlay takes pointer events, and the keydown handler of the Stage ignores Enter, Space and the run shortcuts. The lock ends when every animation's `finished` promise settles, or after 1.2 s as a guard. With `prefers-reduced-motion: reduce`, `transitions.ts` skips all animations and swaps at once. Every animation ends at the element's CSS state (`fill: "backwards"` only holds the first frame during a delay), so the final layout equals the layout without motion (Requirement 4.6).
+
+Outgoing parts are animated as snapshots: a copy of each part is laid over it (fixed position, inside `display: contents` copies of its ancestors so the CSS rules still match, canvases copied), the real DOM changes at once, and the copy fades out. So no state change waits for an exit animation, and a run starts the moment Run is pressed. Inside the map flow (Map_Scene, Run_Scene, Results_Scene) the map stays put: only the parts that differ between the two scenes go out and come in. The Container_Transform copy is a panel box holding the preview as an image with `object-fit: contain`, so the points never stretch while it grows.
+
+The back button during a run stops it. The worker cannot stop a run halfway, so it finishes the dropped run; the client drops every message of that run, and a run started meanwhile waits until the dropped one has ended. The status line then says "Finishing the run you stopped first. Your run starts right after it."
 
 ### Loading in the background
 
@@ -116,9 +119,9 @@ Layout: at 1366 × 768 the cards sit in a 3 × 2 grid under the title. At 375 px
 
 ### Map_Scene
 
-Side panel: the label line, the distance toggle (as a Card_Chip copy, kept in sync), the three How_To_Read items (inline SVG icons: a dot, two dots with a line, an atom with a play mark), the Hand_Pick readout and "Clear my picks", the run button and, for the US_Maps, the story line and the note of Requirement 13.4. Place maps keep their attribution line from the ui spec.
+Side panel: the map's title (the scene heading), the label line, the distance toggle (kept in sync with the Card_Chip), the three How_To_Read items (inline SVG icons: a dot, two dots with a line, an atom with a play mark), the Hand_Pick readout and "Clear my picks", the run button and, for the US_Maps, the story line and the note of Requirement 13.4. Place maps keep their attribution line from the ui spec.
 
-The Tutor's idle text is no longer shown (Requirement 3.3). `buildIdle` stays in `sentences.ts` for its tests and is not called by the Map_Scene.
+On Your map the "Points as text" panel is folded into a `<details>` element (closed by default, its summary is a keyboard control), and on a laptop the side panel scrolls inside its own box rather than make the page taller than the window. The Tutor's idle text is no longer shown (Requirement 3.3). `buildIdle` stays in `sentences.ts` for its tests and is not called by the Map_Scene.
 
 ### Run_Numbers
 
