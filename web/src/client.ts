@@ -27,14 +27,10 @@ export interface ClientCallbacks {
 }
 
 export interface WorkerClient {
-  /** Returns true when the run waits for a stopped run to end first. */
-  start(payload: StartPayload): boolean;
-  /**
-   * Drop the run in progress (the back button during a run). The worker cannot stop a run
-   * halfway, so it finishes it; every message of that run is dropped here, and a run started
-   * meanwhile is sent when the dropped run has ended.
-   */
-  cancel(): void;
+  start(payload: StartPayload): void;
+  /** True while a run was sent and its result or error has not come back yet. */
+  readonly busy: boolean;
+  /** Stop the worker at once. Its callbacks are never called again. */
   terminate(): void;
 }
 
@@ -59,34 +55,12 @@ export function createClient(
   const worker = new Worker(url); // classic worker (importScripts)
   /** A run was sent and its result or error has not come back yet. */
   let inFlight = false;
-  /** The run in flight was cancelled: drop its messages until it ends. */
-  let dropping = false;
-  /** A run started while a cancelled one was still being finished by the worker. */
-  let pending: StartPayload | null = null;
-
-  function send(payload: StartPayload): void {
-    inFlight = true;
-    const m: ToWorkerMessage = { type: "start", payload };
-    worker.postMessage(m);
-  }
+  let stopped = false;
 
   worker.onmessage = (ev: MessageEvent<FromWorkerMessage>) => {
+    if (stopped) return;
     const msg = ev.data;
-    const ofRun = msg.type === "result" || msg.type === "competitor_done" || (msg.type === "error" && inFlight) ||
-      (msg.type === "progress" && isRunProgress(msg.payload));
-    const ends = inFlight && (msg.type === "result" || msg.type === "error");
-    if (ends) inFlight = false;
-    if (dropping && ofRun) {
-      if (ends) {
-        dropping = false;
-        if (pending) {
-          const next = pending;
-          pending = null;
-          send(next);
-        }
-      }
-      return;
-    }
+    if (inFlight && (msg.type === "result" || msg.type === "error")) inFlight = false;
     switch (msg.type) {
       case "progress":
         if (isRunProgress(msg.payload)) {
@@ -112,6 +86,7 @@ export function createClient(
   };
 
   worker.onerror = (ev: ErrorEvent) => {
+    if (stopped) return;
     cb.onError?.({ type: "Error", message: ev.message || "The worker failed to load." });
   };
 
@@ -119,18 +94,16 @@ export function createClient(
     start(payload: StartPayload) {
       buffer.length = 0;
       for (const k of Object.keys(doneCompetitors)) delete doneCompetitors[k];
-      if (dropping) {
-        pending = payload; // sent when the cancelled run has ended
-        return true;
-      }
-      send(payload);
-      return false;
+      inFlight = true;
+      const m: ToWorkerMessage = { type: "start", payload };
+      worker.postMessage(m);
     },
-    cancel() {
-      if (inFlight) dropping = true;
-      pending = null;
+    get busy() {
+      return inFlight;
     },
     terminate() {
+      stopped = true;
+      inFlight = false;
       worker.terminate();
     },
   };

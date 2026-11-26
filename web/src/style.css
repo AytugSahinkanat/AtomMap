@@ -333,3 +333,27 @@ h1 { font-weight: 500; }
 @media (min-width: 60.0625rem) {
   .map-row .map-side { max-height: calc(100vh - 4.5rem); overflow-y: auto; }
 }
+/* The results controls are for the Results_Scene only, not greyed out during the run. */
+.mapflow[data-scene="run"] .score-again { display: none; }
+
+/* Shot_Histogram (experience spec, Requirement 7.3): one bar per atom, the same counts as the glow */
+.shot-hist { margin: 0.35rem 0 0; padding: 0.3rem 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+.shot-hist[hidden] { display: none; }
+.shot-hist-caption { font-size: 0.74rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.shot-hist-bars { display: flex; gap: 3px; align-items: flex-end; margin-top: 0.2rem; }
+.shot-hist-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.shot-hist-track { width: 100%; height: 2.4rem; background: var(--panel); border: 0.5px solid var(--border); border-radius: 3px; display: flex; align-items: flex-end; overflow: hidden; }
+.shot-hist-fill { width: 100%; background: var(--teal); }
+.shot-hist-num { font-size: 0.68rem; font-variant-numeric: tabular-nums; line-height: 1.2; }
+
+/* Hand_Pick readout (experience spec, Requirement 9) and the You_Line (Requirement 10) */
+.hand-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.6rem; margin: 0.3rem 0; }
+.hand-pick[hidden], .you-line[hidden] { display: none; }
+.screen.map .hand-pick p { margin: 0; font-size: 0.85rem; }
+.hand-pick-hint { flex: 1 1 100%; }
+.screen.map .hand-pick button { padding: 0.25rem 0.7rem; font-size: 0.85rem; margin-top: 0.2rem; }
+.screen.map .you-line { margin: 0.25rem 0 0; font-size: 0.9rem; }
+
+/* Today's map: the Local_Progress line on its card (experience spec, Requirement 11.5) */
+.map-card-note { margin: 0; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.map-card-note[hidden] { display: none; }

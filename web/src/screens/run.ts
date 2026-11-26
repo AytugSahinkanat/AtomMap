@@ -13,8 +13,12 @@ import {
   type Player,
   type PlaybackEvent,
   type PlaybackState,
+  lastShotsView,
+  settledView,
 } from "../render/playback";
 import { DEFAULT_SPEED, SPEED_STEPS } from "../settings";
+import { createHistogram } from "../render/histogram";
+import type { AtomsView } from "../render/shot-replay";
 import { focusInside } from "../focus";
 
 /** What the Run_Screen needs from the Map_Screen. */
@@ -24,6 +28,14 @@ export interface RunMapHandle {
   ids: readonly string[];
   /** One polite live region message (round or run changes only). */
   announce(message: string): void;
+  /**
+   * Blockade_Halo radius on screen (r/2 in map units), or null when the edges of the map do not
+   * follow straight-line distance (walls on, walking): then the real blockade pairs are drawn.
+   * A function, because the map can be laid out again during a run.
+   */
+  haloPx(): number | null;
+  /** The edges of the run request as index pairs (same order as `ids`). */
+  edgePairs: readonly (readonly [number, number])[];
 }
 
 export interface RunDeps {
@@ -44,10 +56,10 @@ export interface RunDeps {
 
 export interface RunView {
   el: HTMLElement;
+  /** The Shot_Histogram panel. The Map_Screen puts it in the scoreboard column. */
+  histogramEl: HTMLElement;
   /** A run starts: call before the worker start message. Resets playback. */
   begin(map: RunMapHandle): void;
-  /** The worker is still finishing a run that was stopped; this run starts right after it. */
-  setWaiting(on: boolean): void;
   /** Move focus to the Skip to the end button (after a run began). */
   focusSkip(): void;
   /** Run progress events arrived. */
@@ -79,11 +91,7 @@ function speedLabel(v: number): string {
   return `${v} steps per second`;
 }
 
-/** Shown while the worker finishes a stopped run before this one can start. */
-export const WAITING_NOTE = "Finishing the run you stopped first. Your run starts right after it.";
-
 export function createRunView(deps: RunDeps): RunView {
-  let waitingNote: string | null = null;
   const el = document.createElement("section");
   el.className = "run-view";
   el.hidden = true;
@@ -132,6 +140,7 @@ export function createRunView(deps: RunDeps): RunView {
   errorBox.append(errorText, backButton);
 
   el.append(status, controls, errorBox);
+  const histogram = createHistogram();
 
   // ---- run state ----
   let map: RunMapHandle | null = null;
@@ -145,13 +154,21 @@ export function createRunView(deps: RunDeps): RunView {
   // Reduced motion: own cursor and state, one Round per step.
   let rState: PlaybackState | null = null;
   let rCursor = 0;
+  /** Reduced motion: skip was pressed, so events that arrive later are applied at once too. */
+  let rSkipped = false;
   let lastRound: number | null = null;
 
   const eventsPerSecond = (): number => Number(speedSelect.value) || DEFAULT_SPEED;
 
-  /** Copy a playback state into the dynamic layer. */
-  function sync(playState: PlaybackState, dtMs: number, instant: boolean): void {
+  /** Copy a playback state into the dynamic layer. `atoms`: the Group on the atoms (from the player). */
+  function sync(playState: PlaybackState, dtMs: number, instant: boolean, atoms?: AtomsView | null): void {
     if (map === null) return;
+    const view = finished ? null : atoms === undefined ? settledView(playState) : atoms;
+    // During a sweep or a replay the glow of the Group comes from the replayed shots, not the end value.
+    const replayGlow = new Map<number, number>();
+    if (view !== null && (view.total > 0 || view.sweep !== null)) {
+      view.group.forEach((p, k) => replayGlow.set(p, view.glow[k] ?? 0));
+    }
     const layer = map.layer;
     // The final map: unpicked points become the hollow grey "5 GHz only" circle.
     const state = finished ? finalizeState(playState) : playState;
@@ -174,18 +191,23 @@ export function createRunView(deps: RunDeps): RunView {
         else if (s === PointStatus.Removed) layer.remove(i, !still);
         else if (s === PointStatus.FiveGhzOnly) layer.setFiveGhzOnly(i);
       }
-      if (s === PointStatus.Undecided && (state.glowTarget[i] > 0 || layer.glow[i] > 0)) {
-        layer.setGlow(i, state.glowTarget[i]);
+      const target = replayGlow.get(i) ?? state.glowTarget[i];
+      if (s === PointStatus.Undecided && (target > 0 || layer.glow[i] > 0)) {
+        layer.setGlow(i, target);
       }
     }
     layer.setTile(state.tile === null ? null : [...state.tile]);
+    layer.setAtoms(view, map.haloPx(), map.edgePairs);
+    // The histogram: the Group on the atoms now, else the last Group with all its shots. A skip,
+    // a full replay and a reduced-motion step all end with the same bars.
+    if (!finished) histogram.update(view ?? lastShotsView(state), map.ids);
     if (instant || reduced) layer.finishTweens();
     else layer.tick(dtMs);
     layer.draw();
 
     deps.onProgress?.(currentCursor());
     if (finished) return; // the final map stays as it is, the finished text stays
-    status.textContent = state.statusLine || waitingNote || "Starting the run…";
+    status.textContent = state.statusLine || "Starting the run…";
     if (state.round !== null && state.round !== lastRound) {
       lastRound = state.round;
       map.announce(`Round ${state.round}.`);
@@ -220,6 +242,7 @@ export function createRunView(deps: RunDeps): RunView {
     const st = currentState();
     if (st !== null) sync(st, 0, true); // draw the final map, no tweens
     el.hidden = true; // the Tutor strip shows the finished line now
+    histogram.el.hidden = true;
     map?.announce("The run is finished.");
     deps.onFinished(resultValue, hadFocus);
   }
@@ -247,8 +270,9 @@ export function createRunView(deps: RunDeps): RunView {
 
   function stepTo(end: number): void {
     if (rState === null) return;
+    // Reduced motion: no replay. The histogram shows the last Group of the step with all its shots.
     for (; rCursor < end; rCursor++) rState = apply(rState, deps.buffer[rCursor] as PlaybackEvent);
-    sync(rState, 0, true);
+    sync(rState, 0, true, settledView(rState));
     updateNextButton();
   }
 
@@ -259,7 +283,10 @@ export function createRunView(deps: RunDeps): RunView {
 
   skipButton.addEventListener("click", () => {
     if (!active) return;
-    if (reduced) stepTo(deps.buffer.length);
+    if (reduced) {
+      rSkipped = true;
+      stepTo(deps.buffer.length);
+    }
     else player?.skip();
     tryFinish();
   });
@@ -275,19 +302,16 @@ export function createRunView(deps: RunDeps): RunView {
     active = false;
     map = null;
     el.hidden = true;
+    histogram.clear();
   }
 
   return {
     el,
+    histogramEl: histogram.el,
     get active() {
       return active;
     },
-    setWaiting(on) {
-      waitingNote = on ? WAITING_NOTE : null;
-      if (on && !finished) status.textContent = WAITING_NOTE;
-    },
     begin(m) {
-      waitingNote = null;
       player?.stop();
       map = m;
       resultIn = false;
@@ -298,7 +322,9 @@ export function createRunView(deps: RunDeps): RunView {
       lastRound = null;
       reduced = deps.reducedMotion();
       rCursor = 0;
+      rSkipped = false;
       m.layer.reset();
+      histogram.clear();
       errorBox.hidden = true;
       controls.hidden = false;
       el.classList.remove('run-done');
@@ -320,6 +346,7 @@ export function createRunView(deps: RunDeps): RunView {
           eventsPerSecond,
           resultReceived: () => resultIn,
           draw: sync,
+          replay: true,
           isAnimating: () => m.layer.isAnimating(),
           ...browserTiming(),
         });
@@ -331,15 +358,18 @@ export function createRunView(deps: RunDeps): RunView {
     },
     wake() {
       if (!active) return;
-      if (reduced) updateNextButton();
-      else player?.wake();
+      if (reduced) {
+        if (rSkipped) stepTo(deps.buffer.length);
+        else updateNextButton();
+      } else player?.wake();
     },
     result(r) {
       if (!active) return;
       resultIn = true;
       resultValue = r;
       if (reduced) {
-        updateNextButton();
+        if (rSkipped) stepTo(deps.buffer.length);
+        else updateNextButton();
         tryFinish();
       } else {
         player?.wake();

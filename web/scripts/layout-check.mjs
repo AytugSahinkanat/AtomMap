@@ -79,7 +79,6 @@ const controls = (page) => [
   ["r input", page.getByLabel("r (metres)")],
   ["Clear", page.getByRole("button", { name: "Clear" })],
   ["Add random points", page.getByRole("button", { name: "Add random points" })],
-  ["Seed", page.locator(`.run-row input[inputmode="numeric"]`)],
   ["Run", page.getByRole("button", { name: "Run", exact: true })],
   ["Points as text box", page.locator("#maptext-box")],
   ["Use these points", page.getByRole("button", { name: "Use these points" })],
@@ -172,9 +171,10 @@ try {
     await run.click();
     await check(page, vp, "run in progress", { editor: false });
 
+    // A small map can finish before the skip button is clicked; then the results scene is
+    // already up and there is nothing to skip. Click it only while it is still there.
     const skipBtn = page.getByRole("button", { name: "Skip to the end" });
-    await skipBtn.waitFor({ state: "visible", timeout: RUN });
-    await skipBtn.click({ timeout: RUN });
+    await skipBtn.click({ timeout: 2000 }).catch(() => {});
     await page.waitForFunction(
       () => document.querySelectorAll('[role="radiogroup"] .score-card[data-state="ready"]').length === 4,
       undefined,

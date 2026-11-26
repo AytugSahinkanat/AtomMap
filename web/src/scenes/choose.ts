@@ -7,6 +7,7 @@ import { parseR } from "../your-map/editor";
 import { drawPreview } from "./card-preview";
 import { getChips, MAPS, onChips, setChips, type ChipState, type MapEntry } from "./maps";
 import type { MapSlug } from "./router";
+import { readToday } from "../daily/today";
 
 export const CHOOSE_TITLE = "Choose a map";
 export const CHOOSE_QUESTION =
@@ -33,6 +34,8 @@ interface Card {
   desc: HTMLElement;
   canvas: HTMLCanvasElement;
   status: HTMLElement;
+  /** The note line (Local_Progress on Today's map), hidden when empty. */
+  note: HTMLElement;
   setChipValue(s: ChipState): void;
   token: number;
 }
@@ -126,7 +129,7 @@ export function createChooseScene(deps: ChooseDeps): ChooseScene {
       ], s0.walking ? "walking" : "straight", (v) => setChips(entry.slug, { walking: v === "walking" }));
       chipBox.append(g.el);
       setChipValue = (s) => g.set(s.walking ? "walking" : "straight");
-    } else {
+    } else if (entry.chip === "r") {
       const label = document.createElement("label");
       label.className = "chip chip-number";
       const text = document.createElement("span");
@@ -152,14 +155,17 @@ export function createChooseScene(deps: ChooseDeps): ChooseScene {
         if (document.activeElement !== input) input.value = String(s.r);
       };
     }
-    art.append(title, desc, box, chipBox);
+    const note = document.createElement("p");
+    note.className = "map-card-note muted";
+    note.hidden = true;
+    art.append(title, desc, box, chipBox, note);
     if (entry.credit) {
       const credit = document.createElement("p");
       credit.className = "map-card-credit";
       credit.textContent = entry.credit;
       art.append(credit);
     }
-    const card: Card = { entry, el: art, open, desc, canvas, status, setChipValue, token: 0 };
+    const card: Card = { entry, el: art, open, desc, canvas, status, note, setChipValue, token: 0 };
     open.addEventListener("click", () => {
       if (!open.disabled) deps.onOpen(entry.slug, canvas);
     });
@@ -176,6 +182,9 @@ export function createChooseScene(deps: ChooseDeps): ChooseScene {
     const token = ++card.token;
     const s = getChips(card.entry.slug);
     card.setChipValue(s);
+    const line = card.entry.note?.() ?? null;
+    card.note.textContent = line ?? "";
+    card.note.hidden = line === null;
     try {
       const data = await card.entry.load(s);
       if (token !== card.token) return;
@@ -208,6 +217,7 @@ export function createChooseScene(deps: ChooseDeps): ChooseScene {
     heading,
     enterParts: () => [heading, question, ...cards.map((c) => c.el)],
     refresh() {
+      readToday(); // "today" is read once each time the Choose_Scene opens
       for (const c of cards) void draw(c);
     },
   };

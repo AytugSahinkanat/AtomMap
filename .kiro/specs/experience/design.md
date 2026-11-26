@@ -374,6 +374,29 @@ interface StartPayload { /* existing */ settings?: { shots?: number; top_share?:
 
 **Validates: Requirements 1.2, 1.4**
 
+## Notes from tasks 8 and 9
+
+- The atoms are drawn by `render/dynamic-layer.ts` (`setAtoms`, `setHandPick`). There is no separate `atoms-layer.ts`: one canvas, one draw per frame.
+- The replay is opt-in (`PlayerDeps.replay`). A Hybrid `frequencies` event is applied together with the `shots` event after it, so the glow builds from the replayed shots. The sweep takes `min(600, 7500 / speed)` ms. The replay runs at 4 × speed shots per second (100 shots in about 1 s at the default 25).
+- A flash lasts 140 ms, and each atom flashes at most every 333 ms (steering design.md). The glow and the histogram count every shot.
+- Blockade_Halos (radius r/2 on screen) are drawn only where the edges follow straight-line distance: Your_Map, place maps with straight line, the hall with walls off. With walls on or walking distance the Group's real edges are drawn as dashed lines instead, because a circle would show a blockade the atoms do not have.
+- The atom pick collapses from 1.6× to the locked size. Rule picks keep the short pulse.
+- Requirement 7.9: the Engine sends no event at all for a Group answered from the cache, so the "results reused from an earlier step" line only shows for a `frequencies` event with no `shots` event after it. The UI handles that case and a test covers it.
+- Reduced motion steps one Round at a time ("Next round", as before). At the end of a Round no Group is on the atoms, so the map shows the picks, and the histogram shows the last Group of that Round with all its shots. Skip in reduced motion now also applies events that arrive after it.
+- The Hand_Pick of Your_Map is kept per r. Points removed by an edit drop out of the stats, because the stats only count ids on the map.
+- The Shot_Histogram and the You_Line sit in the Scoreboard column, under the cards. The You_Line is plain muted text and uses the Hand_Pick as it was when the run started.
+- Skip (both motion settings): after skip, every event that arrives later is applied at once in `wake`, with no sweep, replay or flash, and the loop does not run. The Results_Scene follows the result at once (smoke checks it within 5 s of the worker's result message). `PlaybackState.lastShots` keeps the last Group's shots, so the histogram ends with the same bars after a skip, a full replay or a reduced-motion step.
+
+## Notes from task 10
+
+- **The Tangled_Cluster is drawn in a 25 m wide part of its two-slot box**, at a random spot, not over the full 49.8 m. Measured on random draws: spread over the full box, about 0.4% of draws reached two counts (most are thin strings), so the fallback cluster was used on 276 of the 366 days of 2028. In a 25 m box about 8% of draws pass, and no day of 2028 needs the fallback. The cluster still takes two neighbouring slots (Requirement 11.7 allows one or two).
+- Parts keep r/2 + 0.1 m from the slot border, because coordinates are rounded to 0.1 m after placement. The cluster is drawn and checked in its final, rounded coordinates, so rounding cannot change one of its edges.
+- The fallback cluster is 10 Points found once by a seeded search and written in `daily-map.ts`. Its reachable counts are 3 and 4, and every pair is at least 0.6 m away from r.
+- Today's map runs like Your map: the edges are sent with the request, mode place, one Round, r = 10 m, Run_Number = Daily_Seed. Export file names use `today-YYYY-MM-DD`.
+- A run on Today's map marks the day as played with 0. The card shows "Your pick today: N" only for N > 0, and the streak line. The card text avoids "best" (Requirement 10.3's list).
+- "Today" is read in `choose.refresh()`, each time the Choose_Scene opens (`daily/today.ts`).
+- The seed input is gone from the Map_Scene and the Results_Scene. `seed.ts` (parseSeed) stays for the Lab's seed input. "Open the lab" (Requirement 8.1) comes with the Lab tasks.
+
 ## Error Handling
 
 | Case | Behaviour |

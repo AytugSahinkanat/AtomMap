@@ -3,6 +3,16 @@
 // the codes and indices used by render/dynamic-layer.ts (index = position in `ids`).
 
 import type { Status as LayerStatus } from './dynamic-layer';
+import {
+  flashStrength,
+  foldShots,
+  newFlashes,
+  shotsPerSecond,
+  stepFlashes,
+  sweepMs,
+  type AtomsView,
+  type Flashes,
+} from './shot-replay';
 
 /** Same values as `Status` in dynamic-layer.ts (checked by the type). */
 export const PointStatus = {
@@ -44,6 +54,12 @@ export interface PlaybackState {
   readonly tile: readonly number[] | null;
   /** Round of the last Hybrid event, or null before the first. */
   readonly round: number | null;
+  /** Point indices of the Group on the atoms now (from `simulate` until the next pick), or null. */
+  readonly group: readonly number[] | null;
+  /** The real repaired shots of that Group (its `shots` event), or null before they arrive. */
+  readonly shots: { readonly group: readonly number[]; readonly kept: readonly (readonly number[])[] } | null;
+  /** The shots of the last Group that had them, kept after its pick and across Rounds (the histogram's end state). */
+  readonly lastShots: { readonly group: readonly number[]; readonly kept: readonly (readonly number[])[] } | null;
   /** Plain-words status line. */
   readonly statusLine: string;
 }
@@ -73,6 +89,9 @@ export function initialState(ids: readonly string[]): PlaybackState {
     classical: new Uint8Array(n),
     tile: null,
     round: null,
+    group: null,
+    shots: null,
+    lastShots: null,
     statusLine: '',
   };
 }
@@ -98,6 +117,9 @@ export function apply(state: PlaybackState, ev: PlaybackEvent): PlaybackState {
   let classical = state.classical;
   let tile = state.tile;
   let statusLine = state.statusLine;
+  let group = state.group;
+  let shots = state.shots;
+  let lastShots = state.lastShots;
 
   // A new round starts clean: removed points come back, glow and outline go.
   if (state.round !== null && ev.round !== state.round) {
@@ -107,6 +129,8 @@ export function apply(state: PlaybackState, ev: PlaybackEvent): PlaybackState {
       if (status[i] === PointStatus.Removed) status[i] = PointStatus.Undecided;
     }
     tile = null;
+    group = null;
+    shots = null;
   }
 
   if (ev.kind === 'frequencies') {
@@ -117,8 +141,19 @@ export function apply(state: PlaybackState, ev: PlaybackEvent): PlaybackState {
       glowTarget[i] = Math.min(1, Math.max(0, f));
     }
     tile = null; // the stitch outline ends at the next frequencies event
-    statusLine = `Atoms are measured on round ${ev.round}`;
+    // The `shots` event right after it replaces this line. A Group without one (Requirement 7.9)
+    // shows its frequencies at once and keeps this line.
+    statusLine = `Round ${ev.round}: results reused from an earlier step`;
+  } else if (ev.kind === 'shots') {
+    // The shots the frequencies above were computed from: the map replays them (Requirement 7.3).
+    const g = toIdx(state, ev.tile);
+    shots = { group: g, kept: (ev.kept ?? []).map((k) => k.slice()) };
+    lastShots = shots;
+    group = g;
+    statusLine = `The atoms ran ${shots.kept.length} shots on ${g.length} points`;
   } else if (ev.kind === 'pick') {
+    group = null; // the step ends: the atoms of this step are done
+    shots = null;
     if (status === state.status) status = status.slice();
     if (glowTarget === state.glowTarget) glowTarget = glowTarget.slice();
     channel = channel.slice();
@@ -139,10 +174,12 @@ export function apply(state: PlaybackState, ev: PlaybackEvent): PlaybackState {
     statusLine = `Round ${ev.round}: picked by ${ev.source ?? 'a rule'}`;
   } else if (ev.kind === 'simulate') {
     tile = toIdx(state, ev.tile);
+    group = tile;
+    shots = null;
     statusLine = `Atoms are working on ${tile.length} points`;
   }
 
-  return { ...state, glowTarget, status, channel, classical, tile, round: ev.round, statusLine };
+  return { ...state, glowTarget, status, channel, classical, tile, group, shots, lastShots, round: ev.round, statusLine };
 }
 
 /**
@@ -163,6 +200,8 @@ export function finalizeState(state: PlaybackState): PlaybackState {
     status,
     glowTarget: new Float32Array(status.length),
     tile: null,
+    group: null,
+    shots: null,
   };
 }
 
@@ -184,7 +223,12 @@ export interface PlayerDeps {
    * `dtMs`, draw. Called at most once per frame. With `instant` there are no
    * tweens: jump to the end values, then draw.
    */
-  draw: (state: PlaybackState, dtMs: number, instant: boolean) => void;
+  draw: (state: PlaybackState, dtMs: number, instant: boolean, atoms: AtomsView | null) => void;
+  /**
+   * Replay the real shots (experience spec, Requirement 7): a laser sweep after each Hybrid
+   * `simulate`, then the Group's shots one by one, before the next event. Off by default.
+   */
+  replay?: boolean;
   /** True while a tween still moves (DynamicLayer.isAnimating). */
   isAnimating: () => boolean;
   raf: (cb: (t: number) => void) => number;
@@ -213,11 +257,112 @@ export function createPlayer(deps: PlayerDeps): Player {
   let last = 0;
   let budget = 0; // fractional events carried between frames
   let dirty = true;
+  const replay = deps.replay === true;
+
+  // The Group on the atoms: a sweep, then a replay of its shots. Events wait meanwhile.
+  type Phase =
+    | { kind: 'sweep'; group: readonly number[]; t: number; dur: number }
+    | { kind: 'replay'; group: readonly number[]; kept: readonly (readonly number[])[]; shown: number; t: number };
+  let phase: Phase | null = null;
+  let flashes: Flashes | null = null;
+  /**
+   * Skip was pressed: from then on every event is applied as soon as it arrives (in `wake`), with
+   * no pacing, sweep, replay or flash, and the loop does not run. Cleared by `reset`.
+   */
+  let skipped = false;
+
+  /** Apply everything in the buffer and draw the end state at once, no tweens. */
+  const flush = (): void => {
+    if (cursor > deps.buffer.length) cursor = 0;
+    applyRange(deps.buffer.length);
+    budget = 0;
+    dirty = false;
+    phase = null;
+    flashes = null;
+    deps.draw(state, 0, true, settledView(state));
+  };
 
   const applyRange = (to: number): void => {
     const end = Math.min(to, deps.buffer.length);
     for (; cursor < end; cursor++) state = apply(state, deps.buffer[cursor]);
     dirty = true;
+  };
+
+  const isHybrid = (ev: PlaybackEvent | undefined, kind: string): boolean =>
+    ev !== undefined && ev.competitor === 'Hybrid' && ev.kind === kind;
+
+  /**
+   * Apply the next paced event. A Hybrid `frequencies` event is applied together with the
+   * `shots` event right after it, so the glow starts from the replay and not from the end value.
+   * Returns false when it has to wait for that `shots` event to arrive.
+   */
+  const applyNext = (): boolean => {
+    const ev = deps.buffer[cursor];
+    if (replay && isHybrid(ev, 'frequencies')) {
+      const next = deps.buffer[cursor + 1];
+      if (next === undefined && !deps.resultReceived()) return false;
+      if (isHybrid(next, 'shots')) {
+        applyRange(cursor + 2);
+        startReplay();
+        return true;
+      }
+    }
+    applyRange(cursor + 1);
+    if (replay && isHybrid(ev, 'simulate') && state.group) {
+      phase = { kind: 'sweep', group: state.group, t: 0, dur: sweepMs(deps.eventsPerSecond()) };
+    } else if (replay && isHybrid(ev, 'shots')) {
+      startReplay();
+    }
+    return true;
+  };
+
+  const startReplay = (): void => {
+    const s = state.shots;
+    if (!s || s.kept.length === 0) {
+      phase = null;
+      return;
+    }
+    phase = { kind: 'replay', group: s.group, kept: s.kept, shown: 0, t: 0 };
+    flashes = newFlashes(s.group.length);
+  };
+
+  const advance = (dt: number): void => {
+    if (!phase) return;
+    phase.t += dt;
+    if (phase.kind === 'sweep') {
+      if (phase.t >= phase.dur) phase = null;
+    } else {
+      const before = Math.floor(phase.shown);
+      phase.shown = Math.min(phase.kept.length, phase.shown + (dt / 1000) * shotsPerSecond(deps.eventsPerSecond()));
+      const after = Math.floor(phase.shown);
+      if (flashes) stepFlashes(flashes, phase.kept, before, after, phase.t);
+      if (after >= phase.kept.length && (!flashes || flashStrength(flashes, phase.t).every((x) => x === 0))) phase = null;
+    }
+    dirty = true;
+  };
+
+  /** What the map shows of the Group on the atoms now. All of it from the events. */
+  const atomsView = (): AtomsView | null => {
+    if (phase?.kind === 'sweep') {
+      const n = phase.group.length;
+      const zero = new Array<number>(n).fill(0);
+      return { group: phase.group, glow: zero, counts: zero, shown: 0, total: 0, flash: zero, sweep: Math.min(1, phase.t / phase.dur) };
+    }
+    if (phase?.kind === 'replay') {
+      const n = phase.group.length;
+      const shown = Math.floor(phase.shown);
+      const counts = foldShots(n, phase.kept, shown);
+      return {
+        group: phase.group,
+        glow: counts.map((c) => (shown === 0 ? 0 : c / shown)),
+        counts,
+        shown,
+        total: phase.kept.length,
+        flash: flashes ? flashStrength(flashes, phase.t) : new Array<number>(n).fill(0),
+        sweep: null,
+      };
+    }
+    return settledView(state);
   };
 
   const frame = (t: number): void => {
@@ -229,23 +374,26 @@ export function createPlayer(deps: PlayerDeps): Player {
     if (cursor > deps.buffer.length) cursor = 0;
 
     // Other competitors' events are applied at once and never use pacing budget.
-    // So are `shots` events: the map does not draw them yet (experience spec, task 9), and
-    // they must not slow down the pacing of the events it does draw.
-    const free = (ev: PlaybackEvent): boolean => ev.competitor !== 'Hybrid' || ev.kind === 'shots';
+    // Without the replay, `shots` events are free too (nothing draws them). With it, a Hybrid
+    // `shots` event goes with its `frequencies` event and starts the replay.
+    const free = (ev: PlaybackEvent): boolean => ev.competitor !== 'Hybrid' || (!replay && ev.kind === 'shots');
     const drainOthers = (): void => {
       let to = cursor;
       while (to < deps.buffer.length && free(deps.buffer[to])) to++;
       if (to > cursor) applyRange(to);
     };
     drainOthers();
+    advance(dt);
     const pending = deps.buffer.length - cursor;
-    if (pending > 0) {
+    if (phase) {
+      budget = 0; // the atoms are on: the next event waits for them
+    } else if (pending > 0) {
       budget += (dt / 1000) * Math.max(0, deps.eventsPerSecond());
       let due = Math.floor(budget);
       budget -= due;
       // Pace Hybrid events only; skip over any non-Hybrid event for free.
-      while (due > 0 && cursor < deps.buffer.length) {
-        applyRange(cursor + 1);
+      while (due > 0 && cursor < deps.buffer.length && !phase) {
+        if (!applyNext()) break;
         due--;
         drainOthers();
       }
@@ -256,13 +404,14 @@ export function createPlayer(deps: PlayerDeps): Player {
     }
 
     const animating = deps.isAnimating();
-    if (dirty || animating) {
+    if (dirty || animating || phase) {
       dirty = false;
-      deps.draw(state, dt, false);
+      deps.draw(state, dt, false, atomsView());
     }
 
     if (
       cursor >= deps.buffer.length &&
+      phase === null &&
       !deps.isAnimating() &&
       deps.resultReceived()
     ) {
@@ -273,6 +422,11 @@ export function createPlayer(deps: PlayerDeps): Player {
 
   return {
     wake() {
+      if (skipped) {
+        // After skip, events that arrive later are applied at once (no sweep, replay or flashes).
+        if (cursor !== deps.buffer.length) flush();
+        return;
+      }
       if (rafId !== null) return;
       last = deps.now();
       rafId = deps.raf(frame);
@@ -282,22 +436,17 @@ export function createPlayer(deps: PlayerDeps): Player {
         deps.caf(rafId);
         rafId = null;
       }
-      if (cursor > deps.buffer.length) cursor = 0;
-      applyRange(deps.buffer.length);
-      budget = 0;
-      dirty = false;
-      deps.draw(state, 0, true);
-      // Events that arrive after skip still play; keep waiting for the result.
-      if (!deps.resultReceived()) {
-        last = deps.now();
-        rafId = deps.raf(frame);
-      }
+      skipped = true;
+      flush();
     },
     reset() {
+      skipped = false;
       state = deps.initial;
       cursor = 0;
       budget = 0;
       dirty = true;
+      phase = null;
+      flashes = null;
     },
     stop() {
       if (rafId !== null) deps.caf(rafId);
@@ -313,6 +462,37 @@ export function createPlayer(deps: PlayerDeps): Player {
       return rafId !== null;
     },
   };
+}
+
+/**
+ * The Group on the atoms when no sweep or replay runs: its atoms with the glow of all its
+ * shots (the frequencies), or with no glow while its shots have not come. Null with no Group.
+ */
+export function settledView(state: PlaybackState): AtomsView | null {
+  const g = state.group;
+  if (!g || g.length === 0) return null;
+  const n = g.length;
+  const s = state.shots;
+  if (s && s.group.length === n && s.group.every((v, i) => v === g[i])) {
+    const counts = foldShots(n, s.kept, s.kept.length);
+    const total = s.kept.length;
+    return { group: g, counts, glow: counts.map((c) => (total === 0 ? 0 : c / total)), shown: total, total, flash: new Array<number>(n).fill(0), sweep: null };
+  }
+  const zero = new Array<number>(n).fill(0);
+  return { group: g, counts: zero, glow: zero, shown: 0, total: 0, flash: zero, sweep: null };
+}
+
+/**
+ * The last Group that had shots, with all of them counted: what the Shot_Histogram shows after
+ * that Group's replay ended. A full replay and a skip both end here. Null before the first shots.
+ */
+export function lastShotsView(state: PlaybackState): AtomsView | null {
+  const s = state.lastShots;
+  if (!s || s.group.length === 0) return null;
+  const n = s.group.length;
+  const total = s.kept.length;
+  const counts = foldShots(n, s.kept, total);
+  return { group: s.group, counts, glow: counts.map((c) => (total === 0 ? 0 : c / total)), shown: total, total, flash: new Array<number>(n).fill(0), sweep: null };
 }
 
 /** Real clock and raf for the browser. */

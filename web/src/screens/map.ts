@@ -39,10 +39,12 @@ import {
   type EditorState,
 } from "../your-map/editor";
 import { yourMapLabel } from "../your-map/label";
+import { handPickReadout, handPickStats, youLine, type HandPickStats } from "../hand-pick";
+import { randomRunNumber } from "../run-number";
+import { recordToday, todayKey, todayMap, todaySeed, todayText } from "../daily/today";
 import { state, subscribe, update } from "../state";
 import { buildRequest, DEFAULT_PLACE, placeView, type MapChoice } from "./map-request";
 import { buffer, doneCompetitors } from "../client";
-import { parseSeed } from "../seed";
 import { focusInside } from "../focus";
 import { createRunView, type RunView } from "./run";
 import { createScoreboard } from "./scoreboard";
@@ -65,8 +67,8 @@ export const HOW_TO_READ = [
   "Run it and watch the atoms.",
 ] as const;
 
-/** Shown while the simulator loads (experience spec, Requirement 23.3). Task 8 adds picking by hand. */
-export const LOADING_HINT = "Look around while the simulator gets ready.";
+/** Shown while the simulator loads (experience spec, Requirement 23.3). */
+export const LOADING_HINT = "Try it by hand while the simulator gets ready.";
 export const READY_ANNOUNCEMENT = "The simulator is ready.";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -194,10 +196,10 @@ function createPlaceSelector(): PlaceSelector {
 
 export interface MapScreenDeps {
   /** Send a run request to the worker. */
-  start(payload: StartPayload): boolean | void;
+  start(payload: StartPayload): void;
   /** The Run_Screen finished with a result (state transition to the scoreboard). */
   onFinished(result: unknown): void;
-  /** Drop the run in the worker: its messages are ignored (the back button during a run). */
+  /** Stop the run in the worker (the back button during a run). The worker is replaced by a new one. */
   cancel?(): void;
   /** Called right before the scene changes, while the old parts are still on screen. */
   sceneWillChange?(from: FlowScene, to: FlowScene): void;
@@ -231,14 +233,15 @@ export interface MapScreen {
   relayout(): void;
 }
 
-type Mode = "channel_plan" | "place" | "your_map";
+type Mode = "channel_plan" | "place" | "your_map" | "daily";
 
-/** The Engine, the Scoreboard, the legend and the Tutor know two modes. Your map runs as Place. */
+/** The Engine, the Scoreboard, the legend and the Tutor know two modes. Your map and the Daily_Map run as Place. */
 function engineModeOf(m: Mode): "channel_plan" | "place" {
   return m === "channel_plan" ? "channel_plan" : "place";
 }
 
 export const YOUR_MAP_HINT = "Click to add or remove points.";
+export const YOUR_PICK_HINT = "Click a point to pick or unpick it.";
 
 function radioGroup(
   legendText: string,
@@ -361,14 +364,37 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   randomButton.textContent = "Add random points";
   yourGroup.append(yourLegend, rLabel, clearButton, randomButton);
 
-  const seedLabel = document.createElement("label");
-  seedLabel.className = "seed-label";
-  seedLabel.textContent = "Seed ";
-  const seedInput = document.createElement("input");
-  seedInput.type = "text";
-  seedInput.inputMode = "numeric";
-  seedInput.value = String(DEFAULT_SEED);
-  seedLabel.append(seedInput);
+  // ---- Hand_Pick (experience spec, Requirement 9) ----
+  /** One pick per map and distance setting, kept until cleared or the page is reloaded. */
+  const handPicks = new Map<string, Set<string>>();
+  /** Your map: a click edits the points (false) or the Hand_Pick (true). */
+  let yourPickMode = false;
+  const clickGroup = radioGroup(
+    "A click on a point",
+    "your-click",
+    [
+      { value: "edit", label: "Edit points" },
+      { value: "pick", label: "Pick points" },
+    ],
+    "edit",
+    (v) => {
+      yourPickMode = v === "pick";
+      updateYourUi();
+      refreshHand();
+    },
+  );
+  clickGroup.el.hidden = true;
+  const handBox = document.createElement("div");
+  handBox.className = "hand-pick";
+  const handCount = document.createElement("p");
+  handCount.className = "hand-pick-count num";
+  const handHint = document.createElement("p");
+  handHint.className = "muted hand-pick-hint";
+  handHint.setAttribute("role", "status");
+  const handClear = document.createElement("button");
+  handClear.type = "button";
+  handClear.textContent = "Clear my picks";
+  handBox.append(handCount, handClear, handHint);
 
   const runButton = document.createElement("button");
   runButton.type = "button";
@@ -437,6 +463,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   let pointXY: number[] = [];
   const a11y: A11yLayer = createA11y(wrap, {
     onActivate: (id) => {
+      // Enter or Space on the Map_Scene: pick or unpick (Requirement 9.1).
+      if (handOpen()) {
+        toggleHand(id);
+        return;
+      }
       // Why this point: only after a finished run (the strip ignores it for non-Hybrid plans).
       if (finishedShown) strip.showWhy(id);
     },
@@ -474,6 +505,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   // no Point leaves the answer. leaveWhy does nothing when no answer is shown.
   dynamicCanvas.addEventListener("pointerdown", (e) => {
     // Your map, in the editor state: a click on a Point removes it, a click on an empty spot adds one.
+    // The Hand_Pick: a click on a Point picks or unpicks it (Requirement 9.1).
+    if (handOpen()) {
+      const box = dynamicCanvas.getBoundingClientRect();
+      const hit = nearestPoint(pointXY, e.clientX - box.left, e.clientY - box.top, 12);
+      const hitId = hit >= 0 ? scene?.points[hit]?.id : undefined;
+      if (hitId !== undefined) toggleHand(hitId);
+      return;
+    }
     if (mode === "your_map" && editorOpen()) {
       if (yourState === null || scene === null) return;
       const box = dynamicCanvas.getBoundingClientRect();
@@ -526,7 +565,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   labelLine.className = "map-label";
   const chipRow = document.createElement("div");
   chipRow.className = "map-side-chips";
-  chipRow.append(wallsGroup.el, distanceGroup.el, yourGroup);
+  chipRow.append(wallsGroup.el, distanceGroup.el, yourGroup, clickGroup.el);
   const howTo = document.createElement("ul");
   howTo.className = "how-to";
   howTo.setAttribute("aria-label", "How to read the map");
@@ -539,8 +578,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   });
   const runRow = document.createElement("div");
   runRow.className = "run-row";
-  runRow.append(seedLabel, runButton, runHint);
-  side.append(sideTitle, labelLine, chipRow, placeSelector.info, howTo, runRow, loadBox);
+  runRow.append(runButton, runHint);
+  side.append(sideTitle, labelLine, chipRow, placeSelector.info, howTo, handBox, runRow, loadBox);
 
   const noData = document.createElement("p");
   noData.className = "error no-data";
@@ -550,7 +589,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   // Scoreboard panel next to the map. It opens when a run starts and fills in
   // card by card. Its seed input and run-again button work only after the run.
   const scoreboard = createScoreboard({
-    onRunAgain: (seed) => startRun(seed),
+    onRepeat: () => startRun(runSeed),
+    onRunAgain: () => startRun(newRunNumber()),
     onBack: () => showMap(true),
     announce: (m) => a11y.announce(m),
     onSelectPlan: (plan) => showPlan(plan),
@@ -564,7 +604,10 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       result: finishedResult,
       plan,
       mode: engineModeOf(mode),
-      map: mode === "your_map" ? "your-map" : mode === "place" ? (state.placeName ?? DEFAULT_PLACE) : "hero",
+      map:
+        mode === "your_map" ? "your-map"
+          : mode === "daily" ? `today-${todayKey()}`
+            : mode === "place" ? (state.placeName ?? DEFAULT_PLACE) : "hero",
       seed: runSeed,
       points: scene.points.map((p) => {
         const q = p as { id: string; x: number; y: number; lon?: number; lat?: number };
@@ -594,6 +637,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   mapCol.append(wrap, under);
   // The legend sits in the scoreboard column, under the cards.
   scoreboard.el.querySelector('.score-cards')?.after(legendBox);
+  // The You_Line (Requirement 10): under the cards, outside them, in muted text and with no box.
+  const youLineEl = document.createElement("p");
+  youLineEl.className = "you-line muted num";
+  youLineEl.hidden = true;
+  legendBox.before(youLineEl);
+  /** The You_Line of the run on screen, from the Hand_Pick when the run started; null when there was none. */
+  let runYouLine: string | null = null;
   const mapRow = document.createElement("div");
   mapRow.className = "map-row";
   mapRow.append(mapCol, side, scoreboard.el);
@@ -632,6 +682,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       finishedResult = result;
       legendBox.replaceChildren(renderLegend(engineModeOf(mode)));
       legendBox.hidden = false;
+      youLineEl.textContent = runYouLine ?? "";
+      youLineEl.hidden = runYouLine === null;
       finishedShown = true;
       updateYourUi();
       strip.showFinished(
@@ -664,10 +716,15 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     },
   });
 
+  // The Shot_Histogram sits under the cards, while the run plays.
+  legendBox.after(run.histogramEl);
+
   function setFlowHeading(): void {
     const title = mapEntry(currentSlug)?.title ?? "Map";
     flowHeading.textContent = sceneNow === "results" ? `Results: ${title}` : `Run: ${title}`;
     flowHeading.hidden = sceneNow === "map";
+    // The results controls (seed, run again, back, exports) belong to the Results_Scene only.
+    el.dataset.scene = sceneNow;
   }
 
   el.append(flowHeading, strip.el, message, noData, run.el, mapRow);
@@ -686,6 +743,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     selectedPlan = "Hybrid";
     scoreboard.hide();
     legendBox.hidden = true;
+    youLineEl.hidden = true;
     side.hidden = false;
     sceneNow = "map";
     setFlowHeading();
@@ -694,6 +752,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     refreshIdle();
     updateRunButton();
     layout();
+    refreshHand();
     if (!silent && from !== "map") deps.sceneDidChange?.("map");
   }
 
@@ -747,6 +806,79 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function editorOpen(): boolean {
     return mode === "your_map" && !running && !finishedShown && !run.active;
   }
+
+  // ---- Hand_Pick ----
+  /** The map and its distance setting: each has its own Hand_Pick (Requirement 9.5). */
+  function handKey(): string {
+    if (mode === "your_map") return `your:${yourR}`;
+    if (mode === "daily") return `daily:${todaySeed()}`;
+    if (mode === "channel_plan") return `hall:${wallsOn ? "walls" : "open"}`;
+    return `place:${state.placeFixture?.name ?? ""}:${walking ? "walking" : "straight"}`;
+  }
+  function handSet(): Set<string> {
+    const k = handKey();
+    let s = handPicks.get(k);
+    if (s === undefined) {
+      s = new Set();
+      handPicks.set(k, s);
+    }
+    return s;
+  }
+  /** Clicks and Enter or Space go to the Hand_Pick: the Map_Scene, and on Your map only in "Pick points". */
+  function handOpen(): boolean {
+    return sceneNow === "map" && !running && !finishedShown && !run.active && scene !== null && (mode !== "your_map" || yourPickMode);
+  }
+  /** The stats of the Hand_Pick on the map shown now, from the edges the run request uses (Requirement 9.7). */
+  function handStats(): HandPickStats | null {
+    if (scene === null) return null;
+    return handPickStats(scene.points.map((p) => p.id), scene.edges, handSet());
+  }
+  function toggleHand(id: string): void {
+    const s = handSet();
+    if (s.has(id)) s.delete(id);
+    else s.add(id);
+    // Today's map: the pick marks today as played and keeps the larger count (Requirements 12.1, 12.2).
+    if (mode === "daily") recordToday(handStats()?.valid ?? 0);
+    refreshHand();
+  }
+  /** Readout, the clear button and the marks on the map. The marks show on the Map_Scene only. */
+  function refreshHand(): void {
+    const st = handStats();
+    const onMap = sceneNow === "map" && st !== null;
+    handBox.hidden = !onMap || (mode === "your_map" && !yourPickMode && handSet().size === 0);
+    if (st !== null) {
+      const r = handPickReadout(st);
+      handCount.textContent = r.count;
+      handHint.textContent = handSet().size === 0 ? "Click points to pick them by hand." : r.hint;
+      handClear.disabled = handSet().size === 0;
+    }
+    if (!onMap || st === null || scene === null) {
+      dynamicLayer.setHandPick(null);
+    } else {
+      const s = handSet();
+      const picked: number[] = [];
+      for (const id of s) {
+        const i = indexById.get(id);
+        if (i !== undefined) picked.push(i);
+      }
+      const clash = new Set<number>();
+      const clashEdges: [number, number][] = [];
+      for (const [a, b] of st.clashes) {
+        const i = indexById.get(a);
+        const j = indexById.get(b);
+        if (i === undefined || j === undefined) continue;
+        clash.add(i);
+        clash.add(j);
+        clashEdges.push([i, j]);
+      }
+      dynamicLayer.setHandPick(picked, [...clash], clashEdges);
+    }
+    dynamicLayer.draw();
+  }
+  handClear.addEventListener("click", () => {
+    handSet().clear();
+    refreshHand();
+  });
 
   /** One edit of the points: keep the new state, show its message, redraw. */
   function applyEdit(r: EditResult): void {
@@ -862,10 +994,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     if (yours) ensureYourState();
     const open = editorOpen();
     yourGroup.hidden = !yours;
+    clickGroup.el.hidden = !(yours && open);
     for (const b of [clearButton, randomButton, rInput, useButton, fileInput, textArea]) b.disabled = !open;
     textPanel.hidden = !(yours && open);
     mapHint.hidden = !(yours && open);
-    mapHint.textContent = yourNote ?? YOUR_MAP_HINT;
+    mapHint.textContent = yourNote ?? (yourPickMode ? YOUR_PICK_HINT : YOUR_MAP_HINT);
     mapHint.classList.toggle("is-error", yourNote !== null);
     runHint.hidden = !(yours && open && (yourState?.points.length ?? 0) === 0);
   }
@@ -888,6 +1021,19 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       };
       sceneKey = yourKey();
       setLabel(yourMapLabel(pts.length));
+    } else if (mode === "daily") {
+      // Today's map: one Round, straight line, the edges sent with the request (as Your map).
+      const m = todayMap();
+      choice = { mode: "your_map", points: m.points, r: m.r };
+      scene = {
+        points: m.points,
+        edges: m.edges,
+        bounds: { minX: 0, minY: 0, maxX: m.area.width, maxY: m.area.height },
+        edgesStrong: true,
+        frame: { width: m.area.width, height: m.area.height },
+      };
+      sceneKey = `daily:${m.seed}`;
+      setLabel(`Today's map, ${m.points.length} points, the same for everyone today. Results are a simulation.`);
     } else if (mode === "channel_plan") {
       if (hero === null) return;
       const edgesChoice: MapChoice = { mode, points: hero.points, walls, wallsOn, r: hero.graph.r };
@@ -989,7 +1135,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       run.resync(); // the final map survives a new size (finished panel opens)
       if (finishedShown && selectedPlan !== "Hybrid") paintPlan(selectedPlan); // resync drew the Hybrid map
       applyRing(); // setPoints and resync may have cleared the Tutor ring
-      dynamicLayer.draw();
+      refreshHand(); // setPoints cleared the Hand_Pick marks too
     }
   }
 
@@ -1018,10 +1164,12 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     const key =
       mode === "your_map"
         ? yourKey()
-        : mode === "channel_plan"
-          ? `channel:${wallsOn}`
-          : `place:${state.placeFixture?.name}:${walking}`;
-    const ready = mode === "your_map" ? true : mode === "channel_plan" ? hero !== null : state.placeFixture !== null;
+        : mode === "daily"
+          ? `daily:${todaySeed()}`
+          : mode === "channel_plan"
+            ? `channel:${wallsOn}`
+            : `place:${state.placeFixture?.name}:${walking}`;
+    const ready = mode === "your_map" || mode === "daily" ? true : mode === "channel_plan" ? hero !== null : state.placeFixture !== null;
     if (!ready) {
       scene = null;
       choice = null;
@@ -1032,6 +1180,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       a11y.setMapLabel(
         mode === "your_map"
           ? "Your map"
+          : mode === "daily"
+            ? "Today's map"
           : mode === "channel_plan"
             ? "Wifi hall"
             : state.placeFixture
@@ -1052,10 +1202,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     } else {
       osmCredit.hidden = true;
       noData.hidden = true;
-      wrap.hidden = mode === "your_map" ? false : hero === null;
+      wrap.hidden = mode === "your_map" || mode === "daily" ? false : hero === null;
     }
     updateRunButton();
     layout();
+    refreshHand(); // a new distance setting shows its own Hand_Pick
   }
 
   /** The run button and the loading status next to it (experience spec, Requirement 23). */
@@ -1079,6 +1230,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     loadHint.hidden = failed;
     loadErrorLine.hidden = !failed;
     loadErrorLine.textContent = state.loadError ?? "";
+    if (!ready) announcedReady = false; // a new worker after a stopped run: announce again
     if (ready && !announcedReady) {
       announcedReady = true;
       a11y.announce(READY_ANNOUNCEMENT);
@@ -1126,21 +1278,45 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     updateYourUi();
     runButton.disabled = true;
     runSeed = seedValue;
-    seedInput.value = String(seedValue);
     hybridEnd = null;
     finishedShown = false;
     finishedResult = null;
     selectedPlan = "Hybrid";
     runEdges = scene.edges.map((e): [string, string] => [e[0], e[1]]);
+    // The You_Line uses the Hand_Pick of this map and distance setting, as it is when the run starts.
+    const hand = handSet().size > 0 ? handStats() : null;
+    runYouLine = hand === null ? null : youLine(hand);
+    youLineEl.hidden = true;
+    refreshHand(); // the marks go: the run shows the atoms
     strip.hide();
     legendBox.hidden = true;
     update({ screen: "run", result: null });
     // The panel opens now, all cards "Computing…". Opening it narrows the map,
     // so lay the map out before the first event arrives.
-    scoreboard.begin(runSeed, engineModeOf(mode));
-    run.begin({ layer: dynamicLayer, ids, announce: (m) => a11y.announce(m) });
+    scoreboard.begin(runSeed, engineModeOf(mode), { daily: mode === "daily" });
+    if (mode === "daily") recordToday(0); // a run marks today as played (Requirement 12.2)
+    // Blockade_Halos (radius r/2) only where the edges follow straight-line distance.
+    const haloR =
+      mode === "your_map" ? yourR
+        : mode === "daily" ? todayMap().r
+        : mode === "channel_plan" ? (wallsOn ? null : (hero?.graph.r ?? null))
+          : walking ? null : (state.placeFixture?.r ?? null);
+    const at = new Map(ids.map((id, i) => [id, i] as const));
+    const edgePairs: [number, number][] = [];
+    for (const [a, b] of scene.edges) {
+      const i = at.get(a);
+      const j = at.get(b);
+      if (i !== undefined && j !== undefined) edgePairs.push([i, j]);
+    }
+    run.begin({
+      layer: dynamicLayer,
+      ids,
+      announce: (m) => a11y.announce(m),
+      haloPx: () => (haloR === null ? null : (haloR / 2) * staticLayer.view.scale),
+      edgePairs,
+    });
     layout(); // after the run bar is shown, so the map height accounts for it
-    if (deps.start(buildRequest(choice, seedValue)) === true) run.setWaiting(true);
+    deps.start(buildRequest(choice, seedValue));
     deps.sceneDidChange?.("run");
   }
 
@@ -1157,6 +1333,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       mode = "channel_plan";
       wallsOn = c.walls;
       wallsGroup.setValue(wallsOn ? "on" : "off");
+    } else if (slug === "today") {
+      mode = "daily";
     } else if (slug === "your-map") {
       mode = "your_map";
       if (c.r !== yourR) {
@@ -1171,26 +1349,22 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       walking = c.walking;
       distanceGroup.setValue(walking ? "walking" : "straight");
     }
-    sideTitle.textContent = entry.title;
+    sideTitle.textContent = slug === "today" ? `Today's map, ${todayText()}` : entry.title;
     showMap(false, true);
     render();
   }
 
   function parts(s: FlowScene): HTMLElement[] {
-    if (s === "map") return [sideTitle, labelLine, chipRow, placeSelector.info, howTo, runRow, loadBox, textPanel];
+    if (s === "map") return [sideTitle, labelLine, chipRow, placeSelector.info, howTo, handBox, runRow, loadBox, textPanel];
     if (s === "run") return [run.el, scoreboard.el];
     return [run.el, scoreboard.el, strip.el, under];
   }
 
+  // The Run_Number (Requirement 5): chosen by the browser, or the Daily_Seed on Today's map.
+  const newRunNumber = (): number => (mode === "daily" ? todaySeed() : randomRunNumber());
   runButton.addEventListener("click", () => {
     if (run.active || running) return;
-    const seed = parseSeed(seedInput.value);
-    if (!seed.ok) {
-      showMessage(`${seed.error} No run was started.`);
-      seedInput.focus();
-      return;
-    }
-    startRun(seed.value);
+    startRun(newRunNumber());
   });
 
   const ro = new ResizeObserver(() => {

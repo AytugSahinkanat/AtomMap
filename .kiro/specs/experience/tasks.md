@@ -109,50 +109,53 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
     - Label line, distance toggle, the three How_To_Read items with inline icons, no Tutor idle text, attribution and source for place maps
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 8. Try it yourself
-  - [ ] 8.1 Implement the Hand_Pick stats
+- [x] 8. Try it yourself
+  - [x] 8.1 Implement the Hand_Pick stats
     - `hand-pick.ts`: `handPickStats(ids, edges, picked)`
     - _Requirements: 9.3, 9.7_
-  - [ ] 8.3 Wire the Hand_Pick into the Map_Scene
+    - Done, with the Property 5 test in `hand-pick.test.ts` (brute force, up to 12 Points) and the banned-word check of Requirement 10.3
+  - [x] 8.3 Wire the Hand_Pick into the Map_Scene
     - Change `LOADING_HINT` in `screens/map.ts` to "Try it by hand while the simulator gets ready." (Requirement 23.3); until hand-picking exists it says "Look around while the simulator gets ready."
     - Click and Enter or Space pick and unpick; picked and clash marks with shape as well as colour; the readout and the hint; "Clear my picks"; one Hand_Pick per map and distance setting; the "Edit points / Pick points" toggle on Your_Map
     - _Requirements: 9.1, 9.2, 9.4, 9.5, 9.6, 21.4_
-  - [ ] 8.4 Show the You_Line on the Results_Scene
+  - [x] 8.4 Show the You_Line on the Results_Scene
     - "You: N" and "(K clashes not counted)" under the cards, not styled as a card; the Tutor does not mention it
     - _Requirements: 10.1, 10.2, 10.3, 10.4_
 
-- [ ] 9. The run, shown from real data
-  - [ ] 9.1 Implement the shot replay
+- [x] 9. The run, shown from real data
+  - [x] 9.1 Implement the shot replay
     - `render/shot-replay.ts`: expand a `shots` event into replay steps, `foldShots`; the reducer takes the glow from the fold during a replay; a Group without `shots` takes its frequencies at once with the "reused" status line
     - _Requirements: 7.3, 7.4, 7.9_
-  - [ ] 9.3 Draw Atoms, Blockade_Halos, the Laser_Sweep and the flashes
+  - [x] 9.3 Draw Atoms, Blockade_Halos, the Laser_Sweep and the flashes
     - `render/atoms-layer.ts`: current Group only, halo radius r/2 in map units, dashed halos, sweep at most 600 ms, one-frame flash; the collapse pulse for atom picks; rule picks as now
     - _Requirements: 7.1, 7.2, 7.5, 7.6, 21.4_
-  - [ ] 9.4 Add the Shot_Histogram
+  - [x] 9.4 Add the Shot_Histogram
     - `render/histogram.ts`: one bar per Atom with "k of n", `role="img"` with an updated label
     - _Requirements: 7.3_
-  - [ ] 9.5 Keep speed, skip and reduced motion working
+  - [x] 9.5 Keep speed, skip and reduced motion working
     - Replay steps per frame from the speed control; skip applies all steps; reduced motion shows each step's final state
     - _Requirements: 7.7, 7.8_
+    - Deviations: see design.md, "Notes from tasks 8 and 9"
 
-- [ ] 10. Run numbers, results scene and map of the day
-  - [ ] 10.1 Replace the seed input with Run_Numbers
+- [x] 10. Run numbers, results scene and map of the day
+  - [x] 10.1 Replace the seed input with Run_Numbers
     - `run-number.ts`; "Run #N", "Repeat this run" and "Run again" on the Results_Scene; no seed input outside the Lab; exports keep the Seed
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.7, 8.1, 8.2_
-  - [ ] 10.2 Build the Daily_Map
+  - [x] 10.2 Build the Daily_Map
     - `daily/daily-map.ts`: area 120 × 80 m, r 10 m, slots, chains, rings, squares and singles, plus one Tangled_Cluster of 8 to 12 Points in two neighbouring slots; 30 to 40 Points; no edge between parts; the Daily_Seed as the fixed Run_Number
     - `reachableCounts` (the Rule_Pick_Process on at most 12 Points, memo on the mask); a cluster draw is kept only when it is connected and has two or more reachable counts; up to 400 draws, then the fixed fallback cluster
     - No text promises that the plans differ
     - _Requirements: 11.1, 11.2, 11.3, 11.6, 11.7, 11.8, 5.5_
-  - [ ] 10.3 Write example tests for the Daily_Map
+  - [x] 10.3 Write example tests for the Daily_Map
     - The 366 days of 2028: every map meets Requirements 11.3 and 11.7, at most one equal pair (Requirement 11.4); the ten Daily_Check dates; the fallback cluster passes `reachableCounts`; a ring alone and a chain alone each have one reachable count (the reason for the cluster)
     - _Requirements: 11.3, 11.4, 11.7, 22.4_
-  - [ ] 10.4 Keep the Local_Progress
+  - [x] 10.4 Keep the Local_Progress
     - `daily/progress.ts`: load, record, streak, save, try/catch around every access, the last 60 dates; the "Today's map" card shows the best and the streak
     - _Requirements: 11.5, 12.1, 12.2, 12.3, 12.4, 12.5_
-  - [ ] 10.5 Write example tests for Local_Progress
+  - [x] 10.5 Write example tests for Local_Progress
     - A storage that throws on access, on read and on write; a missing storage; wrong JSON and wrong shapes; the 60-date cap; the streak across a missed day
     - _Requirements: 12.3, 12.5, 22.5_
+    - Deviations: see design.md, "Notes from task 10"
 
 - [ ] 11. The two US maps
   - [ ] 11.1 Load the US fixtures

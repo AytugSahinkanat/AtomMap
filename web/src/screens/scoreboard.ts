@@ -13,7 +13,6 @@ import {
   type Card,
   type PartialResults,
 } from "../scoreboard-model";
-import { nextSeed, parseSeed } from "../seed";
 
 export type ScoreboardMode = "channel_plan" | "place";
 
@@ -173,14 +172,22 @@ export const EXPORT_CSV_LABEL = "Download CSV";
 export const EXPORT_GEOJSON_LABEL = "Download GeoJSON";
 export const PLAN_TAG_TEXT = "on the map";
 export const PLAN_GROUP_LABEL = "plan on the map";
+export const REPEAT_LABEL = "Repeat this run";
+export const RUN_AGAIN_LABEL = "Run again";
+/** "Run #N": the Run_Number, which is the Seed of the run (Requirement 5.3). */
+export function runNumberText(n: number): string {
+  return `Run #${n}`;
+}
 
 export interface ScoreboardDeps {
   /** The visitor chose the plan shown on the map (after the result is in). */
   onSelectPlan?(plan: EngineName): void;
   /** Export the plan selected now. Returns a plain message when nothing could be exported, else null. */
   onExport?(kind: ExportKind, plan: EngineName): string | null;
-  /** Start a new run with this valid seed on the same map and settings. */
-  onRunAgain(seed: number): void;
+  /** "Repeat this run": the same Run_Number, map and settings. */
+  onRepeat(): void;
+  /** "Run again": a new Run_Number on the same map and settings. */
+  onRunAgain(): void;
   /** Back to the map controls. */
   onBack(): void;
   /** Polite live announcement. */
@@ -189,15 +196,15 @@ export interface ScoreboardDeps {
 
 export interface ScoreboardView {
   el: HTMLElement;
-  /** A run starts: all four cards pending, seed input and buttons off. */
-  begin(seed: number, mode: ScoreboardMode): void;
+  /** A run starts: all four cards pending, buttons off. On the Daily_Map there is no "Run again". */
+  begin(runNumber: number, mode: ScoreboardMode, opts?: { daily?: boolean }): void;
   /** Show what has finished so far (missing key = "Computing…"). */
   update(partial: PartialResults): void;
   /** The run is fully finished (result in, playback done). Enables the controls. */
   finish(partial: PartialResults): void;
   /** The plan on the map: Hybrid at the start of each run. */
   readonly selectedPlan: EngineName;
-  /** True when focus sits on a control that `begin` disables (seed input, run again). */
+  /** True when focus sits on a control that `begin` disables (repeat, run again). */
   holdsRunFocus(): boolean;
   /** The run stopped with an error: panel hidden, nothing partial stays. */
   hide(): void;
@@ -233,15 +240,13 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   const form = document.createElement("form");
   form.className = "score-again";
   form.noValidate = true;
-  const seedLabel = document.createElement("label");
-  seedLabel.textContent = "Seed for the next run ";
-  const seedInput = document.createElement("input");
-  seedInput.type = "text";
-  seedInput.inputMode = "numeric";
-  seedLabel.append(seedInput);
+  // The Run_Number controls (experience spec, Requirement 5). No seed input outside the Lab.
+  const repeat = document.createElement("button");
+  repeat.type = "button";
+  repeat.textContent = REPEAT_LABEL;
   const again = document.createElement("button");
   again.type = "submit";
-  again.textContent = "Run again with another seed";
+  again.textContent = RUN_AGAIN_LABEL;
   const back = document.createElement("button");
   back.type = "button";
   back.textContent = "Back to the map";
@@ -255,7 +260,7 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   const geoButton = document.createElement("button");
   geoButton.type = "button";
   geoButton.textContent = EXPORT_GEOJSON_LABEL;
-  form.append(seedLabel, again, back, csvButton, geoButton, message);
+  form.append(repeat, again, back, csvButton, geoButton, message);
 
   el.append(title, seedLine, cardsBox, note, cite, form);
 
@@ -326,7 +331,7 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   });
 
   function setControls(enabled: boolean): void {
-    seedInput.disabled = !enabled;
+    repeat.disabled = !enabled;
     again.disabled = !enabled;
     back.disabled = !enabled;
     csvButton.disabled = !enabled;
@@ -376,16 +381,14 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (again.disabled) return;
-    const seed = parseSeed(seedInput.value);
-    if (!seed.ok) {
-      message.textContent = `${seed.error} No run was started.`;
-      message.hidden = false;
-      seedInput.focus();
-      return;
-    }
+    if (again.disabled || again.hidden) return;
     message.hidden = true;
-    deps.onRunAgain(seed.value);
+    deps.onRunAgain();
+  });
+  repeat.addEventListener("click", () => {
+    if (repeat.disabled) return;
+    message.hidden = true;
+    deps.onRepeat();
   });
   back.addEventListener("click", () => {
     if (!back.disabled) deps.onBack();
@@ -393,15 +396,16 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
 
   return {
     el,
-    begin(seed, m) {
+    begin(runNumber, m, opts) {
       mode = m;
       shown = new Set();
       views = [];
       nodes = [];
       selected = "Hybrid";
       planEnabled = false;
-      seedLine.textContent = `Seed of this run: ${seed}`;
-      seedInput.value = String(nextSeed(seed));
+      seedLine.textContent = runNumberText(runNumber);
+      // Today's map always runs with its Daily_Seed: only "Repeat this run" (Requirement 5.5).
+      again.hidden = opts?.daily === true;
       message.hidden = true;
       setControls(false);
       render({});
@@ -419,7 +423,7 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
       return selected;
     },
     holdsRunFocus() {
-      return document.activeElement === again || document.activeElement === seedInput;
+      return document.activeElement === again || document.activeElement === repeat;
     },
     hide() {
       el.hidden = true;

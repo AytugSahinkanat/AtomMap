@@ -119,6 +119,7 @@ async function mount(p: Page, comps: Record<string, unknown>, stage: "begin" | "
       W.__sel = [];
       const sb = W.__h.createScoreboard({
         onSelectPlan: (plan: string) => W.__sel.push(plan),
+        onRepeat: () => {},
         onRunAgain: () => {},
         onBack: () => {},
         announce: () => {},

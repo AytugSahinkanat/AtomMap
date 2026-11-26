@@ -20,7 +20,7 @@ Look: "night lab". Dark, calm, science not horror. Kiroween dark mode, but serio
 ## Map
 
 - Atoms glow teal `#5dcaa5`. Glow strength = how often the atom was picked in the shots. Soft blur.
-- No flashing for effect. The one exception is the shot replay: an atom kept in a replayed shot brightens for a moment, because that shot really kept it. Flashes stay on the small atoms, never a large area or the whole screen.
+- No flashing for effect. The one exception is the shot replay: an atom kept in a replayed shot brightens for a moment, because that shot really kept it. Flashes stay on the small atoms, never a large area or the whole screen. An atom flashes at most 3 times a second (the usual safe limit for flashing), and never with `prefers-reduced-motion`.
 - Channels use colour AND shape, for colour blind users:
   - 1: purple circle
   - 6: amber `#ef9f27` triangle

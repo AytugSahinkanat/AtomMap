@@ -13,7 +13,16 @@ import {
   glowLevel,
   pathFor,
   shapeForChannel,
+  TEAL_COLOUR,
 } from './sprites';
+import type { AtomsView } from './shot-replay';
+
+/** Clash marks of the hand pick: red with a cross or a dash, so they are not colour alone. */
+export const CLASH_COLOUR = '#ff6b6b';
+const HALO_COLOUR = 'rgba(93, 202, 165, 0.55)';
+const SWEEP_COLOUR = 'rgba(127, 119, 221, 0.16)';
+const SWEEP_EDGE = 'rgba(127, 119, 221, 0.75)';
+const PAIR_COLOUR = 'rgba(127, 119, 221, 0.7)';
 
 export const Status = {
   Undecided: 0,
@@ -62,6 +71,18 @@ export class DynamicLayer {
   private finalView = false;
   private dirty = true;
 
+  /** The Group on the atoms (experience spec, Requirement 7), drawn from real events only. */
+  private atoms: {
+    group: readonly number[];
+    flash: readonly number[];
+    sweep: number | null;
+    haloPx: number | null;
+    pairs: [number, number][];
+  } | null = null;
+
+  /** The visitor's hand pick (experience spec, Requirement 9). */
+  private hand: { picked: Set<number>; clash: Set<number>; clashEdges: [number, number][] } | null = null;
+
   constructor(private canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas 2D is not available in this browser.');
@@ -103,6 +124,8 @@ export class DynamicLayer {
     this.focus = -1;
     this.ring = [];
     this.gaps = [];
+    this.atoms = null;
+    this.hand = null;
     this.dirty = true;
   }
 
@@ -128,6 +151,7 @@ export class DynamicLayer {
     this.classical.fill(0);
     this.tile = null;
     this.gaps = [];
+    this.atoms = null;
     this.dirty = true;
   }
 
@@ -196,6 +220,41 @@ export class DynamicLayer {
     this.dirty = true;
   }
 
+  /**
+   * The Group on the atoms now, or null. `haloPx`: the Blockade_Halo radius (r/2 on screen), or
+   * null when the map's edges do not follow straight-line distance (then the real blockade pairs
+   * are drawn instead, so no halo says something the atoms do not do). `edges`: all edges of the
+   * map as index pairs; only the pairs inside the Group are drawn.
+   */
+  setAtoms(view: AtomsView | null, haloPx: number | null, edges: readonly (readonly [number, number])[]): void {
+    if (view === null) {
+      if (this.atoms !== null) this.dirty = true;
+      this.atoms = null;
+      return;
+    }
+    const inGroup = new Set(view.group);
+    const pairs: [number, number][] = [];
+    for (const [a, b] of edges) if (inGroup.has(a) && inGroup.has(b)) pairs.push([a, b]);
+    this.atoms = {
+      group: view.group.filter((i) => i >= 0 && i < this.n),
+      flash: this.reducedMotion ? view.flash.map(() => 0) : view.flash,
+      sweep: this.reducedMotion ? null : view.sweep,
+      haloPx,
+      pairs,
+    };
+    this.dirty = true;
+  }
+
+  /** The hand pick: picked points, the points in a clash, and the clash edges (index pairs). Null hides it. */
+  setHandPick(picked: readonly number[] | null, clash: readonly number[] = [], clashEdges: readonly (readonly [number, number])[] = []): void {
+    this.hand = picked === null ? null : {
+      picked: new Set(picked),
+      clash: new Set(clash),
+      clashEdges: clashEdges.map(([a, b]) => [a, b] as [number, number]),
+    };
+    this.dirty = true;
+  }
+
   /** Jump every tween to its end (skip, reduced motion, plan switch). */
   finishTweens(): void {
     for (let i = 0; i < this.n; i++) {
@@ -255,6 +314,8 @@ export class DynamicLayer {
     ctx.clearRect(0, 0, this.cssW, this.cssH);
 
     if (this.tile) this.drawTile(ctx);
+    if (this.atoms) this.drawAtomsUnder(ctx);
+    if (this.hand) this.drawClashEdges(ctx);
 
     // Glow first so shapes sit on top.
     const size = GLOW_R * 2;
@@ -265,6 +326,8 @@ export class DynamicLayer {
     }
 
     for (let i = 0; i < this.n; i++) this.drawPoint(ctx, i);
+    if (this.atoms) this.drawAtomsOver(ctx);
+    if (this.hand) this.drawHandMarks(ctx);
 
     if (this.gaps.length) {
       ctx.strokeStyle = TEXT_COLOUR;
@@ -329,7 +392,8 @@ export class DynamicLayer {
       const ch = this.channel[i];
       const colour = colourForChannel(ch);
       const t = this.lockT[i];
-      const pulse = t < 1 ? 1 + 0.4 * Math.sin(Math.PI * t) : 1;
+      // An atom pick collapses from the atom's size into the locked shape; a rule pick keeps the short pulse.
+      const pulse = t >= 1 ? 1 : st === Status.Picked ? 1 + 0.6 * (1 - t) * (1 - t) : 1 + 0.4 * Math.sin(Math.PI * t);
       const r = POINT_R * pulse;
       const path = pathFor(shapeForChannel(ch));
       ctx.scale(r, r);
@@ -363,6 +427,151 @@ export class DynamicLayer {
     ctx.fillStyle = TEXT_COLOUR;
     ctx.textBaseline = 'top';
     ctx.fillText(word, x - 12, y + POINT_R + 3);
+    ctx.restore();
+  }
+
+  private groupBox(): [number, number, number, number] | null {
+    if (!this.atoms) return null;
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const i of this.atoms.group) {
+      const x = this.pos[2 * i];
+      const y = this.pos[2 * i + 1];
+      if (x < x0) x0 = x;
+      if (y < y0) y0 = y;
+      if (x > x1) x1 = x;
+      if (y > y1) y1 = y;
+    }
+    return x0 === Infinity ? null : [x0, y0, x1, y1];
+  }
+
+  /** Under the points: the laser sweep, the Blockade_Halos (or the blockade pairs). */
+  private drawAtomsUnder(ctx: CanvasRenderingContext2D): void {
+    const a = this.atoms!;
+    const box = this.groupBox();
+    if (!box) return;
+    const [x0, y0, x1, y1] = box;
+    ctx.save();
+    if (a.sweep !== null) {
+      // A band of light moving left to right over the Group while it is simulated.
+      const pad = 18;
+      const w = Math.max(24, (x1 - x0 + 2 * pad) * 0.18);
+      const span = x1 - x0 + 2 * pad + w;
+      const left = x0 - pad - w + span * a.sweep;
+      ctx.beginPath();
+      ctx.rect(x0 - pad, y0 - pad, x1 - x0 + 2 * pad, y1 - y0 + 2 * pad);
+      ctx.clip();
+      ctx.fillStyle = SWEEP_COLOUR;
+      ctx.fillRect(left, y0 - pad, w, y1 - y0 + 2 * pad);
+      ctx.fillStyle = SWEEP_EDGE;
+      ctx.fillRect(left + w - 1.5, y0 - pad, 1.5, y1 - y0 + 2 * pad);
+      ctx.restore();
+      ctx.save();
+    }
+    if (a.haloPx !== null && a.haloPx > 0) {
+      // Two halos that overlap are two points closer than r: they cannot both light up.
+      ctx.strokeStyle = HALO_COLOUR;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      for (const i of a.group) {
+        ctx.beginPath();
+        ctx.arc(this.pos[2 * i], this.pos[2 * i + 1], a.haloPx, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    } else if (a.pairs.length) {
+      // Walls or walking distance: the real blockade pairs of the Group, not a circle.
+      ctx.strokeStyle = PAIR_COLOUR;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      for (const [p, q] of a.pairs) {
+        ctx.moveTo(this.pos[2 * p], this.pos[2 * p + 1]);
+        ctx.lineTo(this.pos[2 * q], this.pos[2 * q + 1]);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  /** Over the points: each atom of the Group as a sphere, and its flash when a shot kept it. */
+  private drawAtomsOver(ctx: CanvasRenderingContext2D): void {
+    const a = this.atoms!;
+    ctx.save();
+    a.group.forEach((i, k) => {
+      if (this.status[i] !== Status.Undecided) return;
+      const x = this.pos[2 * i];
+      const y = this.pos[2 * i + 1];
+      const f = a.flash[k] ?? 0;
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = TEAL_COLOUR;
+      ctx.beginPath();
+      ctx.arc(x, y, POINT_R * 1.15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = TEXT_COLOUR;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.7;
+      ctx.beginPath();
+      ctx.arc(x, y, POINT_R * 1.15 + 1.5, 0, Math.PI * 2);
+      ctx.stroke();
+      if (f > 0) {
+        ctx.globalAlpha = 0.85 * f;
+        ctx.fillStyle = TEXT_COLOUR;
+        ctx.beginPath();
+        ctx.arc(x, y, POINT_R * (1.2 + 0.6 * f), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+    ctx.restore();
+  }
+
+  /** The edges between two picked points of the hand pick: red and dashed. */
+  private drawClashEdges(ctx: CanvasRenderingContext2D): void {
+    const h = this.hand!;
+    if (!h.clashEdges.length) return;
+    ctx.save();
+    ctx.strokeStyle = CLASH_COLOUR;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 3]);
+    ctx.beginPath();
+    for (const [p, q] of h.clashEdges) {
+      ctx.moveTo(this.pos[2 * p], this.pos[2 * p + 1]);
+      ctx.lineTo(this.pos[2 * q], this.pos[2 * q + 1]);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  /** A picked point: a filled accent diamond. In a clash: a red diamond with a cross. */
+  private drawHandMarks(ctx: CanvasRenderingContext2D): void {
+    const h = this.hand!;
+    ctx.save();
+    for (const i of h.picked) {
+      if (i < 0 || i >= this.n) continue;
+      const x = this.pos[2 * i];
+      const y = this.pos[2 * i + 1];
+      const r = POINT_R * 1.5;
+      const clash = h.clash.has(i);
+      ctx.beginPath();
+      ctx.moveTo(x, y - r);
+      ctx.lineTo(x + r, y);
+      ctx.lineTo(x, y + r);
+      ctx.lineTo(x - r, y);
+      ctx.closePath();
+      ctx.fillStyle = clash ? CLASH_COLOUR : ACCENT_COLOUR;
+      ctx.fill();
+      ctx.strokeStyle = TEXT_COLOUR;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      if (clash) {
+        ctx.strokeStyle = TEXT_COLOUR;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x - r * 0.4, y - r * 0.4);
+        ctx.lineTo(x + r * 0.4, y + r * 0.4);
+        ctx.moveTo(x + r * 0.4, y - r * 0.4);
+        ctx.lineTo(x - r * 0.4, y + r * 0.4);
+        ctx.stroke();
+      }
+    }
     ctx.restore();
   }
 

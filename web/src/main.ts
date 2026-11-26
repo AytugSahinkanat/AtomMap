@@ -5,7 +5,7 @@
 // `#/results` (What we measured) keeps working without the worker and never starts it.
 
 import "./style.css";
-import { createClient, type WorkerClient } from "./client";
+import { buffer, createClient, doneCompetitors, type WorkerClient } from "./client";
 import { applyLoadProgress, onFinished, state, update } from "./state";
 import { plainError } from "./screens/loading";
 import { createMapScreen, type FlowScene, type MapScreen } from "./screens/map";
@@ -42,6 +42,21 @@ function startWorker(): void {
   });
 }
 
+/**
+ * The back button during a run (Requirement 1.5): the worker cannot stop a run halfway, so it is
+ * replaced. The old one is terminated at once, a new one loads (the run button shows its percent
+ * again), and nothing of the stopped run reaches the page.
+ */
+function restartWorker(): void {
+  if (!client) return;
+  client.terminate();
+  client = null;
+  buffer.length = 0;
+  for (const k of Object.keys(doneCompetitors)) delete doneCompetitors[k];
+  update({ ready: false, loadPercent: 0, loadStage: null, loadError: null });
+  startWorker();
+}
+
 // ---- the scenes ----
 type Top = "none" | "choose" | "flow";
 let top: Top = "none";
@@ -69,8 +84,11 @@ function ensureFlow(): MapScreen {
   let prepared: ReturnType<typeof stage.prepare> | null = null;
   let entering: HTMLElement[] = [];
   const f = createMapScreen({
-    start: (payload) => client?.start(payload) ?? false,
-    cancel: () => client?.cancel(),
+    start: (payload) => client?.start(payload),
+    // Only a run still in the worker needs a new worker; a finished one is just left.
+    cancel: () => {
+      if (client?.busy) restartWorker();
+    },
     onFinished,
     sceneWillChange: (from, to) => {
       if (routing) return;
@@ -182,6 +200,8 @@ async function route(): Promise<void> {
   ensureFlow();
   mountApp();
   if (r.scene === "choose") {
+    // Every address that ends on the cards reads #/ (an unknown one like #/map/nonsense or #/lab too).
+    if (hash !== "" && hash !== "#/") replaceHash("#/");
     if (top !== "choose") await showChoose();
     return;
   }

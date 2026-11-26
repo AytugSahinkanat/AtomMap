@@ -1,9 +1,8 @@
 // The maps of the Choose_Scene: names, descriptions, chips and the data of their previews
 // (experience spec, Requirement 2). The map screen itself still builds the requests.
 //
-// Listed now: the wifi hall, Kadikoy cafes and Your map. The two US maps join with their
-// committed Map_Check (experience task 11, Requirement 13.6), and "Today's map" with the
-// Daily_Map (task 10). Until then they are not shown at all.
+// Listed now: the wifi hall, Kadikoy cafes, Your map and Today's map. The two US maps join with
+// their committed Map_Check (experience task 11, Requirement 13.6). Until then they are not shown.
 
 import { loadHero, loadPlace, loadWalls } from "../data/fixtures";
 import { buildStraightEdges } from "../edges/straight";
@@ -11,8 +10,9 @@ import { buildWallEdges } from "../edges/walls";
 import { PLACE_R_M, POINT_LIMIT, YOUR_MAP_AREA_M, YOUR_R_DEFAULT } from "../settings";
 import type { PreviewData } from "./card-preview";
 import type { MapSlug } from "./router";
+import { todayMap, todayProgressLine, todayText } from "../daily/today";
 
-export type ChipKind = "walls" | "distance" | "r";
+export type ChipKind = "walls" | "distance" | "r" | "none";
 
 /** The setting of each map's Card_Chips. Shared by the card and the map scene, kept for the visit. */
 export interface ChipState {
@@ -73,6 +73,8 @@ export interface MapEntry {
   chip: ChipKind;
   /** A short credit line on the card, when the map shows data that needs one. */
   credit?: string;
+  /** A line under the card that can change between visits (the Daily_Map's Local_Progress). */
+  note?(): string | null;
   load(state: ChipState): Promise<CardData>;
 }
 
@@ -125,6 +127,26 @@ export const MAPS: readonly MapEntry[] = [
         bounds: { minX: 0, minY: 0, maxX: YOUR_MAP_AREA_M.width, maxY: YOUR_MAP_AREA_M.height },
         count: n,
         description: `Draw, paste or upload up to ${POINT_LIMIT} points. It starts as a ring of 8.`,
+      };
+    },
+  },
+  {
+    // The Daily_Map (Requirement 11): the same map for everyone on one UTC date. No chips: one
+    // Round, straight line, r = 10 m, and the Run_Number is the Daily_Seed.
+    slug: "today",
+    name: "Today's map",
+    title: "Today's map",
+    chip: "none",
+    note: () => todayProgressLine(),
+    async load() {
+      const m = todayMap();
+      const n = m.points.length;
+      return {
+        points: m.points,
+        edges: m.edges,
+        bounds: { minX: 0, minY: 0, maxX: m.area.width, maxY: m.area.height },
+        count: n,
+        description: `${todayText()}. A new small map every day, the same for everyone: ${n} points, two closer than ${m.r} m can't both be picked.`,
       };
     },
   },
