@@ -358,3 +358,19 @@ This replaces the Loading_Screen of the ui spec (its Requirement 1) in the norma
 4. WHEN Simulator_Ready is reached, THE run button SHALL become enabled and say "Run", and the hint SHALL go away, with a polite announcement for screen readers.
 5. IF loading fails, THEN THE run button SHALL stay disabled and THE Map_Scene SHALL show the error in plain words, as the old Loading_Screen did, and the Choose_Scene, the Map_Cards and the Hand_Pick SHALL keep working.
 6. THE Results_Page SHALL keep working without waiting for the Worker.
+
+### Requirement 24: The answer box
+**User Story:** As a visitor, I want the results to answer the map's question in plain words, so that I do not have to work out the answer from four cards.
+#### Acceptance Criteria
+1. WHEN a run finishes, THE Results_Scene SHALL show the Answer_Box with the headline "Answer: you can pick N of these M <noun>, with no two <rule>.", with <noun> and <rule> from the map: "cafés" and "within a 150 m walk" (or "closer than 150 m" in a straight line) on Kadıköy, "bus stops" and "stations" with their own r on the US_Maps, "points" and "closer than r m" on Your_Map and the Daily_Map.
+2. ON the channel plan, THE headline SHALL read "Answer: N of M access points get a 2.4 GHz channel: a on channel 1, b on 6, c on 11. The other K use 5 GHz only."
+3. N SHALL be the size of the Answer_Set. THE UI SHALL check each plan's sets against the edges of the run request (no edge inside a Round's set, no Point in two Rounds, the count equal to the plan's total) and SHALL count only plans that pass. A plan that fails the check or did not finish SHALL be named in the box with the reason.
+4. WHEN the Valid_Picks of the Hand_Pick of the same map and distance setting are more than every plan's count, THE Answer_Set SHALL be the Hand_Pick, and THE box SHALL say "Your own pick has N points with no clash, more than the plans found in this run." On the channel plan the Hand_Pick is one set, not three channels, so it SHALL NOT be compared.
+5. THE box SHALL name the plans that found N ("Found by annealing + rules.") and give the others' counts ("Atoms alone found 25, atoms + rules (hybrid) 31, coin flip + rules 33."), with neutral words only: found, picked, more, fewer. IT SHALL NOT contain "beat", "win", "winner", "won", "lose", "lost", "better", "worse" or "best".
+6. ONLY WHEN every Point outside the Answer_Set has an edge to a Point of it (on the channel plan: to a Point of each Round's set), THE box SHALL say "Every other one is <near> one of them. Click a point to see which." (on the channel plan: "Each of the other K clashes with an access point on every channel. Click a point to see which."). A click or Enter on a Point SHALL then name its neighbours in the Answer_Set.
+7. THE box SHALL always say "This is the most found in this run. It is not proven to be the most possible."
+8. THE box SHALL offer "Show them on the map", which selects the plan of the Answer_Set on the map through the Plan_Selector (or draws the Hand_Pick), so that the export buttons then export exactly that plan; the Hybrid stays the default view.
+9. THE box SHALL offer "Show the list", folded by default, with the ids of the Answer_Set, or their names on place maps, by channel on the channel plan.
+10. ON a Lab_Run, THE box SHALL show the Lab_Label.
+11. EVERY number in the box SHALL come from the run; THE UI SHALL compute nothing beyond counting and checking the sets. THE Tutor SHALL stay as it is.
+12. THE Results_Scene with the box SHALL fit 1366 x 768 without vertical page scroll and work at 375 px without horizontal scroll.

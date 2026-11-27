@@ -41,10 +41,20 @@ export const WALL_LOSS_DB = {
 /** Accent colour, used for focus rings. */
 export const ACCENT_COLOUR = '#7f77dd';
 
-/** Place_Mode presets. `name` is the file suffix, `file` is served from fixtures/. */
+/**
+ * Place_Mode presets. `name` is the fixture's name, `file` is served from fixtures/, `slug` is the
+ * map's route and export name, `noun` names its points in plain words. r comes from each fixture.
+ */
 export const PLACES = [
-  { label: 'Kadıköy, Istanbul', name: 'kadikoy', file: 'place_kadikoy.json' },
+  { label: 'Kadıköy, Istanbul', name: 'kadikoy', file: 'place_kadikoy.json', slug: 'kadikoy', noun: 'cafes' },
+  { label: 'San Francisco bus stops (Mission)', name: 'sf_bus_stops', file: 'place_sf_bus_stops.json', slug: 'sf-bus', noun: 'bus stops' },
+  { label: 'New York bike-share stations (Greenwich Village)', name: 'nyc_bike_share', file: 'place_nyc_bike_share.json', slug: 'nyc-bike', noun: 'stations' },
 ] as const;
+
+/** The preset of a fixture name, or undefined. */
+export function placeOf(name: string): (typeof PLACES)[number] | undefined {
+  return PLACES.find((p) => p.name === name);
+}
 
 /** Display name of a place ("Kadıköy, Istanbul"); the slug itself if unknown. File names keep the ASCII slug. */
 export function placeTitle(slug: string): string {
@@ -53,7 +63,7 @@ export function placeTitle(slug: string): string {
 
 export type PlaceName = (typeof PLACES)[number]['name'];
 
-/** Walking rule for Place_Mode, in metres. */
+/** Kadıköy's walking rule, in metres. Every place reads its own r from its fixture (Requirement 13.2). */
 export const PLACE_R_M = 150;
 
 // Your map (ui spec, requirement 8). All values are decided before running (honesty rule 8).

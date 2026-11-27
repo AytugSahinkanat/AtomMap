@@ -10,6 +10,7 @@
     "smoke": "node scripts/smoke.mjs",
     "record-results": "node scripts/record-results.mjs",
     "measure-limit": "node scripts/measure-limit.mjs",
+    "check-maps": "node scripts/check-maps.mjs",
     "layout-check": "node scripts/layout-check.mjs",
     "check": "tsc -p . --noEmit",
     "test": "vitest run"

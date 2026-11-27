@@ -55,6 +55,7 @@ New or changed files in `web/src/`:
 | `render/atoms-layer.ts` | Draws Atoms, Blockade_Halos, the Laser_Sweep and flashes on the dynamic canvas |
 | `render/histogram.ts` | The Shot_Histogram (DOM, with a text alternative) |
 | `data/map-checks.json` | The committed Map_Checks of the US_Maps |
+| `answer.ts` | The Answer_Box texts and the Answer_Set from the run. Pure |
 | `lab/lab.ts`, `lab/entrance.ts`, `lab/history.ts`, `lab/experiments.ts`, `lab/icons.ts` | The Lab |
 
 `screens/map.ts` stays one module (built in task 6.4): it already owned the canvases, the a11y list, `layout()`, the run and the Scoreboard, all closely tied. It now makes its map element once and arranges the panels of Scenes 2 to 4 around it, reports each scene change before and after it (`sceneWillChange`, `sceneDidChange`), and offers `select(slug)`, `stopRun()`, `heading()` and `parts(scene)` to the stage. Its old toolbar moved into the Map_Scene side panel; the mode radios are gone (the Choose_Scene chooses the map). `screens/map-request.ts` keeps `buildRequest` as the only place that builds requests, with one new optional argument for Lab_Settings.
@@ -205,6 +206,18 @@ The Map_Scene keeps one `Set` per map and distance setting. A click on the dynam
 
 You_Line: `You: ${valid}` plus ` (${clashes.length} clashes not counted)` when there are clashes. It sits under the four cards in the Scoreboard column, in the muted text colour, in a box without a border, so it never looks like a fifth card or a winner.
 
+### Answer_Box
+
+`answer.ts` is pure: `buildAnswer(input)` gets the mode, the map's words, the Point ids (and names on place maps), the edges of the run request, `result.competitors`, the Valid_Picks of the Hand_Pick (null on the channel plan or without one) and the Lab_Label, and returns every text of the box and the Answer_Set by Round. `whichLine(answer, id)` gives the line for a clicked Point and the ids to ring.
+
+- Each finished plan's sets are read from `rounds[].picks` and checked: no edge of the request inside one Round's set, no Point in two Rounds, the count equal to `stats.total_picks`. A plan that fails is named with its reason and not counted.
+- N is the largest count of a passing plan. The plan shown is the Hybrid when it found N, else the first in card order. The Hand_Pick takes its place only with strictly more Valid_Picks, and never on the channel plan (one set, not three channels).
+- Maximality is checked on the Answer_Set: every other Point has an edge into it (channel plan: into each Round's set). Only then the "Every other one ..." line and "Click a point to see which." are shown.
+- Words per map (`<noun>`, `<pair>`, `<near>`): Kadıköy "cafés", "within a 150 m walk", "within a 150 m walk of" (straight line: "closer than 150 m", "closer than 150 m to"); the US_Maps "bus stops" and "stations" with r from the fixture; Your_Map and the Daily_Map "points", "closer than r m".
+- The box sits under the map, above "One run proves nothing." The map's height already takes the room under it into account, so the box makes the map shorter and the scene still fits 1366 x 768. "Show the list" is a `<details>` with a scrolling list of at most about four lines; opening it lays the map out again.
+- "Show them on the map" calls the Plan_Selector (`scoreboard.selectPlan`), so the map, the legend, the Tutor's plan line and the exports all follow, as for a click on the card. For a Hand_Pick answer it draws the Valid_Picks as diamonds on the final map; the exports stay with the plans.
+- A click or Enter on a Point after a finished run keeps the Tutor's "why" as before and also writes the box's which line. The box rings the neighbours only while the map shows a plan other than the Hybrid, so it never draws over the Tutor's own ring.
+- The Lab_Label comes in through the input; until the Lab exists (task 14) it is always null.
 ### Daily_Map
 
 `buildDailyMap(seed)` with `mulberry32(seed)` (already in `your-map/editor.ts`):
@@ -393,10 +406,18 @@ interface StartPayload { /* existing */ settings?: { shots?: number; top_share?:
 - Parts keep r/2 + 0.1 m from the slot border, because coordinates are rounded to 0.1 m after placement. The cluster is drawn and checked in its final, rounded coordinates, so rounding cannot change one of its edges.
 - The fallback cluster is 10 Points found once by a seeded search and written in `daily-map.ts`. Its reachable counts are 3 and 4, and every pair is at least 0.6 m away from r.
 - Today's map runs like Your map: the edges are sent with the request, mode place, one Round, r = 10 m, Run_Number = Daily_Seed. Export file names use `today-YYYY-MM-DD`.
-- A run on Today's map marks the day as played with 0. The card shows "Your pick today: N" only for N > 0, and the streak line. The card text avoids "best" (Requirement 10.3's list).
+- A run on Today's map marks the day as played with 0. The card shows "Your best today: N" only for N > 0, and the streak line. N is the largest Valid_Picks of the day, which can differ from the pick on screen now, so the card says "best" (the owner's choice; the banned list of Requirement 10.3 is for the You_Line).
 - "Today" is read in `choose.refresh()`, each time the Choose_Scene opens (`daily/today.ts`).
 - The seed input is gone from the Map_Scene and the Results_Scene. `seed.ts` (parseSeed) stays for the Lab's seed input. "Open the lab" (Requirement 8.1) comes with the Lab tasks.
 
+## Notes from task 11
+
+- The committed Map_Check (2026-11-27, 16 runs, all ok, none over 60 s) lists both US_Maps and gives both the "atoms were not needed" note: the Hybrid's quantum share was 0% in all three seeds of each.
+- A Map_Check made on another fetch of a fixture (timestamp, point or edge count, or r differs) hides the card, and a direct route to the map shows a plain error instead of the map.
+- `npm run check-maps -- --dry-run` makes one US run and one daily run and writes nothing, to test the script.
+- With six cards the Choose_Scene no longer fit 1366 x 768 (931 px). On wide screens the cards are now more compact: the preview is 6.5rem high instead of 9rem (about 104 px, not the 130 px of the Choose_Scene design), with smaller gaps and note text. It now fits exactly.
+- Answer_Box: on the channel plan the Hand_Pick is not compared (one set against three channels); the You_Line still shows it. The Lab_Label input is null until the Lab exists. The box rings a clicked Point's neighbours only while a plan other than the Hybrid is on the map; with the Hybrid the Tutor's own ring stays.
+- Since Run_Numbers are random, smoke runs the hall with a different Seed each time, so its total time varies with the Seed (about 40 to 110 s here). Its check of the Results_Scene timing does not depend on the Seed.
 ## Error Handling
 
 | Case | Behaviour |

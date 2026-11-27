@@ -107,13 +107,14 @@ export function saveProgress(storage: ProgressStorage | null, p: Progress): void
   }
 }
 
-/** The card's progress line, or null when there is none for these dates. Neutral words only. */
+/** The card's progress line, or null when there is none for these dates. */
 export function progressLine(p: Progress, today: string): string | null {
   const best = p.days[today]?.best;
   const s = streak(p, today);
   const parts: string[] = [];
   // A run alone marks the day with 0: no hand count to show then.
-  if (best !== undefined && best > 0) parts.push(`Your pick today: ${best}`);
+  // The largest Valid_Picks of the day, not the pick on screen now: so "best", not "pick".
+  if (best !== undefined && best > 0) parts.push(`Your best today: ${best}`);
   if (s > 0) parts.push(p.days[today] ? `${s}-day streak` : `${s}-day streak, play today to keep it`);
   return parts.length === 0 ? null : parts.join(". ") + ".";
 }

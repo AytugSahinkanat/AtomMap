@@ -51,14 +51,17 @@ describe('buildRequest', () => {
   });
   it('place walking sends walking edges with r 150', () => {
     const req = buildRequest(
-      { mode: 'place', points: pts, walkingEdges: [['a', 'c']], walking: true },
+      { mode: 'place', points: pts, walkingEdges: [['a', 'c']], walking: true, r: 150 },
       1,
     );
     expect(req.graph).toEqual({ r: 150, edges: [['a', 'c']] });
   });
   it('place straight line sends r only', () => {
-    const req = buildRequest({ mode: 'place', points: pts, walkingEdges: [['a', 'c']], walking: false }, 1);
+    const req = buildRequest({ mode: 'place', points: pts, walkingEdges: [['a', 'c']], walking: false, r: 150 }, 1);
     expect(req.graph).toEqual({ r: 150 });
+    // The US maps send their own r (Requirement 13.2).
+    const us = buildRequest({ mode: 'place', points: pts, walkingEdges: [['a', 'c']], walking: true, r: 244 }, 1);
+    expect(us.graph).toEqual({ r: 244, edges: [['a', 'c']] });
     expect('edges' in req.graph).toBe(false);
   });
 });

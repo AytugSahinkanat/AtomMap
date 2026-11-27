@@ -14,6 +14,8 @@ import { CARD_LABELS, CARD_ORDER, CITATION, formatPercent, type EngineName } fro
 export const EXAMPLE_NOTICE = 'This is example data, not a measurement.';
 export const RESULT_LABEL = 'simulation';
 export const BACK_LABEL = 'Back to the map';
+/** Experience spec, Requirement 13.7: the measured protocol does not cover the US maps or Today's map. */
+export const PROTOCOL_SCOPE = 'The measured protocol covers the wifi hall, the sparse wifi hall and Kadıköy only.';
 export const REPRODUCIBILITY_NOTE =
   "These numbers come from the browser build. The same seed gives the same row in this app. A desktop Python run of the same 30 requests matched in 17 of 30 runs; in the others the hybrid's numbers differed slightly, because of floating point details in the simulation and the atom layout. Annealing and coin flip matched in all 30.";
 
@@ -177,7 +179,7 @@ export function renderResultsPage(file: ResultsFile): HTMLElement {
   }
 
   const protocol = el('section', undefined, 'results-protocol');
-  protocol.append(el('h2', 'Protocol'), el('p', file.protocol.text));
+  protocol.append(el('h2', 'Protocol'), el('p', file.protocol.text), el('p', PROTOCOL_SCOPE, 'results-scope'));
   const dl = el('dl', undefined, 'results-settings');
   for (const [k, v] of Object.entries(file.protocol.settings)) {
     dl.append(el('dt', formatSettingKey(k)), el('dd', formatSetting(v, k)));

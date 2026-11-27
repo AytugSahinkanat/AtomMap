@@ -1,7 +1,7 @@
 // Fixture loading and shape checks. Same-origin fetch of committed files only.
 // No sample data, no fallback data, no Overpass or tile requests.
 
-import { FIXTURES_DIR, PLACES, PLACE_R_M, type PlaceName } from '../settings';
+import { FIXTURES_DIR, PLACES, type PlaceName } from '../settings';
 import type { Pt, Wall } from '../edges/walls';
 
 export interface HeroFixture {
@@ -26,7 +26,15 @@ export interface PlacePoint {
 export interface PlaceFixture {
   name: string;
   mode: 'place';
-  r: 150;
+  /** The distance rule in metres, read from the fixture (150, 244, 305). Never assumed. */
+  r: number;
+  /** What the points are ("bus_stop", "bike_share"); absent on the Kadıköy fixture. */
+  kind?: string;
+  /** One plain line about the map, shown on the Map_Scene (Requirement 3.5). */
+  story?: string;
+  /** How names were cleaned (brand prefixes removed), or how stops were merged. Kept for the record. */
+  names?: { rule: string; names_changed: number };
+  merge?: { radius_m: number; rule: string; osm_stops: number; merged_points: number; stops_merged: number };
   bbox: { south: number; west: number; north: number; east: number };
   origin: { lat: number; lon: number };
   points: PlacePoint[];
@@ -129,7 +137,21 @@ export function validatePlace(data: unknown, file: string): PlaceFixture {
   const d = data as Obj;
   need(file, isStr(d.name), '"name" must be a string');
   need(file, d.mode === 'place', '"mode" must be "place"');
-  need(file, d.r === PLACE_R_M, `"r" must be ${PLACE_R_M}`);
+  need(file, isNum(d.r) && d.r > 0, '"r" must be a positive number of metres');
+  need(file, d.kind === undefined || isStr(d.kind), '"kind" must be a string');
+  need(file, d.story === undefined || (isStr(d.story) && d.story.trim() !== ''), '"story" must be a non-empty string');
+  need(
+    file,
+    d.names === undefined || (isObj(d.names) && isStr(d.names.rule) && isNum(d.names.names_changed)),
+    '"names" needs rule and names_changed',
+  );
+  need(
+    file,
+    d.merge === undefined ||
+      (isObj(d.merge) && isNum(d.merge.radius_m) && isStr(d.merge.rule) && isNum(d.merge.osm_stops) &&
+        isNum(d.merge.merged_points) && isNum(d.merge.stops_merged)),
+    '"merge" needs radius_m, rule, osm_stops, merged_points and stops_merged',
+  );
   need(
     file,
     isObj(d.bbox) && isNum(d.bbox.south) && isNum(d.bbox.west) && isNum(d.bbox.north) && isNum(d.bbox.east),

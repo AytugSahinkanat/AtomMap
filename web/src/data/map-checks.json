@@ -1,0 +1,350 @@
+{
+  "date": "2026-11-27",
+  "commit": "c31d7d557c014213c29c94420d2e251e032fdd40 dirty",
+  "chromium": "159.0.8154.6",
+  "pyodide": "0.27.7",
+  "limit_seconds": 60,
+  "protocol": "Built site, Chromium through Playwright, one worker, the runs one after the other in this order. US maps: walking distance, seeds 1, 2 and 3. Daily_Check: Today's map of 2026-12-01 to 2026-12-10, each with its Daily_Seed. Each run asks for all four plans with the app defaults. Seconds: from the start message to the result, worker loading not included. Every run is written, none is repeated. Quantum share is the fraction of picks from the atoms (0 to 1).",
+  "maps": {
+    "sf_bus_stops": {
+      "fixture": {
+        "osm_data_timestamp": "2026-11-25T23:15:25Z",
+        "points": 57,
+        "walking_edges": 68,
+        "r": 244
+      },
+      "runs": [
+        {
+          "seed": 1,
+          "seconds": 3.5,
+          "over_limit": false,
+          "ok": true,
+          "totals": {
+            "Atoms_Alone": 22,
+            "Hybrid": 23,
+            "Annealing_Rules": 23,
+            "Coin_Flip_Rules": 23
+          },
+          "quantum_share": {
+            "Atoms_Alone": 1,
+            "Hybrid": 0,
+            "Annealing_Rules": 0,
+            "Coin_Flip_Rules": 0
+          }
+        },
+        {
+          "seed": 2,
+          "seconds": 3.7,
+          "over_limit": false,
+          "ok": true,
+          "totals": {
+            "Atoms_Alone": 22,
+            "Hybrid": 23,
+            "Annealing_Rules": 23,
+            "Coin_Flip_Rules": 23
+          },
+          "quantum_share": {
+            "Atoms_Alone": 1,
+            "Hybrid": 0,
+            "Annealing_Rules": 0,
+            "Coin_Flip_Rules": 0
+          }
+        },
+        {
+          "seed": 3,
+          "seconds": 5.5,
+          "over_limit": false,
+          "ok": true,
+          "totals": {
+            "Atoms_Alone": 21,
+            "Hybrid": 23,
+            "Annealing_Rules": 23,
+            "Coin_Flip_Rules": 23
+          },
+          "quantum_share": {
+            "Atoms_Alone": 1,
+            "Hybrid": 0,
+            "Annealing_Rules": 0,
+            "Coin_Flip_Rules": 0
+          }
+        }
+      ]
+    },
+    "nyc_bike_share": {
+      "fixture": {
+        "osm_data_timestamp": "2026-11-25T23:20:32Z",
+        "points": 56,
+        "walking_edges": 58,
+        "r": 305
+      },
+      "runs": [
+        {
+          "seed": 1,
+          "seconds": 3.9,
+          "over_limit": false,
+          "ok": true,
+          "totals": {
+            "Atoms_Alone": 28,
+            "Hybrid": 31,
+            "Annealing_Rules": 31,
+            "Coin_Flip_Rules": 31
+          },
+          "quantum_share": {
+            "Atoms_Alone": 1,
+            "Hybrid": 0,
+            "Annealing_Rules": 0,
+            "Coin_Flip_Rules": 0
+          }
+        },
+        {
+          "seed": 2,
+          "seconds": 4.5,
+          "over_limit": false,
+          "ok": true,
+          "totals": {
+            "Atoms_Alone": 28,
+            "Hybrid": 31,
+            "Annealing_Rules": 31,
+            "Coin_Flip_Rules": 31
+          },
+          "quantum_share": {
+            "Atoms_Alone": 1,
+            "Hybrid": 0,
+            "Annealing_Rules": 0,
+            "Coin_Flip_Rules": 0
+          }
+        },
+        {
+          "seed": 3,
+          "seconds": 4.7,
+          "over_limit": false,
+          "ok": true,
+          "totals": {
+            "Atoms_Alone": 28,
+            "Hybrid": 31,
+            "Annealing_Rules": 31,
+            "Coin_Flip_Rules": 31
+          },
+          "quantum_share": {
+            "Atoms_Alone": 1,
+            "Hybrid": 0,
+            "Annealing_Rules": 0,
+            "Coin_Flip_Rules": 0
+          }
+        }
+      ]
+    }
+  },
+  "daily": [
+    {
+      "date": "2026-12-01",
+      "seed": 20261201,
+      "points": 32,
+      "edges": 46,
+      "seconds": 4.5,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 11,
+        "Hybrid": 13,
+        "Annealing_Rules": 13,
+        "Coin_Flip_Rules": 13
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.3076923076923077,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-02",
+      "seed": 20261202,
+      "points": 40,
+      "edges": 40,
+      "seconds": 35.6,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 19,
+        "Hybrid": 20,
+        "Annealing_Rules": 20,
+        "Coin_Flip_Rules": 20
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.2,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-03",
+      "seed": 20261203,
+      "points": 39,
+      "edges": 39,
+      "seconds": 11.6,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 19,
+        "Hybrid": 20,
+        "Annealing_Rules": 20,
+        "Coin_Flip_Rules": 20
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.15,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-04",
+      "seed": 20261204,
+      "points": 38,
+      "edges": 54,
+      "seconds": 11,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 15,
+        "Hybrid": 17,
+        "Annealing_Rules": 17,
+        "Coin_Flip_Rules": 16
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.35294117647058826,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-05",
+      "seed": 20261205,
+      "points": 30,
+      "edges": 34,
+      "seconds": 4.8,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 13,
+        "Hybrid": 13,
+        "Annealing_Rules": 13,
+        "Coin_Flip_Rules": 13
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.23076923076923078,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-06",
+      "seed": 20261206,
+      "points": 39,
+      "edges": 47,
+      "seconds": 14.8,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 17,
+        "Hybrid": 19,
+        "Annealing_Rules": 19,
+        "Coin_Flip_Rules": 19
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.2631578947368421,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-07",
+      "seed": 20261207,
+      "points": 38,
+      "edges": 36,
+      "seconds": 16.8,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 21,
+        "Hybrid": 21,
+        "Annealing_Rules": 21,
+        "Coin_Flip_Rules": 21
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.14285714285714285,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-08",
+      "seed": 20261208,
+      "points": 40,
+      "edges": 47,
+      "seconds": 18,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 17,
+        "Hybrid": 18,
+        "Annealing_Rules": 18,
+        "Coin_Flip_Rules": 18
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.2777777777777778,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-09",
+      "seed": 20261209,
+      "points": 39,
+      "edges": 47,
+      "seconds": 30,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 18,
+        "Hybrid": 19,
+        "Annealing_Rules": 19,
+        "Coin_Flip_Rules": 19
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.10526315789473684,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    },
+    {
+      "date": "2026-12-10",
+      "seed": 20261210,
+      "points": 30,
+      "edges": 33,
+      "seconds": 6.1,
+      "over_limit": false,
+      "ok": true,
+      "totals": {
+        "Atoms_Alone": 14,
+        "Hybrid": 15,
+        "Annealing_Rules": 15,
+        "Coin_Flip_Rules": 14
+      },
+      "quantum_share": {
+        "Atoms_Alone": 1,
+        "Hybrid": 0.13333333333333333,
+        "Annealing_Rules": 0,
+        "Coin_Flip_Rules": 0
+      }
+    }
+  ]
+}

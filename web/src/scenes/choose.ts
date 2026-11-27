@@ -5,7 +5,7 @@
 import { YOUR_R_MAX, YOUR_R_MIN } from "../settings";
 import { parseR } from "../your-map/editor";
 import { drawPreview } from "./card-preview";
-import { getChips, MAPS, onChips, setChips, type ChipState, type MapEntry } from "./maps";
+import { getChips, MAPS, MapGateError, onChips, setChips, type ChipState, type MapEntry } from "./maps";
 import type { MapSlug } from "./router";
 import { readToday } from "../daily/today";
 
@@ -195,6 +195,12 @@ export function createChooseScene(deps: ChooseDeps): ChooseScene {
       drawPreview(card.canvas, data);
     } catch (e) {
       if (token !== card.token) return;
+      // A US map whose Map_Check is for another version of its data is not offered (Requirement 13.5).
+      if (e instanceof MapGateError) {
+        card.el.hidden = true;
+        card.open.disabled = true;
+        return;
+      }
       // The map cannot be opened without its data. The other cards are not touched.
       card.status.hidden = false;
       card.status.textContent = `This map could not be loaded. ${e instanceof Error ? e.message : String(e)}`;

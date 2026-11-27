@@ -90,10 +90,12 @@ describe("streak", () => {
     expect(streak(played("2026-11-30", "2026-12-01"), "2026-12-01")).toBe(2);
     expect(streak(played("2026-12-31", "2027-01-01"), "2027-01-01")).toBe(2);
   });
-  it("the card line shows today's count and the streak, with neutral words", () => {
-    const line = progressLine(recordDaily(emptyProgress(), "2026-12-04", 5), "2026-12-04");
-    expect(line).toBe("Your pick today: 5. 1-day streak.");
-    for (const w of ["beat", "win", "winner", "won", "lose", "lost", "better", "worse", "best"]) expect(line!.toLowerCase().split(/[^a-z]+/)).not.toContain(w);
+  it("the card line shows the largest count of today and the streak", () => {
+    let p = recordDaily(emptyProgress(), "2026-12-04", 2);
+    p = recordDaily(p, "2026-12-04", 1); // a later pick with a clash: the card keeps 2
+    expect(progressLine(p, "2026-12-04")).toBe("Your best today: 2. 1-day streak.");
+    for (const w of ["beat", "win", "winner", "won", "lose", "lost", "better", "worse"]) expect(progressLine(p, "2026-12-04")!.toLowerCase().split(/[^a-z]+/)).not.toContain(w);
+    expect(progressLine(recordDaily(emptyProgress(), "2026-12-04", 0), "2026-12-04")).toBe("1-day streak.");
     expect(progressLine(emptyProgress(), "2026-12-04")).toBeNull();
   });
 });

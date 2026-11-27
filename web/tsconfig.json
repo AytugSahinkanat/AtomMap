@@ -9,6 +9,7 @@
     "noImplicitAny": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "noEmit": true
   },
   "include": ["src/**/*.ts", "vite.config.ts", "../worker/src/messages.ts"]

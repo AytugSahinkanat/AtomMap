@@ -1,7 +1,6 @@
 // Pure helpers for the Map_Screen: seed parsing and the run request.
 // No MIS logic. The engine builds its own graph for the straight-line Place case.
 
-import { PLACE_R_M } from '../settings';
 import { buildWallEdges } from '../edges/walls';
 import { buildStraightEdges } from '../edges/straight';
 import type { Wall } from '../edges/walls';
@@ -40,6 +39,8 @@ export type MapChoice =
       points: readonly RequestPoint[];
       walkingEdges: readonly Edge[];
       walking: boolean;
+      /** The place's r in metres, from its fixture (150, 244, 305). */
+      r: number;
     }
   | {
       /** Your map: the visitor's own points, one round, straight-line distance (ui requirement 8). */
@@ -99,8 +100,8 @@ function buildBaseRequest(choice: MapChoice, seed: number): StartPayload {
   }
   if (choice.walking) {
     const edges = choice.walkingEdges.map((e): Edge => [e[0], e[1]]);
-    return { points, mode: 'place', seed, graph: { r: PLACE_R_M, edges } };
+    return { points, mode: 'place', seed, graph: { r: choice.r, edges } };
   }
   // Straight line: the engine builds the graph from r. Edges are only drawn.
-  return { points, mode: 'place', seed, graph: { r: PLACE_R_M } };
+  return { points, mode: 'place', seed, graph: { r: choice.r } };
 }

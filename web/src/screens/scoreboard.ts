@@ -204,6 +204,8 @@ export interface ScoreboardView {
   finish(partial: PartialResults): void;
   /** The plan on the map: Hybrid at the start of each run. */
   readonly selectedPlan: EngineName;
+  /** Select a plan as if its card was chosen (the Answer_Box's "Show them on the map"). */
+  selectPlan(plan: EngineName): void;
   /** True when focus sits on a control that `begin` disables (repeat, run again). */
   holdsRunFocus(): boolean;
   /** The run stopped with an error: panel hidden, nothing partial stays. */
@@ -421,6 +423,10 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
     },
     get selectedPlan() {
       return selected;
+    },
+    selectPlan(plan) {
+      const r = radios().find((x) => x.dataset.plan === plan);
+      if (r) choose(r, false);
     },
     holdsRunFocus() {
       return document.activeElement === again || document.activeElement === repeat;

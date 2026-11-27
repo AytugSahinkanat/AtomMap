@@ -154,7 +154,7 @@ const kadikoy = fixture("place_kadikoy.json");
 const CHOICES = {
   "Wifi hall": { mode: "channel_plan", points: hero.points, walls, wallsOn: false, r: hero.graph.r },
   "Wifi hall, sparse control": { mode: "channel_plan", points: sparse.points, walls, wallsOn: false, r: sparse.graph.r },
-  "Kadıköy, Istanbul": { mode: "place", points: kadikoy.points, walkingEdges: kadikoy.walking_edges, walking: true },
+  "Kadıköy, Istanbul": { mode: "place", points: kadikoy.points, walkingEdges: kadikoy.walking_edges, walking: true, r: kadikoy.r },
 };
 
 // ---- 6. Chromium ----

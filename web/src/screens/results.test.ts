@@ -237,6 +237,11 @@ describe("Results_Page on the committed results.json (real Chromium)", () => {
     const real = await render(p, COMMITTED_FILE);
     expect(real.text).toContain("atoms not needed, splits and skipped tiles are the hybrid's");
   });
+  it("says the measured protocol covers the three measured maps only (Requirement 13.7)", async (ctx) => {
+    const p = need(ctx);
+    const real = await render(p, COMMITTED_FILE);
+    expect(real.text).toContain("The measured protocol covers the wifi hall, the sparse wifi hall and Kadıköy only.");
+  });
 });
 describe("Results_Page settings text (real Chromium)", () => {
   it("shows lists and nested objects as plain text, no JSON", async (ctx) => {

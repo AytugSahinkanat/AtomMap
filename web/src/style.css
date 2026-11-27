@@ -357,3 +357,36 @@ h1 { font-weight: 500; }
 /* Today's map: the Local_Progress line on its card (experience spec, Requirement 11.5) */
 .map-card-note { margin: 0; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
 .map-card-note[hidden] { display: none; }
+
+/* US maps (experience spec, Requirement 13): a card without a matching Map_Check is hidden; the story and the note */
+.map-card[hidden] { display: none; }
+.place-story, .place-note { margin: 0.25rem 0; font-size: 0.85rem; }
+.place-note { color: var(--muted); }
+.place-story[hidden], .place-note[hidden] { display: none; }
+
+/* Answer_Box (experience spec, Requirement 24): under the map on the Results_Scene, one quiet panel */
+.answer-box { margin: 0.35rem 0 0.2rem; padding: 0.4rem 0.65rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; }
+.answer-box[hidden], .answer-box [hidden] { display: none; }
+.screen.map .answer-box p { margin: 0.1rem 0; }
+.screen.map .answer-box .answer-headline { font-weight: 500; font-size: 0.95rem; }
+.screen.map .answer-box .answer-body, .screen.map .answer-box .answer-problems, .screen.map .answer-box .answer-which { font-size: 0.8rem; line-height: 1.35; }
+.screen.map .answer-box .answer-lab { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.75rem; color: var(--muted); }
+.answer-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.3rem 0.75rem; margin-top: 0.2rem; }
+.screen.map .answer-row button { padding: 0.2rem 0.7rem; font-size: 0.82rem; }
+.answer-list { font-size: 0.8rem; min-width: 0; flex: 1 1 12rem; }
+.answer-list summary { cursor: pointer; color: var(--muted); padding: 0.2rem 0; }
+.answer-list summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.answer-list-body { max-height: 4.2rem; overflow-y: auto; overflow-wrap: anywhere; }
+.screen.map .answer-list-body p { margin: 0 0 0.15rem; }
+
+/* Six Map_Cards on one laptop screen (Requirement 21.1): on wide screens the cards are more compact */
+@media (min-width: 60.01rem) {
+  .scene.choose h1 { margin: 0.3rem 0 0.1rem; }
+  .choose-question { margin: 0 0 0.5rem; }
+  .map-cards { gap: 0.5rem; }
+  .map-card { gap: 0.3rem; padding: 0.5rem 0.7rem; }
+  .map-card-title { font-size: 1rem; }
+  .map-card-desc { font-size: 0.8rem; line-height: 1.3; min-height: 2.6em; }
+  .map-card-preview { height: 6.5rem; }
+  .map-card-note, .map-card-credit { font-size: 0.7rem; line-height: 1.3; }
+}

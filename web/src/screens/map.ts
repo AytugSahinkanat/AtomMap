@@ -16,6 +16,7 @@ import {
   DEFAULT_SEED,
   MAX_TEXT_BYTES,
   PLACES,
+  placeOf,
   POINT_LIMIT,
   RANDOM_BATCH,
   YOUR_MAP_AREA_M,
@@ -39,6 +40,9 @@ import {
   type EditorState,
 } from "../your-map/editor";
 import { yourMapLabel } from "../your-map/label";
+import { atomsNotNeeded, atomsNotNeededNote, fixtureMatches, mapCheck } from "../data/map-checks";
+import { buildAnswer, whichLine, type Answer, type AnswerInput, type MapWords } from "../answer";
+import { createAnswerBox } from "./answer-box";
 import { handPickReadout, handPickStats, youLine, type HandPickStats } from "../hand-pick";
 import { randomRunNumber } from "../run-number";
 import { recordToday, todayKey, todayMap, todaySeed, todayText } from "../daily/today";
@@ -129,7 +133,7 @@ function createPlaceSelector(): PlaceSelector {
   // One place only: show its name as text, no selector. The fieldset legend stays as the label.
   const placeText = document.createElement("span");
   placeText.className = "place-option";
-  placeText.textContent = PLACES[0].label;
+  placeText.textContent = PLACES[0].label; // the loaded place's name, set in render()
   fieldset.append(placeText);
   // Attribution, cafe count and fetch date of the loaded place (Task 6.7).
   const attribution = document.createElement("p");
@@ -142,8 +146,16 @@ function createPlaceSelector(): PlaceSelector {
   const countText = document.createElement("span");
   const dateText = document.createElement("span");
   attribution.append(copyright, " (", licenceLink, "). ", countText, ". ", dateText, ".");
+  // The US maps: the story line of the fixture (Requirement 3.5).
+  const story = document.createElement("p");
+  story.className = "place-story";
+  story.hidden = true;
+  // The note of Requirement 13.4, from the committed Map_Check only.
+  const note = document.createElement("p");
+  note.className = "place-note";
+  note.hidden = true;
 
-  info.append(status, error, attribution);
+  info.append(story, note, status, error, attribution);
 
   function renderAttribution(): void {
     const f = state.placeFixture;
@@ -154,13 +166,21 @@ function createPlaceSelector(): PlaceSelector {
     copyright.textContent = "© OpenStreetMap contributors";
     licenceLink.textContent = f.source.licence;
     licenceLink.href = /^https?:\/\//i.test(f.source.licence_url) ? f.source.licence_url : "";
-    countText.textContent = `${f.counts.points} cafes`;
+    countText.textContent = `${f.counts.points} ${placeOf(f.name)?.noun ?? "points"}`;
     dateText.textContent = `Fetched ${f.source.fetched_at}`;
     attribution.hidden = false;
   }
 
   function render(): void {
     renderAttribution();
+    const f = state.placeFixture;
+    placeText.textContent = placeTitle(f?.name ?? state.placeName ?? PLACES[0].name);
+    story.textContent = f?.story ?? "";
+    story.hidden = !f?.story;
+    const noun = f?.name === "sf_bus_stops" ? "stops" : f?.name === "nyc_bike_share" ? "stations" : null;
+    const showNote = f !== null && noun !== null && atomsNotNeeded(mapCheck(f.name));
+    note.textContent = showNote && noun ? atomsNotNeededNote(noun) : "";
+    note.hidden = !showNote;
     status.textContent = state.placeLoading ? "Loading the map…" : "";
     error.hidden = state.placeError === null;
     error.textContent = state.placeError ?? "";
@@ -179,6 +199,12 @@ function createPlaceSelector(): PlaceSelector {
     try {
       const fixture = await loadPlace(name);
       if (state.placeName !== name) return; // a newer choice won
+      // A US map runs only on the data its Map_Check was made with (Requirements 13.5, 13.6).
+      if (name !== "kadikoy" && !fixtureMatches(mapCheck(name), fixture)) {
+        update({ placeLoading: false, placeError: "This map's check is for another version of its data, so the map is not offered." });
+        render();
+        return;
+      }
       update({ placeFixture: fixture, placeLoading: false });
     } catch (e) {
       if (state.placeName !== name) return;
@@ -469,7 +495,10 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         return;
       }
       // Why this point: only after a finished run (the strip ignores it for non-Hybrid plans).
-      if (finishedShown) strip.showWhy(id);
+      if (finishedShown) {
+        strip.showWhy(id);
+        answerWhich(id);
+      }
     },
     onFocusChange: (id) => {
       dynamicLayer.setFocus(id === null ? -1 : (indexById.get(id) ?? -1));
@@ -529,14 +558,19 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     const i = nearestPoint(pointXY, e.clientX - r.left, e.clientY - r.top, 12);
     if (i < 0) {
       strip.leaveWhy();
+      answerWhich(null);
       return;
     }
     const id = scene?.points[i]?.id;
-    if (id !== undefined) strip.showWhy(id);
+    if (id !== undefined) {
+      strip.showWhy(id);
+      answerWhich(id);
+    }
   });
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape" || !el.isConnected || !finishedShown) return;
     strip.leaveWhy();
+    answerWhich(null);
   });
   /** Request edges of the run on screen, for the Facts. */
   let runEdges: [string, string][] = [];
@@ -607,7 +641,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       map:
         mode === "your_map" ? "your-map"
           : mode === "daily" ? `today-${todayKey()}`
-            : mode === "place" ? (state.placeName ?? DEFAULT_PLACE) : "hero",
+            : mode === "place" ? (placeOf(state.placeName ?? DEFAULT_PLACE)?.slug ?? DEFAULT_PLACE) : "hero",
       seed: runSeed,
       points: scene.points.map((p) => {
         const q = p as { id: string; x: number; y: number; lon?: number; lat?: number };
@@ -635,7 +669,61 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     if (node) under.append(node);
   }
   mapCol.append(wrap, under);
-  // The legend sits in the scoreboard column, under the cards.
+  // The Answer_Box (Requirement 24): under the map, above "One run proves nothing." The map's height
+  // already counts the room under it, so the box makes the map shorter and the scene still fits.
+  /** The answer of the finished run on screen, and what it was built from (for the which line). */
+  let runAnswer: Answer | null = null;
+  let runAnswerInput: AnswerInput | null = null;
+  /** The Valid_Picks of the Hand_Pick when the run started (null without one). */
+  let runHandValid: string[] | null = null;
+  /** "Show them on the map" drew the Hand_Pick on the final map. */
+  let answerHandShown = false;
+  const answerBox = createAnswerBox({
+    onShow: (a) => {
+      if (a.source?.kind === "plan") {
+        answerHandShown = false;
+        scoreboard.selectPlan(a.source.plan);
+      } else if (a.source?.kind === "hand") {
+        answerHandShown = true;
+        refreshHand();
+      }
+    },
+    onResize: () => layout(),
+  });
+  under.prepend(answerBox.el);
+  /** The words of the map for the answer (Requirement 24.1). */
+  function answerWords(): MapWords {
+    if (mode === "channel_plan") return { noun: "access points", pair: "", near: "" };
+    const straight = (r: number, noun: string): MapWords => ({ noun, pair: `closer than ${r} m`, near: `closer than ${r} m to` });
+    if (mode === "your_map") return straight(yourR, "points");
+    if (mode === "daily") return straight(todayMap().r, "points");
+    const f = state.placeFixture;
+    const r = f?.r ?? 0;
+    const noun = f?.name === "sf_bus_stops" ? "bus stops" : f?.name === "nyc_bike_share" ? "stations" : "cafés";
+    return walking ? { noun, pair: `within a ${r} m walk`, near: `within a ${r} m walk of` } : straight(r, noun);
+  }
+  /** Names instead of ids on place maps. */
+  function answerNames(): Map<string, string> | undefined {
+    if (mode !== "place" || state.placeFixture === null) return undefined;
+    const m = new Map<string, string>();
+    for (const p of state.placeFixture.points) if (p.name) m.set(p.id, p.name);
+    return m;
+  }
+  /** A click or Enter on a Point after a finished run: the box names its neighbours in the answer. */
+  function answerWhich(id: string | null): void {
+    if (id === null || runAnswer === null || runAnswerInput === null) {
+      answerBox.setWhich(null);
+      return;
+    }
+    const w = whichLine(runAnswer, runAnswerInput, id);
+    answerBox.setWhich(w?.text ?? null);
+    // The Tutor rings for the Hybrid; the box rings only while another plan is on the map.
+    if (w && selectedPlan !== "Hybrid") {
+      currentRingIds = w.ring;
+      applyRing();
+      dynamicLayer.draw();
+    }
+  }  // The legend sits in the scoreboard column, under the cards.
   scoreboard.el.querySelector('.score-cards')?.after(legendBox);
   // The You_Line (Requirement 10): under the cards, outside them, in muted text and with no box.
   const youLineEl = document.createElement("p");
@@ -684,6 +772,19 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       legendBox.hidden = false;
       youLineEl.textContent = runYouLine ?? "";
       youLineEl.hidden = runYouLine === null;
+      // The Answer_Box: from the run's own sets, checked against the request edges (Requirement 24).
+      runAnswerInput = {
+        mode: engineModeOf(mode),
+        words: answerWords(),
+        ids: scene?.points.map((p) => p.id) ?? [],
+        names: answerNames(),
+        edges: runEdges,
+        competitors,
+        hand: runHandValid,
+        labLabel: null, // the Lab (task 14) passes its Lab_Label here
+      };
+      runAnswer = buildAnswer(runAnswerInput);
+      answerBox.show(runAnswer, runAnswerInput.names);
       finishedShown = true;
       updateYourUi();
       strip.showFinished(
@@ -744,6 +845,10 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     scoreboard.hide();
     legendBox.hidden = true;
     youLineEl.hidden = true;
+    answerBox.hide();
+    runAnswer = null;
+    runAnswerInput = null;
+    answerHandShown = false;
     side.hidden = false;
     sceneNow = "map";
     setFlowHeading();
@@ -852,7 +957,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       handHint.textContent = handSet().size === 0 ? "Click points to pick them by hand." : r.hint;
       handClear.disabled = handSet().size === 0;
     }
-    if (!onMap || st === null || scene === null) {
+    if (answerHandShown && finishedShown && runAnswer?.source?.kind === "hand") {
+      // "Show them on the map" with a Hand_Pick answer: its Valid_Picks as diamonds on the final map.
+      const idx = runAnswer.rounds.flatMap((r) => r.ids).map((id) => indexById.get(id)).filter((i): i is number => i !== undefined);
+      dynamicLayer.setHandPick(idx);
+    } else if (!onMap || st === null || scene === null) {
       dynamicLayer.setHandPick(null);
     } else {
       const s = handSet();
@@ -1045,11 +1154,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     } else {
       const f = state.placeFixture;
       if (f === null) return;
-      choice = { mode, points: f.points, walkingEdges: f.walking_edges, walking };
+      choice = { mode, points: f.points, walkingEdges: f.walking_edges, walking, r: f.r };
       const edges = walking ? f.walking_edges : buildStraightEdges(f.points, f.r);
       scene = { points: f.points, edges, streets: f.streets };
       sceneKey = `place:${f.name}:${walking}`;
-      setLabel(`${placeTitle(f.name)}, ${f.points.length} cafes. Results are a simulation.`);
+      setLabel(`${placeTitle(f.name)}, ${f.points.length} ${placeOf(f.name)?.noun ?? "points"}. Results are a simulation.`);
     }
   }
 
@@ -1088,6 +1197,10 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function showPlan(plan: EngineName): void {
     if (!finishedShown || plan === selectedPlan) return;
     selectedPlan = plan;
+    if (answerHandShown) {
+      answerHandShown = false;
+      refreshHand();
+    }
     if (plan === "Hybrid") {
       run.redrawFinal();
       dynamicLayer.draw();
@@ -1286,6 +1399,12 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     // The You_Line uses the Hand_Pick of this map and distance setting, as it is when the run starts.
     const hand = handSet().size > 0 ? handStats() : null;
     runYouLine = hand === null ? null : youLine(hand);
+    const clashIds = new Set((hand?.clashes ?? []).flat());
+    runHandValid = hand === null ? null : [...handSet()].filter((id) => !clashIds.has(id));
+    runAnswer = null;
+    runAnswerInput = null;
+    answerHandShown = false;
+    answerBox.hide();
     youLineEl.hidden = true;
     refreshHand(); // the marks go: the run shows the atoms
     strip.hide();
@@ -1348,6 +1467,12 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       mode = "place";
       walking = c.walking;
       distanceGroup.setValue(walking ? "walking" : "straight");
+      // Each place card opens its own fixture (Kadıköy or a US map).
+      const place = PLACES.find((q) => q.slug === slug);
+      if (place && state.placeName !== place.name) {
+        placeRequested = true;
+        void placeSelector.select(place.name);
+      }
     }
     sideTitle.textContent = slug === "today" ? `Today's map, ${todayText()}` : entry.title;
     showMap(false, true);

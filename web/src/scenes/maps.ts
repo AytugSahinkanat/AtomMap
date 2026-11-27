@@ -1,13 +1,14 @@
 // The maps of the Choose_Scene: names, descriptions, chips and the data of their previews
 // (experience spec, Requirement 2). The map screen itself still builds the requests.
 //
-// Listed now: the wifi hall, Kadikoy cafes, Your map and Today's map. The two US maps join with
-// their committed Map_Check (experience task 11, Requirement 13.6). Until then they are not shown.
+// The wifi hall, Kadikoy cafes, the two US maps, Your map and Today's map. A US map is listed only
+// with a passing, matching Map_Check (Requirement 13.6); without one it is not shown at all.
 
 import { loadHero, loadPlace, loadWalls } from "../data/fixtures";
 import { buildStraightEdges } from "../edges/straight";
 import { buildWallEdges } from "../edges/walls";
-import { PLACE_R_M, POINT_LIMIT, YOUR_MAP_AREA_M, YOUR_R_DEFAULT } from "../settings";
+import { PLACE_R_M, POINT_LIMIT, YOUR_MAP_AREA_M, YOUR_R_DEFAULT, placeOf } from "../settings";
+import { atomsNotNeeded, atomsNotNeededNote, fixtureMatches, mapCheck, runsProblem } from "../data/map-checks";
 import type { PreviewData } from "./card-preview";
 import type { MapSlug } from "./router";
 import { todayMap, todayProgressLine, todayText } from "../daily/today";
@@ -78,6 +79,46 @@ export interface MapEntry {
   load(state: ChipState): Promise<CardData>;
 }
 
+/** A map whose committed Map_Check does not match its fixture: the card goes, the map is not offered. */
+export class MapGateError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "MapGateError";
+  }
+}
+
+/** The US maps (Requirement 13): listed only with a passing Map_Check (see data/map-checks.ts). */
+function usMap(slug: "sf-bus" | "nyc-bike", name: "sf_bus_stops" | "nyc_bike_share", label: string, noun: "stops" | "stations"): MapEntry {
+  return {
+    slug,
+    name: label,
+    title: label,
+    chip: "distance",
+    credit: "© OpenStreetMap contributors",
+    note: () => (atomsNotNeeded(mapCheck(name)) ? atomsNotNeededNote(noun) : null),
+    async load(s) {
+      const f = await loadPlace(name);
+      // The Map_Check must be for this version of the fixture (Requirement 13.5).
+      if (!fixtureMatches(mapCheck(name), f)) throw new MapGateError(`The check of ${label} is for another version of its data.`);
+      const edges = s.walking ? f.walking_edges : buildStraightEdges(f.points, f.r);
+      const n = f.points.length;
+      const what = placeOf(name)?.noun ?? "points";
+      const rule = s.walking ? `within a ${f.r} m walk` : `within ${f.r} m in a straight line`;
+      return { points: f.points, edges, count: n, description: `${n} real ${what}. Two ${rule} can't both be kept.` };
+    },
+  };
+}
+
+/** True when the US map's committed Map_Check passes (three ok seeds, 60 s or less each). */
+export function usListed(name: "sf_bus_stops" | "nyc_bike_share"): boolean {
+  return runsProblem(mapCheck(name)) === null;
+}
+
+const US_MAPS: readonly { entry: MapEntry; name: "sf_bus_stops" | "nyc_bike_share" }[] = [
+  { entry: usMap("sf-bus", "sf_bus_stops", "San Francisco bus stops (Mission)", "stops"), name: "sf_bus_stops" },
+  { entry: usMap("nyc-bike", "nyc_bike_share", "New York bike-share stations (Greenwich Village)", "stations"), name: "nyc_bike_share" },
+];
+
 export const MAPS: readonly MapEntry[] = [
   {
     slug: "hall",
@@ -113,6 +154,7 @@ export const MAPS: readonly MapEntry[] = [
       return { points: f.points, edges, count: n, description: `${n} real cafés. Two ${rule} can't both be on the list.` };
     },
   },
+  ...US_MAPS.filter((m) => usListed(m.name)).map((m) => m.entry),
   {
     slug: "your-map",
     name: "Your map",

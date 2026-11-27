@@ -157,20 +157,30 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
     - _Requirements: 12.3, 12.5, 22.5_
     - Deviations: see design.md, "Notes from task 10"
 
-- [ ] 11. The two US maps
-  - [ ] 11.1 Load the US fixtures
+- [x] 11. The two US maps and the answer box
+  - [x] 11.1 Load the US fixtures
     - `PLACES` with the two names; the loader reads r, `kind`, `story` and `names` or `merge`; `buildRequest` uses the fixture's r; export slugs `sf-bus` and `nyc-bike`; story line and source on the Map_Scene
     - _Requirements: 13.1, 13.2, 3.5_
-  - [ ] 11.2 Add the Map_Check script and gate the maps on it
+  - [x] 11.2 Add the Map_Check script and gate the maps on it
     - `web/scripts/check-maps.mjs` (`npm run check-maps`) writes `web/src/data/map-checks.json`: the US Map_Checks (seeds 1 to 3) and the Daily_Check (2026-12-01 to 2026-12-10, fixed in the script now), every run reported, none rerun; a Daily_Check run over 60 s is written with `over_limit` and changes nothing
     - A US_Map is listed only with a matching, fast, ok Map_Check; the "atoms not needed" note only with 0% in all three seeds
     - _Requirements: 2.7, 11.9, 13.4, 13.5, 13.6_
-  - [ ] 11.3 Add the protocol sentence to the Results_Page
+    - Script and gate done; `map-checks.json` holds no runs until the owner runs `npm run check-maps` (`--dry-run` makes one US and one daily run and writes nothing)
+  - [x] 11.3 Add the protocol sentence to the Results_Page
     - _Requirements: 13.7_
-  - [ ] 11.4 Write tests for the US maps
+  - [x] 11.4 Write tests for the US maps
     - Loader accepts both fixtures; the gate (missing, stale, slow, nonzero share); no brand name in any app text, file name or export
     - _Requirements: 13.3, 13.5, 13.6, 22.8_
 
+  - [x] 11.5 Build the answer from the run
+    - `answer.ts`: `buildAnswer` and `whichLine`; check every plan's sets against the request edges; N from the passing plans or a larger Hand_Pick (not on the channel plan); the maximality check; the words of each map
+    - _Requirements: 24.1, 24.2, 24.3, 24.4, 24.5, 24.6, 24.7, 24.11_
+  - [x] 11.6 Show the Answer_Box on the Results_Scene
+    - Under the map, above "One run proves nothing."; "Show them on the map" through the Plan_Selector; "Show the list" folded; the which line on click and Enter; the Lab_Label when there is one; fits 1366 x 768 and 375 px
+    - _Requirements: 24.6, 24.8, 24.9, 24.10, 24.12_
+  - [x] 11.7 Write tests for the answer
+    - The set check (a clash, a Point in two Rounds, a wrong total), the Hand_Pick rule, the maximality line only when true, the hall headline, no banned word in any text
+    - _Requirements: 24.3, 24.4, 24.5, 24.6_
 - [ ] 12. Layout and smoke
   - [ ] 12.1 Extend the layout check to every Scene
     - `web/scripts/layout-check.mjs`: every Scene and state at 1366 × 768 and 375 px
@@ -179,8 +189,8 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
     - The Choose_Scene shows before the Worker is ready; wifi hall card, wait for the enabled run button, Run, skip, Results_Scene, four cards, no request off the origin; also with `reducedMotion: "reduce"`
     - _Requirements: 4.5, 22.1, 23.1, 23.3_
   - [ ] 12.3 Write the word tests
-    - You_Line, How_To_Read, US notes and Lab texts: no banned word, no brand name
-    - _Requirements: 10.3, 13.3, 22.8_
+    - You_Line, How_To_Read, US notes, the Answer_Box texts and Lab texts: no banned word, no brand name
+    - _Requirements: 10.3, 13.3, 22.8, 24.5_
 
 - [ ] 13. Checkpoint - Ensure all tests pass
   - All tests, `npm run build`, `npm run smoke -- --no-build`, `npm run layout-check -- --no-build`; ask the user if questions arise.
