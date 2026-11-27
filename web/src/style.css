@@ -376,8 +376,13 @@ h1 { font-weight: 500; }
 .answer-list { font-size: 0.8rem; min-width: 0; flex: 1 1 12rem; }
 .answer-list summary { cursor: pointer; color: var(--muted); padding: 0.2rem 0; }
 .answer-list summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.answer-list-body { max-height: 4.2rem; overflow-y: auto; overflow-wrap: anywhere; }
-.screen.map .answer-list-body p { margin: 0 0 0.15rem; }
+/* The opened list scrolls on its own (keyboard too: it takes focus), with a visible scrollbar. */
+.answer-list-body { max-height: 5.4rem; overflow-y: auto; overflow-wrap: anywhere; margin-top: 0.15rem; padding: 0.2rem 0.4rem; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; scrollbar-width: thin; scrollbar-color: var(--muted) var(--bg); }
+.answer-list-body:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.answer-list-items { list-style: none; margin: 0 0 0.2rem; padding: 0; line-height: 1.35; }
+.answer-list-items li { display: inline; }
+.answer-list-items li:not(:last-child)::after { content: ", "; }
+.screen.map .answer-list-body .answer-list-head { margin: 0.1rem 0 0; color: var(--muted); }
 
 /* Six Map_Cards on one laptop screen (Requirement 21.1): on wide screens the cards are more compact */
 @media (min-width: 60.01rem) {

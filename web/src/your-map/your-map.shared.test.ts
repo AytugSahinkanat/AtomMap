@@ -37,13 +37,13 @@ describe("Tutor idle sentence", () => {
   it("says point, not cafe and not access point, and has no banned word", () => {
     expect(mine[0]).toBe("Each dot is a point. A line joins two that are closer than r, so they can't both be picked.");
     for (const s of mine) {
-      expect(/cafe|access point/i.test(s)).toBe(false);
+      expect(/caf[eé]|access point/i.test(s)).toBe(false);
       expect(BANNED.test(s)).toBe(false);
     }
   });
   it("keeps the second sentence and leaves the other two idle texts unchanged", () => {
     expect(mine[1]).toBe(buildIdle("place")[1]);
-    expect(buildIdle("place")[0]).toBe("Each dot is a cafe. A line joins two that are too close to both be picked.");
+    expect(buildIdle("place")[0]).toBe("Each dot is a café. A line joins two that are too close to both be picked.");
     expect(buildIdle("channel_plan")[0]).toBe(
       "Each dot is a wifi access point. A line joins two that are too close to share a channel.",
     );

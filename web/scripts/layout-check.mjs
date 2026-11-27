@@ -1,17 +1,23 @@
-// Layout check for Your map (ui spec, task 13.10, requirement 8.19), against the BUILT dist.
+// Layout check of every Scene (experience spec, task 12.1; Requirements 21.1 to 21.3, 22.7), against
+// the BUILT dist.
 //
 //   npm run layout-check              build (scripts/build-site.mjs), serve dist/ on localhost, drive Chromium
 //   npm run layout-check -- --no-build   reuse an existing dist/
 //
-// At 1366 x 768 the page must not scroll vertically in any state of Your map
-// (document.scrollingElement.scrollHeight <= innerHeight). At 375 x 667 the page must not scroll sideways
-// (scrollWidth <= innerWidth), every control must lie inside the width, and every control must be clickable
-// (a trial click: visible, enabled, nothing on top of it).
-// States: the starting map; empty after Clear; 20 points; a Map_Text error message; an r message;
-// a run in progress; a finished run with the Tutor.
+// At 1366 x 768 the page must not scroll vertically in any state (document.scrollingElement.scrollHeight
+// <= innerHeight). At 375 x 667 the page must not scroll sideways (scrollWidth <= innerWidth) and every
+// visible control must lie inside the width; the Your map controls also get a trial click (visible,
+// enabled, nothing on top of it).
+// Part 1, Your map: the starting map; empty after Clear; 20 points; a Map_Text error message; an r
+// message; a run in progress; a finished run with the Tutor.
+// Part 2, the scene flow: the Choose_Scene; for the wifi hall, Kadıköy, both US maps and Today's map the
+// Map_Scene, the Run_Scene, the Results_Scene and the Results_Scene with "Show the list" open (its list
+// must scroll to its last item); the Results_Page. The runs of part 2 happen at 1366 x 768; the
+// Map_Scene and the Results_Scene are then checked again at 375 x 667 by resizing the same page.
+// Run numbers: the test page fixes them (crypto.getRandomValues is stubbed for one-number requests in
+// the test page only), so every check runs with Run #1. The app has no switch for this.
 //
-// Exit codes: 0 pass, 1 fail, 0 with a "LAYOUT CHECK SKIPPED" line if the build or Chromium is not available.
-import { spawnSync } from "node:child_process";
+// Exit codes: 0 pass, 1 fail, 0 with a "LAYOUT CHECK SKIPPED" line if the build or Chromium is not available.import { spawnSync } from "node:child_process";
 import { createServer } from "node:http";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, extname, join, normalize, resolve } from "node:path";
@@ -186,10 +192,139 @@ try {
   }
 } catch (e) {
   problems.push(String(e.message).split("\n")[0]);
-} finally {
-  await browser.close();
-  server.close();
 }
+
+// ---- Part 2: every Scene ----
+/** In the test page only: a one-number crypto request gives 0, so randomRunNumber() is 1. */
+const FIXED_RUN_NUMBER = () => {
+  const real = crypto.getRandomValues.bind(crypto);
+  crypto.getRandomValues = (a) => {
+    if (a instanceof Uint32Array && a.length === 1) {
+      a[0] = 0;
+      return a;
+    }
+    return real(a);
+  };
+};
+const NARROW = VIEWPORTS[1];
+const WIDE = VIEWPORTS[0];
+
+/** Page size, and at narrow widths every visible control inside the width. */
+async function checkFlow(page, vp, state) {
+  const m = await page.evaluate(() => {
+    const el = document.scrollingElement;
+    const outside = [];
+    if (innerWidth < 600) {
+      for (const c of document.querySelectorAll('button, input, select, textarea, summary, a[href], [tabindex="0"]')) {
+        if (c.closest('ul[aria-label="Points"], .visually-hidden, [hidden], [inert]')) continue;
+        const r = c.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0 || getComputedStyle(c).visibility === "hidden") continue;
+        if (r.left < -0.5 || r.right > innerWidth + 0.5) outside.push(`${c.tagName.toLowerCase()} "${(c.textContent || c.getAttribute("aria-label") || "").trim().slice(0, 30)}"`);
+      }
+    }
+    return { sh: el.scrollHeight, ih: innerHeight, sw: el.scrollWidth, iw: innerWidth, outside };
+  });
+  const bad = [];
+  if (vp.width === 1366 && m.sh > m.ih) bad.push(`page scrolls: scrollHeight ${m.sh} > innerHeight ${m.ih}`);
+  if (vp.width === 375 && m.sw > m.iw) bad.push(`page scrolls sideways: scrollWidth ${m.sw} > innerWidth ${m.iw}`);
+  for (const o of m.outside) bad.push(`${o} is outside the width`);
+  const verdict = bad.length === 0 ? "ok" : `FAIL: ${bad.join("; ")}`;
+  lines.push(`${vp.name}  ${state.padEnd(34)} height ${String(m.sh).padStart(4)}/${m.ih}  width ${String(m.sw).padStart(4)}/${m.iw}  ${verdict}`);
+  for (const b of bad) problems.push(`${vp.name}, ${state}: ${b}`);
+}
+
+async function atSize(page, vp) {
+  await page.setViewportSize({ width: vp.width, height: vp.height });
+  await page.waitForTimeout(400); // the map lays out again on resize
+}
+
+/** "Show the list" open: its own scroll area takes focus and reaches its last item. */
+async function checkList(page, vp, state) {
+  const r = await page.evaluate(() => {
+    const b = document.querySelector(".answer-list-body");
+    if (!b || !b.closest("details")?.open) return "the list is not open";
+    if (b.tabIndex !== 0) return "the list area does not take focus";
+    const items = b.querySelectorAll("li");
+    if (items.length === 0) return "the list has no items";
+    b.scrollTop = b.scrollHeight;
+    const last = items[items.length - 1].getBoundingClientRect();
+    const box = b.getBoundingClientRect();
+    if (last.bottom > box.bottom + 1 || last.top < box.top - 1) return `the last item cannot be scrolled into view (${Math.round(last.top)}..${Math.round(last.bottom)} vs ${Math.round(box.top)}..${Math.round(box.bottom)})`;
+    if (box.bottom > innerHeight + 0.5 && innerWidth > 600) return `the list area ends below the window (${Math.round(box.bottom)} > ${innerHeight})`;
+    b.scrollTop = 0;
+    return null;
+  });
+  if (r !== null) problems.push(`${vp.name}, ${state}: ${r}`);
+  await checkFlow(page, vp, state);
+}
+
+const FLOW_MAPS = [
+  ["hall", "wifi hall"],
+  ["kadikoy", "Kadıköy"],
+  ["sf-bus", "SF bus stops"],
+  ["nyc-bike", "NYC stations"],
+  ["today", "Today's map"],
+];
+
+try {
+  const ctx = await browser.newContext({ viewport: { width: WIDE.width, height: WIDE.height } });
+  await ctx.addInitScript(FIXED_RUN_NUMBER);
+  const page = await ctx.newPage();
+  page.on("pageerror", (e) => problems.push(`scene flow: page error: ${e.message}`));
+  await page.goto(origin + "/", { timeout: 30_000 });
+  await page.getByRole("heading", { name: "Choose a map" }).waitFor({ state: "visible", timeout: LOAD });
+  await page.locator(".map-card-status").last().waitFor({ state: "hidden", timeout: LOAD }).catch(() => {});
+  await page.waitForTimeout(800);
+  await checkFlow(page, WIDE, "Choose_Scene");
+  await atSize(page, NARROW);
+  await checkFlow(page, NARROW, "Choose_Scene");
+  await atSize(page, WIDE);
+
+  for (const [slug, name] of FLOW_MAPS) {
+    await page.goto(`${origin}/#/map/${slug}`);
+    // During a scene change the outgoing scene's copy is a second main for a moment.
+    await page.waitForFunction(() => document.querySelectorAll("main.mapflow").length === 1 && document.querySelector("main.mapflow").dataset.scene === "map", undefined, { timeout: LOAD });
+    await page.locator('main.mapflow ul[aria-label="Points"] li').first().waitFor({ state: "attached", timeout: LOAD });
+    await page.waitForTimeout(800);
+    await checkFlow(page, WIDE, `${name}: Map_Scene`);
+    await atSize(page, NARROW);
+    await checkFlow(page, NARROW, `${name}: Map_Scene`);
+    await atSize(page, WIDE);
+    await page.waitForFunction(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent === "Run"); return b && !b.disabled; }, undefined, { timeout: LOAD });
+    await page.getByRole("button", { name: "Run", exact: true }).click();
+    await page.waitForTimeout(500);
+    await checkFlow(page, WIDE, `${name}: Run_Scene`);
+    await page.getByRole("button", { name: "Skip to the end" }).click({ timeout: 2000 }).catch(() => {});
+    await page.waitForFunction(
+      () => document.querySelector('main.mapflow[data-scene="results"]') && document.querySelectorAll('[role="radiogroup"] .score-card[data-state="ready"]').length === 4,
+      undefined,
+      { timeout: RUN },
+    );
+    await page.waitForTimeout(700);
+    await checkFlow(page, WIDE, `${name}: Results_Scene`);
+    await page.locator(".answer-list summary").click();
+    await page.waitForTimeout(400);
+    await checkList(page, WIDE, `${name}: Results, list open`);
+    await atSize(page, NARROW);
+    await checkList(page, NARROW, `${name}: Results, list open`);
+    await page.locator(".answer-list summary").click();
+    await page.waitForTimeout(300);
+    await checkFlow(page, NARROW, `${name}: Results_Scene`);
+    await atSize(page, WIDE);
+    console.log(`layout-check: ${name} done at ${secs()}`);
+  }
+
+  await page.goto(`${origin}/#/results`);
+  await page.getByRole("heading", { name: "What we measured" }).waitFor({ state: "visible", timeout: LOAD });
+  await page.waitForTimeout(500);
+  await atSize(page, NARROW);
+  await checkFlow(page, NARROW, "Results_Page");
+  await ctx.close();
+} catch (e) {
+  problems.push(`scene flow: ${String(e.message).split("\n")[0]}`);
+}
+await browser.close();
+server.close();
 
 console.log(lines.join("\n"));
 if (problems.length > 0) {

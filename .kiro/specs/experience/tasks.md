@@ -181,18 +181,18 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
   - [x] 11.7 Write tests for the answer
     - The set check (a clash, a Point in two Rounds, a wrong total), the Hand_Pick rule, the maximality line only when true, the hall headline, no banned word in any text
     - _Requirements: 24.3, 24.4, 24.5, 24.6_
-- [ ] 12. Layout and smoke
-  - [ ] 12.1 Extend the layout check to every Scene
+- [x] 12. Layout and smoke
+  - [x] 12.1 Extend the layout check to every Scene
     - `web/scripts/layout-check.mjs`: every Scene and state at 1366 × 768 and 375 px
     - _Requirements: 21.1, 21.2, 21.3, 22.7_
-  - [ ] 12.2 Update the smoke test to the Scene flow
+  - [x] 12.2 Update the smoke test to the Scene flow
     - The Choose_Scene shows before the Worker is ready; wifi hall card, wait for the enabled run button, Run, skip, Results_Scene, four cards, no request off the origin; also with `reducedMotion: "reduce"`
     - _Requirements: 4.5, 22.1, 23.1, 23.3_
-  - [ ] 12.3 Write the word tests
+  - [x] 12.3 Write the word tests
     - You_Line, How_To_Read, US notes, the Answer_Box texts and Lab texts: no banned word, no brand name
     - _Requirements: 10.3, 13.3, 22.8, 24.5_
 
-- [ ] 13. Checkpoint - Ensure all tests pass
+- [x] 13. Checkpoint - Ensure all tests pass
   - All tests, `npm run build`, `npm run smoke -- --no-build`, `npm run layout-check -- --no-build`; ask the user if questions arise.
 
 - [ ] 14. The lab (after the main flow, stays in; cuts only inside it)

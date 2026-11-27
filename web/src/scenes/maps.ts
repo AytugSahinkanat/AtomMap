@@ -1,7 +1,7 @@
 // The maps of the Choose_Scene: names, descriptions, chips and the data of their previews
 // (experience spec, Requirement 2). The map screen itself still builds the requests.
 //
-// The wifi hall, Kadikoy cafes, the two US maps, Your map and Today's map. A US map is listed only
+// The wifi hall, Kadikoy cafés, the two US maps, Your map and Today's map. A US map is listed only
 // with a passing, matching Map_Check (Requirement 13.6); without one it is not shown at all.
 
 import { loadHero, loadPlace, loadWalls } from "../data/fixtures";

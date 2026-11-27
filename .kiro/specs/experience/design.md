@@ -418,6 +418,13 @@ interface StartPayload { /* existing */ settings?: { shots?: number; top_share?:
 - With six cards the Choose_Scene no longer fit 1366 x 768 (931 px). On wide screens the cards are now more compact: the preview is 6.5rem high instead of 9rem (about 104 px, not the 130 px of the Choose_Scene design), with smaller gaps and note text. It now fits exactly.
 - Answer_Box: on the channel plan the Hand_Pick is not compared (one set against three channels); the You_Line still shows it. The Lab_Label input is null until the Lab exists. The box rings a clicked Point's neighbours only while a plan other than the Hybrid is on the map; with the Hybrid the Tutor's own ring stays.
 - Since Run_Numbers are random, smoke runs the hall with a different Seed each time, so its total time varies with the Seed (about 40 to 110 s here). Its check of the Results_Scene timing does not depend on the Seed.
+## Notes from tasks 12 and 13
+
+- "Show the list": one list item per Point, in a focusable region with a visible scrollbar. On a laptop screen the open list makes the map shorter (down to 160 px instead of 240 px while it is open) and then gives up the rest of the room itself (`fitList`, at least about three lines), so the page stays at 768 px on every map.
+- Tutor names: `tutor/names.ts` swaps the written-out ids (the first rule pick, the most lit points, the atom pick, the why Point and its picked neighbour, and "about ...") for the Point's name on place maps, the id when there is none. The Facts and the rings keep the ids, so the sentences need the same facts as before and the missing-facts tests are unchanged.
+- "cafés" is the place noun of Kadıköy everywhere in the app text.
+- Layout check: part 1 is Your map as before; part 2 is the Choose_Scene, the Map_Scene, Run_Scene, Results_Scene and the open list of the hall, Kadıköy, both US_Maps and Today's map, and the Results_Page. The runs happen at 1366 x 768 and the scenes are checked again at 375 x 667 by resizing. At 375 every visible control must lie inside the width. The Lab joins with task 14.
+- Smoke and the layout check fix the Run_Number to 1 in their test page (they stub `crypto.getRandomValues` for one-number requests). Smoke runs twice, with normal and with reduced motion; with reduced motion no `Element.animate` call may happen.
 ## Error Handling
 
 | Case | Behaviour |

@@ -7,6 +7,7 @@
 import { ONE_RUN_NOTE, type EngineName } from "../scoreboard-model";
 import { whyFacts, type Facts } from "./facts";
 import { buildSteps, buildWhy, NON_HYBRID_SENTENCE, type Step } from "./sentences";
+import { labelFrom, nameFacts, nameWhy, type PointLabel } from "./names";
 
 export interface StripDeps {
   /** Ids of the Points to ring. An empty list clears the ring. */
@@ -17,8 +18,12 @@ export interface Strip {
   el: HTMLElement;
   /** Before a run: the label first, then the sentences. */
   showIdle(label: string, text: string[]): void;
-  /** After a run: the finished line first, then one Step at a time. */
-  showFinished(firstLine: string, facts: Facts, plan: EngineName, focus: boolean): void;
+  /**
+   * After a run: the finished line first, then one Step at a time. 
+ames: Point names on place
+   * maps; the text uses a Point's name, its id when it has none. Rings stay ids.
+   */
+  showFinished(firstLine: string, facts: Facts, plan: EngineName, focus: boolean, names?: ReadonlyMap<string, string>): void;
   /** After a run: the plan on the map changed. Hybrid shows the Steps from Step 1, any other plan the one sentence. */
   setPlan(plan: EngineName): void;
   /** Explain one Point in place of the Step. Only while Steps are shown. */
@@ -75,6 +80,8 @@ export function createStrip(deps: StripDeps): Strip {
   let currentFacts: Facts | null = null;
   let whyId: string | null = null;
   let finishedLine: string | null = null;
+  let currentNames: ReadonlyMap<string, string> | undefined;
+  let label: PointLabel = labelFrom();
 
   function ring(ids: string[]): void {
     deps.onRing(ids);
@@ -146,8 +153,10 @@ export function createStrip(deps: StripDeps): Strip {
       ring([]);
     },
 
-    showFinished(firstLine, facts, plan, focus) {
+    showFinished(firstLine, facts, plan, focus, names) {
       whyId = null;
+      currentNames = names;
+      label = labelFrom(names);
       showStepButtons(true);
       currentFacts = facts;
       finishedLine = firstLine;
@@ -162,7 +171,7 @@ export function createStrip(deps: StripDeps): Strip {
         showControls(false);
         ring([]);
       } else {
-        steps = buildSteps(facts, plan);
+        steps = buildSteps(nameFacts(facts, label), plan);
         if (steps.length === 0) {
           body.textContent = "";
           showControls(false);
@@ -178,17 +187,19 @@ export function createStrip(deps: StripDeps): Strip {
     setPlan(plan) {
       if (currentFacts === null || finishedLine === null) return;
       // Same as a fresh finished view: Step 1 and its ring for Hybrid, one sentence otherwise.
-      this.showFinished(finishedLine, currentFacts, plan, false);
+      this.showFinished(finishedLine, currentFacts, plan, false, currentNames);
     },
 
     showWhy(id) {
       if (!currentFacts || steps.length === 0) return;
-      const answer = buildWhy(whyFacts(currentFacts, id));
+      const why = whyFacts(currentFacts, id);
+      // The sentences name the Points; the ring (ids) comes from the unnamed facts.
+      const answer = { ...buildWhy(nameWhy(why, label)), ring: why.ring };
       const text = answer.sentences.join(" ");
       whyId = id;
       body.textContent = text;
       backToStep.textContent = `Back to step ${index + 1}`;
-      counter.textContent = `about ${id}`;
+      counter.textContent = `about ${label(id)}`;
       showStepButtons(false);
       live.textContent = text;
       ring(answer.ring);

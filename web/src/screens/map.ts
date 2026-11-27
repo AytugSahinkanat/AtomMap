@@ -688,7 +688,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         refreshHand();
       }
     },
-    onResize: () => layout(),
+    onResize: () => {
+      layout();
+      // On a laptop screen the map is at its smallest on some maps: then the open list gives up the
+      // rest of the room, so the page still fits the window (Requirement 24.12).
+      if (window.innerWidth > 960 && sceneNow === "results") {
+        answerBox.fitList(document.documentElement.scrollHeight - window.innerHeight);
+      }
+    },
   });
   under.prepend(answerBox.el);
   /** The words of the map for the answer (Requirement 24.1). */
@@ -799,6 +806,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         }),
         "Hybrid",
         false, // the scene change moves the focus to the Results_Scene heading
+        answerNames(), // place maps: the same names as the Answer_Box
       );
       sceneNow = "results";
       setFlowHeading();
@@ -1224,8 +1232,10 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     // Keep the map and the toolbar on one laptop screen (about 1366x768).
     // Space below the map's top edge, minus a small bottom margin. Falls back to a fixed offset before the first paint.
     const top = wrap.hidden ? 0 : wrap.getBoundingClientRect().top;
-    const maxH = Math.max(240, Math.min(640, top > 0 ? window.innerHeight - top - 40 - under.offsetHeight : window.innerHeight - 250));
-    const height = Math.round(Math.min(maxH, Math.max(240, (width * spanY) / spanX)));
+    // The map is at least 240 px high, or 160 px while the visitor reads the answer's list.
+    const minH = sceneNow === "results" && answerBox.listOpen ? 160 : 240;
+    const maxH = Math.max(minH, Math.min(640, top > 0 ? window.innerHeight - top - 40 - under.offsetHeight : window.innerHeight - 250));
+    const height = Math.round(Math.min(maxH, Math.max(minH, (width * spanY) / spanX)));
     wrap.style.height = `${height}px`;
     const dpr = window.devicePixelRatio || 1;
     const redrew = staticLayer.update(scene, width, height, dpr);

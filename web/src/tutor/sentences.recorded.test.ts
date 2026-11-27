@@ -160,6 +160,6 @@ describe("buildIdle", () => {
       "Each dot is a wifi access point. A line joins two that are too close to share a channel.",
       "Press Run to see how the atoms and the rules build the plan, step by step.",
     ]);
-    expect(buildIdle("place")[0]).toBe("Each dot is a cafe. A line joins two that are too close to both be picked.");
+    expect(buildIdle("place")[0]).toBe("Each dot is a café. A line joins two that are too close to both be picked.");
   });
 });

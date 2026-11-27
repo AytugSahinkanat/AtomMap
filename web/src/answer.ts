@@ -258,6 +258,12 @@ export function whichLine(
     : { text: `No point of the answer is ${input.words.near} ${name(id)}.`, ring: [] };
 }
 
+/** "Show the list" as groups: one per channel on the channel plan (with its title), else one group. */
+export function answerGroups(answer: Answer, names?: ReadonlyMap<string, string>): { title: string | null; items: string[] }[] {
+  const name = (x: string) => names?.get(x) ?? x;
+  return answer.rounds.map((r) => ({ title: r.channel !== null ? `Channel ${r.channel}` : null, items: r.ids.map(name) }));
+}
+
 /** "Show the list": one line per Round on the channel plan, else one line. */
 export function answerList(answer: Answer, names?: ReadonlyMap<string, string>): string[] {
   const name = (x: string) => names?.get(x) ?? x;

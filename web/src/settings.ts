@@ -46,7 +46,7 @@ export const ACCENT_COLOUR = '#7f77dd';
  * map's route and export name, `noun` names its points in plain words. r comes from each fixture.
  */
 export const PLACES = [
-  { label: 'Kadıköy, Istanbul', name: 'kadikoy', file: 'place_kadikoy.json', slug: 'kadikoy', noun: 'cafes' },
+  { label: 'Kadıköy, Istanbul', name: 'kadikoy', file: 'place_kadikoy.json', slug: 'kadikoy', noun: 'cafés' },
   { label: 'San Francisco bus stops (Mission)', name: 'sf_bus_stops', file: 'place_sf_bus_stops.json', slug: 'sf-bus', noun: 'bus stops' },
   { label: 'New York bike-share stations (Greenwich Village)', name: 'nyc_bike_share', file: 'place_nyc_bike_share.json', slug: 'nyc-bike', noun: 'stations' },
 ] as const;
