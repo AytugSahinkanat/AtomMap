@@ -30,9 +30,16 @@ export interface ExportInput {
   seed: number;
   /** Points of the map in display order. */
   points: readonly ExportPoint[];
+  /**
+   * A Lab_Run's settings and its Lab_Label (experience spec, Requirement 18.1): written into both
+   * exports and the file name, so a lab result never reads as a measured one. Absent otherwise.
+   */
+  lab?: { shots: number; top_share: number; r: number; label: string } | null;
 }
 
 export const CSV_HEADER = "id,x,y,round,result_label,seed";
+/** The header of a Lab_Run's CSV: one more column, the Lab_Label on every row. */
+export const CSV_HEADER_LAB = "id,x,y,round,result_label,seed,lab_settings";
 export const FIVE_GHZ_ONLY = "5 GHz only";
 export const NOT_PICKED = "not picked";
 
@@ -82,9 +89,12 @@ export function csvField(value: string | number): string {
 export function buildCsv(input: ExportInput): string {
   const label = resultLabelOf(input);
   const rounds = roundValues(input);
-  const lines = [CSV_HEADER];
+  const lab = input.lab ?? null;
+  const lines = [lab ? CSV_HEADER_LAB : CSV_HEADER];
   for (const p of input.points) {
-    lines.push([p.id, p.x, p.y, rounds.get(p.id)!, label, input.seed].map(csvField).join(","));
+    const row: (string | number)[] = [p.id, p.x, p.y, rounds.get(p.id)!, label, input.seed];
+    if (lab) row.push(lab.label);
+    lines.push(row.map(csvField).join(","));
   }
   return lines.join("\n") + "\n";
 }
@@ -102,6 +112,7 @@ export interface PointFeature {
     round: number | string;
     result_label: ExportResultLabel;
     seed: number;
+    lab_settings?: string;
   };
 }
 
@@ -110,6 +121,8 @@ export interface ExportGeoJson {
   result_label: ExportResultLabel;
   seed: number;
   units: string;
+  /** A Lab_Run only: its settings and the Lab_Label. */
+  lab_settings?: { shots: number; top_share: number; r: number; label: string };
   features: PointFeature[];
 }
 
@@ -125,15 +138,25 @@ export function buildGeoJson(input: ExportInput): ExportGeoJson {
   const label = resultLabelOf(input);
   const rounds = roundValues(input);
   const geo = input.points.length > 0 && input.points.every(hasLonLat);
+  const lab = input.lab ?? null;
   return {
     type: "FeatureCollection",
     result_label: label,
     seed: input.seed,
     units: geo ? UNITS_LON_LAT : UNITS_METRES,
+    ...(lab ? { lab_settings: { shots: lab.shots, top_share: lab.top_share, r: lab.r, label: lab.label } } : {}),
     features: input.points.map((p) => ({
       type: "Feature",
       geometry: { type: "Point", coordinates: geo ? [p.lon!, p.lat!] : [p.x, p.y] },
-      properties: { id: p.id, x: p.x, y: p.y, round: rounds.get(p.id)!, result_label: label, seed: input.seed },
+      properties: {
+        id: p.id,
+        x: p.x,
+        y: p.y,
+        round: rounds.get(p.id)!,
+        result_label: label,
+        seed: input.seed,
+        ...(lab ? { lab_settings: lab.label } : {}),
+      },
     })),
   };
 }
@@ -148,12 +171,12 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/** `atommap-<map>-<plan>-seed<seed>.<ext>`, e.g. atommap-hero-atoms-rules-hybrid-seed1.csv */
-export function exportFileName(map: string, plan: EngineName, seed: number, ext: "csv" | "geojson"): string {
+/** `atommap-<map>-<plan>-seed<seed>.<ext>`, e.g. atommap-hero-atoms-rules-hybrid-seed1.csv; a Lab_Run adds `-lab` before the extension. */
+export function exportFileName(map: string, plan: EngineName, seed: number, ext: "csv" | "geojson", lab = false): string {
   const m = slugify(map) || "map";
   const p = slugify(CARD_LABELS[plan]) || slugify(plan);
   const s = String(seed).replace("-", "m"); // seed -5 -> seedm5, keeps the name free of odd characters
-  return `atommap-${m}-${p}-seed${s}.${ext}`;
+  return `atommap-${m}-${p}-seed${s}${lab ? "-lab" : ""}.${ext}`;
 }
 
 /** True for a plan name the export knows. */
@@ -177,12 +200,12 @@ export function downloadText(fileName: string, text: string, mime: string): void
 }
 
 export function downloadCsv(input: ExportInput): void {
-  downloadText(exportFileName(input.map, input.plan, input.seed, "csv"), buildCsv(input), "text/csv;charset=utf-8");
+  downloadText(exportFileName(input.map, input.plan, input.seed, "csv", !!input.lab), buildCsv(input), "text/csv;charset=utf-8");
 }
 
 export function downloadGeoJson(input: ExportInput): void {
   downloadText(
-    exportFileName(input.map, input.plan, input.seed, "geojson"),
+    exportFileName(input.map, input.plan, input.seed, "geojson", !!input.lab),
     JSON.stringify(buildGeoJson(input), null, 2) + "\n",
     "application/geo+json",
   );

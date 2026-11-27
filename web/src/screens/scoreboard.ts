@@ -196,8 +196,11 @@ export interface ScoreboardDeps {
 
 export interface ScoreboardView {
   el: HTMLElement;
-  /** A run starts: all four cards pending, buttons off. On the Daily_Map there is no "Run again". */
-  begin(runNumber: number, mode: ScoreboardMode, opts?: { daily?: boolean }): void;
+  /**
+   * A run starts: all four cards pending, buttons off. On the Daily_Map there is no "Run again".
+   * `labLabel`: a Lab_Run's Lab_Label, shown from this moment on (Requirement 18.1).
+   */
+  begin(runNumber: number, mode: ScoreboardMode, opts?: { daily?: boolean; labLabel?: string | null }): void;
   /** Show what has finished so far (missing key = "Computing…"). */
   update(partial: PartialResults): void;
   /** The run is fully finished (result in, playback done). Enables the controls. */
@@ -222,6 +225,10 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   title.textContent = "Scoreboard";
   const seedLine = document.createElement("p");
   seedLine.className = "muted num score-seed";
+  // The Lab_Label of a Lab_Run (Requirement 18.1). map.ts keeps it right under the cards.
+  const labLine = document.createElement("p");
+  labLine.className = "score-lab num";
+  labLine.hidden = true;
   const cardsBox = document.createElement("div");
   cardsBox.className = "score-cards";
   cardsBox.setAttribute("role", "radiogroup");
@@ -264,7 +271,7 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
   geoButton.textContent = EXPORT_GEOJSON_LABEL;
   form.append(repeat, again, back, csvButton, geoButton, message);
 
-  el.append(title, seedLine, cardsBox, note, cite, form);
+  el.append(title, seedLine, cardsBox, labLine, note, cite, form);
 
   let mode: ScoreboardMode = "channel_plan";
   let shown = new Set<string>();
@@ -406,6 +413,8 @@ export function createScoreboard(deps: ScoreboardDeps): ScoreboardView {
       selected = "Hybrid";
       planEnabled = false;
       seedLine.textContent = runNumberText(runNumber);
+      labLine.textContent = opts?.labLabel ?? "";
+      labLine.hidden = !opts?.labLabel;
       // Today's map always runs with its Daily_Seed: only "Repeat this run" (Requirement 5.5).
       again.hidden = opts?.daily === true;
       message.hidden = true;

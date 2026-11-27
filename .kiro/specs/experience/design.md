@@ -425,6 +425,15 @@ interface StartPayload { /* existing */ settings?: { shots?: number; top_share?:
 - "cafés" is the place noun of Kadıköy everywhere in the app text.
 - Layout check: part 1 is Your map as before; part 2 is the Choose_Scene, the Map_Scene, Run_Scene, Results_Scene and the open list of the hall, Kadıköy, both US_Maps and Today's map, and the Results_Page. The runs happen at 1366 x 768 and the scenes are checked again at 375 x 667 by resizing. At 375 every visible control must lie inside the width. The Lab joins with task 14.
 - Smoke and the layout check fix the Run_Number to 1 in their test page (they stub `crypto.getRandomValues` for one-number requests). Smoke runs twice, with normal and with reduced motion; with reduced motion no `Element.animate` call may happen.
+## Notes from task 14, part 1
+
+- The lab is a fourth scene of the map flow (`FlowScene` "lab"), so it shares the map view and the run code: a Lab_Run plays on the same map, with the shot replay, and its histogram sits in the lab's "Atoms" panel. The run bar moves into the right column while the lab is open.
+- A Lab_Run's settings (`runLab`: shots, top share, r) are set when the run starts, so the Scoreboard shows the Lab_Label from its first moment. On the Results_Scene "Repeat this run" and "Run again" keep the lab settings ("same map and settings"); the Back button to the map ends them, and the Map_Scene's Run is a normal run.
+- r: a new r applies when "Run again" is pressed, not while typing. The map redraws its lines for that run, so the drawn edges are always the edges of the run on screen. On walking maps r is read-only.
+- Leaving the lab during a Lab_Run stops it (the worker is replaced, as for back during a run) and goes to the Map_Scene. Leaving without a run on screen goes to the Map_Scene too.
+- `#/map/<map>/lab` opened directly opens the lab over that map with no run shown ("No run yet.").
+- The exports of a Lab_Run add `-lab` to the file name, a `lab_settings` CSV column with the Lab_Label on every row, and a `lab_settings` member (shots, top_share, r, label) in the GeoJSON.
+- The hidden Point list for screen readers reads the Point names on place maps, the id otherwise.
 ## Error Handling
 
 | Case | Behaviour |

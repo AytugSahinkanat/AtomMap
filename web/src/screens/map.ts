@@ -18,6 +18,7 @@ import {
   PLACES,
   placeOf,
   POINT_LIMIT,
+  PLACE_R_M,
   RANDOM_BATCH,
   YOUR_MAP_AREA_M,
   YOUR_R_DEFAULT,
@@ -43,6 +44,9 @@ import { yourMapLabel } from "../your-map/label";
 import { atomsNotNeeded, atomsNotNeededNote, fixtureMatches, mapCheck } from "../data/map-checks";
 import { buildAnswer, whichLine, type Answer, type AnswerInput, type MapWords } from "../answer";
 import { createAnswerBox } from "./answer-box";
+import { createLabView, type ShownRun } from "../lab/lab-view";
+import { labFirstLine, labLabel, SHOTS_DEFAULT, TOP_DEFAULT_PERCENT, type LabRun } from "../lab/lab-model";
+import { icon as labIcon } from "../lab/icons";
 import { handPickReadout, handPickStats, youLine, type HandPickStats } from "../hand-pick";
 import { randomRunNumber } from "../run-number";
 import { recordToday, todayKey, todayMap, todaySeed, todayText } from "../daily/today";
@@ -63,7 +67,7 @@ import { getChips, mapEntry, setChips, setYourPointsSource } from "../scenes/map
 import type { MapSlug } from "../scenes/router";
 
 /** The scenes this map belongs to. */
-export type FlowScene = "map" | "run" | "results";
+export type FlowScene = "map" | "run" | "results" | "lab";
 
 export const HOW_TO_READ = [
   "A dot is a place you could pick.",
@@ -231,6 +235,10 @@ export interface MapScreenDeps {
   sceneWillChange?(from: FlowScene, to: FlowScene): void;
   /** Called right after the scene changed. */
   sceneDidChange?(to: FlowScene): void;
+  /** "Open the lab" was pressed (main.ts routes to the lab). */
+  openLab?(): void;
+  /** "Leave the lab" or Escape (main.ts routes back). */
+  leaveLab?(): void;
 }
 
 export interface MapScreen {
@@ -257,6 +265,12 @@ export interface MapScreen {
   readonly mapBox: HTMLElement;
   /** Lay the map out again (after it was put into the page). */
   relayout(): void;
+  /** Open the lab over the scene on screen (no transition of its own). */
+  enterLab(): void;
+  /** Leave the lab; returns the scene it went to. */
+  exitLab(to?: "map"): "results" | "map";
+  /** The Results_Scene's "Open the lab" button (focused when the lab closes). */
+  readonly openLabButton: HTMLElement;
 }
 
 type Mode = "channel_plan" | "place" | "your_map" | "daily";
@@ -568,6 +582,12 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     }
   });
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && el.isConnected && sceneNow === "lab") {
+      // Escape leaves the lab (Requirement 15.5), unless it only closes an open list or a which line.
+      e.preventDefault();
+      deps.leaveLab?.();
+      return;
+    }
     if (e.key !== "Escape" || !el.isConnected || !finishedShown) return;
     strip.leaveWhy();
     answerWhich(null);
@@ -623,8 +643,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   // Scoreboard panel next to the map. It opens when a run starts and fills in
   // card by card. Its seed input and run-again button work only after the run.
   const scoreboard = createScoreboard({
-    onRepeat: () => startRun(runSeed),
-    onRunAgain: () => startRun(newRunNumber()),
+    // The same map and settings: a Lab_Run is repeated with its lab settings, and stays labelled.
+    onRepeat: () => startRun(runSeed, runLab ?? undefined),
+    onRunAgain: () => startRun(newRunNumber(), runLab ?? undefined),
     onBack: () => showMap(true),
     announce: (m) => a11y.announce(m),
     onSelectPlan: (plan) => showPlan(plan),
@@ -643,6 +664,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
           : mode === "daily" ? `today-${todayKey()}`
             : mode === "place" ? (placeOf(state.placeName ?? DEFAULT_PLACE)?.slug ?? DEFAULT_PLACE) : "hero",
       seed: runSeed,
+      lab: runLab ? { shots: runLab.shots, top_share: runLab.top_share, r: runLab.r, label: labLabel(runLab) } : null,
       points: scene.points.map((p) => {
         const q = p as { id: string; x: number; y: number; lon?: number; lat?: number };
         return { id: q.id, x: q.x, y: q.y, lon: q.lon, lat: q.lat };
@@ -702,10 +724,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function answerWords(): MapWords {
     if (mode === "channel_plan") return { noun: "access points", pair: "", near: "" };
     const straight = (r: number, noun: string): MapWords => ({ noun, pair: `closer than ${r} m`, near: `closer than ${r} m to` });
-    if (mode === "your_map") return straight(yourR, "points");
-    if (mode === "daily") return straight(todayMap().r, "points");
+    if (mode === "your_map" || mode === "daily") return straight(mapR(), "points");
     const f = state.placeFixture;
-    const r = f?.r ?? 0;
+    const r = mapR();
     const noun = f?.name === "sf_bus_stops" ? "bus stops" : f?.name === "nyc_bike_share" ? "stations" : "cafés";
     return walking ? { noun, pair: `within a ${r} m walk`, near: `within a ${r} m walk of` } : straight(r, noun);
   }
@@ -730,7 +751,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       applyRing();
       dynamicLayer.draw();
     }
-  }  // The legend sits in the scoreboard column, under the cards.
+  }
+  // The legend sits in the scoreboard column, under the cards.
   scoreboard.el.querySelector('.score-cards')?.after(legendBox);
   // The You_Line (Requirement 10): under the cards, outside them, in muted text and with no box.
   const youLineEl = document.createElement("p");
@@ -743,6 +765,57 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   mapRow.className = "map-row";
   mapRow.append(mapCol, side, scoreboard.el);
 
+  // ---- the lab (experience spec, Requirements 15 to 18) ----
+  /**
+   * The lab settings of the run on screen (or in progress), or null for a normal run. Set when a
+   * run starts, so a Lab_Run is labelled from its first moment (Requirement 18). Its r also draws
+   * the map's lines, so the map always shows the edges of the run on screen.
+   */
+  let runLab: LabRun | null = null;
+  /** The scene the lab was opened from (it goes back there). */
+  const labView = createLabView({
+    onRun: (v) => {
+      if (running || run.active) return;
+      startRun(v.seed, { shots: v.shots, top_share: v.top_share, r: v.r });
+    },
+    onLeave: () => deps.leaveLab?.(),
+  });
+  mapRow.prepend(labView.left);
+  mapRow.append(labView.right);
+  /** The run shown in the lab's readouts, from the finished run on screen. */
+  function shownRun(): ShownRun | null {
+    if (!finishedShown || finishedResult === null) return null;
+    const competitors = (finishedResult as { competitors?: Record<string, unknown> } | null)?.competitors ?? {};
+    return { runNumber: runSeed, r: mapR(), settings: runLab ? { shots: runLab.shots, top_share: runLab.top_share } : null, competitors };
+  }
+  function refreshLab(): void {
+    if (sceneNow !== "lab") return;
+    labView.setRunNumber(running ? runSeed : finishedShown ? runSeed : null);
+    labView.showReadouts(running ? null : shownRun(), running ? runSeed : null);
+  }
+  /** The lab's own parts move into place while it is open: the run bar and the histogram. */
+  function placeLabParts(on: boolean): void {
+    if (on) {
+      labView.runSlot.append(run.el);
+      labView.atomsSlot.append(run.histogramEl);
+    } else {
+      if (run.el.parentElement === labView.runSlot) mapRow.before(run.el);
+      if (run.histogramEl.parentElement === labView.atomsSlot) legendBox.after(run.histogramEl);
+    }
+    document.documentElement.classList.toggle("lab-open", on);
+  }
+  /** The "Open the lab" button of the Results_Scene (Requirement 15.1). */
+  const openLabButton = document.createElement("button");
+  openLabButton.type = "button";
+  openLabButton.className = "open-lab";
+  openLabButton.append(labIcon("flask"), document.createTextNode("Open the lab"));
+  openLabButton.addEventListener("click", () => deps.openLab?.());
+  under.querySelector(".score-again")?.append(openLabButton);
+  // The Lab_Label sits right under the cards.
+  {
+    const labLine = scoreboard.el.querySelector(".score-lab");
+    if (labLine) scoreboard.el.querySelector(".score-cards")?.after(labLine);
+  }
   /** Seed and mode of the run on screen (for the scoreboard). */
   let runSeed = DEFAULT_SEED;
   /**
@@ -769,7 +842,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     buffer,
     reducedMotion: () => reducedQuery?.matches ?? false,
     onFinished: (result) => {
-      deps.sceneWillChange?.(sceneNow, "results");
+      const inLab = sceneNow === "lab";
+      if (!inLab) deps.sceneWillChange?.(sceneNow, "results");
       running = false;
       const competitors = (result as { competitors?: Record<string, unknown> } | null)?.competitors ?? {};
       scoreboard.finish(competitors);
@@ -788,14 +862,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         edges: runEdges,
         competitors,
         hand: runHandValid,
-        labLabel: null, // the Lab (task 14) passes its Lab_Label here
+        labLabel: runLab ? labLabel(runLab) : null,
       };
       runAnswer = buildAnswer(runAnswerInput);
       answerBox.show(runAnswer, runAnswerInput.names);
       finishedShown = true;
       updateYourUi();
       strip.showFinished(
-        "The run is finished. These results are a simulation.",
+        runLab ? labFirstLine(runLab) : "The run is finished. These results are a simulation.",
         deriveFacts({
           mode: engineModeOf(mode),
           seed: runSeed,
@@ -808,12 +882,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         false, // the scene change moves the focus to the Results_Scene heading
         answerNames(), // place maps: the same names as the Answer_Box
       );
-      sceneNow = "results";
+      // In the lab the run stays in the lab: its readouts fill in, no scene change.
+      if (!inLab) sceneNow = "results";
       setFlowHeading();
       updateRunButton();
       layout(); // the run bar collapsed: use the room for the map; the final state is redrawn by resync()
+      refreshLab();
       deps.onFinished(result);
-      deps.sceneDidChange?.("results");
+      if (!inLab) deps.sceneDidChange?.("results");
     },
     onProgress: () => refreshScoreboard(),
     onBack: () => showMap(true),
@@ -831,12 +907,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function setFlowHeading(): void {
     const title = mapEntry(currentSlug)?.title ?? "Map";
     flowHeading.textContent = sceneNow === "results" ? `Results: ${title}` : `Run: ${title}`;
-    flowHeading.hidden = sceneNow === "map";
+    // The lab has its own heading in its top bar.
+    flowHeading.hidden = sceneNow === "map" || sceneNow === "lab";
+    placeLabParts(sceneNow === "lab");
     // The results controls (seed, run again, back, exports) belong to the Results_Scene only.
     el.dataset.scene = sceneNow;
   }
 
-  el.append(flowHeading, strip.el, message, noData, run.el, mapRow);
+  el.append(labView.bar, flowHeading, strip.el, message, noData, run.el, mapRow);
 
   /**
    * Back to the Map_Scene. `silent`: the map itself changes (select), and the stage animates the
@@ -859,6 +937,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     answerHandShown = false;
     side.hidden = false;
     sceneNow = "map";
+    // The Map_Scene shows the map with its own r again.
+    if (runLab !== null) {
+      runLab = null;
+      render();
+    }
     setFlowHeading();
     updateYourUi();
     update({ screen: "map" });
@@ -1120,15 +1203,68 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     runHint.hidden = !(yours && open && (yourState?.points.length ?? 0) === 0);
   }
 
-  function rebuildScene(): void {
-    scene = null;
+  /** The r of the map without lab changes. */
+  function baseR(): number {
+    if (mode === "your_map") return yourR;
+    if (mode === "daily") return todayMap().r;
+    if (mode === "channel_plan") return hero?.graph.r ?? 20;
+    return state.placeFixture?.r ?? PLACE_R_M;
+  }
+  /** The r of the map on screen: a Lab_Run's r while it is on screen, else the map's own r. */
+  function mapR(): number {
+    return runLab?.r ?? baseR();
+  }
+  function rKeyOf(lab: LabRun | null): string {
+    return lab === null ? "" : `|r${lab.r}`;
+  }
+  function rKey(): string {
+    return rKeyOf(runLab);
+  }
+
+  // ---- the lab: open and leave (main.ts plays the entrance and the transitions) ----
+  function enterLab(): void {
+    if (sceneNow === "lab" || sceneNow === "run") return;
+    sceneNow = "lab";
+    setFlowHeading();
+    labView.setMap(mapEntry(currentSlug)?.title ?? "Map", { value: mapR(), readOnly: mode === "place" && walking });
+    // The instruments start from the run on screen (or the defaults with a new number).
+    labView.setControls({
+      seed: finishedShown ? runSeed : newRunNumber(),
+      r: mapR(),
+      shots: runLab?.shots ?? SHOTS_DEFAULT,
+      top_share: runLab?.top_share ?? TOP_DEFAULT_PERCENT / 100,
+    });
+    refreshLab();
+    updateRunButton();
+    lastW = 0;
+    layout();
+  }
+  /** Leave the lab: to the Results_Scene with the run on screen, or to the Map_Scene without one. */
+  function exitLab(to?: "map"): "results" | "map" {
+    if (sceneNow !== "lab") return sceneNow === "results" ? "results" : "map";
+    const busy = running || run.active;
+    if (busy) deps.cancel?.(); // a Lab_Run in progress stops (the worker is replaced)
+    if (to === "map" || busy || !finishedShown) {
+      showMap(false, true);
+      return "map";
+    }
+    sceneNow = "results";
+    setFlowHeading();
+    updateRunButton();
+    lastW = 0;
+    layout();
+    return "results";
+  }
+
+  function rebuildScene(): void {    scene = null;
     choice = null;
     sceneKey = "";
     if (mode === "your_map") {
       const pts = ensureYourState().points;
-      choice = { mode, points: pts, r: yourR };
+      const r = mapR();
+      choice = { mode, points: pts, r };
       // The request builds this same edge list, so what is drawn is what is sent.
-      const edges = buildStraightEdges(pts, yourR);
+      const edges = buildStraightEdges(pts, r);
       scene = {
         points: pts,
         edges,
@@ -1136,36 +1272,38 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         edgesStrong: true,
         frame: { width: YOUR_MAP_AREA_M.width, height: YOUR_MAP_AREA_M.height },
       };
-      sceneKey = yourKey();
+      sceneKey = yourKey() + rKey();
       setLabel(yourMapLabel(pts.length));
     } else if (mode === "daily") {
       // Today's map: one Round, straight line, the edges sent with the request (as Your map).
       const m = todayMap();
-      choice = { mode: "your_map", points: m.points, r: m.r };
+      const r = mapR();
+      choice = { mode: "your_map", points: m.points, r };
       scene = {
         points: m.points,
-        edges: m.edges,
+        edges: r === m.r ? m.edges : buildStraightEdges(m.points, r),
         bounds: { minX: 0, minY: 0, maxX: m.area.width, maxY: m.area.height },
         edgesStrong: true,
         frame: { width: m.area.width, height: m.area.height },
       };
-      sceneKey = `daily:${m.seed}`;
+      sceneKey = `daily:${m.seed}` + rKey();
       setLabel(`Today's map, ${m.points.length} points, the same for everyone today. Results are a simulation.`);
     } else if (mode === "channel_plan") {
       if (hero === null) return;
-      const edgesChoice: MapChoice = { mode, points: hero.points, walls, wallsOn, r: hero.graph.r };
+      const edgesChoice: MapChoice = { mode, points: hero.points, walls, wallsOn, r: mapR() };
       choice = edgesChoice;
       const edges = buildRequest(edgesChoice, 0).graph.edges ?? [];
       scene = { points: hero.points, edges, walls: wallsOn ? walls : [] };
-      sceneKey = `channel:${wallsOn}`;
+      sceneKey = `channel:${wallsOn}` + rKey();
       setLabel(`Wifi hall, ${hero.points.length} access points. Results are a simulation.`);
     } else {
       const f = state.placeFixture;
       if (f === null) return;
-      choice = { mode, points: f.points, walkingEdges: f.walking_edges, walking, r: f.r };
-      const edges = walking ? f.walking_edges : buildStraightEdges(f.points, f.r);
+      const r = walking ? f.r : mapR(); // walking distances were measured for the fixture's r
+      choice = { mode, points: f.points, walkingEdges: f.walking_edges, walking, r };
+      const edges = walking ? f.walking_edges : buildStraightEdges(f.points, r);
       scene = { points: f.points, edges, streets: f.streets };
-      sceneKey = `place:${f.name}:${walking}`;
+      sceneKey = `place:${f.name}:${walking}` + rKey();
       setLabel(`${placeTitle(f.name)}, ${f.points.length} ${placeOf(f.name)?.noun ?? "points"}. Results are a simulation.`);
     }
   }
@@ -1254,6 +1392,9 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       pointXY = xy;
       indexById = new Map(scene.points.map((p, i) => [p.id, i]));
       a11y.setPoints(screen);
+      // Screen readers hear the same names as the Tutor and the Answer_Box (place maps), else the id.
+      const names = answerNames();
+      for (const p of scene.points) a11y.setPointText(p.id, names?.get(p.id) ?? p.id);
       dynamicLayer.draw(true);
       run.resync(); // the final map survives a new size (finished panel opens)
       if (finishedShown && selectedPlan !== "Hybrid") paintPlan(selectedPlan); // resync drew the Hybrid map
@@ -1286,12 +1427,12 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
 
     const key =
       mode === "your_map"
-        ? yourKey()
+        ? yourKey() + rKey()
         : mode === "daily"
-          ? `daily:${todaySeed()}`
+          ? `daily:${todaySeed()}` + rKey()
           : mode === "channel_plan"
-            ? `channel:${wallsOn}`
-            : `place:${state.placeFixture?.name}:${walking}`;
+            ? `channel:${wallsOn}` + rKey()
+            : `place:${state.placeFixture?.name}:${walking}` + rKey();
     const ready = mode === "your_map" || mode === "daily" ? true : mode === "channel_plan" ? hero !== null : state.placeFixture !== null;
     if (!ready) {
       scene = null;
@@ -1353,6 +1494,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     loadHint.hidden = failed;
     loadErrorLine.hidden = !failed;
     loadErrorLine.textContent = state.loadError ?? "";
+    // The lab's run button follows the same state, and says why it waits.
+    labView.setRunButton({
+      enabled: ready && choice !== null && !running && !run.active && !yourEmpty,
+      text: running ? "Running…" : ready ? (finishedShown ? "Run again" : "Run") : failed ? "The simulator could not load" : `Getting the simulator ready… ${pct}%`,
+    });
     if (!ready) announcedReady = false; // a new worker after a stopped run: announce again
     if (ready && !announcedReady) {
       announcedReady = true;
@@ -1371,14 +1517,23 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   });
 
   // ---- run ----
-  function startRun(seedValue: number): void {
+  function startRun(seedValue: number, lab?: LabRun): void {
     if (run.active || running) return;
     if (choice === null || scene === null || !state.ready) return;
+    const inLab = sceneNow === "lab";
+    // The lab settings belong to this run from its start. A new r redraws the lines first, so the
+    // request and the map use the same edges.
+    const labRun = lab ?? null;
+    if (rKeyOf(labRun) !== rKey() || runLab !== labRun) {
+      runLab = labRun;
+      render();
+      if (choice === null || scene === null) return;
+    }
     // Your map: three plain refusals, none of them starts a run.
     if (mode === "your_map") {
       const n = scene.points.length;
       const refusal =
-        yourRInvalid
+        yourRInvalid && runLab === null
           ? `${R_MESSAGE} No run was started.`
           : n === 0
             ? "Add at least one point to run."
@@ -1390,13 +1545,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         return;
       }
     }
-    deps.sceneWillChange?.(sceneNow, "run");
+    if (!inLab) deps.sceneWillChange?.(sceneNow, "run");
     showMessage(null);
     const ids = scene.points.map((p) => p.id);
     dynamicLayer.setFocus(-1);
     side.hidden = true;
     running = true;
-    sceneNow = "run";
+    if (!inLab) sceneNow = "run";
     setFlowHeading();
     updateYourUi();
     runButton.disabled = true;
@@ -1422,14 +1577,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     update({ screen: "run", result: null });
     // The panel opens now, all cards "Computing…". Opening it narrows the map,
     // so lay the map out before the first event arrives.
-    scoreboard.begin(runSeed, engineModeOf(mode), { daily: mode === "daily" });
+    scoreboard.begin(runSeed, engineModeOf(mode), { daily: mode === "daily", labLabel: runLab ? labLabel(runLab) : null });
     if (mode === "daily") recordToday(0); // a run marks today as played (Requirement 12.2)
     // Blockade_Halos (radius r/2) only where the edges follow straight-line distance.
     const haloR =
-      mode === "your_map" ? yourR
-        : mode === "daily" ? todayMap().r
-        : mode === "channel_plan" ? (wallsOn ? null : (hero?.graph.r ?? null))
-          : walking ? null : (state.placeFixture?.r ?? null);
+      mode === "channel_plan" ? (wallsOn ? null : mapR()) : mode === "place" && walking ? null : mapR();
     const at = new Map(ids.map((id, i) => [id, i] as const));
     const edgePairs: [number, number][] = [];
     for (const [a, b] of scene.edges) {
@@ -1445,8 +1597,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       edgePairs,
     });
     layout(); // after the run bar is shown, so the map height accounts for it
-    deps.start(buildRequest(choice, seedValue));
-    deps.sceneDidChange?.("run");
+    refreshLab();
+    updateRunButton();
+    // A Lab_Run sends its settings; every other run sends none (the measured defaults).
+    deps.start(runLab ? buildRequest(choice, seedValue, { shots: runLab.shots, top_share: runLab.top_share }) : buildRequest(choice, seedValue));
+    if (!inLab) deps.sceneDidChange?.("run");
   }
 
   // ---- the scenes ----
@@ -1492,6 +1647,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
   function parts(s: FlowScene): HTMLElement[] {
     if (s === "map") return [sideTitle, labelLine, chipRow, placeSelector.info, howTo, handBox, runRow, loadBox, textPanel];
     if (s === "run") return [run.el, scoreboard.el];
+    if (s === "lab") return [labView.bar, labView.left, wrap, labView.right];
     return [run.el, scoreboard.el, strip.el, under];
   }
 
@@ -1554,7 +1710,10 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       if (running) deps.cancel?.();
       showMap(true);
     },
-    heading: () => (sceneNow === "map" ? sideTitle : flowHeading),
+    heading: () => (sceneNow === "map" ? sideTitle : sceneNow === "lab" ? labView.heading : flowHeading),
+    enterLab,
+    exitLab,
+    openLabButton,
     parts,
     mapBox: wrap,
     relayout() {

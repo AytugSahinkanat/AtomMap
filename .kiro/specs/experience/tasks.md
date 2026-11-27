@@ -196,19 +196,19 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
   - All tests, `npm run build`, `npm run smoke -- --no-build`, `npm run layout-check -- --no-build`; ask the user if questions arise.
 
 - [ ] 14. The lab (after the main flow, stays in; cuts only inside it)
-  - [ ] 14.1 Draw the icons and the lab entrance
+  - [x] 14.1 Draw the icons and the lab entrance
     - `lab/icons.ts` (flask, sliders, test tubes, gauge, hand drawn inline SVG); `lab/entrance.ts` (about 1 s, no bounce); reduced motion switches at once
     - _Requirements: 15.2, 15.4, 15.7, 15.8_
-  - [ ] 14.2 Build the lab layout and routes
+  - [x] 14.2 Build the lab layout and routes
     - `#/map/<map>/lab`, the "Open the lab" button, top bar, faint grid, monospace labels, three columns entering in order, "Leave the lab" and Escape, focus in and back
     - _Requirements: 15.1, 15.3, 15.5, 15.6_
-  - [ ] 14.3 Build the lab controls and readouts
+  - [x] 14.3 Build the lab controls and readouts
     - Seed, r (read-only on walking maps), shots, top group, with instructions and range messages; "Run again" with `buildRequest(..., settings)`; readouts from the shown run
     - _Requirements: 16.1, 16.2, 16.3, 16.8_
   - [ ] 14.4 Add the history, experiments, export and the developer box
     - `lab/history.ts`, `lab/experiments.ts` (five cards that set the controls), "Copy request", "Download run log", "For developers"
     - _Requirements: 16.4, 16.5, 16.6, 16.7_
-  - [ ] 14.5 Label every lab result
+  - [x] 14.5 Label every lab result
     - Lab_Label on the Scoreboard, the Tutor's first line and both exports; kept on the Results_Scene after leaving the Lab
     - _Requirements: 18.1, 18.2, 18.3, 18.4_
   - [ ]* 14.6 Write tests for the lab

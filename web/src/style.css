@@ -370,7 +370,7 @@ h1 { font-weight: 500; }
 .screen.map .answer-box p { margin: 0.1rem 0; }
 .screen.map .answer-box .answer-headline { font-weight: 500; font-size: 0.95rem; }
 .screen.map .answer-box .answer-body, .screen.map .answer-box .answer-problems, .screen.map .answer-box .answer-which { font-size: 0.8rem; line-height: 1.35; }
-.screen.map .answer-box .answer-lab { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.75rem; color: var(--muted); }
+.screen.map .answer-box .answer-lab { font-size: 0.78rem; color: var(--text); border-left: 2px solid var(--accent); padding-left: 0.45rem; }
 .answer-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.3rem 0.75rem; margin-top: 0.2rem; }
 .screen.map .answer-row button { padding: 0.2rem 0.7rem; font-size: 0.82rem; }
 .answer-list { font-size: 0.8rem; min-width: 0; flex: 1 1 12rem; }
@@ -395,3 +395,102 @@ h1 { font-weight: 500; }
   .map-card-preview { height: 6.5rem; }
   .map-card-note, .map-card-credit { font-size: 0.7rem; line-height: 1.3; }
 }
+
+/* ---- The lab (experience spec, Requirements 15 to 18; steering design.md, Lab) ---- */
+/* Darker than the rest, with a faint measurement grid: 1 px lines every 24 px at about 6% opacity. */
+html.lab-open, html.lab-open body {
+  background-color: #07080f;
+  background-image:
+    linear-gradient(rgba(143, 140, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 140, 184, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+html.lab-open .app-bar { display: none; }
+.lab-bar, .lab-col { display: none; }
+.mapflow[data-scene="lab"] { max-width: 92rem; padding: 0.4rem 1rem 0.5rem; }
+.mapflow[data-scene="lab"] .lab-bar { display: flex; }
+.mapflow[data-scene="lab"] .lab-col { display: flex; }
+.mapflow[data-scene="lab"] .map-side,
+.mapflow[data-scene="lab"] .finished-panel.scoreboard,
+.mapflow[data-scene="lab"] .tutor-strip,
+.mapflow[data-scene="lab"] .map-under,
+.mapflow[data-scene="lab"] > .error { display: none; }
+.mapflow[data-scene="lab"] .map-wrap { background: #0a0c18; border-color: #1e2240; margin: 0; }
+
+/* Monospace labels and readouts: the system monospace stack, only in the lab. */
+.lab-bar, .lab-col { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.lab-icon { flex: none; color: var(--accent); }
+
+.lab-bar { align-items: center; flex-wrap: wrap; gap: 0.25rem 1.25rem; padding: 0.15rem 0 0.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #1e2240; }
+.screen.map .lab-title { display: flex; align-items: center; gap: 0.5rem; margin: 0; font-size: 0.95rem; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+.lab-title:focus { outline: none; }
+.lab-title:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.screen.map .lab-bar-note { margin: 0; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.02em; }
+.screen.map .lab-bar .lab-leave { margin-left: auto; padding: 0.3rem 0.85rem; font: 500 0.82rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--border); }
+.screen.map .lab-bar .lab-leave:hover { box-shadow: inset 0 0 0 1px var(--accent); }
+
+.mapflow[data-scene="lab"] .map-row { gap: 0.75rem; align-items: flex-start; }
+.lab-col { box-sizing: border-box; flex-direction: column; gap: 0.6rem; min-width: 0; }
+.lab-left { flex: 0 0 22rem; }
+.lab-right { flex: 0 0 24rem; }
+@media (min-width: 60.0625rem) {
+  .lab-col { max-height: calc(100vh - 4.2rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+}
+.lab-panel { background: #0d1022; border: 1px solid #1e2240; border-radius: 8px; padding: 0.55rem 0.7rem 0.65rem; }
+.screen.map .lab-panel-title { display: flex; align-items: center; gap: 0.45rem; margin: 0 0 0.45rem; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.lab-form { display: flex; flex-direction: column; gap: 0.55rem; }
+.lab-field { display: grid; gap: 0.15rem; }
+.lab-label { font-size: 0.78rem; color: var(--text); }
+.lab-input-row { display: flex; align-items: center; gap: 0.45rem; }
+.screen.map input.lab-input { width: 7rem; background: #07080f; color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.45rem; font: 400 0.85rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+.screen.map input.lab-input[aria-invalid="true"] { border-color: #ff6b6b; }
+.lab-field.is-readonly input.lab-input { color: var(--muted); border-style: dashed; }
+.lab-unit { font-size: 0.72rem; color: var(--muted); }
+.screen.map .lab-note { margin: 0; font-size: 0.7rem; line-height: 1.35; color: var(--muted); font-family: system-ui, sans-serif; }
+.screen.map .lab-message { margin: 0; font-size: 0.72rem; line-height: 1.35; color: #ffb4b4; font-family: system-ui, sans-serif; }
+.lab-message[hidden] { display: none; }
+.screen.map .lab-form .lab-run { align-self: flex-start; margin-top: 0.15rem; font: 500 0.88rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.04em; }
+
+.screen.map .lab-run-line { margin: 0 0 0.2rem; font-size: 0.78rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.screen.map .lab-label-line { margin: 0 0 0.45rem; font-size: 0.72rem; color: var(--muted); font-family: system-ui, sans-serif; }
+.screen.map .lab-label-line.is-lab { color: var(--text); border-left: 2px solid var(--accent); padding-left: 0.45rem; }
+.lab-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; font-variant-numeric: tabular-nums; }
+.lab-table[hidden] { display: none; }
+.lab-table th, .lab-table td { padding: 0.22rem 0.3rem; border-bottom: 1px solid #1a1d36; text-align: left; font-weight: 400; }
+.lab-table thead th { color: var(--muted); font-size: 0.68rem; letter-spacing: 0.06em; }
+.lab-table .n { text-align: right; }
+.screen.map .lab-empty { margin: 0; font-size: 0.78rem; color: var(--muted); font-family: system-ui, sans-serif; }
+.lab-empty[hidden] { display: none; }
+.lab-run-slot:empty { display: none; }
+.lab-run-slot .run-view { margin: 0; background: #0d1022; border-color: #1e2240; }
+.lab-run-slot .run-view .run-status { font-size: 0.82rem; }
+.lab-panel.atoms .shot-hist { background: #07080f; margin: 0.3rem 0 0; }
+
+@media (max-width: 60rem) {
+  .mapflow[data-scene="lab"] .map-row { flex-direction: column; align-items: stretch; }
+  .lab-left, .lab-right { flex: none; width: 100%; }
+  .screen.map .lab-bar .lab-leave { margin-left: 0; }
+}
+
+/* The entrance: the flask fills, three bubbles rise. Calm, no bounce. */
+.lab-entrance {
+  position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.9rem;
+  background-color: #07080f;
+  background-image:
+    linear-gradient(rgba(143, 140, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 140, 184, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+.lab-entrance-text { margin: 0; font: 500 0.78rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.32em; color: var(--text); }
+
+/* The Results_Scene's "Open the lab" button, and the Lab_Label of a Lab_Run on the Scoreboard. */
+.open-lab { display: inline-flex; align-items: center; gap: 0.4rem; }
+.open-lab .lab-icon { color: currentColor; }
+.screen.map .score-lab { margin: 0.25rem 0; padding: 0.15rem 0 0.15rem 0.5rem; border-left: 2px solid var(--accent); font-size: 0.78rem; line-height: 1.35; color: var(--text); }
+.score-lab[hidden] { display: none; }
+.mapflow:not([data-scene="results"]) .open-lab { display: none; }
+
+/* The run bar inside the lab: the lab's monospace, a little smaller. */
+.lab-run-slot .run-view .run-status, .lab-run-slot .run-speed { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.8rem; }
+.lab-run-slot .run-view select, .lab-run-slot .run-view button { font: 500 0.8rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding: 0.25rem 0.6rem; }

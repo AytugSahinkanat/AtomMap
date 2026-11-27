@@ -1,0 +1,316 @@
+// The lab's own parts (experience spec, Requirements 15, 16 and 18; design "Lab", Layout and
+// Controls): the top bar, the instruments column and the readouts column. The map in the middle is
+// the map of the Results_Scene; map.ts places these parts around it. DOM only: the ranges and texts
+// come from lab-model.ts, the numbers from the shown run. Text is set with textContent only.
+
+import { formatPercent } from "../scoreboard-model";
+import { icon, type IconName } from "./icons";
+import {
+  LAB_BAR_NOTE,
+  R_NOTE,
+  SEED_NOTE,
+  SHOTS_NOTE,
+  TOP_NOTE,
+  labBarText,
+  labLabel,
+  parseLabR,
+  parseLabSeed,
+  parseShots,
+  parseTopPercent,
+  percentText,
+  readoutRows,
+  walkingRNote,
+  type Parse,
+} from "./lab-model";
+
+/** The values of a lab run, after every control passed its check. */
+export interface LabValues {
+  seed: number;
+  r: number;
+  shots: number;
+  top_share: number;
+}
+
+/** The run shown in the readouts: its number, r and settings (null settings: the measured defaults). */
+export interface ShownRun {
+  runNumber: number;
+  r: number;
+  settings: { shots: number; top_share: number } | null;
+  competitors: Record<string, unknown>;
+}
+
+export interface LabViewDeps {
+  onRun(values: LabValues): void;
+  onLeave(): void;
+}
+
+export interface LabView {
+  bar: HTMLElement;
+  left: HTMLElement;
+  right: HTMLElement;
+  /** The lab's heading (focused when the lab opens). */
+  heading: HTMLElement;
+  /** Where the Shot_Histogram goes while the lab is open. */
+  atomsSlot: HTMLElement;
+  /** Where the run bar (status, speed, skip) goes while the lab is open. */
+  runSlot: HTMLElement;
+  /** The map and its r: read-only on walking maps. */
+  setMap(name: string, r: { value: number; readOnly: boolean }): void;
+  /** Fill the controls (on opening the lab: the shown run's values). Clears the messages. */
+  setControls(v: LabValues): void;
+  /** The run button: its state while the simulator loads or a run goes on. */
+  setRunButton(state: { enabled: boolean; text: string }): void;
+  /** The top bar's run number. */
+  setRunNumber(n: number | null): void;
+  /** The readouts: the shown run, a run in progress, or nothing yet. */
+  showReadouts(shown: ShownRun | null, running: number | null): void;
+}
+
+function panel(title: string, iconName: IconName, cls: string): { el: HTMLElement; body: HTMLElement } {
+  const el = document.createElement("section");
+  el.className = `lab-panel ${cls}`;
+  const h = document.createElement("h2");
+  h.className = "lab-panel-title";
+  h.append(icon(iconName), document.createTextNode(title));
+  const id = `lab-panel-${cls}`;
+  h.id = id;
+  el.setAttribute("aria-labelledby", id);
+  const body = document.createElement("div");
+  body.className = "lab-panel-body";
+  el.append(h, body);
+  return { el, body };
+}
+
+interface Field {
+  root: HTMLElement;
+  input: HTMLInputElement;
+  note: HTMLElement;
+  message: HTMLElement;
+  check(): Parse<number>;
+}
+
+function field(id: string, label: string, noteText: string, parse: (t: string) => Parse<number>, inputMode: string, unit?: string): Field {
+  const root = document.createElement("div");
+  root.className = "lab-field";
+  const lab = document.createElement("label");
+  lab.htmlFor = id;
+  lab.className = "lab-label";
+  lab.textContent = label;
+  const row = document.createElement("div");
+  row.className = "lab-input-row";
+  const input = document.createElement("input");
+  input.id = id;
+  input.type = "text";
+  input.inputMode = inputMode;
+  input.autocomplete = "off";
+  input.spellcheck = false;
+  input.className = "lab-input";
+  row.append(input);
+  if (unit) {
+    const u = document.createElement("span");
+    u.className = "lab-unit";
+    u.textContent = unit;
+    row.append(u);
+  }
+  const note = document.createElement("p");
+  note.className = "lab-note";
+  note.id = `${id}-note`;
+  note.textContent = noteText;
+  const message = document.createElement("p");
+  message.className = "lab-message";
+  message.id = `${id}-msg`;
+  message.setAttribute("role", "status");
+  message.hidden = true;
+  input.setAttribute("aria-describedby", `${note.id} ${message.id}`);
+  root.append(lab, row, note, message);
+  const f: Field = {
+    root,
+    input,
+    note,
+    message,
+    check() {
+      const p = parse(input.value);
+      message.hidden = p.ok;
+      message.textContent = p.ok ? "" : p.error;
+      input.setAttribute("aria-invalid", String(!p.ok));
+      return p;
+    },
+  };
+  // A message shows while typing only once the value is wrong; it goes as soon as it is right.
+  input.addEventListener("input", () => {
+    if (!message.hidden || !parse(input.value).ok) f.check();
+  });
+  return f;
+}
+
+export function createLabView(deps: LabViewDeps): LabView {
+  // ---- top bar ----
+  const bar = document.createElement("header");
+  bar.className = "lab-bar";
+  const heading = document.createElement("h1");
+  heading.className = "lab-title";
+  heading.tabIndex = -1;
+  const titleText = document.createElement("span");
+  heading.append(icon("flask", 18), titleText);
+  const barNote = document.createElement("p");
+  barNote.className = "lab-bar-note";
+  barNote.textContent = LAB_BAR_NOTE;
+  const leave = document.createElement("button");
+  leave.type = "button";
+  leave.className = "lab-leave";
+  leave.textContent = "Leave the lab";
+  leave.setAttribute("aria-keyshortcuts", "Escape");
+  leave.addEventListener("click", () => deps.onLeave());
+  bar.append(heading, barNote, leave);
+
+  // ---- instruments ----
+  const left = document.createElement("div");
+  left.className = "lab-col lab-left";
+  const inst = panel("Instruments", "sliders", "instruments");
+  const seed = field("lab-seed", "Run number (seed)", SEED_NOTE, parseLabSeed, "numeric");
+  const r = field("lab-r", "r", R_NOTE, parseLabR, "decimal", "m");
+  const shots = field("lab-shots", "Shots per group", SHOTS_NOTE, parseShots, "numeric", "10–200");
+  const top = field("lab-top", "Top group", TOP_NOTE, parseTopPercent, "decimal", "%");
+  const runBtn = document.createElement("button");
+  runBtn.type = "submit";
+  runBtn.className = "lab-run";
+  runBtn.textContent = "Run again";
+  const form = document.createElement("form");
+  form.className = "lab-form";
+  form.noValidate = true;
+  form.append(seed.root, r.root, shots.root, top.root, runBtn);
+  inst.body.append(form);
+  left.append(inst.el);
+  let rNote = R_NOTE;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (runBtn.disabled) return;
+    const checks = [seed, r, shots, top].map((f) => [f, f.check()] as const);
+    const bad = checks.find(([, p]) => !p.ok);
+    if (bad) {
+      bad[0].input.focus(); // Requirement 16.2: the message, and no run
+      return;
+    }
+    const v = (f: Field) => (checks.find(([g]) => g === f)![1] as { ok: true; value: number }).value;
+    deps.onRun({ seed: v(seed), r: v(r), shots: v(shots), top_share: v(top) });
+  });
+
+  // ---- readouts ----
+  const right = document.createElement("div");
+  right.className = "lab-col lab-right";
+  const runSlot = document.createElement("div");
+  runSlot.className = "lab-run-slot";
+  const read = panel("Readouts", "gauge", "readouts");
+  const runLine = document.createElement("p");
+  runLine.className = "lab-run-line";
+  const labelLine = document.createElement("p");
+  labelLine.className = "lab-label-line";
+  const table = document.createElement("table");
+  table.className = "lab-table";
+  const caption = document.createElement("caption");
+  caption.className = "visually-hidden";
+  caption.textContent = "The four plans of the shown run";
+  const thead = document.createElement("thead");
+  const hr = document.createElement("tr");
+  for (const [t, cls] of [["plan", ""], ["picks", "n"], ["quantum share", "n"], ["splits", "n"], ["skipped", "n"]]) {
+    const th = document.createElement("th");
+    th.scope = "col";
+    th.textContent = t;
+    if (cls) th.className = cls;
+    hr.append(th);
+  }
+  thead.append(hr);
+  const tbody = document.createElement("tbody");
+  table.append(caption, thead, tbody);
+  const empty = document.createElement("p");
+  empty.className = "lab-empty";
+  read.body.append(runLine, labelLine, table, empty);
+  const atoms = panel("Atoms", "tubes", "atoms");
+  const atomsSlot = atoms.body;
+  const atomsHint = document.createElement("p");
+  atomsHint.className = "lab-note";
+  atomsHint.textContent = "During a run: how often each atom of the group on the simulator was kept in the shots.";
+  atomsSlot.append(atomsHint);
+  right.append(runSlot, read.el, atoms.el);
+
+  let mapName = "";
+
+  return {
+    bar,
+    left,
+    right,
+    heading,
+    atomsSlot,
+    runSlot,
+    setMap(name, rInfo) {
+      mapName = name;
+      titleText.textContent = labBarText(mapName, null);
+      r.input.readOnly = rInfo.readOnly;
+      r.root.classList.toggle("is-readonly", rInfo.readOnly);
+      rNote = rInfo.readOnly ? walkingRNote(rInfo.value) : R_NOTE;
+      r.note.textContent = rNote;
+    },
+    setControls(v) {
+      seed.input.value = String(v.seed);
+      r.input.value = String(v.r);
+      shots.input.value = String(v.shots);
+      top.input.value = percentText(v.top_share);
+      for (const f of [seed, r, shots, top]) {
+        f.message.hidden = true;
+        f.message.textContent = "";
+        f.input.removeAttribute("aria-invalid");
+      }
+    },
+    setRunButton(s) {
+      runBtn.disabled = !s.enabled;
+      runBtn.textContent = s.text;
+    },
+    setRunNumber(n) {
+      titleText.textContent = labBarText(mapName, n);
+    },
+    showReadouts(shown, running) {
+      tbody.replaceChildren();
+      if (running !== null) {
+        runLine.textContent = `RUN ${running} · running…`;
+        labelLine.textContent = "";
+        empty.textContent = "The numbers come when all four plans have finished.";
+        empty.hidden = false;
+        table.hidden = true;
+        return;
+      }
+      if (shown === null) {
+        runLine.textContent = "No run yet.";
+        labelLine.textContent = "";
+        empty.textContent = "Set the instruments and press Run.";
+        empty.hidden = false;
+        table.hidden = true;
+        return;
+      }
+      const s = shown.settings;
+      runLine.textContent = `RUN ${shown.runNumber} · r ${shown.r} m · shots ${s ? s.shots : 100} · top group ${s ? percentText(s.top_share) : 40}%`;
+      labelLine.textContent = s ? labLabel(s) : "This run used the measured defaults.";
+      labelLine.classList.toggle("is-lab", s !== null);
+      empty.hidden = true;
+      table.hidden = false;
+      for (const row of readoutRows(shown.competitors)) {
+        const tr = document.createElement("tr");
+        const th = document.createElement("th");
+        th.scope = "row";
+        th.textContent = row.label;
+        tr.append(th);
+        const cells =
+          row.problem !== null
+            ? [row.problem, "", "", ""]
+            : [String(row.total ?? "–"), row.quantumShare === null ? "–" : formatPercent(row.quantumShare), String(row.splits ?? "–"), String(row.skipped ?? "–")];
+        for (const c of cells) {
+          const td = document.createElement("td");
+          td.className = "n";
+          td.textContent = c;
+          tr.append(td);
+        }
+        tbody.append(tr);
+      }
+    },
+  };
+}

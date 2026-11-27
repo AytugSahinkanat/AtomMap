@@ -14,6 +14,8 @@ import { createChooseScene } from "./scenes/choose";
 import { isListed, mapEntry } from "./scenes/maps";
 import { formatRoute, parseRoute, type MapSlug, type Route } from "./scenes/router";
 import { createStage } from "./scenes/stage";
+import { playEnter, prefersReducedMotion } from "./scenes/transitions";
+import { playEntrance } from "./lab/entrance";
 
 const root = document.getElementById("app") ?? document.body;
 const stage = createStage();
@@ -36,8 +38,8 @@ function startWorker(): void {
         update({ loadError: plainError(e) });
         return;
       }
-      // A run error goes to the Run_Scene, with its back button.
-      if (flow?.scene === "run") flow.run.error(e);
+      // A run error goes to the Run_Scene (or the lab), with its back button.
+      if (flow?.scene === "run" || flow?.scene === "lab") flow.run.error(e);
     },
   });
 }
@@ -77,7 +79,7 @@ function titleOf(slug: MapSlug): string {
   return mapEntry(slug)?.title ?? "the map";
 }
 
-const ANNOUNCE: Record<FlowScene, string> = { map: "Read the map", run: "Run", results: "Results" };
+const ANNOUNCE: Record<FlowScene, string> = { map: "Read the map", run: "Run", results: "Results", lab: "The lab" };
 
 function ensureFlow(): MapScreen {
   if (flow) return flow;
@@ -90,6 +92,12 @@ function ensureFlow(): MapScreen {
       if (client?.busy) restartWorker();
     },
     onFinished,
+    openLab: () => {
+      if (stage.locked || f.scene !== "results") return;
+      labPushed = true;
+      location.hash = formatRoute({ scene: "lab", map: f.slug });
+    },
+    leaveLab: () => leaveLabRoute(),
     sceneWillChange: (from, to) => {
       if (routing) return;
       const before = f.parts(from);
@@ -106,7 +114,7 @@ function ensureFlow(): MapScreen {
       } else if (location.hash !== want) {
         replaceHash(want);
       }
-      stage.setStep(to);
+      stage.setStep(to === "lab" ? null : to);
       const finish = prepared;
       prepared = null;
       void finish?.(entering, f.heading(), `${ANNOUNCE[to]}: ${titleOf(f.slug)}`);
@@ -116,8 +124,48 @@ function ensureFlow(): MapScreen {
   return f;
 }
 
-/** The address the router has handled last (an address change to it again is no news). */
-let lastHash: string | null = null;
+/**
+ * The lab (experience spec, Requirement 15): the entrance plays over the scene on screen, the flow
+ * switches to the lab underneath once the screen is the lab colour, and the panels come in.
+ * Reduced motion: the lab appears at once.
+ */
+let labPushed = false;
+function openLab(f: MapScreen): Promise<void> {
+  return stage.hold(async () => {
+    await playEntrance(() => {
+      routing = true;
+      f.enterLab();
+      routing = false;
+      stage.setStep(null);
+    });
+    stage.focusAndAnnounce(f.heading(), `The lab: ${titleOf(f.slug)}`);
+    if (!prefersReducedMotion()) await playEnter(f.parts("lab"));
+  }, 2800);
+}
+/** Leave the lab: its panels fade out and the Results_Scene (or the Map_Scene) comes back in. */
+async function closeLab(f: MapScreen, to?: "map"): Promise<void> {
+  const prepared = stage.prepare(f.parts("lab"));
+  routing = true;
+  const went = f.exitLab(to);
+  routing = false;
+  replaceRoute({ scene: went, map: f.slug });
+  stage.setStep(went);
+  const enter = went === "results" ? f.parts("results") : [f.mapBox, ...f.parts("map")];
+  await prepared(enter, went === "results" ? f.openLabButton : f.heading(), `${ANNOUNCE[went]}: ${titleOf(f.slug)}`);
+}
+function leaveLabRoute(): void {
+  if (stage.locked || flow?.scene !== "lab") return;
+  if (labPushed) {
+    // The lab was opened with the button: back is the way out, so the history stays as it was.
+    labPushed = false;
+    history.back();
+    return;
+  }
+  replaceRoute({ scene: "results", map: flow.slug });
+  void route();
+}
+
+/** The address the router has handled last (an address change to it again is no news). */let lastHash: string | null = null;
 
 function replaceHash(hash: string): void {
   history.replaceState(null, "", hash);
@@ -140,6 +188,11 @@ function showChoose(): Promise<void> {
       if (f && f.scene === "run") {
         routing = true;
         f.stopRun();
+        routing = false;
+      }
+      if (f && f.scene === "lab") {
+        routing = true;
+        f.exitLab("map");
         routing = false;
       }
       stage.slot.replaceChildren(choose.el);
@@ -186,6 +239,13 @@ async function route(): Promise<void> {
   lastHash = hash;
   const r = parseRoute(hash);
   if (r.scene === "measured") {
+    // The lab's dark page goes with it.
+    if (flow?.scene === "lab") {
+      routing = true;
+      flow.exitLab("map");
+      routing = false;
+    }
+    document.documentElement.classList.remove("lab-open");
     const container = document.createElement("div");
     root.replaceChildren(container);
     await showResults(container);
@@ -214,8 +274,25 @@ async function route(): Promise<void> {
   const f = ensureFlow();
   if (top !== "flow" || f.slug !== r.map) {
     await openMap(r.map);
-    // A run, results or lab address without a run of this visit shows the Map_Scene (Requirement 1.4).
+    // The lab's own address opens the lab over the map (Requirement 15.1), with no run shown yet.
+    if (r.scene === "lab") {
+      labPushed = false;
+      await openLab(f);
+      return;
+    }
+    // A run or results address without a run of this visit shows the Map_Scene (Requirement 1.4).
     if (r.scene !== "map") replaceRoute({ scene: "map", map: r.map });
+    return;
+  }
+  if (r.scene === "lab") {
+    if (f.scene === "results" || f.scene === "map") await openLab(f);
+    else if (f.scene === "run") replaceRoute({ scene: "run", map: r.map });
+    return;
+  }
+  if (f.scene === "lab") {
+    // Back, "Leave the lab", Escape or a typed address: the lab closes first.
+    labPushed = false;
+    await closeLab(f, r.scene === "map" ? "map" : undefined);
     return;
   }
   if (r.scene === "map") {

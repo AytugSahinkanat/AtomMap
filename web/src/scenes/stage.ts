@@ -55,6 +55,13 @@ export interface Stage {
    * then, after the change, call the returned function with the parts that came in.
    */
   prepare(exit: HTMLElement[]): (enter: HTMLElement[], heading: HTMLElement | null, announce: string) => Promise<void>;
+  /**
+   * A transition of its own (the lab entrance): input is locked while `job` runs, at most
+   * `guardMs`. `job` changes the DOM itself and calls `focusAndAnnounce`.
+   */
+  hold(job: () => Promise<void>, guardMs: number): Promise<void>;
+  /** Focus a heading and announce the scene, as a swap does. */
+  focusAndAnnounce(h: HTMLElement | null, text: string): void;
   /** Called once when the current transition has ended (at once when none runs). */
   whenUnlocked(fn: () => void): void;
   /** Show the Scene_Steps with this step current, or hide them (Choose_Scene). */
@@ -195,6 +202,19 @@ export function createStage(): Stage {
     },
     swap,
     prepare,
+    async hold(job, guardMs) {
+      locked = true;
+      shield.hidden = false;
+      try {
+        await Promise.race([job(), new Promise<void>((ok) => setTimeout(ok, guardMs))]);
+      } finally {
+        unlock();
+      }
+    },
+    focusAndAnnounce(h, text) {
+      focus(h);
+      announce(text);
+    },
     whenUnlocked(fn) {
       if (locked) waiting.push(fn);
       else fn();
