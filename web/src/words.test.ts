@@ -1,6 +1,6 @@
 // Word tests (experience spec, task 12.3; Requirements 10.3, 13.3, 22.8, 24.5): the new texts of the
 // app use neutral words only and no brand name. The Tutor's own sentences have their test in
-// tutor/sentences.banned.test.ts; the Lab texts join this file with the Lab (task 14).
+// tutor/sentences.banned.test.ts.
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
 import { CLICK_HINT, HONESTY_LINE, SHOW_LIST_LABEL, SHOW_ON_MAP_LABEL, buildAnswer, whichLine, type AnswerInput } from "./answer";
@@ -10,6 +10,9 @@ import { HOW_TO_READ, LOADING_HINT, YOUR_MAP_HINT, YOUR_PICK_HINT } from "./scre
 import { PROTOCOL_SCOPE } from "./screens/results";
 import { REPEAT_LABEL, RUN_AGAIN_LABEL, runNumberText } from "./screens/scoreboard";
 import { PLACES } from "./settings";
+import * as LAB from "./lab/lab-model";
+import { EXPERIMENTS } from "./lab/experiments";
+import { HISTORY_CAPTION, HISTORY_EMPTY, TOTALS_KEY } from "./lab/history";
 
 /** The Tutor's banned list plus the words of Requirement 10.3. Whole words, any case. */
 const BANNED = ["faster", "speed", "wins", "winner", "beats", "beat", "win", "won", "lose", "lost", "better", "worse", "best"];
@@ -44,6 +47,19 @@ describe("the new texts use neutral words and no brand name", () => {
       CLICK_HINT,
       PROTOCOL_SCOPE,
       ...PLACES.flatMap((p) => [p.label, p.noun]),
+    ];
+    for (const t of texts) expect(problems(t), t).toEqual([]);
+  });
+
+  it("every Lab text: notes, labels, messages, experiment cards, history and the developer box", () => {
+    const texts = [
+      LAB.LAB_BAR_NOTE, LAB.SEED_NOTE, LAB.R_NOTE, LAB.SHOTS_NOTE, LAB.TOP_NOTE, LAB.walkingRNote(150),
+      LAB.DEV_INTRO, LAB.DEV_COMMAND, LAB.DEV_PYTHON, LAB.DEV_NOTE, LAB.README_ENGINE_URL,
+      LAB.labLabel({ shots: 20, top_share: 1 }), LAB.labFirstLine({ shots: 100, top_share: 0.4 }), LAB.labBarText("Wifi hall", 5),
+      HISTORY_CAPTION, HISTORY_EMPTY, TOTALS_KEY,
+      ...EXPERIMENTS.flatMap((x) => [x.title, x.tryText, x.lookText]),
+      ...["5", "abc", "1000"].flatMap((t) => [LAB.parseShots(t), LAB.parseTopPercent(t), LAB.parseLabR(t), LAB.parseLabSeed(t)]).map((p) => (p.ok ? "" : p.error)),
+      (EXPERIMENTS.find((x) => x.id === "bigger-r")!.set({ seed: 1, r: 20, shots: 100, top_share: 0.4 }, { rReadOnly: true }) as { error: string }).error,
     ];
     for (const t of texts) expect(problems(t), t).toEqual([]);
   });

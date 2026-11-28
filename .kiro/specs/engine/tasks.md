@@ -214,6 +214,13 @@ The Engine is built in Python (package `atommap` in `engine/src/atommap/`, tests
     - Load the Worker, show progress, run the hero map in Hybrid mode, and show the elapsed time, the Result_Label and the number of picks per Round
     - _Requirements: 1.2, 1.8, 1.14, 1.15_
 
+- [x] 13. Command line
+  - [x] 13.1 Add `python -m atommap`
+    - `atommap/__main__.py`: a file or `-` for stdin, `--out <file>`, the plain error and exit code 1; it only wraps `api.run`
+    - _Requirements: 13.1, 13.2, 13.3, 13.4_
+  - [x] 13.2 Test the command
+    - `tests/test_cli.py`: the output equals `api.run` for the same request (file, stdin and `--out`), a rejected request and a missing file exit with 1 and a plain message
+    - _Requirements: 13.1, 13.2, 13.3, 13.4_
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP

@@ -12,7 +12,7 @@
 // message; a run in progress; a finished run with the Tutor.
 // Part 2, the scene flow: the Choose_Scene; for the wifi hall, Kadıköy, both US maps and Today's map the
 // Map_Scene, the Run_Scene, the Results_Scene and the Results_Scene with "Show the list" open (its list
-// must scroll to its last item); the Results_Page. The runs of part 2 happen at 1366 x 768; the
+// must scroll to its last item); the Lab (idle, a run in progress, after two runs with the history and the cards); the Results_Page. The runs of part 2 happen at 1366 x 768; the
 // Map_Scene and the Results_Scene are then checked again at 375 x 667 by resizing the same page.
 // Run numbers: the test page fixes them (crypto.getRandomValues is stubbed for one-number requests in
 // the test page only), so every check runs with Run #1. The app has no switch for this.
@@ -312,6 +312,36 @@ try {
     await checkFlow(page, NARROW, `${name}: Results_Scene`);
     await atSize(page, WIDE);
     console.log(`layout-check: ${name} done at ${secs()}`);
+  }
+
+  // The lab: idle, during a run, after two runs (history rows, cards), at both sizes.
+  {
+    const labReady = () =>
+      page.waitForFunction(() => { const b = document.querySelector(".lab-run"); return b && !b.disabled && !document.querySelector(".lab-run-slot .run-controls:not([hidden])"); }, undefined, { timeout: RUN });
+    await page.goto(`${origin}/#/map/hall/lab`);
+    await page.waitForFunction(() => document.querySelector('main.mapflow[data-scene="lab"]'), undefined, { timeout: LOAD });
+    await labReady();
+    await page.waitForTimeout(1600); // the entrance
+    await checkFlow(page, WIDE, "Lab: idle");
+    await atSize(page, NARROW);
+    await checkFlow(page, NARROW, "Lab: idle");
+    await atSize(page, WIDE);
+    for (const card of ["10 shots", "Top group 100%"]) {
+      await page.getByRole("button", { name: `Set it up: ${card}` }).click();
+      await page.locator(".lab-run").click();
+      await page.waitForTimeout(600);
+      if (card === "10 shots") await checkFlow(page, WIDE, "Lab: run in progress");
+      await page.locator(".lab-run-slot").getByRole("button", { name: "Skip to the end" }).click({ timeout: 2000 }).catch(() => {});
+      await labReady();
+    }
+    await page.waitForTimeout(500);
+    const rows = await page.locator(".lab-history tbody tr").count();
+    if (rows !== 2) problems.push(`lab: expected 2 history rows, found ${rows}`);
+    await checkFlow(page, WIDE, "Lab: after two runs (history)");
+    await atSize(page, NARROW);
+    await checkFlow(page, NARROW, "Lab: after two runs (history)");
+    await atSize(page, WIDE);
+    console.log(`layout-check: the lab done at ${secs()}`);
   }
 
   await page.goto(`${origin}/#/results`);

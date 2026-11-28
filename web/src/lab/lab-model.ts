@@ -82,10 +82,16 @@ export function labBarText(mapName: string, runNumber: number | null): string {
 }
 
 export const LAB_BAR_NOTE = "Lab settings, not the measured defaults.";
+/** The README section the "For developers" box points to (task 16 writes it). */
+export const README_ENGINE_URL = "https://github.com/AytugSahinkanat/AtomMap#use-the-engine-with-your-own-data";
+export const DEV_INTRO = "The engine is a Python package (Python 3.12). In a copy of the repository, install it, save the copied request as request.json and run it:";
+export const DEV_COMMAND = "pip install ./engine\npython -m atommap request.json";
+export const DEV_PYTHON = "from atommap import api\nprint(api.run(open(\"request.json\").read()))";
+export const DEV_NOTE = "It prints the result as JSON (add --out result.json to save it). Native and browser results can differ a little, because of floating-point details in the simulation and the atom layout.";
 export const SEED_NOTE = "Same number, same result.";
 export const R_NOTE = "How close is too close. A bigger r draws more lines.";
 export const SHOTS_NOTE = "How many times each group is simulated. Fewer shots, noisier advice.";
-export const TOP_NOTE = "The share of best-lit points the next pick is drawn from.";
+export const TOP_NOTE = "The share of the most often lit points that each atom pick is drawn from.";
 export function walkingRNote(r: number): string {
   return `Walking distances were measured on the streets for r = ${r} m. Switch to straight line to change it.`;
 }

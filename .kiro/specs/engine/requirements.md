@@ -233,3 +233,11 @@ Out of scope: the UI, map drawing, the AI tutor, real quantum hardware, and iden
 8. THE Engine SHALL include the Hero map as a test fixture (a wifi hall of 70 APs on a 10 x 7 grid, 9 m spacing, ±2 m jitter, r = 20 m), and at least one test SHALL execute a complete Channel_Plan run on that fixture and assert that it finishes without error.
 9. THE Engine SHALL include a sparse control fixture (the same hall with 11 m spacing and ±1.5 m jitter, r = 20 m), and at least one test SHALL assert that the Hybrid Quantum_Share on the sparse control is below half of the Hybrid Quantum_Share on the Hero map (both run with the seeds from the test settings file) and SHALL report both numbers, because the fixture is not changed to make a result look good.
 10. THE Engine SHALL run every test that calls the real Braket Simulator with at most 20 hypothesis examples and mark it slow.
+
+### Requirement 13: Command line
+**User Story:** As a developer with my own map data, I want to run the Engine with one command on my own computer, so that I can use it without the browser or writing Python.
+#### Acceptance Criteria
+1. THE Engine SHALL run with `python -m atommap <request.json>`, read the request from that file (or from standard input when the argument is `-`), and print the JSON text that `atommap.api.run` returns for it, unchanged, to standard output.
+2. WHEN `--out <file>` is given, THE Engine SHALL write that same text to the file instead of standard output.
+3. IF the request is rejected or the run fails, THEN THE Engine SHALL print the Engine's plain error message (its type and message, and the offending items when there are any) to standard error and exit with code 1. A file that cannot be read SHALL also exit with code 1 and a plain message.
+4. THE command SHALL only wrap `atommap.api.run`: it SHALL NOT change any request field, setting or result, so a request copied from the web app's lab gives the result of `api.run` for that request on that machine. Native and browser results can differ a little (floating-point details in the simulation and the atom layout), as the README says.

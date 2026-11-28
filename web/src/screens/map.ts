@@ -47,6 +47,8 @@ import { createAnswerBox } from "./answer-box";
 import { createLabView, type ShownRun } from "../lab/lab-view";
 import { labFirstLine, labLabel, SHOTS_DEFAULT, TOP_DEFAULT_PERCENT, type LabRun } from "../lab/lab-model";
 import { icon as labIcon } from "../lab/icons";
+import { historyRow, type HistoryRow } from "../lab/history";
+import { downloadText, slugify } from "../export";
 import { handPickReadout, handPickStats, youLine, type HandPickStats } from "../hand-pick";
 import { randomRunNumber } from "../run-number";
 import { recordToday, todayKey, todayMap, todaySeed, todayText } from "../daily/today";
@@ -652,6 +654,13 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     onExport: (kind, plan) => exportPlan(kind, plan),
   });
 
+  /** The map's name in file names. */
+  function exportMapName(): string {
+    return mode === "your_map" ? "your-map"
+      : mode === "daily" ? `today-${todayKey()}`
+        : mode === "place" ? (placeOf(state.placeName ?? DEFAULT_PLACE)?.slug ?? DEFAULT_PLACE) : "hero";
+  }
+
   /** Download the plan selected now. Returns a plain message instead of throwing. */
   function exportPlan(kind: "csv" | "geojson", plan: EngineName): string | null {
     if (!finishedShown || finishedResult === null || scene === null) return "There is no finished run to export yet.";
@@ -659,10 +668,7 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       result: finishedResult,
       plan,
       mode: engineModeOf(mode),
-      map:
-        mode === "your_map" ? "your-map"
-          : mode === "daily" ? `today-${todayKey()}`
-            : mode === "place" ? (placeOf(state.placeName ?? DEFAULT_PLACE)?.slug ?? DEFAULT_PLACE) : "hero",
+      map: exportMapName(),
       seed: runSeed,
       lab: runLab ? { shots: runLab.shots, top_share: runLab.top_share, r: runLab.r, label: labLabel(runLab) } : null,
       points: scene.points.map((p) => {
@@ -779,7 +785,18 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
       startRun(v.seed, { shots: v.shots, top_share: v.top_share, r: v.r });
     },
     onLeave: () => deps.leaveLab?.(),
+    onDownloadLog: () => {
+      if (runLog === null || !finishedShown || running) return "There is no finished run to save yet.";
+      const name = `atommap-${slugify(exportMapName()) || "map"}-run${String(runSeed).replace("-", "m")}${runLab ? "-lab" : ""}-log.json`;
+      downloadText(name, JSON.stringify(runLog, null, 2) + "\n", "application/json");
+      return `Saved ${name}.`;
+    },
   });
+  /** The exact JSON text sent to the worker for the run on screen (Copy request), and its log. */
+  let runRequestText: string | null = null;
+  let runLog: { request: unknown; events: unknown[]; result: unknown } | null = null;
+  /** Lab_History: the Lab_Runs of this visit (Requirement 16.4). */
+  const labHistory: HistoryRow[] = [];
   mapRow.prepend(labView.left);
   mapRow.append(labView.right);
   /** The run shown in the lab's readouts, from the finished run on screen. */
@@ -792,6 +809,8 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     if (sceneNow !== "lab") return;
     labView.setRunNumber(running ? runSeed : finishedShown ? runSeed : null);
     labView.showReadouts(running ? null : shownRun(), running ? runSeed : null);
+    labView.setTools({ request: !running && finishedShown ? runRequestText : null, log: !running && finishedShown && runLog !== null });
+    labView.setHistory(labHistory);
   }
   /** The lab's own parts move into place while it is open: the run bar and the histogram. */
   function placeLabParts(on: boolean): void {
@@ -882,12 +901,16 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
         false, // the scene change moves the focus to the Results_Scene heading
         answerNames(), // place maps: the same names as the Answer_Box
       );
+      runLog = { request: runRequestText === null ? null : JSON.parse(runRequestText), events: buffer.slice(), result };
+      if (runLab !== null) labHistory.push(historyRow(runSeed, runLab, competitors));
       // In the lab the run stays in the lab: its readouts fill in, no scene change.
       if (!inLab) sceneNow = "results";
       setFlowHeading();
       updateRunButton();
       layout(); // the run bar collapsed: use the room for the map; the final state is redrawn by resync()
       refreshLab();
+      // Keyboard focus stays in the lab: on "Run again" (it was disabled during the run).
+      if (inLab && labView.holdsFocus()) labView.focusRun();
       deps.onFinished(result);
       if (!inLab) deps.sceneDidChange?.("results");
     },
@@ -1372,8 +1395,14 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     const top = wrap.hidden ? 0 : wrap.getBoundingClientRect().top;
     // The map is at least 240 px high, or 160 px while the visitor reads the answer's list.
     const minH = sceneNow === "results" && answerBox.listOpen ? 160 : 240;
-    const maxH = Math.max(minH, Math.min(640, top > 0 ? window.innerHeight - top - 40 - under.offsetHeight : window.innerHeight - 250));
-    const height = Math.round(Math.min(maxH, Math.max(minH, (width * spanY) / spanX)));
+    // In the lab on a wide screen the map and the two columns use the whole height (the map is
+    // drawn to fit inside, keeping its shape).
+    const labTall = sceneNow === "lab" && window.innerWidth > 960 && top > 0;
+    const maxH = labTall
+      ? Math.max(minH, window.innerHeight - top - 12)
+      : Math.max(minH, Math.min(640, top > 0 ? window.innerHeight - top - 40 - under.offsetHeight : window.innerHeight - 250));
+    const height = labTall ? Math.round(maxH) : Math.round(Math.min(maxH, Math.max(minH, (width * spanY) / spanX)));
+    el.style.setProperty("--lab-h", labTall ? `${height}px` : "auto");
     wrap.style.height = `${height}px`;
     const dpr = window.devicePixelRatio || 1;
     const redrew = staticLayer.update(scene, width, height, dpr);
@@ -1600,7 +1629,11 @@ export function createMapScreen(deps: MapScreenDeps): MapScreen {
     refreshLab();
     updateRunButton();
     // A Lab_Run sends its settings; every other run sends none (the measured defaults).
-    deps.start(runLab ? buildRequest(choice, seedValue, { shots: runLab.shots, top_share: runLab.top_share }) : buildRequest(choice, seedValue));
+    const payload = runLab ? buildRequest(choice, seedValue, { shots: runLab.shots, top_share: runLab.top_share }) : buildRequest(choice, seedValue);
+    // The worker sends JSON.stringify(payload) to the engine: Copy request gives exactly that text.
+    runRequestText = JSON.stringify(payload);
+    runLog = null;
+    deps.start(payload);
     if (!inLab) deps.sceneDidChange?.("run");
   }
 

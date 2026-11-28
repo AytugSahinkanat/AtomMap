@@ -494,3 +494,30 @@ html.lab-open .app-bar { display: none; }
 /* The run bar inside the lab: the lab's monospace, a little smaller. */
 .lab-run-slot .run-view .run-status, .lab-run-slot .run-speed { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.8rem; }
 .lab-run-slot .run-view select, .lab-run-slot .run-view button { font: 500 0.8rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding: 0.25rem 0.6rem; }
+/* Lab, part 2: the columns and the map use the whole height on a wide screen, the side columns are a
+   little narrower than the design's 22 and 24 rem so the map gets more room. */
+.lab-left { flex: 0 0 19.5rem; }
+.lab-right { flex: 0 0 21.5rem; }
+@media (min-width: 60.0625rem) {
+  .mapflow[data-scene="lab"] .lab-col { height: var(--lab-h, auto); max-height: var(--lab-h, calc(100vh - 4.2rem)); }
+  .lab-right .lab-panel.history { flex: 1 0 auto; }
+  .lab-left .lab-panel.developers { flex: 1 0 auto; }
+}
+.lab-card { padding: 0.45rem 0 0.5rem; border-top: 1px solid #1a1d36; }
+.lab-card:first-child { border-top: 0; padding-top: 0; }
+.screen.map .lab-card-title { margin: 0 0 0.15rem; font-size: 0.8rem; font-weight: 500; color: var(--text); }
+.screen.map .lab-card-text { margin: 0 0 0.15rem; font: 400 0.72rem/1.35 system-ui, sans-serif; color: var(--muted); }
+.screen.map .lab-card .lab-card-set, .screen.map .lab-tools button {
+  margin-top: 0.2rem; padding: 0.2rem 0.6rem; font: 500 0.74rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--border);
+}
+.screen.map .lab-card .lab-card-set:hover, .screen.map .lab-tools button:hover:not(:disabled) { box-shadow: inset 0 0 0 1px var(--accent); }
+.screen.map .lab-tools button:disabled { color: var(--muted); opacity: 0.6; cursor: not-allowed; }
+.lab-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.5rem; margin-top: 0.55rem; }
+.lab-tools .lab-tool-status { flex: 1 1 100%; }
+.screen.map .lab-tool-status:empty, .screen.map .lab-exp-status:empty { display: none; }
+.screen.map .lab-exp-status { margin-top: 0.35rem; color: var(--text); }
+.lab-code { margin: 0.3rem 0 0.4rem; padding: 0.4rem 0.5rem; background: #07080f; border: 1px solid #1e2240; border-radius: 6px; font: 400 0.72rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--teal); white-space: pre-wrap; overflow-wrap: anywhere; }
+.lab-link { display: inline-block; margin-top: 0.35rem; font: 400 0.74rem system-ui, sans-serif; color: var(--accent); border-radius: 4px; }
+.lab-history { margin-bottom: 0.3rem; }
+.lab-history th[scope="row"] { font-variant-numeric: tabular-nums; }

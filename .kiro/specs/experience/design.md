@@ -434,6 +434,15 @@ interface StartPayload { /* existing */ settings?: { shots?: number; top_share?:
 - `#/map/<map>/lab` opened directly opens the lab over that map with no run shown ("No run yet.").
 - The exports of a Lab_Run add `-lab` to the file name, a `lab_settings` CSV column with the Lab_Label on every row, and a `lab_settings` member (shots, top_share, r, label) in the GeoJSON.
 - The hidden Point list for screen readers reads the Point names on place maps, the id otherwise.
+## Notes from task 14, part 2
+
+- On a wide screen the lab's map and its two columns use the whole window height. The map box takes the full height and the map is drawn to fit inside it. The side columns are 19.5 rem and 21.5 rem instead of 22 and 24, so the map gets more width. The columns scroll on their own when their content is longer.
+- After a Lab_Run, keyboard focus goes back to "Run again" (the button is disabled during the run).
+- The top group note says "the most often lit points" instead of "best-lit": "best" is a banned word.
+- Experiments: five cards (another run number, 10 shots, top group 100%, top group 10%, a bigger r). "Set it up" fills the instruments, moves focus to the run button and never starts a run. On walking maps the bigger-r card says why it cannot be used.
+- History: one row per Lab_Run of the visit: run, r, shots, top group, the four totals as "a/h/n/c" with a key line under the table, and the hybrid's quantum share.
+- Copy request copies `JSON.stringify` of the request, the exact text the worker hands to the engine. Download run log saves `{request, events, result}` as `atommap-<map>-run<n>[-lab]-log.json`. Both are for the run on screen.
+- For developers: the install line and `python -m atommap request.json` (engine spec, Requirement 13), the same call from Python, the note that native and browser results can differ a little, and a link to the README section "Use the engine with your own data" (written with task 16).
 ## Error Handling
 
 | Case | Behaviour |
