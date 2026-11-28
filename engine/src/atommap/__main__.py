@@ -43,9 +43,11 @@ def _plain_error(text: str) -> Optional[str]:
         return None
     err = reply.get("error") or {}
     line = f"{err.get('type', 'Error')}: {err.get('message', 'the run failed')}"
-    items = err.get("items")
-    if items:
-        line += " (" + ", ".join(str(i) for i in items) + ")"
+    items = [str(i) for i in (err.get("items") or [])]
+    # The items in brackets, but only those the message does not name already.
+    extra = [i for i in items if i not in line]
+    if extra:
+        line += " (" + ", ".join(extra) + ")"
     return line
 
 

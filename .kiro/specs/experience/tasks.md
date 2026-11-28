@@ -215,31 +215,31 @@ npm run check-maps                  # in web/, after Task 11.2 and after every n
     - Range messages, the walking r note, the history rows, the experiment cards do not start a run, the Lab_Label in the strip, the Scoreboard and the exports
     - _Requirements: 16.2, 16.5, 18.1, 22.8_
 
-- [ ] 15. Optional UI property tests
-  - [ ]* 15.1 Write property test: routes round-trip
+- [x] 15. Optional UI property tests
+  - [x]* 15.1 Write property test: routes round-trip
     - **Property 9: Routes round-trip**
     - **Validates: Requirements 1.2, 1.4**
-  - [ ]* 15.2 Write property test: Hand_Pick numbers equal a brute-force count
+  - [x]* 15.2 Write property test: Hand_Pick numbers equal a brute-force count
     - **Property 5: Hand_Pick numbers equal a brute-force count**
     - **Validates: Requirements 9.3, 9.7, 22.3**
-  - [ ]* 15.3 Write property test: the shot replay ends at the real frequencies
+  - [x]* 15.3 Write property test: the shot replay ends at the real frequencies
     - **Property 7: The shot replay ends at the real frequencies**
     - **Validates: Requirements 7.3, 7.4, 7.7, 22.6**
-  - [ ]* 15.4 Write property test: the Daily_Map is fixed by its date and has all three kinds of parts
+  - [x]* 15.4 Write property test: the Daily_Map is fixed by its date and has all three kinds of parts
     - **Property 6: The Daily_Map is fixed by its date and has all three kinds of parts**
     - **Validates: Requirements 11.1, 11.2, 11.3, 11.7, 22.4**
-  - [ ]* 15.5 Write property test: the reachable counts are right
+  - [x]* 15.5 Write property test: the reachable counts are right
     - **Property 10: The reachable counts are right**
     - **Validates: Requirements 11.7**
-  - [ ]* 15.6 Write property test: Local_Progress never breaks the app
+  - [x]* 15.6 Write property test: Local_Progress never breaks the app
     - **Property 8: Local_Progress never breaks the app**
     - **Validates: Requirements 12.3, 12.5, 22.5**
 
-- [ ] 16. README
+- [x] 16. README
   - "Build on AtomMap" (request and result format, a Python example of about 10 lines, run once before it is written down) and "Add your city" (one `fetch_place.py` command per `--kind`)
   - _Requirements: 19.1, 19.2, 19.3_
 
-- [ ] 17. Final checkpoint - Ensure all tests pass
+- [x] 17. Final checkpoint - Ensure all tests pass
   - All tests, the layout check and the smoke test; the owner runs `npm run record-results -- --check` to confirm the 30 measured runs reproduce; ask the user if questions arise.
 
 ## Notes

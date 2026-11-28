@@ -75,6 +75,14 @@ def test_rejected_request_prints_the_plain_error_and_exits_1():
     assert code == 1 and out == "" and err.startswith("ValidationError: Request is not valid JSON")
 
 
+def test_items_named_in_the_message_are_not_repeated():
+    code, out, err = _run(["-"], stdin_text="{}")
+    assert code == 1 and out == ""
+    line = err.strip()
+    assert line.startswith("ValidationError: Missing required items: points")
+    assert "(" not in line  # every item is in the message already
+
+
 def test_missing_file_exits_1(tmp_path: Path):
     code, out, err = _run([str(tmp_path / "nope.json")])
     assert code == 1 and out == "" and err.startswith("Cannot read the request:")
